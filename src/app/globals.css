@@ -1,26 +1,5062 @@
 @import "tailwindcss";
 
+/* ============================================================
+   MISHRAM MEDIA — VISUAL SYSTEM
+
+   One set of semantic tokens, two themes behind them. Components
+   only ever reference the semantic names, so the whole site flips
+   by swapping the --t-* values on the <html> element.
+
+   Dark  — obsidian + ivory, teal carrying interaction.
+   Light — warm parchment + deep ink, a deeper teal for the same job.
+   ============================================================ */
+
+@theme {
+  --color-canvas: var(--t-canvas);
+  --color-canvas-raise: var(--t-canvas-raise);
+  --color-ink: var(--t-ink);
+  --color-ink-soft: var(--t-ink-soft);
+  --color-ink-muted: var(--t-ink-muted);
+
+  --color-line: var(--t-line);
+  --color-line-strong: var(--t-line-strong);
+  --color-grid: var(--t-grid);
+
+  --color-accent: var(--t-accent);
+  --color-accent-soft: var(--t-accent-soft);
+
+  --color-surface: var(--t-surface);
+  --color-surface-hover: var(--t-surface-hover);
+  --color-image-line: var(--t-image-line);
+  --color-overlay: var(--t-overlay);
+
+  /* Held constant across themes; used sparingly. */
+  --color-ember: #ff7048;
+  /* The one semantic state colour. Themed, because ember itself is far too
+     light to read as text on parchment. Used for form validation only. */
+  --color-error: var(--t-error);
+
+  --font-display: var(--ff-display), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: var(--ff-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-accent: var(--ff-accent), "Times New Roman", Georgia, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Page gutter — every rail in the layout aligns to this. */
+  --gutter: clamp(20px, 4.4vw, 76px);
+  --header-h: 66px;
+  --measure: 46ch;
+
+  /* ── Dark (default) ───────────────────────────────────────── */
+  color-scheme: dark;
+
+  --t-canvas: #0a0a0a;
+  --t-canvas-raise: #121212;
+  /* Channels only, so gradients can take an arbitrary alpha. */
+  --t-canvas-rgb: 10 10 10;
+
+  --t-ink: #f3efe7;
+  --t-ink-soft: #9a938a;
+  --t-ink-muted: #6b655d;
+
+  --t-line: rgba(243, 239, 231, 0.1);
+  --t-line-strong: rgba(243, 239, 231, 0.22);
+  --t-grid: rgba(243, 239, 231, 0.055);
+
+  --t-accent: #35d6c0;
+  --t-accent-soft: rgba(53, 214, 192, 0.16);
+
+  --t-surface: rgba(243, 239, 231, 0.035);
+  --t-surface-hover: rgba(243, 239, 231, 0.07);
+  --t-image-line: rgba(243, 239, 231, 0.22);
+  --t-overlay: rgba(10, 10, 10, 0.7);
+
+  --t-error: #ff8563;
+
+  --t-image-shadow: none;
+  --collab-logo-rest: 0.5;
+  --grain-opacity: 0.035;
+  --grain-blend: overlay;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+[data-theme="light"] {
+  /* ── Light ────────────────────────────────────────────────── */
+  color-scheme: light;
+
+  --t-canvas: #f3f0e8;
+  --t-canvas-raise: #fbf9f3;
+  --t-canvas-rgb: 243 240 232;
+
+  --t-ink: #11110f;
+  --t-ink-soft: #65625b;
+  --t-ink-muted: #7c7871;
+
+  --t-line: rgba(17, 17, 15, 0.12);
+  --t-line-strong: rgba(17, 17, 15, 0.24);
+  --t-grid: rgba(17, 17, 15, 0.055);
+
+  --t-accent: #0b8f80;
+  --t-accent-soft: rgba(11, 143, 128, 0.14);
+
+  --t-surface: rgba(17, 17, 15, 0.035);
+  --t-surface-hover: rgba(17, 17, 15, 0.06);
+  --t-image-line: rgba(17, 17, 15, 0.16);
+  --t-overlay: rgba(243, 240, 232, 0.74);
+
+  /* Darker than the dark-theme value: the same hue at 5.35:1 on parchment
+     rather than 2.2:1, which would fail as text. */
+  --t-error: #b4360f;
+
+  /* Photography sits above the paper rather than inside the dark. */
+  --t-image-shadow: 0 20px 60px rgba(17, 17, 15, 0.09);
+  --collab-logo-rest: 0.62;
+  --grain-opacity: 0.022;
+  --grain-blend: multiply;
 }
 
-@media (prefers-color-scheme: dark) {
+/* Restrained cross-fade, switched on only while the theme is swapping so it
+   never competes with the components' own hover transitions. */
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition:
+    background-color 440ms var(--ease-out-expo),
+    border-color 440ms var(--ease-out-expo),
+    color 440ms var(--ease-out-expo),
+    fill 440ms var(--ease-out-expo),
+    stroke 440ms var(--ease-out-expo),
+    box-shadow 440ms var(--ease-out-expo);
+}
+
+@media (min-width: 1024px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --header-h: 78px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background-color: var(--color-canvas);
+    -webkit-text-size-adjust: 100%;
+    /* Native anchor navigation, and nothing else — no scroll library, no wheel
+       handling, no scripted scrolling. The reduced-motion block at the end of
+       this file resets it to `auto`, so nobody is carried through the page
+       against their setting. */
+    scroll-behavior: smooth;
+  }
+
+  /* The header is fixed, so a hash target landing flush with the top of the
+     viewport lands underneath it. One rule covers every section on the page and
+     stays in step with --header-h at both of its values — no pixel arithmetic
+     in JavaScript. */
+  section[id] {
+    scroll-margin-top: calc(var(--header-h) + 12px);
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-canvas);
+  }
+
+  /* One focus treatment for the whole site: a teal ring offset from
+     the element, never an inset browser outline. */
+  :focus-visible {
+    outline: 1px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .page-x {
+    padding-inline: var(--gutter);
+  }
+
+  /* Tracked-out caps used for eyebrows, indices and annotations. */
+  .caps {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  @media (min-width: 768px) {
+    .caps {
+      font-size: 0.6875rem;
+    }
+  }
+
+  .rule {
+    height: 1px;
+    background-color: var(--color-line);
+  }
+
+  /* Theme toggle disc — rotated by the theme attribute so it is correct on
+     the first paint. The second rule keeps it rotating during a swap, when
+     the global cross-fade would otherwise replace its transition. */
+  .theme-disc {
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  [data-theme="light"] .theme-disc {
+    transform: rotate(180deg);
+  }
+
+  html.theme-transition .theme-disc {
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  /* ── Hero composition ───────────────────────────────────────────
+     Two forms, chosen by frame shape rather than width alone so a
+     portrait tablet gets the stacked composition. Mirrored in JS by
+     STACKED_HERO_QUERY in hooks/useMediaQuery.ts — keep them in step. */
+
+  .hero-media {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    bottom: 0;
+    z-index: 0;
+  }
+
+  .hero-scrim {
+    background: linear-gradient(
+      180deg,
+      rgb(var(--t-canvas-rgb)) 0%,
+      rgb(var(--t-canvas-rgb)) 38%,
+      rgb(var(--t-canvas-rgb) / 0.55) 50%,
+      rgb(var(--t-canvas-rgb) / 0) 66%
+    );
+  }
+
+  @media (min-width: 768px) and (min-aspect-ratio: 1 / 1) {
+    .hero-media {
+      inset: 0;
+    }
+    .hero-scrim {
+      background: linear-gradient(
+        90deg,
+        rgb(var(--t-canvas-rgb)) 0%,
+        rgb(var(--t-canvas-rgb)) 24%,
+        rgb(var(--t-canvas-rgb) / 0.62) 40%,
+        rgb(var(--t-canvas-rgb) / 0) 58%
+      );
+    }
+  }
+
+  @media (min-width: 1101px) {
+    .hero-media {
+      inset: 0;
+    }
+    .hero-scrim {
+      background: linear-gradient(
+        90deg,
+        rgb(var(--t-canvas-rgb)) 0%,
+        rgb(var(--t-canvas-rgb)) 24%,
+        rgb(var(--t-canvas-rgb) / 0.62) 40%,
+        rgb(var(--t-canvas-rgb) / 0) 58%
+      );
+    }
+  }
+
+  /* ── 02 / What We Do — service stage ────────────────────────────
+     Surfaces float in CSS perspective rather than a second WebGL scene.
+     The outer element carries the scroll transform, the inner one the idle
+     drift, so the two never overwrite each other's `transform`.
+
+     THE COMPOSITION BOX. Every scene positions its surfaces as a percentage
+     of its parent, and surface *heights* come from a width percentage plus an
+     aspect ratio. That only composes predictably if the parent's aspect is
+     itself predictable — and the raw stage is not: it is 865x758 (1.14) at
+     1440x900, 865x626 (1.38) at 1440x768 and 612x626 (0.98) at 1024x768,
+     because its height follows the viewport while its width follows the grid.
+     Scenes authored against one of those shapes spilled out of the others.
+
+     So the stage is now only a *measuring container*, and the scenes live in
+     `.svc-stage-box` — the largest box of a fixed aspect (`--svc-stage-ar`)
+     that fits inside it, centred. Container query units read the stage's own
+     size, so this is pure CSS with no measurement in JS.
+
+     `--svc-stage-ar` is the aspect of the approved 1440x900 desktop stage, so
+     at that viewport the box *is* the stage and nothing moves. Everywhere else
+     the same composition is letterboxed and scaled rather than distorted, and
+     every scene keeps the proportions it was art-directed at. */
+
+  .svc-stage {
+    --svc-stage-ar: 1.141;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    /* Gives the box below `cqw`/`cqh` to size itself against. */
+    container-type: size;
+  }
+
+  .svc-stage-box {
+    /* Widest box of the target aspect that still fits the stage. */
+    --svc-box-w: min(100cqw, calc(100cqh * var(--svc-stage-ar)));
+    /* One reference pixel: 1px at the 1440x900 stage, proportional elsewhere.
+       Scene chrome that must scale with the composition uses this instead of
+       a raw px value. */
+    --svc-u: calc(var(--svc-box-w) / 865);
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: var(--svc-box-w);
+    height: calc(var(--svc-box-w) / var(--svc-stage-ar));
+    /* Depth scales with the box, so foreshortening reads the same at every
+       size instead of getting stronger as the composition shrinks. */
+    perspective: calc(var(--svc-u) * 1500);
+    perspective-origin: 50% 45%;
+  }
+
+  .svc-stage-inner {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  /* Editorial annotations only belong to the pinned desktop sequence — the
+     stacked chapters have no margin to put them in. Gated on the sequence
+     actually in use rather than on a width, so the two can never disagree. */
+  .svc-anno,
+  .svc-sheet-rail {
+    display: none;
+  }
+
+  [data-sequence="pinned"] .svc-anno {
+    display: flex;
+  }
+
+  [data-sequence="pinned"] .svc-sheet-rail {
+    display: block;
+  }
+
+  .svc-surface {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  .svc-surface--plan {
+    background-color: color-mix(in srgb, var(--color-canvas-raise) 92%, transparent);
+  }
+
+  /* Photography sits inside the palette at rest, the way the hero's does. */
+  .svc-photo {
+    filter: saturate(0.86);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .svc-photo-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.42) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 58%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .svc-format {
+    position: absolute;
+    right: 7%;
+    bottom: 5%;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--color-ink);
+    opacity: 0.55;
+    mix-blend-mode: difference;
+  }
+
+  /* Creator attribution on a network surface — real names only, from config. */
+  .svc-name {
+    position: absolute;
+    bottom: 5%;
+    left: 6%;
+    right: 6%;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.72;
+    text-shadow: 0 1px 3px rgb(var(--t-canvas-rgb) / 0.9);
+    /* Wraps rather than truncating. The label is sized in absolute px inside a
+       box that scales with the viewport, so on a stacked chapter the frame can
+       be half its desktop width — an ellipsis would eat a real creator name.
+       Two short lines are legible; "NIKITA KUMA…" is not. Desktop is unchanged:
+       every name has slack there and still sits on one line. */
+    text-wrap: balance;
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .svc-surface:hover .svc-name {
+      opacity: 0.95;
+    }
+
+    .svc-surface:hover {
+      border-color: var(--color-accent);
+    }
+
+    .svc-surface:hover .svc-photo {
+      filter: saturate(1);
+    }
+
+    .svc-surface:hover .svc-photo-veil {
+      opacity: 0.35;
+    }
+  }
+
+  /* The chapter's contextual actions — `Explore service` and `Discuss this
+     project`. Shared shell so the two sit on one row with identical metrics
+     and differ only in ink weight.
+
+     The touch padding is gated on `data-sequence`, the same attribute §10 uses
+     for the scene annotations. The pinned desktop panel gives its copy a fixed
+     `h-[22rem]` holder (§11), and 27px of tap padding would push this row into
+     the progress indicator underneath it — while the pinned path is
+     mouse-only territory by definition (`min-width: 1280px` and landscape), so
+     it does not need the target. Every path that a finger can reach is the
+     stacked one, and that is where the padding applies. */
+  .svc-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding-block: 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    /* 1.5 is not a fresh choice — it is the leading Tailwind's own
+       `text-[0.8125rem]` paired with this size on the action that stood here
+       before, measured at 19.5px. Moving the font-size into this class drops
+       that pairing, so it is pinned explicitly: the copy block's height is
+       then byte-identical to the pre-change one, which matters because the
+       pinned panel gives it a fixed `h-[22rem]` holder. */
+    line-height: 1.5;
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  [data-sequence="pinned"] .svc-action {
+    padding-block: 0;
+  }
+
+  /* Very slow crop movement inside an interface's media region. */
+  .svc-crop img {
+    animation: svc-crop 24s ease-in-out infinite;
+  }
+
+  @keyframes svc-crop {
+    0%,
+    100% {
+      transform: scale(1) translate3d(0, 0, 0);
+    }
+    50% {
+      transform: scale(1.045) translate3d(0, -1%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-crop img {
+      animation: none;
+    }
+  }
+
+  /* ── 05 / Brand Shoots — contact-sheet frames ───────────────────
+     Photography is the content of this service rather than a texture inside
+     an interface, so its frames sit closer to full strength at rest than the
+     abstracted surfaces of Services 01–04 — in both themes. */
+
+  .svc-frame {
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo),
+      opacity 520ms var(--ease-out-expo);
+  }
+
+  .svc-frame .svc-photo {
+    filter: saturate(0.95);
+  }
+
+  .svc-frame .svc-photo-veil {
+    opacity: 0.5;
+  }
+
+  /* Format at rest, VIEW on hover — one label slot, masked swap, no cursor. */
+  .svc-frame-tag {
+    position: absolute;
+    bottom: 5%;
+    left: 6%;
+    z-index: 20;
+    display: block;
+    height: 0.75rem;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.7;
+    /* The same halo trick as .svc-name: a canvas-coloured glow keeps ink
+       legible over both the bright and the dark regions of a photograph, in
+       either theme. */
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  .svc-frame-tag > span {
+    display: block;
+    line-height: 0.75rem;
+    white-space: nowrap;
+    transition: transform 420ms var(--ease-out-expo);
+  }
+
+  .svc-frame-tag__hover {
+    color: var(--color-accent);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Picking one frame out of the sheet: it keeps full strength, the rest
+       step back. */
+    .svc-sheet:has(.svc-frame:hover) .svc-frame:not(:hover) {
+      opacity: 0.55;
+    }
+
+    .svc-frame:hover .svc-frame-tag {
+      opacity: 0.95;
+    }
+
+    .svc-frame:hover .svc-frame-tag > span {
+      transform: translateY(-0.75rem);
+    }
+  }
+
+  /* One slow playhead along the sheet baseline — the only thing still moving
+     once the composition has settled. */
+  .svc-playhead {
+    animation: svc-playhead 26s ease-in-out infinite;
+  }
+
+  @keyframes svc-playhead {
+    0%,
+    100% {
+      left: 1%;
+    }
+    50% {
+      left: 97%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-playhead {
+      animation: none;
+    }
+  }
+
+  /* Variant tag on a tested creative. */
+  .svc-tag {
+    position: absolute;
+    top: 6%;
+    right: 6%;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--color-ink);
+    opacity: 0.55;
+  }
+
+  /* A short dash marching a path — paid traffic flowing, not a circuit board. */
+  .svc-flow {
+    animation: svc-flow 7s linear infinite;
+  }
+
+  @keyframes svc-flow {
+    from {
+      stroke-dashoffset: 100;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-flow {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  /* Idle life: 2–4px, four different periods so nothing beats in unison. */
+  .svc-drift {
+    will-change: transform;
+  }
+
+  .svc-drift--a {
+    animation: svc-drift-a 13s ease-in-out infinite;
+  }
+  .svc-drift--b {
+    animation: svc-drift-b 17s ease-in-out infinite;
+  }
+  .svc-drift--c {
+    animation: svc-drift-c 15s ease-in-out infinite;
+  }
+  .svc-drift--d {
+    animation: svc-drift-d 19s ease-in-out infinite;
+  }
+
+  @keyframes svc-drift-a {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(2px, -3px, 0); }
+  }
+  @keyframes svc-drift-b {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-3px, 2px, 0); }
+  }
+  @keyframes svc-drift-c {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(2px, 3px, 0); }
+  }
+  @keyframes svc-drift-d {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-2px, -2px, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-drift {
+      animation: none;
+      will-change: auto;
+    }
+  }
+
+  /* ── 03 / Creators — talent index ───────────────────────────────
+     A lighter system than the service stage on purpose: no perspective, no
+     composition box, no scroll machinery. Three frames crop one portrait into
+     three formats, and only their clip path, depth and drift move. */
+
+  .crt-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  /* Creators are the subject here, not a texture behind an interface, so they
+     sit close to full strength at rest in both themes. The hero's mistake was
+     letting secondary creator imagery fall away — these stay visible. */
+  .crt-photo {
+    filter: saturate(0.95);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .crt-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.34) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 54%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .crt-tag {
+    position: absolute;
+    bottom: 6%;
+    left: 7%;
+    z-index: 2;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.62;
+    /* Ink plus a canvas-coloured halo stays legible over both the bright and
+       the dark regions of a photograph, in either theme. */
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .crt-portrait:hover .crt-frame {
+      border-color: var(--color-accent);
+    }
+
+    .crt-portrait:hover .crt-photo {
+      filter: saturate(1);
+    }
+
+    .crt-portrait:hover .crt-veil {
+      opacity: 0.4;
+    }
+
+    .crt-portrait:hover .crt-tag {
+      opacity: 0.9;
+    }
+  }
+
+  /* Three formats from one source file. Each creator has exactly one approved
+     photograph, so the supporting frames are genuine re-crops of it rather than
+     invented campaign work. Zoom and origin are per creator — see the `frames`
+     block in config/creators.ts, passed in as custom properties. The same three
+     frames pointed at a different part of each photograph is what makes five
+     individually composed states out of one shared geometry; without the zoom
+     they read as the same picture printed three times. */
+  .crt-zoom img,
+  .crt-crop img {
+    transform: scale(var(--crt-zoom, 1));
+    transform-origin: var(--crt-origin, 50% 50%);
+  }
+
+  /* Very slow crop movement inside the active portrait — the one element that
+     keeps moving once the composition settles. Composes with the per-creator
+     zoom rather than overriding it. */
+  .crt-crop img {
+    animation: crt-crop 26s ease-in-out infinite;
+  }
+
+  @keyframes crt-crop {
+    0%,
+    100% {
+      transform: scale(var(--crt-zoom, 1));
+    }
+    50% {
+      transform: scale(calc(var(--crt-zoom, 1) * 1.035));
+    }
+  }
+
+  /* Idle life on the supporting frames: 2–3px, two periods that never beat in
+     unison. Carried on an inner wrapper so it cannot fight the Motion
+     transform on the element above it. */
+  .crt-drift {
+    will-change: transform;
+  }
+
+  .crt-drift--a {
+    animation: crt-drift-a 16s ease-in-out infinite;
+  }
+
+  .crt-drift--b {
+    animation: crt-drift-b 21s ease-in-out infinite;
+  }
+
+  @keyframes crt-drift-a {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(2px, -3px, 0);
+    }
+  }
+
+  @keyframes crt-drift-b {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(-3px, 2px, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt-crop img,
+    .crt-drift {
+      animation: none;
+      will-change: auto;
+    }
+  }
+
+  /* Index rows. The active row is marked by a rule that grows out of the
+     number toward the name — no pill, no fill, no chip. */
+  .crt-rule {
+    display: block;
+    height: 1px;
+    background-color: var(--color-accent);
+    transform-origin: left center;
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .crt-rule {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── 04 / Work Process — growth pipeline ────────────────────────
+     The lightest interactive section on the page: one SVG line system, no
+     imagery, no canvas, no scroll track. */
+
+  /* The travelling signal. One small dash running the length of the base
+     path — decorative only; it never changes which stage is selected. The
+     path deliberately omits vectorEffect (see the §10 stroke gotcha). */
+  .prc-signal {
+    animation: prc-signal 11s linear infinite;
+  }
+
+  @keyframes prc-signal {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Scattered inputs at Discover: 1–2px, two periods so nothing beats in
+     unison. */
+  .prc-drift {
+    will-change: transform;
+  }
+
+  .prc-drift--a {
+    animation: prc-drift-a 14s ease-in-out infinite;
+  }
+
+  .prc-drift--b {
+    animation: prc-drift-b 19s ease-in-out infinite;
+  }
+
+  @keyframes prc-drift-a {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(1.5px, -2px);
+    }
+  }
+
+  @keyframes prc-drift-b {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-2px, 1.5px);
+    }
+  }
+
+  /* Active stage marker — a rule that grows, never a pill. */
+  .prc-rule {
+    display: block;
+    height: 1px;
+    background-color: var(--color-accent);
+    transform-origin: left center;
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prc-signal,
+    .prc-drift {
+      animation: none;
+      will-change: auto;
+    }
+
+    .prc-rule {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── Footer V2 — the agency desk ────────────────────────────────
+     The page steps out of its own system here. No twelve-column background,
+     no section chrome, no border-top: the only rules are content-specific.
+
+     V1 ended on one enormous centred wordmark and very little else, which read
+     as a poster and left the last screen nearly empty. V2 keeps the field and
+     makes it useful — contact, navigation, the service routes that exist,
+     socials and legal — with the mark demoted to a signature at the lower
+     left, roughly a third of its former size. */
+
+  .ftr {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    overflow: hidden;
+
+    /* DELIBERATE INVERSION — and it has to override the --color-* names, not
+       the --t-* ones behind them. `@theme` declares `--color-ink: var(--t-ink)`
+       on :root, so that var() is substituted there and the *resolved* value is
+       what inherits down; redefining --t-ink on a descendant changes nothing.
+       Overriding --color-ink here does work, because every Tailwind utility
+       resolves it at the element. One block, and the whole subtree flips with
+       no component needing a footer-specific colour.
+
+       On parchment this is the dark back cover of a printed annual. In dark
+       mode the palette is already right, so the footer separates itself by
+       composition instead. */
+    color-scheme: dark;
+    --color-canvas: #0a0a0a;
+    --color-canvas-raise: #121212;
+    --t-canvas-rgb: 10 10 10;
+    --color-ink: #f3efe7;
+    --color-ink-soft: #9a938a;
+    --color-ink-muted: #6b655d;
+    --color-line: rgba(243, 239, 231, 0.1);
+    --color-line-strong: rgba(243, 239, 231, 0.22);
+    --color-accent: #35d6c0;
+    --color-accent-soft: rgba(53, 214, 192, 0.16);
+    --color-surface: rgba(243, 239, 231, 0.035);
+    --color-surface-hover: rgba(243, 239, 231, 0.07);
+    --color-image-line: rgba(243, 239, 231, 0.22);
+    --grain-opacity: 0.04;
+    --grain-blend: overlay;
+
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+
+  /* One very low tonal lift so the full-bleed field is not perfectly flat.
+     Cheap: a single radial gradient, no texture asset. */
+  .ftr::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 70% at 50% 0%,
+      rgba(243, 239, 231, 0.045) 0%,
+      rgba(243, 239, 231, 0) 62%
+    );
+  }
+
+  /* The handoff: one trace continuing out of the inquiry grid and resolving
+     into a dot. This is the footer's boundary — there is no border-top. */
+  .ftr-signal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 1px;
+    height: 3.5rem;
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent) 0%,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 100%
+    );
+  }
+
+  .ftr-signal-dot {
+    position: absolute;
+    top: calc(3.5rem - 1px);
+    left: -1px;
+    display: block;
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background-color: var(--color-accent);
+  }
+
+  /* ── Directory rows ─────────────────────────────────────────────
+     Navigate and Services share one row shell, so an index, a label and a
+     hover sweep behave identically in both columns. Sized for a comfortable
+     tap: 44px including padding. */
+
+  .ftr-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    padding-block: 0.7rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.45;
+    color: color-mix(in srgb, var(--color-ink) 80%, transparent);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .ftr-row:hover {
+    color: var(--color-ink);
+  }
+
+  /* ── The social rail ────────────────────────────────────────────
+     Icon, platform, and an arrow only where there is somewhere to go. A row
+     rather than an isolated app tile, so the set reads as a directory entry
+     and fills the column instead of floating in it.
+
+     A platform whose URL is not verified still appears — the set is the set —
+     but as a non-interactive row: quieter ink, a dimmer mark, no arrow, no
+     hover affordance and no cursor change. There is no `href="#"` anywhere. */
+
+  .ftr-social {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.7rem;
+    padding-block: 0.45rem;
+    color: var(--color-ink-soft);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .ftr-social-icon {
+    flex: none;
+    transition:
+      color 300ms var(--ease-out-expo),
+      opacity 300ms var(--ease-out-expo);
+  }
+
+  .ftr-social-arrow {
+    margin-left: auto;
+    opacity: 0.45;
+    transition:
+      transform 420ms var(--ease-out-expo),
+      opacity 300ms var(--ease-out-expo);
+  }
+
+  .ftr-social--pending {
+    color: var(--color-ink-muted);
+    cursor: default;
+  }
+
+  .ftr-social--pending .ftr-social-icon {
+    opacity: 0.5;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Anchors only — the pending row is a span, so it can never match. */
+    a.ftr-social:hover {
+      color: var(--color-ink);
+    }
+
+    a.ftr-social:hover .ftr-social-icon {
+      color: var(--color-accent);
+    }
+
+    a.ftr-social:hover .ftr-social-arrow {
+      opacity: 1;
+      transform: translate(2px, -2px);
+    }
+  }
+
+  /* ── The base row ───────────────────────────────────────────────
+     Legal, back-to-top and the colophon, with the signature beside them. */
+
+  .ftr-legal {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .ftr-legal:hover {
+    color: var(--color-ink);
+  }
+
+  @media (min-width: 768px) {
+    .ftr-legal {
+      font-size: 0.6875rem;
+    }
+  }
+
+  .ftr-base {
+    position: relative;
+  }
+
+  /* The one finishing detail. A slow teal segment travelling the base rule —
+     the same signal the footer opens on and the same one the route transition
+     draws, so the ending and every page change carry one mark. Replaces V1's
+     pointer-tracked band inside the letterforms, which was composed for a
+     poster-scale mark that no longer exists. */
+  .ftr-base-rule {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    display: block;
+    height: 1px;
+    overflow: hidden;
+    background-color: var(--color-line);
+  }
+
+  .ftr-base-rule::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-accent) 50%,
+      transparent 100%
+    );
+    animation: ftr-base-signal 15s linear infinite;
+  }
+
+  @keyframes ftr-base-signal {
+    from {
+      transform: translateX(-110%);
+    }
+    to {
+      transform: translateX(560%);
+    }
+  }
+
+  /* ── The signature ──────────────────────────────────────────────
+     The real Mishram wordmark, reused as a CSS mask exactly as the header
+     does. **Left aligned and deliberately not cropped**: it is an integrated
+     mark with a studio light in the first M and slashes at the end, so
+     trimming an edge removes a letterform rather than reading as a bleed —
+     the failure §10g records for the old poster treatment. At this size it
+     does not need a crop to sit as a signature.
+
+     Roughly a third of V1's footprint: 340px at 1440 against 616px. */
+
+  .ftr-mark-band {
+    display: block;
+  }
+
+  .ftr-mark {
+    width: clamp(240px, 26vw, 340px);
+    opacity: 0.92;
+  }
+
+  @media (max-width: 639px) {
+    .ftr-mark {
+      /* An ending signature, not the entire ending. V1 ran the mark to 138%
+         of the viewport here, which is what made the mobile footer feel like
+         a logo with a page attached. */
+      width: 60vw;
+      max-width: 300px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ftr-base-rule::after {
+      animation: none;
+      opacity: 0;
+    }
+
+    .ftr-social-icon,
+    .ftr-social-arrow {
+      transition-duration: 120ms;
+    }
+  }
+
+
+  /* ── Project Inquiry — the editorial project brief ──────────────
+     Native controls with the styling laid over them, so mobile keyboards,
+     autofill and checkbox/radio semantics all keep working. Bottom rules
+     rather than boxes: no filled card, no 16px radius, nothing that reads
+     as an embedded form product. */
+
+  .inq-input {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--color-line-strong);
+    border-radius: 0;
+    background-color: transparent;
+    padding: 0.15rem 0 0.7rem;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-ink);
+    transition:
+      border-color 320ms var(--ease-out-expo),
+      color 320ms var(--ease-out-expo);
+  }
+
+  .inq-textarea {
+    resize: vertical;
+    min-height: 6.75rem;
+  }
+
+  .inq-input::placeholder {
+    color: var(--color-ink-muted);
+  }
+
+  /* A filled field reads slightly stronger than an empty one. */
+  .inq-input--filled {
+    border-bottom-color: var(--color-ink-muted);
+  }
+
+  .inq-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-accent);
+  }
+
+  .inq-input[aria-invalid="true"] {
+    border-bottom-color: var(--color-error);
+  }
+
+  /* Chrome's autofill paints its own background; keep the field transparent
+     and the type in the theme's ink. */
+  .inq-input:-webkit-autofill,
+  .inq-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-ink);
+    -webkit-box-shadow: 0 0 0 1000px var(--color-canvas) inset;
+    caret-color: var(--color-ink);
+  }
+
+  /* Sentence case, not the tracked caps the labels use: an error is a
+     sentence spoken to the visitor, and caps read as shouting. */
+  .inq-error {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-error);
+  }
+
+  .inq-notice {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--color-ink);
+  }
+
+  /* Project tags, not filter pills: a hairline row with a small square that
+     fills teal when chosen. The native control stays in the layout and stays
+     focusable — visually hidden, never display:none. */
+  .inq-option {
+    position: relative;
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    transition:
+      border-color 320ms var(--ease-out-expo),
+      background-color 320ms var(--ease-out-expo);
+  }
+
+  .inq-native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .inq-box {
+    display: block;
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 1px;
+    transition:
+      background-color 260ms var(--ease-out-expo),
+      border-color 260ms var(--ease-out-expo);
+  }
+
+  .inq-option-label {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--color-ink-soft);
+    transition: color 320ms var(--ease-out-expo);
+  }
+
+  .inq-option:has(.inq-native:checked) {
+    border-color: var(--color-accent);
+  }
+
+  .inq-option:has(.inq-native:checked) .inq-box {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .inq-option:has(.inq-native:checked) .inq-option-label {
+    color: var(--color-ink);
+  }
+
+  /* The native control is invisible, so the ring has to be drawn by the row. */
+  .inq-option:has(.inq-native:focus-visible) {
+    outline: 1px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .inq-option:hover {
+      border-color: var(--color-line-strong);
+    }
+
+    .inq-option:hover .inq-option-label {
+      color: var(--color-ink);
+    }
+  }
+
+  .inq-submit {
+    display: inline-flex;
+    height: 52px;
+    align-items: center;
+    gap: 0.75rem;
+    border-radius: 3px;
+    background-color: var(--color-ink);
+    padding-inline: 1.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-canvas);
+    transition: opacity 320ms var(--ease-out-expo);
+  }
+
+  .inq-submit:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .inq-success {
+    border-top: 1px solid var(--color-line);
+    padding-top: 2.5rem;
+  }
+
+  /* Reachable by nothing a person uses: off-screen, untabbable and
+     aria-hidden. Anything that arrives in it was filled blind. */
+  .inq-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* The page's scaffold resolving. Full strength where the section begins —
+     continuing About above it — and gone by the bottom edge, so the Footer
+     starts on clean ground. §11's global grid behaviour is unchanged. */
+  .inq-grid {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 22%,
+      rgba(0, 0, 0, 0.45) 62%,
+      transparent 88%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 22%,
+      rgba(0, 0, 0, 0.45) 62%,
+      transparent 88%
+    );
+  }
+
+  /* ── Client Notes — the quote index ─────────────────────────────
+     The quietest interactive section on the page: no imagery, no canvas,
+     no scroll machinery. Typography is the architecture, so there is
+     almost nothing here. */
+
+  /* One small serif mark. Deliberately not a decorative glyph floating
+     across half the field — it sits on the quote's own optical left edge
+     and hangs into the margin, the way a printed pull quote does. */
+  .tst-mark {
+    display: block;
+    margin-bottom: -0.34em;
+    margin-left: -0.06em;
+    font-size: clamp(2.1rem, 3.2vw, 3.1rem);
+    line-height: 1;
+    color: var(--color-accent);
+    opacity: 0.7;
+  }
+
+  /* Only ever rendered for a portrait confirmed to be its author — see the
+     audit in config/testimonials.ts. */
+  .tst-portrait {
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+  }
+
+  /* ── The Mishram Difference — the connected stack ───────────────
+     The interlude between §02 and §03. One vertical axis, four layers
+     reaching into it, and no imagery beyond a single small crop. Every
+     offset here resolves against the same `page-x` content box, so the
+     axis, the connectors and the teal segments cannot drift apart. */
+
+  .dif-system {
+    /* Where the axis stands, as a fraction of the section's content width.
+       The layers own everything to its left; the Mishram system owns
+       everything to its right. */
+    --dif-axis: 56%;
+    /* One layer's height. Fixed, which is what lets the axis segment be
+       placed by `index × this` instead of measuring the DOM. */
+    --dif-row: 5.5rem;
+  }
+
+  /* Same two values on the section, for the axis and the intro split, which
+     live outside .dif-system. */
+  #difference {
+    --dif-axis: 56%;
+  }
+
+  .dif-split {
+    grid-template-columns: 1fr;
+  }
+
+  [data-layout="stack"] .dif-split {
+    grid-template-columns: var(--dif-axis) 1fr;
+  }
+
+  .dif-axis-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--dif-axis);
+    display: block;
+    width: 1px;
+    transform-origin: top center;
+    background-color: var(--color-line-strong);
+  }
+
+  /* The axis responding to the active layer: one teal segment, one row tall,
+     moved by transform rather than by re-laying anything out. */
+  .dif-axis-active {
+    position: absolute;
+    /* Clears the list's own top hairline. */
+    top: 1px;
+    left: var(--dif-axis);
+    display: block;
+    width: 1px;
+    height: var(--dif-row);
+    background-color: var(--color-accent);
+  }
+
+  /* A layer reaching the axis. */
+  .dif-reach {
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  .dif-row {
+    height: var(--dif-row);
+  }
+
+  /* The axis resolving into Momentum, then continuing past it to the section
+     edge — the handoff into 03 / Creators. */
+  .dif-axis-out {
+    position: absolute;
+    top: 0;
+    left: var(--dif-axis);
+    display: block;
+    width: 1px;
+    height: 4.6rem;
+    transform-origin: top center;
+    background-color: var(--color-accent);
+  }
+
+  .dif-out-label {
+    position: absolute;
+    top: 4.2rem;
+    left: calc(var(--dif-axis) + 1.25rem);
+  }
+
+  /* Idle life. One slow signal travelling the axis — decorative only; it never
+     changes which layer is active. Animating background-position keeps it to a
+     1px-wide repaint rather than a moving element. */
+  .dif-signal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: block;
+    width: 1px;
+    opacity: 0.5;
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-accent),
+      transparent
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 130px;
+    animation: dif-signal 11s linear infinite;
+  }
+
+  @keyframes dif-signal {
+    from {
+      background-position: 0 -150px;
+    }
+    to {
+      background-position: 0 calc(100% + 150px);
+    }
+  }
+
+  /* Local grid reduction. The outer columns survive so the section still
+     belongs to the page; the centre is cleared so the stack reads as the
+     structure. Global grid behaviour is untouched. */
+  .dif-grid {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      #000 8%,
+      transparent 26%,
+      transparent 78%,
+      #000 94%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      #000 8%,
+      transparent 26%,
+      transparent 78%,
+      #000 94%,
+      #000 100%
+    );
+  }
+
+  /* The evidence fragment. One footprint for all four, so switching layer
+     never moves the panel. A hairline surface, not a card. */
+  .dif-frag {
+    width: 100%;
+    max-width: 17rem;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-color: var(--color-surface);
+  }
+
+  /* The one photograph in the section, held inside the palette. */
+  .dif-photo img {
+    filter: saturate(0.82);
+  }
+
+  .dif-photo-veil {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-canvas);
+    opacity: 0.14;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dif-signal {
+      animation: none;
+      background-image: none;
+    }
+
+    .dif-reach {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── 05 / Selected Work — media index ───────────────────────────
+     The work is the proof, so media sits at full strength at rest in both
+     themes. No device mockup: a thin editorial frame is the whole chrome. */
+
+  .wrk-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  .wrk-photo {
+    filter: saturate(1);
+  }
+
+  /* Lighter than the creator veil: this section must not fade the work. */
+  .wrk-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.28) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 46%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  /* Format at rest, PLAY / PAUSE once there is a video to control. */
+  .wrk-tag {
+    position: absolute;
+    bottom: 5%;
+    left: 6%;
+    z-index: 20;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.62;
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .wrk-frame:hover {
+      border-color: var(--color-accent);
+    }
+
+    .wrk-frame:hover .wrk-veil {
+      opacity: 0.35;
+    }
+
+    .wrk-frame:hover .wrk-tag {
+      opacity: 0.95;
+    }
+  }
+
+  /* Idle life. Very slow crop on the featured surface, a 2px drift on the
+     supporting fragment. Both stop while a video is playing — from then on the
+     content itself is the motion. */
+  .wrk-crop img {
+    animation: wrk-crop 30s ease-in-out infinite;
+  }
+
+  @keyframes wrk-crop {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.035);
+    }
+  }
+
+  .wrk-drift {
+    animation: wrk-drift 18s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes wrk-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(-2px, 2px, 0);
+    }
+  }
+
+  /* Suppressed once playback starts — see WorkStage. */
+  [data-playing="true"] .wrk-crop img,
+  [data-playing="true"] .wrk-drift {
+    animation: none;
+  }
+
+  /* Active row marker — a rule that grows, never a pill. */
+  .wrk-rule {
+    display: block;
+    height: 1px;
+    background-color: var(--color-accent);
+    transform-origin: left center;
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wrk-crop img,
+    .wrk-drift {
+      animation: none;
+      will-change: auto;
+    }
+
+    .wrk-rule {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── 06 / Recognition — archive ─────────────────────────────────
+     Evidence, so it sits at full colour in both themes. Archival prints on
+     parchment in light, cinematic on obsidian in dark. No gold: an awards
+     section is not a licence to leave the palette. */
+
+  .rcg-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo),
+      transform 520ms var(--ease-out-expo);
+  }
+
+  .rcg-photo {
+    filter: saturate(0.94);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .rcg-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.3) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 48%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .rcg-tag {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    z-index: 10;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.62;
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Hover strengthens; it never reveals. The caption is a factual claim, so
+       it is always in the DOM and always readable without a pointer. */
+    .rcg-item:hover .rcg-frame {
+      border-color: var(--color-accent);
+      transform: translateY(-3px);
+    }
+
+    .rcg-item:hover .rcg-photo {
+      filter: saturate(1);
+    }
+
+    .rcg-item:hover .rcg-veil {
+      opacity: 0.4;
+    }
+
+    .rcg-item:hover .rcg-tag {
+      opacity: 0.95;
+    }
+
+    /* Neighbours step back a couple of pixels — the archive gesture of
+       picking one print out of the set. */
+    .rcg-archive:has(.rcg-item:hover) .rcg-item:not(:hover) .rcg-frame {
+      transform: translateY(2px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rcg-frame,
+    .rcg-item:hover .rcg-frame,
+    .rcg-archive:has(.rcg-item:hover) .rcg-item:not(:hover) .rcg-frame {
+      transform: none;
+      transition-duration: 120ms;
+    }
+  }
+
+
+  /* ── SERVICE PAGES — the shared surface ─────────────────────────
+     One block for all five dedicated service routes. Everything here is
+     shared vocabulary: frames, fragments, the scope index, the FAQ rows and
+     the prev/next rail. A page's own composition brings its own geometry as
+     percentages of a fixed-aspect box, so it needs no CSS of its own.
+
+     DELIBERATE REUSE. The crop mechanism (`.crt-zoom`, `--crt-zoom`,
+     `--crt-origin`) and the idle drifts (`.svc-drift--a…d`) are §03's and
+     §02's — they are the mechanical partners of `resolveFrame` and of the
+     "drift on an inner wrapper" rule, so reimplementing them here would be two
+     copies of the same decision. What is new below is only what is genuinely
+     new. */
+
+  /* Local grid reduction. The outer columns survive so a section still belongs
+     to the page; the centre clears so type is the structure. A different
+     proportion from `.dif-grid` on purpose — the two must not read as one
+     trick reused. */
+  .svp-grid--edges {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      #000 10%,
+      transparent 30%,
+      transparent 74%,
+      #000 92%,
+      #000 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      #000 0%,
+      #000 10%,
+      transparent 30%,
+      transparent 74%,
+      #000 92%,
+      #000 100%
+    );
+  }
+
+  /* ── Photography ────────────────────────────────────────────────
+     A thin editorial frame is the entire chrome. No device mockup, no phone
+     shell, no browser bar — and never a social-media surround. */
+
+  .svp-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  /* People are the subject on this page rather than a texture behind an
+     interface, so they sit close to full strength at rest in both themes. */
+  .svp-photo {
+    filter: saturate(0.95);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .svp-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.34) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 56%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  /* Format, or a real creator name from config — never an invented caption. */
+  .svp-tag {
+    position: absolute;
+    bottom: 6%;
+    left: 7%;
+    right: 7%;
+    z-index: 2;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    opacity: 0.66;
+    /* Ink plus a canvas-coloured halo, so a label stays legible over both the
+       bright and the dark regions of a photograph in either theme. */
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    text-wrap: balance;
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .svp-frame:hover {
+      border-color: var(--color-accent);
+    }
+
+    .svp-frame:hover .svp-photo {
+      filter: saturate(1);
+    }
+
+    .svp-frame:hover .svp-veil {
+      opacity: 0.4;
+    }
+
+    .svp-frame:hover .svp-tag {
+      opacity: 0.95;
+    }
+  }
+
+  /* ── The hero composition box ───────────────────────────────────
+     Fixed aspect, so every position inside it is a percentage that resolves
+     identically at every viewport — the `.svc-stage-box` lesson from §10,
+     without the scroll machinery. Checked at one size is checked at all. */
+
+  .svp-signal-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 100 / 109;
+  }
+
+  .svp-signal-orbit {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* The recurring signal: one short teal segment travelling the loop. It is
+     the only continuous motion in the composition. */
+  .svp-orbit-signal {
+    animation: svp-orbit 22s linear infinite;
+  }
+
+  @keyframes svp-orbit {
+    from {
+      stroke-dashoffset: 300;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .svp-signal-anno {
+    position: absolute;
+    left: 2%;
+    top: 2%;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+  }
+
+  /* ── Fragments ──────────────────────────────────────────────────
+     Abstract on purpose. A headline written into a mockup is a claim nobody
+     agreed to, and a metric written into one is a fabrication — so these carry
+     hairlines and a label, and nothing that could be read as content. */
+
+  /* Padding and gap are percentages of the fragment's own width, so the inner
+     structure shrinks with the composition instead of overflowing it. Fixed
+     rem padding held at 1440 and clipped the publishing ticks at 390 — the
+     fragment is 34% of a box that is a third the size there. Only the label
+     stays absolute, because 8px is the legibility floor and scaling it down
+     would be worse than a tight box. */
+  .svp-fragment {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 4%;
+    overflow: hidden;
+    padding: 5.5%;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--color-canvas-raise) 92%, transparent);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .svp-fragment-label {
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--color-ink-muted);
+  }
+
+  .svp-typelines {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.32rem;
+  }
+
+  .svp-typeline {
+    display: block;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--color-line-strong);
+  }
+
+  .svp-typeline--accent {
+    width: 58%;
+    background-color: var(--color-accent);
+    opacity: 0.8;
+  }
+
+  /* A publishing cadence — ticks on a baseline. No axis, no numbers: any
+     figure here would be invented, which is the rule §10's Service 03 keeps. */
+  .svp-rhythm {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    align-items: flex-end;
+    gap: 4%;
+  }
+
+  .svp-tick {
+    display: block;
+    height: 55%;
+    flex: 1 1 0;
+    background-color: var(--color-line-strong);
+  }
+
+  .svp-tick--on {
+    height: 100%;
+    background-color: var(--color-accent);
+  }
+
+  /* ── The connected system ───────────────────────────────────────
+     Four editorial rows hanging off one spine, and the spine turning back on
+     itself at the foot. Not four cards. */
+
+  .svp-spine {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    width: 1px;
+    transform-origin: top center;
+    background-color: var(--color-line-strong);
+  }
+
+  .svp-pillar {
+    padding-left: 1.75rem;
+  }
+
+  .svp-pillar-inner {
+    padding-block: 2rem;
+  }
+
+  /* The node marking where a layer meets the structure. A square, not a dot —
+     the page's own hairline language rather than a bullet. */
+  .svp-node {
+    position: absolute;
+    left: -3px;
+    top: 2.5rem;
+    z-index: 2;
+    display: block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-canvas);
+    transition:
+      background-color 420ms var(--ease-out-expo),
+      border-color 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .svp-pillar:hover .svp-node {
+      border-color: var(--color-accent);
+      background-color: var(--color-accent);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .svp-pillar {
+      padding-left: 3rem;
+    }
+
+    .svp-pillar-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+      gap: 2.5rem;
+      padding-block: 2.5rem;
+    }
+
+    .svp-pillar-body {
+      padding-top: 0.35rem;
+    }
+  }
+
+  .svp-loop {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+  }
+
+  .svp-loop-svg {
+    display: block;
+    width: 120px;
+    height: 64px;
+    flex: none;
+  }
+
+  .svp-loop-label {
+    padding-top: 2.6rem;
+  }
+
+  /* ── The scope index ────────────────────────────────────────────
+     Typographic. No icons, no feature grid, no cards. */
+
+  .svp-scope-row {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding-block: 1.15rem;
+    text-align: left;
+  }
+
+  .svp-scope-slash {
+    flex: none;
+    font-size: 0.5625rem;
+  }
+
+  /* A rule that grows out of the number toward the name — the site's active
+     marker everywhere. No pill, no fill, no chip. */
+  .svp-scope-mark,
+  .svp-board-mark {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    display: block;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background-color: var(--color-accent);
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  .svp-scope-mark--on,
+  .svp-board-mark--on {
+    transform: scaleX(1);
+  }
+
+  /* ── The content system board ───────────────────────────────────
+     Fixed 7/5 aspect, which is exactly the `viewBox="0 0 140 100"` every state
+     draws into — so strokes stay uniform hairlines and no state has to be
+     re-checked at a second viewport.
+
+     NO FAKE SOCIAL UI. Nothing in here is a profile, a feed, a follower
+     count, a like, a comment or a metric. */
+
+  .svp-board {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 7 / 5;
+    overflow: hidden;
+  }
+
+  .svp-board-state {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 480ms var(--ease-out-expo);
+  }
+
+  .svp-board-state--on {
+    opacity: 1;
+  }
+
+  .svp-board-baseline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    height: 1px;
+    background-color: var(--color-line);
+  }
+
+  .svp-board-row {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-block: 1.15rem;
+    text-align: left;
+  }
+
+  .svp-state-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .svp-state-block {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.42rem;
+  }
+
+  .svp-state-panel {
+    border-left: 1px solid var(--color-line);
+    padding-left: 0.9rem;
+  }
+
+  .svp-state-frame {
+    position: absolute;
+    display: block;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 2px;
+    background-color: var(--color-surface);
+  }
+
+  .svp-state-frame--ghost {
+    border-style: dashed;
+    background-color: transparent;
+    opacity: 0.5;
+  }
+
+  .svp-state-photo {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+  }
+
+  /* Smaller than `.caps`, because these sit inside a composition rather than
+     in the page's own type scale. Declared after `.caps` on purpose — same
+     specificity, later wins. */
+  .svp-state-label {
+    position: absolute;
+    z-index: 3;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  .svp-frame-rows {
+    position: absolute;
+    inset: 14% 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .svp-frame-row {
+    display: block;
+    height: 2px;
+    background-color: var(--color-line-strong);
+  }
+
+  /* ── The creator field ──────────────────────────────────────────
+     A photographic field, not a five-up thumbnail row: small irregular
+     offsets, and picking one out steps the others back. */
+
+  .svp-creator {
+    position: relative;
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (min-width: 1024px) {
+    .svp-creator {
+      margin-top: var(--svp-offset, 0);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .svp-field:has(.svp-creator:hover) .svp-creator:not(:hover) {
+      opacity: 0.5;
+    }
+  }
+
+  /* ── 02 / INFLUENCER MARKETING — the creator constellation ──────
+     Everything on this page is built from the shared `.svp-*` vocabulary; what
+     is here is only what belongs to *this* service's compositions. Nothing in
+     this block is used by Service 01, and nothing of Service 01's is restyled.
+
+     The organising idea is convergence — a field of distinct voices resolving
+     onto one campaign — so the geometry is spatial and network-like where
+     Service 01's is a single identity fanning out. */
+
+  /* The hero field. Fixed aspect, matching the SVG's own viewBox exactly, so a
+     collision checked at one viewport is checked at all of them and no stroke
+     can shear (§10, §10a). */
+  .inf-constellation {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 100 / 92;
+  }
+
+  .inf-net {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* One teal segment travelling the network — the campaign moving through it,
+     and the only continuous motion in the composition. */
+  .inf-arc--signal {
+    animation: inf-signal 14s linear infinite;
+  }
+
+  @keyframes inf-signal {
+    from {
+      stroke-dashoffset: 67;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .inf-centre-ring {
+    fill: color-mix(in srgb, var(--color-canvas) 82%, transparent);
+  }
+
+  .inf-centre-label {
+    position: absolute;
+    z-index: 40;
+    transform: translate(-50%, 1.1rem);
+    font-size: 0.5rem;
+    letter-spacing: 0.24em;
+    white-space: nowrap;
+    color: var(--color-accent);
+  }
+
+  /* ── The match field ────────────────────────────────────────────
+     The route runs between formats and stages, never between people — see the
+     component for why that constraint exists. The creator surfaces are an
+     evenly-treated backdrop and no interaction ever changes their emphasis. */
+
+  .inf-field {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 100 / 62;
+    overflow: hidden;
+  }
+
+  .inf-route {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+  }
+
+  .inf-format-dot,
+  .inf-format-label {
+    transition:
+      fill 420ms var(--ease-out-expo),
+      color 420ms var(--ease-out-expo),
+      opacity 420ms var(--ease-out-expo),
+      r 420ms var(--ease-out-expo);
+  }
+
+  .inf-format-label {
+    position: absolute;
+    z-index: 3;
+    transform: translate(-50%, -1.6rem);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    opacity: 0.4;
+    color: var(--color-ink-muted);
+  }
+
+  .inf-format-label--on {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  .inf-endpoint {
+    position: absolute;
+    z-index: 3;
+    transform: translate(-50%, 0.9rem);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-accent);
+  }
+
+  /* A creator in the backdrop. Quieter than a proof frame on purpose: this is
+     the network as material, and the section is about the decision. */
+  .inf-node {
+    position: absolute;
+    z-index: 1;
+    display: block;
+  }
+
+  .inf-node-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid var(--color-line);
+    background-color: var(--color-canvas-raise);
+  }
+
+  .inf-node-photo {
+    filter: saturate(0.5);
+    opacity: 0.62;
+  }
+
+  .inf-intent {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-block: 1.15rem;
+    text-align: left;
+  }
+
+  .inf-intent-mark {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    display: block;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background-color: var(--color-accent);
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  .inf-intent-mark--on {
+    transform: scaleX(1);
+  }
+
+  /* ── The campaign system — strands braiding into one ────────────
+     Four voices enter, one campaign leaves. Deliberately not §04's rising
+     pipeline and not Service 01's vertical spine-and-loop. */
+
+  .inf-band {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1000 / 168;
+  }
+
+  .inf-band-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .inf-stage-node {
+    fill: var(--color-canvas);
+    stroke: var(--color-accent);
+    stroke-width: 1.2;
+  }
+
+  .inf-band-label {
+    position: absolute;
+    top: 0;
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  .inf-band-label--start {
+    left: 0;
+  }
+
+  .inf-band-label--end {
+    right: 0;
+    color: var(--color-accent);
+  }
+
+  /* The same reading rotated, where there is no width to braid in. */
+  .inf-rail {
+    position: relative;
+    border-left: 1px solid var(--color-line-strong);
+  }
+
+  .inf-rail-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-block: 1.75rem;
+  }
+
+  .inf-rail-node {
+    position: absolute;
+    left: -4px;
+    top: 2.1rem;
+    display: block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-canvas);
+  }
+
+  /* ── Creator proof — the casting wall ───────────────────────────
+     One continuous strip at a single height with uneven widths, abutted rather
+     than spaced. Deliberately not Service 01's five-up offset field. */
+
+  .inf-cast {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .inf-cast {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .inf-cast-member {
+      flex: var(--inf-grow, 1) 1 0;
+      min-width: 0;
+    }
+  }
+
+  .inf-cast-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Picking one out of the wall: it keeps full strength, the rest step back —
+       the casting gesture, and the same grammar §10's contact sheet uses. */
+    .inf-cast:has(.inf-cast-member:hover) .inf-cast-member:not(:hover) {
+      opacity: 0.5;
+    }
+
+    .inf-cast-member:hover .inf-cast-frame {
+      border-color: var(--color-accent);
+    }
+
+    .inf-cast-member:hover .svp-photo {
+      filter: saturate(1);
+    }
+  }
+
+  .inf-cast-member {
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  /* ── Why fit matters — paired terms ─────────────────────────────
+     Fit is a relationship between two things, so it is drawn as one. */
+
+  .inf-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.5rem;
+  }
+
+  .inf-pair-relation {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .inf-pair-term {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  .inf-pair-link {
+    position: relative;
+    display: block;
+    height: 1px;
+    width: clamp(2rem, 6vw, 5rem);
+    background-color: var(--color-line-strong);
+  }
+
+  .inf-pair-node {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: block;
+    width: 5px;
+    height: 5px;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-accent);
+  }
+
+  .inf-pair-note {
+    max-width: 52ch;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+  }
+
+  @media (min-width: 1024px) {
+    .inf-pair {
+      display: grid;
+      grid-template-columns: 2.5rem minmax(0, 22rem) minmax(0, 1fr);
+      align-items: center;
+      gap: 2rem;
+      padding-block: 1.35rem;
+    }
+  }
+
+  /* The mark under the active scope detail — a miniature of the hero. */
+  .inf-scope-mark {
+    display: block;
+    width: 100%;
+    max-width: 12rem;
+    aspect-ratio: 96 / 54;
+    opacity: 0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* The travelling signal stops and its arc stays fully drawn. Motion writes
+       `pathLength` as an inline stroke-dasharray, so the drawn state has to be
+       forced past it — the guard §10j records. */
+    .inf-arc--signal {
+      animation: none;
+      opacity: 0;
+    }
+
+    .inf-arc {
+      stroke-dasharray: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+
+    .inf-intent-mark,
+    .inf-format-dot,
+    .inf-format-label {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── 03 / PERFORMANCE MARKETING — the experiment engine ─────────
+     Everything on this page is built from the shared `.svp-*` vocabulary; what
+     is here is only what belongs to *this* service's compositions. Nothing in
+     this block is used by Service 01 or 02, and nothing of theirs is restyled.
+
+     The organising idea is a **controlled experiment**: rectangular creative
+     variants, directional routes that split and rejoin, an interface receiving
+     the traffic, and a return trace. Service 01's geometry radiates and
+     Service 02's converges — this one travels and comes back.
+
+     THE HARD RULE FOR EVERYTHING BELOW. **No number is ever rendered.** No
+     ROAS, CTR, CPA, spend, revenue or conversion count; no chart with an axis;
+     no gauge; and no red/green state — teal stays the only accent, so nothing
+     here can be mistaken for a performance indicator. Every surface is
+     structure. */
+
+  /* ── The abstract creative surface ──────────────────────────────
+     The page's smallest unit. A stack of structural rows and nothing else: no
+     copy, no imagery, no brand, no figure. See `CreativeSurface` for why.
+
+     Padding is a percentage of the surface's own width — the §10j fragment
+     lesson — but the rows themselves stay in absolute pixels, because that is
+     what stops nested interface chrome going microscopic on a phone (§10). */
+
+  .pfm-surface {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 5%;
+    overflow: hidden;
+    padding: 7%;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-color: color-mix(in srgb, var(--color-canvas-raise) 92%, transparent);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  /* Denser and tonal, so the variant wall reads as compositions rather than as
+     a second set of wireframes. Same vocabulary, different register. */
+  .pfm-surface--media {
+    padding: 6%;
+    gap: 4%;
+    border-color: var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .pfm-row-rule {
+    display: block;
+    height: 2px;
+    flex: none;
+    border-radius: 1px;
+    background-color: var(--color-line-strong);
+  }
+
+  .pfm-row-rule--strong {
+    height: 4px;
+    background-color: var(--color-ink-soft);
+  }
+
+  /* A media region. Not a photograph and not a placeholder for one — the
+     composition is what a structural test varies. */
+  .pfm-row-block {
+    display: block;
+    min-height: 0;
+    flex: 1 1 0;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-color: var(--color-surface);
+  }
+
+  .pfm-surface--media .pfm-row-block {
+    background-image: linear-gradient(
+      160deg,
+      var(--color-surface-hover) 0%,
+      var(--color-surface) 62%
+    );
+  }
+
+  /* The thing being clicked. Teal because it is the action, not because
+     anything was measured. */
+  .pfm-row-action {
+    display: block;
+    height: 7px;
+    flex: none;
+    border-radius: 1px;
+    background-color: var(--color-accent);
+    opacity: 0.85;
+  }
+
+  .pfm-row-action--outline {
+    background-color: transparent;
+    border: 1px solid var(--color-accent);
+    opacity: 0.7;
+  }
+
+  /* ── The hero field ─────────────────────────────────────────────
+     Fixed aspect, set inline because the narrow layout is a genuinely
+     different composition rather than the same one scaled. The SVG viewBox
+     matches the aspect exactly, so a collision checked at one viewport is
+     checked at all of them and no stroke can shear (§10, §10a). */
+
+  .pfm-field {
+    position: relative;
+    width: 100%;
+  }
+
+  .pfm-routes {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .pfm-place {
+    position: absolute;
+    z-index: 3;
+  }
+
+  .pfm-node {
+    fill: var(--color-canvas);
+    stroke: var(--color-accent);
+    stroke-width: 0.5;
+  }
+
+  .pfm-signal-ring {
+    fill: color-mix(in srgb, var(--color-canvas) 82%, transparent);
+  }
+
+  /* Traffic actually moving down the route the spend follows. One dash on a
+     path — the only continuous motion in the composition. */
+  .pfm-flow {
+    animation: pfm-flow 3.8s linear infinite;
+  }
+
+  @keyframes pfm-flow {
+    from {
+      stroke-dashoffset: 50;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .pfm-tag {
+    position: absolute;
+    z-index: 10;
+    transform: translate(0, 0.5rem);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  .pfm-anno {
+    position: absolute;
+    z-index: 10;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+    /* The halo trick §10n uses for format tags over photography, applied here
+       for the same reason: these labels name marks on a route, so some of them
+       sit where a stroke passes. A screenshot showed `PAID DISTRIBUTION` with
+       the teal curve running straight through the letterforms. The canvas-
+       coloured shadow lifts the type off whatever is behind it in either theme,
+       without adding a chip, a plate or any other chrome. */
+    text-shadow:
+      0 0 3px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 8px rgb(var(--t-canvas-rgb) / 0.8);
+  }
+
+  .pfm-anno--above {
+    transform: translate(-50%, -1.5rem);
+  }
+
+  .pfm-anno--below {
+    transform: translate(-50%, 0.9rem);
+  }
+
+  /* Left-aligned, for a label sitting against the box edge. */
+  .pfm-anno--corner {
+    transform: none;
+  }
+
+  .pfm-anno--accent {
+    color: var(--color-accent);
+  }
+
+  /* ── The creative test bench ────────────────────────────────────
+     `content-box` on purpose: `aspect-ratio` then sizes the surfaces area
+     alone and the tag strip is padding *below* it, so every slot's height
+     percentage resolves against one viewport-invariant box. Folding the tag
+     strip into the aspect would make the usable height — and therefore the
+     surface widths — depend on the viewport, which is how a composition starts
+     overflowing at one size and not another. */
+
+  .pfm-bench {
+    position: relative;
+    box-sizing: content-box;
+    width: 100%;
+    aspect-ratio: 100 / 46;
+    margin-top: 1.5rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .pfm-bench-state {
+    position: absolute;
+    inset: 0 0 2.75rem 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 480ms var(--ease-out-expo);
+  }
+
+  .pfm-bench-state--on {
+    opacity: 1;
+  }
+
+  .pfm-slot {
+    position: relative;
+    display: block;
+    flex: none;
+  }
+
+  .pfm-slot-surface {
+    height: 100%;
+    width: auto;
+  }
+
+  /* Shallower where the page is long and the bench is only 7 of 12 columns;
+     the phone keeps the taller box, because three surfaces across a 350px
+     screen is already the tightest this composition ever gets. */
+  @media (min-width: 1024px) {
+    .pfm-bench {
+      aspect-ratio: 100 / 40;
+    }
+  }
+
+  .pfm-slot-tag {
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .pfm-variable {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-block: 1.15rem;
+    text-align: left;
+  }
+
+  .pfm-variable-mark {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    display: block;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background-color: var(--color-accent);
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  .pfm-variable-mark--on {
+    transform: scaleX(1);
+  }
+
+  /* ── The performance path ───────────────────────────────────────
+     A flat, directional line with a return arc under it. Flat because a
+     performance loop repeats rather than climbs — which is what separates it
+     from §04's rising pipeline and Service 02's convergence. */
+
+  .pfm-band {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1000 / 150;
+  }
+
+  .pfm-band-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pfm-band-node {
+    fill: var(--color-canvas);
+    stroke: var(--color-accent);
+    stroke-width: 1.2;
+  }
+
+  /* Sits on the return arc and breaks it, so the loop is named where it is
+     drawn rather than floating above it. */
+  .pfm-band-loop {
+    position: absolute;
+    left: 50%;
+    top: 82.5%;
+    transform: translate(-50%, -50%);
+    padding-inline: 0.65rem;
+    background-color: var(--color-canvas);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  /* The same reading rotated, where there is no width to draw a return arc. */
+  .pfm-rail {
+    position: relative;
+    border-left: 1px solid var(--color-line-strong);
+  }
+
+  .pfm-rail-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-block: 1.75rem;
+  }
+
+  .pfm-rail-node {
+    position: absolute;
+    left: -4px;
+    top: 2.1rem;
+    display: block;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-canvas);
+  }
+
+  /* The loop is the last thing on the rail, so its node is the one that is
+     filled — the round closing rather than another stage beginning. */
+  .pfm-rail-item:last-child .pfm-rail-node {
+    background-color: var(--color-accent);
+  }
+
+  /* ── The variant sheet ──────────────────────────────────────────
+     One original and four versions of it on a shared baseline, sized by
+     *height* so each surface's width falls out of its own aspect — which is
+     what lets the format variant genuinely change footprint rather than being
+     letterboxed into a grid cell. Deliberately not Service 02's casting wall:
+     these are separated, one is dominant, and none of them is a photograph. */
+
+  .pfm-sheet {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 1.5rem 1rem;
+    margin-top: 1.75rem;
+  }
+
+  .pfm-variant {
+    position: relative;
+    transition:
+      opacity 420ms var(--ease-out-expo),
+      transform 420ms var(--ease-out-expo);
+  }
+
+  .pfm-variant-surface {
+    width: 100%;
+  }
+
+  .pfm-variant-note {
+    display: block;
+    margin-top: 0.6rem;
+    max-width: 26ch;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+  }
+
+  /* Phone: one dominant version across the full width, the four alternates
+     two-up beneath it. Not five equal thumbnails. */
+  .pfm-variant--primary {
+    grid-column: 1 / -1;
+  }
+
+  .pfm-variant--primary .pfm-variant-note {
+    max-width: 34ch;
+    font-size: 0.875rem;
+    color: var(--color-ink-soft);
+  }
+
+  .pfm-variant-caption {
+    display: block;
+    margin-top: 0.9rem;
+  }
+
+  /* From `md` the set becomes a real sheet: one row, one baseline, and the
+     captions hung below it so a caption that wraps cannot break the baseline.
+
+     **768, not 640, and it is measured.** Five surfaces sized by height plus
+     four gaps plus a caption under the narrowest of them need ~605px; at 640
+     the content column is 584 and the last caption ran 67px past the right
+     edge, taking the whole page with it. Below this the two-column grid is the
+     honest layout. */
+  @media (min-width: 768px) {
+    .pfm-sheet {
+      display: flex;
+      align-items: flex-end;
+      gap: 3%;
+      /* The caption strip. Sized for the worst case — a three-line note under
+         the narrowest surface at 768, where the column is tightest — because
+         an overhanging caption lands on the rule that closes the block. */
+      padding-bottom: 5.6rem;
+    }
+
+    .pfm-variant {
+      flex: none;
+      height: clamp(7.5rem, 12vw, 11.5rem);
+    }
+
+    .pfm-variant--primary {
+      height: clamp(11rem, 18vw, 16rem);
+    }
+
+    .pfm-variant-surface {
+      height: 100%;
+      width: auto;
+    }
+
+    .pfm-variant-caption {
+      position: absolute;
+      top: calc(100% + 0.85rem);
+      left: 0;
+      margin-top: 0;
+      /* Wider than its surface where the surface is narrow, so a two-word
+         label does not become four lines — but bounded, because the last
+         caption in the row has the page edge just past it. */
+      width: max(100%, 6.5rem);
+    }
+
+    .pfm-variant-note {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .pfm-variant--primary .pfm-variant-note {
+      font-size: 0.8125rem;
+    }
+  }
+
+  /* A rule that reaches toward the distribution edge as a version is picked
+     out — the same active grammar the scope index uses, at fragment scale. */
+  .pfm-variant-link {
+    display: block;
+    height: 1px;
+    width: 0.75rem;
+    flex: none;
+    background-color: var(--color-line-strong);
+    transition:
+      width 420ms var(--ease-out-expo),
+      background-color 300ms var(--ease-out-expo);
+  }
+
+  .pfm-variant-change {
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Picking one version out of the set: it comes forward, the rest step
+       back. The same `:has()` gesture §10d's contact sheet uses. */
+    .pfm-sheet:has(.pfm-variant:hover) .pfm-variant:not(:hover) {
+      opacity: 0.45;
+    }
+
+    .pfm-variant:hover {
+      transform: translateY(-3px);
+    }
+
+    .pfm-variant:hover .pfm-surface {
+      border-color: var(--color-accent);
+    }
+
+    .pfm-variant:hover .pfm-variant-link {
+      width: 1.75rem;
+      background-color: var(--color-accent);
+    }
+
+    .pfm-variant:hover .pfm-variant-change {
+      color: var(--color-ink);
+    }
+  }
+
+  /* ── The landing experience ─────────────────────────────────────
+     Two abstract interface surfaces, and the mobile one is genuinely re-laid
+     out rather than scaled — which is the section's own argument. **No browser
+     chrome, no phone bezel, no client, no brand, no checkout, no figure.** */
+
+  /* Below `md` the two screens simply stack: a 22%-wide phone mockup on a
+     350px column is the microscopic webpage the brief rules out. From `md`
+     they overlap inside a fixed-aspect box, so the composition is identical at
+     every width above it. Each slot carries its own label, which is what lets
+     one markup serve both layouts. */
+  .pfm-destination {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .pfm-screen-slot {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pfm-screen-slot--mobile {
+    width: 52%;
+    align-self: flex-end;
+  }
+
+  .pfm-screen {
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 3px;
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .pfm-screen--desktop {
+    aspect-ratio: 16 / 10;
+    gap: 3%;
+    padding: 3%;
+  }
+
+  .pfm-screen--mobile {
+    aspect-ratio: 9 / 16;
+    gap: 6%;
+    padding: 6%;
+  }
+
+  @media (min-width: 768px) {
+    .pfm-destination {
+      display: block;
+      aspect-ratio: 100 / 60;
+    }
+
+    .pfm-screen-slot {
+      position: absolute;
+    }
+
+    .pfm-screen-slot--desktop {
+      left: 0;
+      top: 0;
+      z-index: 1;
+      width: 82%;
+    }
+
+    /* Reversed, so the label sits *above* the phone rather than under the
+       bottom edge of the box it is pinned to. */
+    .pfm-screen-slot--mobile {
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      width: 22%;
+      flex-direction: column-reverse;
+      align-self: auto;
+    }
+  }
+
+  .pfm-screen-bar {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 3%;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .pfm-screen-mark {
+    display: block;
+    width: 16%;
+    height: 5px;
+    border-radius: 1px;
+    background-color: var(--color-ink-soft);
+  }
+
+  .pfm-screen-nav {
+    display: block;
+    width: 30%;
+    height: 3px;
+    border-radius: 1px;
+    background-color: var(--color-line-strong);
+  }
+
+  .pfm-screen-body {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    gap: 5%;
+  }
+
+  .pfm-screen-col {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7%;
+  }
+
+  .pfm-screen-media {
+    display: block;
+    min-width: 0;
+    flex: 1 1 0;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-image: linear-gradient(
+      160deg,
+      var(--color-surface-hover) 0%,
+      var(--color-surface) 62%
+    );
+  }
+
+  .pfm-screen-foot {
+    display: flex;
+    height: 15%;
+    flex: none;
+    gap: 3%;
+  }
+
+  .pfm-screen-stack {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 6%;
+  }
+
+  .pfm-screen-media--stacked {
+    flex: 2 1 0;
+  }
+
+  /* The action pinned to the foot — where a phone actually puts it. */
+  .pfm-screen-sticky {
+    display: block;
+    flex: none;
+    padding-top: 6%;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .pfm-screen-label {
+    display: block;
+    padding-block: 0.6rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  .pfm-screen-slot--mobile .pfm-screen-label {
+    text-align: right;
+  }
+
+  .pfm-requirement {
+    position: relative;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.05rem;
+    padding-left: 1.1rem;
+  }
+
+  .pfm-requirement:last-child {
+    border-bottom: 0;
+  }
+
+  /* The tick sitting on the rule above — where this requirement starts,
+     marked on the structure itself. The same mark `ServiceProcess` uses. */
+  .pfm-requirement-tick {
+    position: absolute;
+    left: 0;
+    top: 1.2rem;
+    display: block;
+    width: 0.6rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  /* ── What we optimise ───────────────────────────────────────────
+     Five thin tracks moving through three named states. **No axis, no scale,
+     no percentage, no gauge** — the teal segment reaches the third state
+     because that is where a round ends, not because anything was measured. */
+
+  .pfm-states-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: 0.9rem;
+  }
+
+  .pfm-states {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .pfm-states-spacer {
+    display: none;
+  }
+
+  .pfm-track {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    grid-template-areas:
+      "idx name"
+      ". line"
+      ". note";
+    gap: 0.9rem 0.5rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.5rem;
+  }
+
+  .pfm-track-index {
+    grid-area: idx;
+    padding-top: 0.4rem;
+    font-size: 0.5625rem;
+  }
+
+  .pfm-track-name {
+    grid-area: name;
+  }
+
+  .pfm-track-line {
+    position: relative;
+    display: block;
+    grid-area: line;
+    height: 1px;
+    width: 100%;
+    background-color: var(--color-line-strong);
+  }
+
+  .pfm-track-fill {
+    position: absolute;
+    inset: 0;
+    display: block;
+    transform-origin: left center;
+    background-color: var(--color-accent);
+    opacity: 0.6;
+  }
+
+  .pfm-track-mark {
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 5px;
+    height: 5px;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-canvas);
+  }
+
+  .pfm-track-mark[data-last="true"] {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+  }
+
+  .pfm-track-note {
+    grid-area: note;
+  }
+
+  @media (min-width: 1024px) {
+    /* The header shares the tracks' own grid, so each state sits over the mark
+       it names rather than near it. */
+    .pfm-states-row,
+    .pfm-track {
+      display: grid;
+      grid-template-columns:
+        2.5rem minmax(0, 11rem) minmax(0, 1fr) minmax(0, 21rem);
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .pfm-states-row {
+      align-items: end;
+    }
+
+    .pfm-states-spacer {
+      display: block;
+    }
+
+    .pfm-track {
+      grid-template-areas: "idx name line note";
+      padding-block: 1.05rem;
+    }
+
+    .pfm-track-index {
+      padding-top: 0;
+    }
+  }
+
+  /* The mark under the active scope detail — a miniature of the hero's route,
+     and nothing like Service 02's constellation. */
+  .pfm-scope-mark {
+    display: block;
+    width: 100%;
+    max-width: 12rem;
+    aspect-ratio: 96 / 54;
+    opacity: 0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* The travelling dash stops, and is removed rather than left parked on the
+       route. `!important` because Motion resolves its entry to an inline
+       `opacity: 1`, which a plain rule here cannot reach past — the same
+       inline-style problem §10j records, in the opposite direction. Without it
+       the dash survives as a static thicker stroke over the line it travels. */
+    .pfm-flow {
+      animation: none;
+      opacity: 0 !important;
+    }
+
+    /* Motion writes an animated `pathLength` as an inline stroke-dasharray, so
+       a draw that is stripped or never fires leaves the line permanently
+       invisible — the guard §10j records. `!important` is what reaches past
+       Motion's inline style. */
+    .pfm-route,
+    .pfm-path {
+      stroke-dasharray: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+
+    /* Same class of bug on a transform: the fill is held at `scaleX(0)` before
+       it animates, and a stripped transform animation would leave every track
+       looking empty. */
+    .pfm-track-fill {
+      transform: scaleX(1) !important;
+    }
+
+    .pfm-variable-mark,
+    .pfm-variant,
+    .pfm-variant-link {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── 05 / BRAND SHOOTS & CONTENT — the shoot board ──────────────
+     The most photographic page on the site and the least diagrammatic: there
+     is not one connected-system drawing on the route, and the only SVG is the
+     scope accessory. Where Services 01–03 argue with lines and nodes, this one
+     argues with photographs, crops and crop marks.
+
+     DELIBERATE REUSE. `.crt-zoom` / `--crt-zoom` / `--crt-origin` are §03's
+     crop mechanism and the mechanical partner of `resolveFrame`; `.svc-drift`
+     is §02's idle drift. Both are reused rather than reimplemented — what is
+     below is only what is genuinely new. */
+
+  /* ── The frame ──────────────────────────────────────────────────
+     A thin editorial mount, and nothing else. **No device shell, no browser
+     chrome, no phone bezel, no social-media surround, no play control** — on
+     this page the photograph is the content and the frame gets out of its way,
+     so it sits closer to full saturation than any other service page's. */
+
+  .sht-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 2px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    transition:
+      border-color 420ms var(--ease-out-expo),
+      box-shadow 420ms var(--ease-out-expo);
+  }
+
+  .sht-photo {
+    filter: saturate(0.98);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .sht-veil {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      0deg,
+      rgb(var(--t-canvas-rgb) / 0.26) 0%,
+      rgb(var(--t-canvas-rgb) / 0) 48%
+    );
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  /* Index and format. Never a client, a camera, a location or a date. The halo
+     is §10's `.svc-name` trick, so a tag stays legible over both the bright and
+     the dark regions of a photograph in either theme. */
+  .sht-tag {
+    position: absolute;
+    bottom: 5%;
+    left: 6%;
+    z-index: 2;
+    font-family: var(--font-sans);
+    font-size: 0.5rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-ink);
+    opacity: 0.72;
+    text-shadow:
+      0 1px 4px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 12px rgb(var(--t-canvas-rgb) / 0.75);
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sht-frame:hover {
+      border-color: var(--color-accent);
+    }
+
+    .sht-frame:hover .sht-photo {
+      filter: saturate(1);
+    }
+
+    .sht-frame:hover .sht-veil {
+      opacity: 0.35;
+    }
+
+    .sht-frame:hover .sht-tag {
+      opacity: 1;
+    }
+  }
+
+  /* ── Crop marks ─────────────────────────────────────────────────
+     The page's one recurring piece of chrome: two hairlines meeting at a
+     corner, never a full rectangle. It is the editorial mark for a working
+     surface, and it is what carries the production language from the hero
+     through to the scope accessory. */
+
+  .sht-crop,
+  .sht-select-tick,
+  .sht-bracket-tick {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+  }
+
+  .sht-crop {
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    border-color: var(--color-line-strong);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  .sht-crop--tl {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-crop--tr {
+    top: 0;
+    right: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+  .sht-crop--bl {
+    bottom: 0;
+    left: 0;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-crop--br {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  /* ── The hero board ─────────────────────────────────────────────
+     Fixed aspect, set inline because the narrow layout is a different
+     arrangement rather than the same one scaled. Every placement is a
+     percentage of it, so a collision checked at one viewport is checked at all
+     of them (§10, §10a). */
+
+  .sht-board {
+    position: relative;
+    width: 100%;
+  }
+
+  .sht-board-label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    transform: translate(1.15rem, 0.15rem);
+    font-size: 0.5rem;
+    letter-spacing: 0.22em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+  }
+
+  .sht-place {
+    position: absolute;
+  }
+
+  .sht-place-inner {
+    position: relative;
+    display: block;
+  }
+
+  /* The selection bracket — the contact-sheet gesture for "this one". Four
+     corner ticks sitting just outside the frame, no rectangle, no crosshair. */
+  .sht-select {
+    position: absolute;
+    inset: -5px;
+    z-index: 3;
+    display: block;
+    pointer-events: none;
+  }
+
+  .sht-select-tick {
+    width: 11px;
+    height: 11px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.85;
+  }
+
+  .sht-select-tick--tl {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-select-tick--tr {
+    top: 0;
+    right: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+  .sht-select-tick--bl {
+    bottom: 0;
+    left: 0;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-select-tick--br {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  /* The sheet rail: one hairline and a marker per frame. **Not a progress bar
+     and not a playhead** — it counts the set rather than moving through it. */
+  .sht-rail {
+    position: absolute;
+    left: 1%;
+    right: 1%;
+    z-index: 50;
+  }
+
+  .sht-rail-line {
+    display: block;
+    height: 1px;
+    width: 100%;
+    transform-origin: left center;
+    background-color: var(--color-line-strong);
+  }
+
+  .sht-rail-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.45rem;
+  }
+
+  .sht-rail-tick {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .sht-rail-mark {
+    display: block;
+    width: 1px;
+    height: 4px;
+    background-color: var(--color-line-strong);
+  }
+
+  .sht-rail-mark--on {
+    background-color: var(--color-accent);
+  }
+
+  .sht-rail-index {
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    color: var(--color-ink-muted);
+  }
+
+  /* ── The shot builder ───────────────────────────────────────────
+     A fixed-aspect stage with the five arrangements absolutely stacked inside
+     it, so switching a direction can never change the page's height. */
+
+  .sht-direction {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding-block: 1.1rem;
+    text-align: left;
+  }
+
+  .sht-direction-mark {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    display: block;
+    width: 100%;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background-color: var(--color-accent);
+    transition: transform 520ms var(--ease-out-expo);
+  }
+
+  .sht-direction-mark--on {
+    transform: scaleX(1);
+  }
+
+  .sht-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 100 / 76;
+    margin-top: 1.5rem;
+  }
+
+  .sht-stage-state {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .sht-stage-state--on {
+    opacity: 1;
+  }
+
+  .sht-stage-place {
+    position: absolute;
+    display: block;
+  }
+
+  /* The record. Hairline rows, label above value — deliberately **not** §10m's
+     four-column table, because two service pages should not resolve into the
+     same block of type. */
+  .sht-record-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 0.85rem;
+  }
+
+  .sht-list-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 0.7rem;
+  }
+
+  /* ── The direction desk ─────────────────────────────────────────
+     Typographic on purpose: it sits between a photographic hero and a
+     photographic interaction, and the page needs one place where the thinking
+     is the subject rather than the picture. */
+
+  .sht-axis {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    grid-template-areas:
+      "idx name"
+      ". note";
+    gap: 0.6rem 0.5rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.25rem;
+  }
+
+  .sht-axis-tick {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 0.55rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  .sht-axis-index {
+    grid-area: idx;
+    padding-top: 0.35rem;
+    font-size: 0.5625rem;
+  }
+
+  .sht-axis-name {
+    grid-area: name;
+  }
+
+  .sht-axis-note {
+    grid-area: note;
+    max-width: 46ch;
+  }
+
+  @media (min-width: 1024px) {
+    .sht-axis {
+      grid-template-columns: 2.25rem minmax(0, 9rem) minmax(0, 1fr);
+      grid-template-areas: "idx name note";
+      align-items: baseline;
+      gap: 1.75rem;
+      padding-block: 1.1rem;
+    }
+
+    .sht-axis-index {
+      padding-top: 0;
+    }
+  }
+
+  /* The framing study: thirds, and a crop bracket, over one real frame.
+     **Not a viewfinder** — no histogram, no exposure readout, no focus box, no
+     shutter or aperture value. §10 forbade a camera interface in the homepage
+     scene and the rule holds here. */
+  .sht-study {
+    position: relative;
+    margin-top: 1.5rem;
+  }
+
+  .sht-guides {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block;
+    pointer-events: none;
+  }
+
+  .sht-guide {
+    position: absolute;
+    display: block;
+    background-color: rgb(var(--t-canvas-rgb) / 0.55);
+  }
+
+  .sht-guide--v {
+    top: 0;
+    bottom: 0;
+    width: 1px;
+  }
+
+  .sht-guide--h {
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .sht-bracket,
+  .sht-source-mark {
+    position: absolute;
+    inset: 6%;
+    display: block;
+    pointer-events: none;
+  }
+
+  .sht-source-mark {
+    z-index: 3;
+    inset: -6px;
+  }
+
+  .sht-bracket-tick {
+    width: 12px;
+    height: 12px;
+    border-color: var(--color-accent);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.85;
+  }
+
+  .sht-bracket-tick--tl {
+    top: 0;
+    left: 0;
+    border-top-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-bracket-tick--tr {
+    top: 0;
+    right: 0;
+    border-top-width: 1px;
+    border-right-width: 1px;
+  }
+  .sht-bracket-tick--bl {
+    bottom: 0;
+    left: 0;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+  }
+  .sht-bracket-tick--br {
+    bottom: 0;
+    right: 0;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+  }
+
+  /* ── The format system ──────────────────────────────────────────
+     The same photograph in four shapes. **No platform chrome anywhere** — no
+     feed frame, no story bar, no phone shell, no handle, no count. */
+
+  .sht-source {
+    position: relative;
+    margin-top: 1.5rem;
+  }
+
+  .sht-formats {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem 1.25rem;
+    margin-top: 1.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .sht-formats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* **Frame above the text, never beside it.** Sizing the crops by height is
+     what makes the four shapes genuinely different footprints — but it also
+     means the 16:9 is nearly three times the width of the 9:16, and side by
+     side that left the widest one about 9px of column for its sentence. Above
+     is the only arrangement where a frame can vary that much and the type
+     underneath stays a constant measure. */
+  .sht-format {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  /* **The height is per column-count, not one clamp across both.** On a phone
+     the crops sit one per row, so they can be 160px tall and still leave the
+     widest of them (16:9) inside a 350px column — at the shared clamp they came
+     out 50px wide, which is a thumbnail, not a demonstration. From `sm` there
+     are two per row and the budget halves. */
+  .sht-format-frame {
+    height: 10rem;
+    width: auto;
+    max-width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .sht-format-frame {
+      height: clamp(5.5rem, 8vw, 7.25rem);
+    }
+  }
+
+  .sht-format-body {
+    display: block;
+    width: 100%;
+  }
+
+  .sht-output {
+    position: relative;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.5rem;
+  }
+
+  .sht-output-tick {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    width: 1px;
+    height: 1.1rem;
+    background-color: var(--color-accent);
+  }
+
+  @media (min-width: 1024px) {
+    .sht-output {
+      border-bottom: 0;
+      border-left: 1px solid var(--color-line);
+      padding-block: 0;
+      padding-top: 1.5rem;
+      padding-inline: 1.5rem 1rem;
+    }
+
+    .sht-output:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+
+    .sht-output-tick {
+      left: 1.5rem;
+    }
+
+    .sht-output:first-child .sht-output-tick {
+      left: 0;
+    }
+  }
+
+  /* ── The selects ────────────────────────────────────────────────
+     Heights *and* aspects both vary, and the frames are spaced — which is what
+     separates a sheet of selects from Service 01's grid of equal portraits and
+     Service 02's single-height casting strip. */
+
+  .sht-selects {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 1.5rem 1rem;
+    margin-top: 1.75rem;
+  }
+
+  /* **Three columns between `sm` and `lg`, and it is a height decision.** Row
+     height is set by the tallest frame in it, and a 9:16 select in a
+     two-column tablet cell is 637px on its own — two of those made the section
+     2,945px. Narrower cells bring the verticals back under control without
+     shrinking the photography anywhere it matters. */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .sht-selects {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Phone only: a stagger of full-width and half-width frames, so the
+     photography stays large. Never a three-column thumbnail gallery.
+
+     **Deliberately not carried into tablet width.** At 820 a full-width 4:5
+     select is 750px across and 937px tall — one photograph filling a screen and
+     a half. From `sm` the sheet is an even two columns instead, and the
+     irregularity comes back at `lg` where the spans do it properly. */
+  @media (max-width: 639px) {
+    .sht-select-item--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sht-selects {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1.4rem 1.5rem;
+    }
+
+    .sht-select-item {
+      margin-top: var(--sht-offset, 0);
+    }
+
+    .sht-select-item--wide {
+      grid-column: auto / span 4;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    /* Picking one out of the sheet: it holds, the rest step back. The same
+       `:has()` gesture §10d's contact sheet uses. */
+    .sht-selects:has(.sht-select-item:hover) .sht-select-item:not(:hover) {
+      opacity: 0.55;
+    }
+
+    .sht-select-item {
+      transition: opacity 420ms var(--ease-out-expo);
+    }
+  }
+
+  /* The mark under the active scope detail — a frame index, and nothing like
+     the other two accessories: it does not travel anywhere. */
+  .sht-scope-mark {
+    display: block;
+    width: 100%;
+    max-width: 12rem;
+    aspect-ratio: 96 / 54;
+    opacity: 0.9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Everything photographic stays: every frame, every crop label, every
+       shot record, the selection bracket and the rail. What stops is the idle
+       drift, the pointer parallax and the long entry travel — and the rail's
+       line is forced to its drawn state, because it is held at `scaleX(0)`
+       before it animates and a stripped transform would leave it invisible
+       (§17, the same guard §10m needed for its optimisation tracks). */
+    .sht-rail-line {
+      transform: scaleX(1) !important;
+    }
+
+    .sht-direction-mark,
+    .sht-select-item,
+    .sht-frame,
+    .sht-photo,
+    .sht-veil,
+    .sht-tag {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── Disclosure ─────────────────────────────────────────────────
+     Shared by the FAQ rows and the scope index's narrow rail.
+
+     `grid-template-rows: 0fr → 1fr` is the platform's own way to transition to
+     content height: no measurement, no JS animation, and nothing to go wrong
+     when a panel's content reflows. It also means the reduced-motion block at
+     the end of this file collapses it for free, like every other transition.
+
+     **The panel is always mounted**, because `aria-controls` has to name an
+     element that exists — unmounting it leaves every collapsed button pointing
+     at nothing. `inert` on the closed ones is what keeps them out of the
+     accessibility tree and the tab order. */
+
+  .svp-disclosure {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 420ms var(--ease-out-expo),
+      opacity 320ms var(--ease-out-expo);
+  }
+
+  .svp-disclosure[data-open="true"] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .svp-disclosure > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── FAQ ────────────────────────────────────────────────────────
+     Hairline rows and a hairline mark. No accordion component, no chevron
+     glyph, no icon dependency. */
+
+  .svp-faq-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.35rem;
+    text-align: left;
+  }
+
+  .svp-faq-mark {
+    position: relative;
+    display: block;
+    width: 12px;
+    height: 12px;
+    flex: none;
+  }
+
+  .svp-faq-mark__bar {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: block;
+    width: 12px;
+    height: 1px;
+    background-color: var(--color-ink-soft);
+    transition:
+      background-color 300ms var(--ease-out-expo),
+      transform 420ms var(--ease-out-expo);
+  }
+
+  .svp-faq-mark__bar--v {
+    transform: rotate(90deg);
+  }
+
+  .svp-faq-mark__bar--v[data-open="true"] {
+    transform: rotate(0deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .svp-faq-row:hover .svp-faq-mark__bar {
+      background-color: var(--color-accent);
+    }
+  }
+
+  /* ── Previous / next service ────────────────────────────────────
+     Renders nothing until a second route exists — see ServicePageNav. */
+
+  .svp-pagenav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding-block: 1.25rem;
+  }
+
+  .svp-pagenav--end {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .svp-pagenav-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--color-ink);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* The signal is the only continuous motion on the page; it stops, and the
+       loop it travels stays fully drawn. Every active marker still moves — a
+       selection has to be visible — but instantly rather than over half a
+       second. */
+    .svp-orbit-signal {
+      animation: none;
+    }
+
+    /* Motion implements an animated `pathLength` as inline
+       `stroke-dasharray` / `stroke-dashoffset`. A draw that is stripped or
+       never runs would therefore leave the line permanently invisible — the
+       same class of bug §10g records for the footer signal. Forcing the drawn
+       state here is what stops a reduced-motion visitor losing the structure
+       entirely, and `!important` is what reaches past Motion's inline style. */
+    .svp-orbit-base,
+    .svp-loop-svg path {
+      stroke-dasharray: none !important;
+      stroke-dashoffset: 0 !important;
+    }
+
+    .svp-scope-mark,
+    .svp-board-mark,
+    .svp-faq-mark__bar {
+      transition-duration: 120ms;
+    }
+  }
+
+  /* ── Selected Collaborations rail ───────────────────────────────
+     One continuous CSS-transform marquee. Two identical tracks sit side by
+     side and the pair translates by exactly half its width, so the loop has
+     no seam. Logos are alpha masks tinted with the theme's ink, which gives
+     muted silver on obsidian and graphite on parchment from one asset. */
+
+  .collab-rail {
+    --collab-logo-h: 22px;
+    --collab-gap: clamp(40px, 6vw, 100px);
+    position: relative;
+    overflow: hidden;
+    /* Edges dissolve into the canvas rather than sitting under a gradient box. */
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+  }
+
+  @media (min-width: 768px) {
+    .collab-rail {
+      --collab-logo-h: 26px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .collab-rail {
+      --collab-logo-h: 29px;
+    }
+  }
+
+  .collab-viewport {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: collab-scroll 46s linear infinite;
+  }
+
+  .collab-rail:hover .collab-viewport,
+  .collab-rail:focus-within .collab-viewport {
+    animation-play-state: paused;
+  }
+
+  .collab-track {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--collab-gap);
+    padding-inline-end: var(--collab-gap);
+  }
+
+  .collab-item {
+    position: relative;
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    padding-block: 12px;
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  /* Two stacked layers on identical bounds: the tinted silhouette at rest,
+     the brand's real artwork on hover. */
+  .collab-mark {
+    position: relative;
+    display: block;
+    transition: transform 300ms var(--ease-out-expo);
+  }
+
+  .collab-logo,
+  .collab-logo-color {
+    position: absolute;
+    inset: 0;
+    display: block;
+    transition: opacity 300ms var(--ease-out-expo);
+  }
+
+  .collab-logo {
+    background-color: currentColor;
+    color: var(--color-ink);
+    opacity: var(--collab-logo-rest);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+
+  .collab-logo-color {
+    opacity: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  /* Hover states are gated to real pointers so touch never leaves a logo
+     stuck in its coloured state after a tap. */
+  @media (hover: hover) and (pointer: fine) {
+    /* Hovering one logo lets the rest recede. */
+    .collab-rail:hover .collab-item {
+      opacity: 0.45;
+    }
+
+    .collab-rail .collab-item:hover {
+      opacity: 1;
+    }
+
+    .collab-item:hover .collab-logo {
+      opacity: 0;
+    }
+
+    .collab-item:hover .collab-logo-color {
+      opacity: 1;
+    }
+
+    .collab-item:hover .collab-mark {
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* Black artwork would disappear on obsidian, so the ivory-tinted mask
+       stays as the dark-theme treatment and simply reaches full strength. */
+    [data-theme="dark"] .collab-item[data-dark-mono]:hover .collab-logo {
+      opacity: 1;
+    }
+
+    [data-theme="dark"] .collab-item[data-dark-mono]:hover .collab-logo-color {
+      opacity: 0;
+    }
+  }
+
+  /* Keyboard parity, for when these become links. */
+  .collab-item:focus-within .collab-logo {
+    opacity: 0;
+  }
+
+  .collab-item:focus-within .collab-logo-color {
+    opacity: 1;
+  }
+
+  [data-theme="dark"] .collab-item[data-dark-mono]:focus-within .collab-logo {
+    opacity: 1;
+  }
+
+  [data-theme="dark"]
+    .collab-item[data-dark-mono]:focus-within
+    .collab-logo-color {
+    opacity: 0;
+  }
+
+  .collab-underline {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: var(--color-accent);
+    transition: transform 480ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .collab-item:hover .collab-underline {
+      transform: scaleX(1);
+    }
+  }
+
+  .collab-item:focus-within .collab-underline {
+    transform: scaleX(1);
+  }
+
+  @keyframes collab-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* No continuous motion: collapse to a single centred static rail. */
+  @media (prefers-reduced-motion: reduce) {
+    .collab-rail {
+      overflow: visible;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
+    .collab-viewport {
+      width: 100%;
+      animation: none;
+      will-change: auto;
+    }
+
+    .collab-track {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      row-gap: 26px;
+      padding-inline-end: 0;
+    }
+
+    /* Colour still reveals on hover; only the movement goes. */
+    .collab-mark,
+    .collab-item:hover .collab-mark {
+      transform: none;
+    }
+
+    /* Only the first, announced pass survives; the loop clone and every
+       repeat are removed from the layout entirely. */
+    .collab-track--clone,
+    .collab-item:not(.collab-item--primary) {
+      display: none;
+    }
+  }
+}
+
+@layer components {
+  /* ── The header services menu ───────────────────────────────────
+     `Services` stays a plain anchor to `02 / What We Do`; this is the small
+     directory of service pages that opens beside it. **Not a mega-menu** — a
+     22rem panel of hairline rows in the page's own palette, listing the
+     overview and then only the routes that actually exist. */
+
+  .hdr-disclosure {
+    display: grid;
+    width: 1.5rem;
+    height: 1.5rem;
+    place-items: center;
+    color: var(--color-ink-muted);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .hdr-disclosure:hover,
+  .hdr-disclosure[aria-expanded="true"] {
+    color: var(--color-accent);
+  }
+
+  .hdr-menu {
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: -1rem;
+    z-index: 60;
+    width: min(22rem, calc(100vw - 2 * var(--gutter)));
+    padding: 1.25rem 1.25rem 0.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    background-color: var(--color-canvas-raise);
+    box-shadow: 0 24px 60px rgb(var(--t-canvas-rgb) / 0.45);
+  }
+
+  .hdr-menu-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-block: 0.85rem;
+  }
+
+  .hdr-menu-title {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.25;
+    color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .hdr-menu-row:hover .hdr-menu-title {
+    color: var(--color-ink);
+  }
+
+  .hdr-menu-detail {
+    display: block;
+    margin-top: 0.4rem;
+    max-width: 34ch;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--color-ink-muted);
+  }
+
+  .hdr-menu-arrow {
+    flex: none;
+    margin-top: 0.15rem;
+    opacity: 0.45;
+    transition:
+      transform 420ms var(--ease-out-expo),
+      opacity 300ms var(--ease-out-expo);
+  }
+
+  .hdr-menu-row:hover .hdr-menu-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  /* The same directory inside the mobile sheet, as an expandable group. */
+  .hdr-sub-row {
+    display: flex;
+    min-height: 2.75rem;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: color-mix(in srgb, var(--color-ink) 72%, transparent);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .hdr-sub-row:hover {
+    color: var(--color-ink);
+  }
+
+  /* ── The route transition — the Mishram signal wipe ─────────────
+     One obsidian field crossing the viewport while a route resolves. It is
+     brand feedback, not a loading UI: no spinner, no percentage, no ring, no
+     dots, and no artificial delay behind it.
+
+     Deliberately built from the same three things the footer is — the dark
+     field, one teal hairline and the Mishram wordmark — so a page change reads
+     as part of the same object rather than as a system message.
+
+     Cheap by construction: the panel moves on `transform` only, and the signal
+     is a `scaleX`. No filters, no blur, no clip-path chain. */
+
+  .rt-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding: var(--gutter);
+    padding-bottom: clamp(3rem, 9vh, 6rem);
+    will-change: transform;
+
+    /* The footer's own field, so the two are literally the same colour. */
+    color-scheme: dark;
+    --color-ink: #f3efe7;
+    --color-ink-soft: #9a938a;
+    --color-ink-muted: #6b655d;
+    --color-accent: #35d6c0;
+    --grain-opacity: 0.04;
+    --grain-blend: overlay;
+
+    background-color: #0a0a0a;
+    color: var(--color-ink);
+  }
+
+  /* The signal crossing the field's leading edge. */
+  .rt-signal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 1px;
+    transform-origin: left center;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent) 0%,
+      color-mix(in srgb, var(--color-accent) 30%, transparent) 100%
+    );
+  }
+
+  /* Lower left, echoing the footer's signature rather than centring a poster. */
+  .rt-mark {
+    position: relative;
+    max-width: min(90vw, 34rem);
+  }
+
+  .rt-wordmark {
+    width: clamp(150px, 18vw, 220px);
+    opacity: 0.9;
+  }
+
+  .rt-label {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.032em;
+    line-height: 1.08;
+    color: var(--color-ink);
+  }
+}
+
+@layer utilities {
+  /* Film grain. Static, GPU-cheap, keeps flat black from banding. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    mix-blend-mode: var(--grain-blend);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* ── /about — the editorial archive ─────────────────────────────
+     The page's own vocabulary. It borrows the design system's tokens and the
+     roster's crop mechanism, and nothing else: no service-page primitive, no
+     homepage section's composition. */
+
+  .abt-board-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  /* A fixed-aspect board, so every fragment's percentage is viewport-invariant
+     — the `.svc-stage-box` lesson (§10) without the scroll machinery. */
+  .abt-board {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--abt-board-ar, 100 / 96);
+  }
+
+  .abt-frag {
+    position: absolute;
+    margin: 0;
+  }
+
+  .abt-frag-inner {
+    display: block;
+    position: relative;
+  }
+
+  /* The fragment's aspect comes from a custom property rather than an inline
+     `aspect-ratio`, so the narrow board can give a fragment a different shape.
+     An inline style would win over any media query. */
+  .abt-frag .abt-frame {
+    aspect-ratio: var(--abt-ar, 1);
+  }
+
+  .abt-frame {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .abt-photo {
+    /* Damped a step at rest, as every archival surface on this site is. */
+    filter: saturate(0.92);
+    transition: filter 520ms var(--ease-out-expo);
+  }
+
+  .abt-crop {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  /* The roster's own zoom mechanism (§10b), reused rather than re-guessed. */
+  .abt-crop img {
+    transform: scale(var(--crt-zoom, 1));
+    transform-origin: var(--crt-origin, 50% 50%);
+  }
+
+  .abt-frag-label {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--color-ink-muted);
+  }
+
+  /* Typographic and structural fragments — no photograph exists for either. */
+  .abt-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(0.7rem, 1.5vw, 1.1rem);
+    background-color: var(--color-canvas-raise);
+  }
+
+  .abt-card--wire {
+    gap: 0.4rem;
+    justify-content: flex-start;
+  }
+
+  .abt-wire-row {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--color-line-strong);
+    opacity: 0.55;
+  }
+
+  .abt-wire-row--strong {
+    opacity: 0.9;
+  }
+
+  .abt-wire-block {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-block: 0.15rem;
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+  }
+
+  .abt-wire-action {
+    display: block;
+    width: 34%;
+    height: 5px;
+    border-radius: 1px;
+    background-color: var(--color-accent);
+    opacity: 0.85;
+  }
+
+  /* Idle life: four out-of-phase drifts of 2–3px, the restraint §12 asks for.
+     On an inner wrapper so a CSS animation never fights a Motion transform on
+     the element above it (§10). */
+  .abt-drift--a { animation: abt-drift-a 17s ease-in-out infinite; }
+  .abt-drift--b { animation: abt-drift-b 21s ease-in-out infinite; }
+  .abt-drift--c { animation: abt-drift-c 19s ease-in-out infinite; }
+  .abt-drift--d { animation: abt-drift-d 23s ease-in-out infinite; }
+
+  @keyframes abt-drift-a {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -3px, 0); }
+  }
+  @keyframes abt-drift-b {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(2px, 2px, 0); }
+  }
+  @keyframes abt-drift-c {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-2px, -2px, 0); }
+  }
+  @keyframes abt-drift-d {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, 3px, 0); }
+  }
+
+  /* The narrow board is a DIFFERENT COMPOSITION, not a smaller one: two
+     fragments are removed outright and the three that remain are re-placed.
+     Five archival items at 390px would be five thumbnails, which is exactly
+     what an archive must not become. */
+  @media (max-width: 767px) {
+    .abt-board {
+      aspect-ratio: 100 / 118;
+    }
+
+    .abt-frag[data-narrow="drop"] {
+      display: none;
+    }
+
+    /* The record card carries two tracked-out caps lines. At the narrow width
+       the second wrapped and spilled past its frame — visible on the first
+       390px screenshot. Tighter tracking and a step down in size keep it in. */
+    .abt-card .caps {
+      font-size: 0.4375rem;
+      letter-spacing: 0.12em;
+    }
+
+    .abt-frag[data-narrow="keep"] {
+      left: var(--abt-nl);
+      top: var(--abt-nt);
+      width: var(--abt-nw);
+    }
+
+    /* The record card needs a taller frame here: the same two caps lines and a
+       display year buy far less room at 56% of a phone than at 30% of a
+       desktop column, and the second line was spilling past the frame. */
+    .abt-frag .abt-frame {
+      aspect-ratio: var(--abt-nar, var(--abt-ar, 1));
+    }
+  }
+
+  /* ── The creator stagger ──────────────────────────────────────── */
+
+  .abt-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
+    align-items: start;
+  }
+
+  @media (min-width: 640px) {
+    .abt-strip {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+  }
+
+  /* Alternating frame heights are what make this a stagger rather than a grid,
+     and they come from the aspect rather than a hand-tuned pixel. */
+  .abt-strip-item .abt-frame {
+    aspect-ratio: 3 / 4;
+  }
+
+  @media (min-width: 640px) {
+    .abt-strip-item[data-tall="false"] .abt-frame {
+      aspect-ratio: 3 / 4.6;
+    }
+
+    .abt-strip-item[data-tall="false"] {
+      margin-top: 2.25rem;
+    }
+  }
+
+  /* ── The convergence ──────────────────────────────────────────── */
+
+  .abt-converge {
+    width: 100%;
+    max-width: 15rem;
+  }
+
+  .abt-strand,
+  .abt-trunk {
+    fill: none;
+    stroke: var(--color-line-strong);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .abt-trunk {
+    stroke: var(--color-accent);
+  }
+
+  .abt-node {
+    fill: var(--color-accent);
+  }
+
+  /* ── The service index ────────────────────────────────────────── */
+
+  .abt-svc-row {
+    display: flex;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    padding-block: clamp(1.25rem, 2.2vw, 1.8rem);
+    min-height: 48px;
+  }
+
+  a.abt-svc-row .abt-arrow,
+  a.abt-svc-row {
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  /* ── The connections index ────────────────────────────────────── */
+
+  .abt-brand-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.15rem;
+    min-height: 48px;
+  }
+
+  .abt-brand-row:first-child {
+    border-top: 1px solid var(--color-line);
+  }
+
+  /* The alpha mask tinted with the theme's ink — §08's rest treatment, held
+     static. Never the brand's own colour artwork on this page. */
+  .abt-brand-mark {
+    display: block;
+    flex-shrink: 0;
+    /* The optical normalisation §08 documents: logos are laid out by height,
+       and a stacked lockup needs more of it than a wordmark to carry the same
+       weight. Without it Muuchstac rendered as an 18px glyph. */
+    height: calc(18px * var(--abt-mark-scale, 1));
+    width: calc(18px * var(--abt-mark-scale, 1) * var(--abt-mark-ar, 3));
+    max-width: 7rem;
+    background-color: currentColor;
+    color: var(--color-ink-muted);
+    opacity: var(--collab-logo-rest);
+    -webkit-mask-image: var(--abt-mark);
+    mask-image: var(--abt-mark);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center right;
+    mask-position: center right;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .abt-frag-inner:hover .abt-photo,
+    .abt-strip-item:hover .abt-photo {
+      filter: saturate(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The archive's idle drift is removed rather than frozen mid-offset, and
+     every fragment stays exactly where the composition places it. Nothing on
+     /about depends on motion to be understood — the drifts are 2–3px and the
+     entry is a fade Motion keeps under `reducedMotion="user"`. */
+  .abt-drift--a,
+  .abt-drift--b,
+  .abt-drift--c,
+  .abt-drift--d {
+    animation: none !important;
+    transform: none !important;
+  }
 }

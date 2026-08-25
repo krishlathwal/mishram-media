@@ -1,0 +1,4953 @@
+# Mishram Media — Project Brief
+
+> **IMPORTANT: This document is the source of truth for continuing Mishram Media in a fresh AI coding session. Read it before modifying the project. Existing approved sections should be extended, not redesigned.**
+
+Describes the project **as currently implemented**, not the original plan.
+
+---
+
+## 1. Business positioning
+
+Mishram Media is a creative growth and digital agency working with businesses, brands and
+established Indian content creators.
+
+Capabilities: social media management, personal brand building, creator growth, influencer
+marketing, influencer network, performance marketing, Meta ads, website design & development,
+digital growth strategy, brand shoots, content production.
+
+Positioning is **creative agency + growth partner + digital studio + creator network + technology
+capability** — never "small generic social-media agency". The site is itself the proof of the
+web-development capability, so its craft is part of the pitch.
+
+Tone: confident, restrained, intelligent, specific. No "next level", "one-stop solution", "unlock
+your potential", "10X". No unverified metrics, rankings or testimonials anywhere.
+
+---
+
+## 2. Approved homepage structure
+
+```
+Header (fixed)
+  ↓
+Hero — Growth Orbit                     [APPROVED / LOCKED]
+  ↓
+01 / Selected Collaborations            [APPROVED / LOCKED]
+  ↓
+02 / What We Do                         [Services 01-05 + closing statement — LOCKED]
+  ↓
+The Mishram Difference                  [interlude, unnumbered; built — see §10a]
+  ↓
+03 / Creators                           [scaled to 15-20+ — see §10b-scale]
+  ↓
+04 / Work Process                       [built; awaiting review]
+  ↓
+05 / Selected Work                      [foundation built; awaiting review]
+  ↓
+Client Notes                            [interlude, unnumbered; built —
+                                         CONTENT-BLOCKED, renders nothing. §10d-notes]
+  ↓
+06 / Recognition                        [ACTIVE — one verified award. §10e, §10p]
+  ↓
+07 / About                              [built; carries the 2021/2023/2025
+                                         history band. §10f, §10p]
+  ↓
+Project Inquiry                         [interlude, unnumbered; built — §10h.
+                                         The page's final conversion moment]
+  ↓
+Footer — THE FINAL SIGNAL               [rebuilt — full-bleed closing canvas,
+                                         no grid, oversized wordmark. §10g]
+
+Contact panel — global overlay          [APPROVED / LOCKED]
+```
+
+`src/app/page.tsx` is exactly this and nothing else — **no dev spacer any more**. The Footer is
+rendered from `app/layout.tsx`, after `</main>`, because it is the page's footer rather than a
+footer belonging to About.
+
+**The homepage shell is complete.** What remains is content (reels, creator handles, recognition)
+and routes that do not exist yet: case studies, work detail pages, and two of the five service
+pages. **Three service routes are built** — Services 01, 02 and 03, on the
+shared system described in §10j — and **each of them is linked from `02 / What We Do`** with
+`Explore service ↗`. Services 04 and 05 render no such action, because their routes do not exist; the
+link is derived from the registry's `built` flag, so a dead one is not possible.
+
+---
+
+## 3. Design system
+
+Semantic tokens only. Components never reference raw palette values. Tokens live on `<html>` as
+`--t-*` and are exposed to Tailwind as `--color-*` in `@theme` (`src/app/globals.css`).
+
+| Semantic token | Dark (default) | Light |
+| --- | --- | --- |
+| `canvas` | `#0a0a0a` | `#f3f0e8` |
+| `canvas-raise` | `#121212` | `#fbf9f3` |
+| `--t-canvas-rgb` | `10 10 10` | `243 240 232` |
+| `ink` | `#f3efe7` | `#11110f` |
+| `ink-soft` | `#9a938a` | `#65625b` |
+| `ink-muted` | `#6b655d` | `#7c7871` |
+| `line` | `rgba(243,239,231,0.10)` | `rgba(17,17,15,0.12)` |
+| `line-strong` | `rgba(243,239,231,0.22)` | `rgba(17,17,15,0.24)` |
+| `grid` | `rgba(243,239,231,0.055)` | `rgba(17,17,15,0.055)` |
+| `accent` | `#35d6c0` | `#0b8f80` |
+| `accent-soft` | `rgba(53,214,192,0.16)` | `rgba(11,143,128,0.14)` |
+| `surface` | `rgba(243,239,231,0.035)` | `rgba(17,17,15,0.035)` |
+| `surface-hover` | `rgba(243,239,231,0.07)` | `rgba(17,17,15,0.06)` |
+| `image-line` | `rgba(243,239,231,0.22)` | `rgba(17,17,15,0.16)` |
+| `overlay` | `rgba(10,10,10,0.70)` | `rgba(243,240,232,0.74)` |
+| `--t-image-shadow` | `none` | `0 20px 60px rgba(17,17,15,0.09)` |
+| `--collab-logo-rest` | `0.5` | `0.62` |
+| `--grain-opacity` / `--grain-blend` | `0.035` / `overlay` | `0.022` / `multiply` |
+
+Non-themed: `--color-ember: #ff7048` (tangerine micro-accent, currently unused — keep it rare).
+
+Layout: `--gutter: clamp(20px, 4.4vw, 76px)`, `--header-h: 66px` (78px ≥1024px).
+Easing: `--ease-out-expo: cubic-bezier(0.16,1,0.3,1)`, `--ease-out-quint: cubic-bezier(0.22,1,0.36,1)`.
+
+**Rules.** Teal carries interaction only — never a teal-and-orange theme. Use borders and hairlines
+rather than floating containers. Rounded corners stay small (2–3px on surfaces); no blanket 24px
+radius. A 12-column `bg-grid` hairline grid runs continuously through Hero → Collaborations →
+What We Do (hidden below `lg`).
+
+### Theme system
+
+- Boot script in `<head>` (`themeBootScript`, `ThemeProvider.tsx`) sets `data-theme` before first
+  paint — no flash. Stored choice wins, else `prefers-color-scheme`.
+- Persisted in `localStorage` under `mishram-theme`.
+- `ThemeProvider` reads the attribute via `useSyncExternalStore`; the toggle dispatches a
+  `mishram:themechange` event.
+- Swapping adds `.theme-transition` to `<html>` for 520ms, which enables a 440ms colour/border/
+  shadow cross-fade on `*` — deliberately excludes `transform` and `opacity` so Motion animations
+  are untouched.
+- Toggle is an optical half-disc SVG (no emoji), rotated by `[data-theme="light"] .theme-disc` in
+  CSS so it is correct on the first frame. Sits immediately before `Contact Us` in the header.
+
+---
+
+## 4. Typography
+
+Loaded via `next/font/google` in `src/app/layout.tsx`.
+
+| Role | Family | CSS var | Usage |
+| --- | --- | --- | --- |
+| Display | **Archivo** | `--font-display` | Headlines, service titles, indices |
+| Body / UI | **Instrument Sans** | `--font-sans` | Everything else |
+| Accent | **Instrument Serif** (400, incl. italic) | `--font-accent` | One italic word per headline |
+
+Headline treatment: tight tracking (`-0.032em` to `-0.038em`), line-height `0.94`–`1.03`, weight 500.
+The `.caps` utility (tracked-out uppercase, 10–11px, `0.26em`) carries eyebrows, indices and
+annotations.
+
+**Mask-reveal gotcha:** a line translated outside its `overflow-hidden` parent never intersects the
+viewport, so `whileInView` on the line itself will never fire. Put the trigger on the heading and
+propagate variants (see `WhatWeDo.tsx` Intro). Clip spans use `-mb-[0.1em]` with `pb-[0.12em]` on the
+inner span so tall lines aren't sheared.
+
+---
+
+## 5. Growth Orbit Hero — LOCKED
+
+Concept: media surfaces drifting on slow ellipses around an invisible axis right of centre —
+creators, content, technology and growth shown rather than named.
+
+**Files:** `Hero.tsx`, `hero/HeroScene.tsx`, `hero/Scene.tsx`, `hero/MediaCard3D.tsx`,
+`hero/layout.ts`, `hero/textures.ts`, `hero/HeroStatic.tsx`, `config/hero.ts`.
+
+### Locked decisions
+
+- Copy: eyebrow `CREATIVE × PERFORMANCE × TECHNOLOGY`; headline **"We turn attention / into
+  growth."** with `growth.` in Instrument Serif italic under a teal rule; lead "We build creators,
+  brands and digital experiences designed to scale."; CTAs `Book a 15-Min Call` +
+  `Contact Us`; note `15 MIN · NO OBLIGATION`; cue `SCROLL TO EXPLORE`; foot capabilities
+  `Social · Influencer · Performance · Brand Shoots · Web`.
+- Seven surfaces: 5 creator photographs + a procedural website-wireframe + an unlabelled ascending
+  performance curve (no numbers, ever).
+- Camera: desktop `z 6.1 / fov 38`; stacked `z 5.4 / fov 44`. Positions in `layout.ts` were composed
+  in projected screen space and divided back through `camera.z / (camera.z − surface.z)` — **do not
+  "simplify" them.**
+- Resting exposure tiers (rebalanced and approved): primary `zoya 1.0`; secondary `lovkesh 0.80`,
+  `mukul 0.74`, `vishnu 0.62`; tertiary `interface 0.45`, `growth 0.40`, `nikita 0.26`.
+  Stacked overrides: `mukul 0.82`, `vishnu 0.78`, `interface 0.48`.
+- Custom unlit `ShaderMaterial` per card (no lights). Dark: `col *= exposure`. Light:
+  `mix(canvas, col, mix(0.18, 1.0, exposure))` — depth recedes into paper, not into black — plus an
+  SDF contact shadow scaled by `uBase`, and a border floor `mix(0.14, 0.30, uBase)`.
+- Plane geometry is `INSET = 0.88` larger than the visible card so the light-mode shadow has room.
+- Two faint orbit rings (torus), graphite in light, ivory in dark.
+- Three DOM annotations (`Creator Growth`, `Performance`) projected each frame from world space via
+  a `placeAnnotation` callback — crisp text, never DOM inside the canvas.
+- Entry: staggered bottom-up wipe from depth. Scroll: the group recedes in Z and fades, handing off
+  to the section below.
+- **R3F clones the `uniforms` prop** — always animate `material.current.uniforms`, never the
+  memoised object. This has bitten us once.
+
+### Fallbacks & performance
+
+- Scene is `next/dynamic({ ssr: false })`; three.js never reaches the server bundle.
+- WebGL probed once via `useSyncExternalStore` (server snapshot `null` so fallback images aren't
+  requested by clients that will run the canvas). Failure inside the canvas → `SceneBoundary` →
+  `HeroStatic` (same composition as layered `next/image` frames, same exposure tiers).
+- Render loop pauses when the hero leaves the viewport or the tab is hidden.
+- ~9 draw calls, ~2k triangles, 7 textures, DPR capped `[1, 1.75]` (1.5 stacked). No post-processing.
+
+---
+
+## 6. Cursor & interactions — LOCKED
+
+There is **one** cursor system. Do not add another or install a cursor package.
+
+- **Hero pointer caption** (`HeroScene.tsx`): hovering a media surface shows a fixed, pointer-
+  following caption — creator name + `CREATOR NETWORK` — with a teal left border. Hovered surface
+  lifts in Z, restores saturation, takes a teal hairline; neighbours dim via `uDim`.
+- **Magnetic CTAs** (`ui/Magnetic.tsx`, `ui/CtaButton.tsx`): shell drifts toward the pointer, inner
+  layer follows at a lower rate. Primary CTA also does a directional fill from the entry edge, a
+  masked label swap, and a two-arrow relay. Mouse pointers only.
+- **Collaboration logos**: mono → genuine brand colour cross-fade, `translateY(-3px) scale(1.05)`.
+- **Service surfaces** (What We Do): hairline goes teal, photo returns to full saturation.
+
+All hover rules are gated behind `@media (hover: hover) and (pointer: fine)` so touch never leaves a
+sticky state.
+
+---
+
+## 7. Contact panel — LOCKED
+
+`contact/ContactProvider.tsx` (context: `open`, `openContact`, `closeContact`) +
+`contact/ContactPanel.tsx`. Any new section opens it with `useContact().openContact()` — never build
+new modal logic.
+
+Desktop: full-height sheet flush to the right edge (26–28rem). Mobile: bottom sheet, `max-h-[88svh]`,
+rounded top only. Four hairline-separated rows with index numbers, icon, travelling arrow and a teal
+left-edge marker:
+
+| # | Channel | Target |
+| --- | --- | --- |
+| 01 | WhatsApp | `https://wa.me/916399399333?text=…` |
+| 02 | Email | `mailto:mediamishram@gmail.com` |
+| 03 | Call | `tel:+916399399333` |
+| 04 | Book a Call | `BOOKING_URL`, else WhatsApp consultation message |
+
+All contact data is real and lives in `src/config/site.ts` — **never invent numbers, addresses or
+booking links.** Address: Rameshwarpur, Lalpur, US Nagar, Uttarakhand, India. Instagram:
+`instagram.com/mishram.media`.
+
+`NEXT_PUBLIC_BOOKING_URL` is unset, so every booking CTA falls back to WhatsApp with a free
+15-minute consultation message. Setting the env var switches all of them. No placeholder scheduling
+URL is committed.
+
+Accessibility via `hooks/useDialogBehaviour.ts`: scroll lock without layout shift, Escape, Tab focus
+trap, focus restoration, `role="dialog" aria-modal`.
+
+---
+
+## 8. Selected Collaborations — LOCKED
+
+`src/components/Collaborations.tsx`, `src/config/collaborations.ts`.
+
+One continuous CSS-transform marquee: two identical tracks side by side, the pair translated
+`-50%` over 46s linear — no seam, no carousel library. Edges dissolve via `mask-image`. Hover pauses
+the rail and lets neighbours drop to 45%. Section is ~290px tall on desktop.
+
+Each logo is two layers on identical bounds: an **alpha mask** tinted with `currentColor` (muted
+silver on obsidian, graphite on parchment) and the **genuine brand artwork** cross-faded in on hover.
+Both are generated from one source in one pass so they overlay exactly; antialiased edges are
+un-blended from white.
+
+### Approved brands (all five verified from the previous Mishram site's client rail)
+
+| Brand | Category | Note |
+| --- | --- | --- |
+| Mamaearth | `beauty-d2c` | |
+| Groww | `fintech` | |
+| Muuchstac | `grooming-d2c` | `darkKeepsMono` — artwork is black, so the ivory mask stays in dark mode; `scale: 1.8` for the stacked lockup |
+| CashKaro | `shopping` | |
+| Upstox | `fintech` | |
+
+Do not add or remove brands without explicit approval. Quality over quantity — 4–6 verified names
+beats a longer list.
+
+Reduced motion collapses the rail to a single static centred set of exactly five logos (the clone
+track and all repeats are removed from layout).
+
+---
+
+## 9. PERMANENT BRAND-SAFETY RULE
+
+**Betting, gambling, casino, real-money gaming and fantasy-betting companies are never rendered
+anywhere on this website.**
+
+Applies to every public surface — logo rails, portfolio, case studies, testimonials, awards context,
+creator work, hero content, future Work and service pages — and to *all rendered markup*, including
+marquee duplication, hidden/duplicated rows, loading and placeholder states, reduced-motion
+fallbacks and mobile variants.
+
+The previous Mishram site listed many such clients (plus several offshore CFD/binary-options
+brands, which are also excluded as gambling-adjacent). They are **absent from
+`collaborations.ts` entirely** rather than filtered at render time, so they cannot reach the DOM by
+accident. Do not reintroduce them from old data. Do not substitute fabricated companies — a shorter
+list is correct.
+
+---
+
+## 10. 02 / What We Do — COMPLETE & LOCKED (Services 01–05 + closing)
+
+`src/components/whatwedo/` — `WhatWeDo.tsx`, `ServiceCopy.tsx`, `ServiceProgress.tsx`,
+`ServiceStage.tsx`, `useServiceSlot.ts`, `scenes/parts.tsx` (shared Surface / Photo / Annotation),
+`scenes/SocialGrowthScene.tsx`, `scenes/InfluencerMarketingScene.tsx`,
+`scenes/PerformanceMarketingScene.tsx`, `scenes/WebDigitalScene.tsx`,
+`scenes/BrandShootsScene.tsx`, `WhatWeDoClosing.tsx`; data in `src/config/services.ts`.
+
+### Copy
+
+Section: `02 / WHAT WE DO`, headline **"Built to turn attention / into business."** (`business.` in
+serif italic), lead "Strategy, content, creators, performance and digital experiences — connected
+under one growth system."
+
+### Scroll architecture
+
+**Native scrolling only. No wheel interception, no snapping, no smooth-scroll library, no scroll
+position manipulation.** Scroll position drives transforms and nothing else.
+
+- Intro renders in normal flow.
+- A track sized `calc(100svh + count × SERVICE_SCROLL_VH vh)` (`SERVICE_SCROLL_VH = 130`) contains
+  one `position: sticky; top: 0; h-[100svh]` panel.
+- `useScroll({ target: track, offset: ["start start", "end end"] })` → 0…1 across the pinned span.
+- Per-service local progress comes from `useServiceSlot`, which also returns `presence` and a
+  tighter `copyPresence`. Slot i owns track positions [i, i+1) but starts entering at
+  `i − SLOT_LEAD` (0.16), so one scene transforms into the next instead of cross-fading; a finished
+  scene clears over `SLOT_TAIL` (0.08). Copy swaps cleanly at the boundary — two sets of readable
+  copy must never share the column.
+- Every built service stacks its copy and its stage on the shared columns; only the active slot gets
+  `pointer-events: auto`.
+- No React state updates while scrolling — scenes read MotionValues through `useTransform`.
+- The pinned path runs only where it fits — `DESKTOP_SEQUENCE_QUERY` in `hooks/useMediaQuery.ts`:
+  `(min-width: 1280px) and (min-height: 680px) and (min-aspect-ratio: 5 / 4)`. Anything else gets
+  `StackedSequence`: same components, MotionValue animated to `0.74` (settled) once in view.
+- The section carries `data-sequence="pinned" | "stacked"`, and the scene annotations plus Service
+  05's sheet rail are gated on that attribute in CSS (`.svc-anno`, `.svc-sheet-rail`) rather than on
+  a raw width — so the CSS and the sequence in use can never disagree.
+
+### Phases within a service's local progress
+
+`0–0.30` entry from depth · `0.30–0.75` settled · `0.78–1.0` exit prep (titles clip upward,
+surfaces recede in Z to 45%). Each exit state is the deliberate handoff into the next service.
+
+### Shared scene grammar — `scenes/parts.tsx`
+
+`Surface` (depth travel + pointer parallax + idle drift), `Photo`, `Annotation`. `SurfaceSpec`
+supports `travelX` / `travelY` (enter from an offset — used to carry an object across a service
+boundary, and to spread stacked variants apart), `enterScale` (start at the previous service's
+object size, so a surface reads as that object growing) and `exit: "advance"` (hold a surface
+forward and dominant instead of receding, so it can bridge into the next service).
+
+`aspectFrom` animates the aspect ratio across the entry window (`aspect-ratio` takes a
+bare number, so a MotionValue drives it directly) — use it when a surface continues a
+differently cropped object, so the crop *resolves* instead of the frame cutting. `Photo`
+takes an optional `sizes` when a frame is materially larger than the 24vw default.
+
+**Gotcha:** never combine `vectorEffect="non-scaling-stroke"` with an animated `pathLength` — dashes
+get measured in screen px while `pathLength` normalises user units, and long paths shatter into
+fragments. Service 03's drawn paths omit `vectorEffect`.
+
+### The composition box — `.svc-stage-box`
+
+Every scene positions its surfaces as a percentage of its parent, and surface *heights* come from a
+width percentage plus an aspect ratio. That only composes predictably if the parent's aspect is
+itself predictable — and the raw stage is not. `.svc-stage` is an `absolute inset-0` child, so it
+ignores the column's `py-6` and takes the full padding box: 865×758 (1.14) at 1440×900, 865×626
+(1.38) at 1440×768, 612×626 (0.98) at 1024×768, and a shallow full-width band on the stacked path.
+Scenes authored against one of those shapes spilled out of the others — Services 01, 02 and 05 by
+~130px, ~90px and ~84px at 1023px.
+
+So `.svc-stage` is now only a **measuring container** (`container-type: size`) and the scenes live in
+`.svc-stage-box`: the largest box of a fixed aspect that fits inside it, centred.
+
+```css
+--svc-box-w: min(100cqw, calc(100cqh * var(--svc-stage-ar)));   /* --svc-stage-ar: 1.141 */
+width:  var(--svc-box-w);
+height: calc(var(--svc-box-w) / var(--svc-stage-ar));
+```
+
+Container query units read the stage's own size, so this is pure CSS with no measurement in JS.
+`--svc-stage-ar` **is the aspect of the approved 1440×900 desktop stage**, so at that viewport the
+box *is* the stage and nothing moves. Everywhere else the same composition is letterboxed and scaled
+rather than distorted. Measured, the box is 1.141 at every one of 1440×900 / 1440×768 / 1366×768 /
+1280×800 / 1152×800 / 1024×768 / 820×1180 / 768×1024 / 430×932 / 390×844 / 375×812.
+
+Consequences worth knowing:
+
+- **Scene percentages are now viewport-invariant.** A collision or a spill checked at one size is
+  checked at all of them. Anything under ~6px of overhang is the bounding box of a tilted surface,
+  not layout.
+- `--svc-u` on the box is **one reference pixel** — `calc(var(--svc-box-w) / 865)`, exactly 1px at
+  the reference stage and proportional elsewhere. Scene chrome that must scale with the composition
+  uses it instead of a raw px value; `perspective` is its first consumer, so depth foreshortening
+  reads the same at every size. Fake-interface px chrome deliberately does *not* use it — leaving it
+  at absolute size is what stops nested UI going microscopic on a phone.
+- Labels sized in absolute px inside a scaling box will run out of room. `.svc-name` therefore wraps
+  instead of truncating — an ellipsis ate real creator names on tablet ("NIKITA KUMA…"). Desktop is
+  unchanged; every name still fits one line there.
+
+### Service 01 — Social & Personal Brand Growth
+
+Title "Social & Personal / Brand Growth"; description "We shape digital identities people recognise,
+remember and follow."; capabilities `Social Management / Content Strategy / Personal Branding /
+Creator Growth` in a 2×2 hairline grid; CTA `Discuss this project ↗` → existing contact panel.
+
+Scene: an editorial content ecosystem, not a mock profile. Nikita Kumawat portrait anchors it,
+Mukul Sharma (9:16) and Vishnu Priya (4:5) sit around it as format frames, a procedural planning
+surface sits furthest back, and one teal SVG trace draws through all four. Annotations `STRATEGY`,
+`PERSONAL BRAND`, `CONTENT`, `GROWTH` reveal in sequence (pinned sequence only — the stacked
+chapters have no margin to put them in). No fake
+social UI, no invented statistics.
+
+Depth is CSS `perspective: 1500px` with `translateZ` −260→0 scaled per surface, plus scale and
+opacity. Idle: four out-of-phase 13–19s drifts at 2–3px on an **inner** wrapper, so CSS animation
+never fights the Motion transform on the element above it. Pointer parallax up to 16px with slight
+`rotateY`/`rotateX`, spring-damped.
+
+### Progress indicator
+
+`01 ───────────● 05`. The accent line fills across the built-services span. All five are now
+built, so it spans the full width and every slot is an accent dot. **Nothing is clickable, and it
+stays that way.** When this was written no service page existed and dead navigation would have
+implied otherwise; three now do, and the reason has simply changed rather than gone away — three of
+five dots would navigate and two would not, which is worse than none doing. The route into a
+service page is `Explore service ↗` in the copy column, which only appears where there is somewhere
+to go (§10j).
+
+### Service 02 — Influencer Marketing
+
+Title "Influencer / Marketing"; description "We connect the right creators, brands and ideas to build
+campaigns people actually notice."; capabilities `Creator Network / Campaign Strategy /
+Collaborations / Distribution`.
+
+A living editorial creator network, not a node diagram. Four real creators (Nikita Kumawat, Zoya
+Jaan, Lovkesh Kataria, Mukul Sharma) at different depths around one abstract campaign board, with
+three partial arcs implying convergence — never every creator wired to every other. Nikita carries
+over from Service 01 as the continuity anchor (personal brand → creator network). Creator names are
+real, from config; no reach or follower figures.
+
+### Service 03 — Performance Marketing
+
+Title "Performance / Marketing"; description "Creative thinking backed by paid acquisition and
+conversion-focused execution."; capabilities `Meta Ads / Paid Acquisition / Creative Testing /
+Conversion`.
+
+Campaign creative (with A/B variants behind it) → paid distribution → landing experience →
+conversion, plus one abstract optimisation curve. The campaign board carries across from Service 02
+using `travelX`. A short dash marches the paid path (`.svc-flow`) to read as traffic.
+
+**Deliberately not a dashboard:** no ad-manager chrome, no ROAS/CTR/CPA/revenue, no axes, no numbers
+of any kind — any figure would be fabricated. The whole scene is Mishram's own abstract language, so
+no client campaign is implied and no excluded category can appear.
+
+The **landing experience** uses `exit: "advance"` — on exit it scales to 1.065 at full opacity while
+everything else recedes to 0.48. It is intentionally a general conversion-interface surface rather
+than a client site, because Service 04 expands this same object into a full digital experience.
+
+### Service 04 — Web & Digital Experiences
+
+Title "Web & Digital / Experiences"; description **"Websites, digital experiences and custom
+business systems designed to look exceptional, work intelligently and turn interest into action.";**
+capabilities **`Web Design / Web Development / Custom Software / CRM Systems`**.
+
+**The homepage now states the software capability explicitly.** Mishram builds custom software, CRM
+systems and internal business tools, not only marketing websites, and the old capability rail
+(`Development / Landing Pages / Conversion`) read as a web-agency list. Two decisions behind the
+current one:
+
+- **The category stays "Web & Digital Experiences."** Renaming it "Software Development" would be a
+  *narrower* promise than the work actually covers, and would break the Service 03 → 04 → 05
+  continuity, which runs conversion surface → full digital experience → photography.
+- **Landing pages and conversion experiences moved off the rail**, not out of the offering. Four
+  slots are all the copy column holds at 1280 (see §11), and the two that make the technical half
+  legible earn them. They return on the service page below.
+
+The longest new label is 15 characters against `Creative Production`'s 19, so the measured
+`auto-fit` rail in §11 is unaffected — two columns at 1440, 1280 and every phone down to 375px.
+
+**Future `/services/web-digital-experiences` page — required scope.** Recorded here so the homepage
+edit is not mistaken for the full offering. That page must cover: Web Design · Web Development ·
+Landing Pages · Conversion Experiences · Custom Software · CRM Systems · Internal Business Tools ·
+appropriate business automations and integrations. **Not built — do not build it as part of a
+homepage task.**
+
+Service 03's landing surface grows into a complete digital experience. A desktop interface anchors
+the centre (masthead, editorial column, teal CTA, media region, supporting row — deliberately **no
+browser chrome**), a genuinely re-laid-out mobile view overlaps it lower-right, and two small
+fragments (`GRID` / `TYPE`, and `DESIGN → BUILD → SHIP`) say Mishram designs systems rather than
+isolated screens.
+
+The desktop surface enters at the landing surface's exact size and position — `enterScale: 0.63`
+with `travelX: 255, travelY: 22` — so it reads as one object gaining capability. Interaction is
+simulated only: the inner column settles a few pixels and the CTA resolves late. **No iframe, no
+embedded site, no fake client name, no invented brand, no fabricated results.**
+
+**The scene itself is unchanged apart from one tertiary annotation.** `Interaction` → `Custom Build`,
+sitting under the Design → Build → Ship fragment — it names what that fragment actually shows and
+carries the software half of the service into the composition. The scene is **not** a software
+dashboard and must not become one: no admin chrome, no tables, no CRM UI.
+
+The **media region inside the desktop interface** is the Service 05 continuity object. On exit the
+interface chrome drops to ~10%, the mobile surface recedes and that image scales to 1.62 with its
+radius resolving to 0 — the last impression is photography taking over the screen, which is exactly
+where Brand Shoots should begin.
+
+### Service 05 — Brand Shoots & Content
+
+Title "Brand Shoots / & Content"; description "Visual content built to make brands look sharper,
+stronger and more memorable."; capabilities `Brand Shoots / Reels / Campaign Content /
+Creative Production`. The last service.
+
+One composed photographic system — a contact sheet laid across the page. **Not** a gallery, a
+masonry grid, a portfolio card grid or any kind of camera/DSLR interface. A large 4:5 primary frame
+sits right of centre, a 9:16 reel frame overlaps its left edge, a 4:5 portrait sits back and further
+left, and a 16:9 landscape detail tucks under the primary. A hairline sheet baseline runs beneath
+with five frame indices and one slow teal playhead; four annotations sit in the margins.
+
+**Continuity — the whole point of this scene.** Service 04's media region is measured, not guessed.
+At the end of Service 04's exit it is **44.3% of the stage wide, 42.7% tall, centred at
+(60.0%, 29.7%), cropped at 1.183**. Service 05's primary frame settles at a centre of (59%, 33%) —
+deliberately almost the same place — and enters with `enterScale: 1.1`, `travelX: 11`,
+`travelY: 19` and `aspectFrom: 1.183`, over `enter: [0.13, 0.27]`. That window is chosen so the
+frame is at its entry pose exactly when Service 04's image maxes out (track slot 4.0) and is fully
+opaque by the time Service 04's slot clears (slot 4.08) — no opacity dip, no double image.
+Measured through the crossfade the two slots hold the same photograph to within **~5px of width and
+~4px of centre**; the crop opening from 1.183 to 4:5 is the only visible movement. **If any of
+Service 04's exit values change, re-measure and re-tune these five numbers.**
+
+**Exit.** There is no Service 06, so the primary uses `exit: "advance"` while the supporting frames
+recede: the chapter resolves on one strong visual moment and hands off to the closing statement
+rather than preparing another scene.
+
+Photography is Mishram's own creator work (Zoya Jaan, Mukul Sharma, Vishnu Priya, Lovkesh Kataria).
+In-frame tags are format only — `STILL / 4:5`, `REEL / 9:16`, `PORTRAIT / 4:5`, `DETAIL / 16:9` —
+swapping to `VIEW` on hover through a masked label, which is the contextual cursor state without a
+second cursor system. Hovering a frame keeps it at full strength and drops its neighbours to 55%
+via `.svc-sheet:has(.svc-frame:hover)`. **No fabricated client, campaign, camera, lens or date.**
+Frame indices are the sheet's own numbering, not a claim about a shoot.
+
+Frames sit closer to full saturation at rest than Services 01–04 (`.svc-frame` raises `.svc-photo`
+to `saturate(0.95)` and halves the veil) because here the photography *is* the content. Tags use
+the `.svc-name` halo trick — ink plus a canvas-coloured text-shadow — so they stay legible over
+both bright and dark regions of a photograph in either theme.
+
+### Closing moment — end of Section 02
+
+`WhatWeDoClosing.tsx`, copy in `WHAT_WE_DO_CLOSING`. Renders after the sequence for both the
+pinned and the stacked path.
+
+Statement **"Different disciplines. / One growth system."** with `One` in Instrument Serif italic —
+the accent sits on the word that carries the line, not on a trailing "-word." as in the Hero and the
+section intro. Baseline `Strategy — Content — Creators — Performance — Technology` on hairline
+separators. Built from the section's own grid, hairlines and whitespace — **no coloured banner, no
+gradient, no big rounded card.**
+
+### THE CTA HERE WAS REMOVED — do not reinstate it
+
+This block used to end with a full conversion row: **"Have something in mind?"** plus
+`Book a 15-Min Call` + `Contact Us` and the `15 MIN · NO OBLIGATION` note. It is gone.
+
+Reviewing the whole page showed it was the **second** booking presentation after the Hero's, arriving
+a screen and a half in — before the visitor had seen a creator, the process, any work or the agency.
+The page was asking for the meeting at the point where it had only finished describing itself. It
+also left a mostly-empty viewport between §02 and the next chapter.
+
+`Book a 15-Min Call` now appears exactly three times, all of them earned: **Hero** (attention),
+**About's closing** (after the proof), and the **Footer** (as a direct line, not a pitch). Verified by
+walking the rendered page. The per-service `Discuss this project` action inside §02 stays — it is
+contextual, small, and opens the panel rather than asking for a calendar slot.
+
+Reveal order is now statement → baseline, and the block's bottom padding is short (`lg:pb-16`)
+because the Mishram Difference interlude's axis begins at its lower edge and carries the gap. **Do
+not restore a large empty runway here, and do not add a CTA block back.**
+
+### Adding a service
+
+1. Write the scene component in `whatwedo/scenes/`, composing `parts.tsx`.
+2. Register it in the `SCENES` map in `ServiceStage.tsx` (keyed by `ServiceId`).
+3. Flip `built: true` and fill `title`/`description`/`capabilities` in `config/services.ts`.
+
+Track height, progress fill and per-service slot mapping all derive from `built` — the scroll
+architecture needs no changes, and none were made for Service 05. `SERVICE_SCROLL_VH` stays at 130;
+the closing block lives in normal flow after the track, so it gets its own scroll space for free.
+
+All five services are built. Do not add a Service 06.
+
+---
+
+## 10a. The Mishram Difference — the interlude, built
+
+`src/components/difference/` — `Difference.tsx` (shell, intro, axis, local grid reduction),
+`ConnectedStack.tsx` (wide), `DifferenceRail.tsx` (narrow), `fragments.tsx` (the four micro-visuals);
+copy in `src/config/difference.ts`; `.dif-*` styles in `globals.css`.
+
+### Why it exists, and why it is not numbered
+
+§02 says what Mishram does. §03 starts proving it. Between the two, the page never answered the
+question a brand actually asks next: *why you, instead of an agency, two freelancers and a dev shop?*
+
+It is deliberately **an interlude, not a chapter**. It carries **no index**, so `03 / Creators` and
+everything after it keep their numbering and `ABOUT_CHAPTER` (§10f) is untouched. It also has **no
+top border** — a chapter rule would announce a new section when the whole point is that this
+continues §02's closing thought. The label is a short teal rule plus `THE MISHRAM DIFFERENCE`, which
+is what marks it as an interlude rather than a numbered slot.
+
+Not called "Why Choose Us" or "Our USP", which read as a template. Copy: headline **"Fewer handoffs. /
+More momentum."** with **`Fewer`** in Instrument Serif italic, and the lead "Creators, content,
+performance and technology working as one team, not four suppliers."
+
+**The accent is on the leading word on purpose.** §04 / Work Process already accents `momentum.` in
+its own headline; two italic "momentum."s on one page would read as an accident rather than a rhyme.
+"Fewer" is also the word carrying the actual claim. Precedent: §02's closing accents `One`.
+
+### The four differentiators — operating facts, not boasts
+
+| # | Layer | Meta rail |
+| --- | --- | --- |
+| 01 | Creator-Native | `Creator Network / Personal Brands / Collaborations` |
+| 02 | Creative + Performance | `Content / Campaigns / Paid Growth` |
+| 03 | We Build the Destination | `Web / Software / CRM / Digital Systems` |
+| 04 | One Connected Partner | `Strategy / Create / Launch / Scale` |
+
+Each is one sentence about how the work is organised. **No metrics, no rankings, no
+"award-winning"** — a differentiation section is exactly where that temptation appears, and §1
+forbids it. 03 is where the software and CRM positioning lands a second time, in the visitor's own
+language. 04's rail is the Work Process stage names on purpose: §04 is the answer, later.
+
+### The connected stack
+
+One vertical **Mishram axis** at `--dif-axis: 56%` of the section's content width. The four layers own
+everything to its left; the system owns everything to its right. **Not four cards, not four boxes** —
+hairline-separated rows of type, and the only thing that moves on activation is a line.
+
+- The axis spans the **entire section**, top border to bottom edge, and is drawn downward as the
+  section enters. That is the "line continuing out of §02" — it starts exactly where §02's closing
+  block ends, and it carries on past `Momentum` to where §03's own border picks it up. **Creators
+  needed no change at all.**
+- Each row's connector is a graphite hairline that always reaches the axis (the structure); the
+  **teal fill travels along it** on activation (the reaching).
+- The axis responds with **one teal segment, one row tall**, moved to the active row. Rows are a
+  fixed `--dif-row: 5.5rem`, which is what lets that segment be placed by `index × row height`
+  instead of measuring the DOM.
+- The right of the axis carries the active layer's sentence, its meta rail and one evidence
+  fragment; the axis resolves at the foot into a teal tail and `MOMENTUM`.
+
+**Geometry gotcha, and it bit once.** `--dif-axis` is a percentage, so every element using it must
+resolve it against the *same* box. The active segment first lived inside the 56%-wide rows column,
+where `left: 56%` landed at 56% of 56% — 31% of the section. It is now a direct child of
+`.dif-system`. Anything new that sits on the axis goes there too.
+
+**Trigger gotcha, an extension of §4's.** The axis is held at `scaleY(0)` before it draws, which makes
+it a **zero-height box pinned to the section's top edge** — a `whileInView` margin can put that box
+outside the root permanently, and the line then never appears. The trigger is on the full-height
+wrapper and variants propagate down. The same applies to the `Momentum` block at the foot of a 930px
+section: trigger the block, not its 74px line or its 11px label.
+
+### The evidence fragments
+
+One 16:10 footprint for all four, so switching a layer never moves the panel below them: a creator
+record (the section's **only** photograph — an already-fetched Zoya Jaan crop, damped to
+`saturate(0.82)` under a canvas veil so it stays inside the palette), a creative panel with its
+distribution path, an interface plus a record list, and four lines resolving into one continuous
+output. All `aria-hidden` — every one restates something the sentence beside it already says.
+
+SVG fragments **must not** use `preserveAspectRatio="none"`: it shears the curve and makes the stroke
+non-uniform, which is visible at this size. Both were fixed to a uniform aspect.
+
+### Local grid reduction — the first rhythm change on the page
+
+The page carried the same full 12-column grid through nearly every section. Here — and **only** here —
+`.dif-grid` masks the centre out and keeps the outer columns, so the stack reads as the structure in
+a clean field. `§11`'s global grid behaviour is untouched, and Creators' full grid resuming at the
+boundary is what makes the reduction read as deliberate. The Footer is to receive a larger visual
+break later.
+
+### Interaction
+
+`useHoverLock` (§10c): hover previews, click locks, leaving the group restores the lock, 90ms
+debounce, `aria-current` on the lock, never the preview. Rows are real `<button>`s — focus previews
+and Enter locks. **Nothing auto-switches**; the idle life is one slow teal signal down the axis, and
+it never changes which layer is active.
+
+Every layer's sentence is **mounted at all times** and only the active one is visible, so the drawing
+never carries the explanation alone — the same rule §04's detail panel follows.
+
+### Responsive and reduced motion
+
+| Shape | Behaviour |
+| --- | --- |
+| `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` | The spatial stack — the same query §04 uses |
+| Everything else | Vertical rail: axis on the left, layers hanging off it, active one expanding in place |
+
+The rail's teal fill is **not cumulative**, unlike §04's: these are four parallel facts, not five
+sequential stages, so filling "as far as" one of them would claim an order that does not exist. The
+layout switch is mirrored by `data-layout` on the section, which gates the split grid in CSS, so the
+two can never disagree.
+
+**No CTA in this section**, and that is deliberate — §02 carries `Discuss this project`, §03 opens
+with `Work with our creator network`, and About owns the closing ask. A `See how we work` link to
+§04 was considered and rejected: it would jump the visitor past the proof the page has just set up.
+
+Weight: no WebGL, no canvas, no scroll track, one small already-loaded photograph. Section is
+~930px at 1440, lighter than §02 by design.
+
+Verified at 1440×900, 1280×800, 1024×768, 768×1024, 430×932 and 390×844 in both themes and under
+reduced motion: no horizontal overflow, no console errors, all four layers selectable everywhere.
+Under reduced motion the axis, the output and all four names render fully, the signal is not
+rendered at all, and every layer's sentence is still in the DOM.
+
+---
+
+## 10b. 03 / Creators — rearchitected for scale, awaiting review
+
+`src/components/creators/` — `Creators.tsx` (shell, selection state, intro, CTA),
+`CreatorIndex.tsx`, `CreatorStage.tsx`, `CreatorMeta.tsx`, `useCreatorTransition.ts`; data in
+`src/config/creators.ts`; `.crt-*` styles in `globals.css`.
+
+**The concept, the composition and the interaction model are unchanged** — talent index left,
+cinematic creator right, hover previews / click locks. What was rebuilt is the part that only ever
+worked at five: the roster's shape and the media loading. See §10b-scale below.
+
+### Copy
+
+Section `03 / CREATORS`, headline **"Built with people / who move culture."** (`culture.` in serif
+italic), lead "Creators we've worked with, managed and built alongside." One restrained inline CTA,
+`Work with our creator network ↗`, opening the existing contact panel — this is a credibility
+chapter, not a conversion one.
+
+### Concept
+
+A **talent index**, not a card grid: an indexed roster on the left, one large creator on the right,
+and the visitor in control of which. Deliberately **not** another pinned sequence — §02 owns the
+long scroll. Creators is ~1160px at 1440 (a little over one viewport) of ordinary page scroll and
+gets its depth from interaction instead. **Nothing auto-advances.**
+
+### The roster — verified creators only
+
+The same five already in `config/hero.ts` with approved local portraits. The list is **closed to
+unverified names** — do not add one without approved local photography, and never substitute stock
+or a scraped influencer — but it is no longer *architecturally* closed: see §10b-scale.
+
+| # | Creator | Source asset |
+| --- | --- | --- |
+| 01 | Zoya Jaan | `zoya-jaan.webp` 620×1102 |
+| 02 | Nikita Kumawat | `nikita-kumawat.webp` 620×1102 |
+| 03 | Lovkesh Kataria | `lovkesh-kataria.webp` 720×720 |
+| 04 | Mukul Sharma | `mukul-sharma.webp` 620×1102 |
+| 05 | Vishnu Priya | `vishnu-priya.webp` 620×1102 |
+
+### FOLLOWER COUNTS — none are shown, after a real verification pass
+
+A bounded verification pass was run (August 2026, ~10 minutes, one search per creator). It found a
+candidate account for every creator and **confirmed none of them**, so `followers` and `instagram`
+remain empty for all five. Recorded here so nobody repeats the work:
+
+| Creator | Candidate handle(s) found | Figures seen | Why rejected |
+| --- | --- | --- | --- |
+| Zoya Jaan | `@zoya__jaan_`, `@zoya.__jaan.8` | 5.8M / 7M | Two accounts, two conflicting figures |
+| Nikita Kumawat | `@iamnikitakumawat`, `@imnikkskumawat`, `@im_nikita_kumawati`, + a fan page | 1M / 2.3M / 3.5M | Four accounts, three-way figure spread |
+| Lovkesh Kataria | `@corrupt_tuber` | 3.6M / 4M | Best of the five — distinctive handle, documented public figure — but every source spells the name **Lovekesh**, the figures disagree, and the local photo shows two people so it cannot be matched |
+| Mukul Sharma | `@iammukulsharma` | none found | Very common name; nothing distinguishes this account from any other |
+| Vishnu Priya | `@vishnupriyaaa` | ~360K | Common name, sources say "Vishnu Priyaaa"; no way to tie it to this portrait |
+
+Three blockers, and any one is disqualifying under §1:
+
+1. **The project holds no record linking a name to a handle.** For common names, picking one would
+   be assuming — exactly what must not happen for a named real person on a client's live site.
+2. **Every figure came from secondary aggregator/biography sites** and they disagree badly. One
+   creator was listed at 1M, 2.3M and 3.5M by three different sites.
+3. **Instagram sits behind an auth wall**, so the portraits in this repo could not be matched
+   against a profile photo.
+
+**To switch it on:** the client can confirm each handle in minutes — they have the relationships.
+Then read the figure off the live account and store a rounded label (`"2.4M"`, `"850K"` — never
+`"2,438,921"`). `CreatorMeta` renders `followers` and `instagram` automatically and already lays
+out correctly with both absent: no placeholder dash, no "coming soon". **No total network reach is
+calculated anywhere** and none should be until every component is verified.
+
+The contextual label stays `CREATOR NETWORK` for all five — the only relationship the project can
+evidence, and what the hero already says about the same portraits. No invented niches.
+
+### Composition
+
+Left `col-span-4`: the index, then the large active name + label, then the CTA. The list is the
+control and the big name below it is the title of what is on the stage, so hovering a row changes
+something directly under the cursor as well as the photograph beside it.
+
+Right `col-span-8`: a cascade, not a row — content frame small and furthest back at the left, reel
+bridging up through the middle, portrait dominating the right at the full height of the box, each
+overlapping the next.
+
+**Three formats from one source.** Each creator has exactly one approved photograph, so the
+supporting frames are genuine re-crops of it rather than invented campaign work. The portrait frame
+is **3:4** — the most forgiving common crop across the 9:16, 4:5 and 1:1 sources, so no creator
+needs a different frame shape that would make the composition jump on switch.
+
+### Per-creator art direction
+
+Geometry is shared and never changes: same portrait frame, same reel, same content frame, same
+cascade, so switching stays spatially stable. What is tuned per creator is what each frame is
+*pointed at* — `media.{portrait,reel,content}` in `config/creators.ts`, each carrying a
+`position` (object-position), an optional `zoom`, an optional `origin` and an optional `src`. Those reach the DOM as
+`--crt-zoom` / `--crt-origin` custom properties, read by `.crt-zoom` and `.crt-crop`; the idle
+portrait animation composes with the zoom instead of overriding it. There is also a restrained
+`nudge` for a couple of percent of vertical offset on a supporting frame.
+
+Every crop below was chosen by looking at the actual file, then checked in the rendered composition:
+
+| Creator | Source | Portrait | Reel | Content |
+| --- | --- | --- | --- | --- |
+| Zoya Jaan | 620×1102 | Face sits at ~15% of the source, so the frame takes all the headroom the 25% crop range allows | 1.8× from the top edge | Drops past the chin entirely to the dress — a partial-face crop would have clipped her |
+| Nikita Kumawat | 620×1102 | Pulled left to 44%: she stands off-centre and drifted toward the edge at 50% | 1.7× | Saree drape below the face |
+| Lovkesh Kataria | 720×720 | **1.25× lift** — the 1:1 source in a 3:4 frame crops width only, so the full ceiling came with it | 1.9× on the pair | 1.5× chest-up on the pair |
+| Mukul Sharma | 620×1102 | Inverted: already a close selfie, so the frame pulls *down* for headroom | 1.75×, origin high enough to keep the hair in frame | 1.6× onto the jacket graphic — at a gentler zoom all three frames were the same close-up at three sizes |
+| Vishnu Priya | 640×800 | The only 4:5 source: the 3:4 frame crops width, and the eyes land at their natural 22% untouched | 1.55× | Hard 1.7× — frame and source share an aspect, so nothing less becomes a genuine mid crop |
+
+Two decisions worth keeping:
+
+- **Lovkesh's frames all keep both figures.** The project does not record which figure is him, so
+  isolating one would assert something unverified. A close crop of his black sherwani was tried for
+  the content frame and rejected — it reads as a dead rectangle in dark mode, where the other
+  creators' content frames have patterned fabric to work with.
+- **Crops are shared between desktop and mobile.** The mobile portrait frame is also 3:4, so a crop
+  verified on one is correct on the other. All five were checked at 390 regardless; no responsive
+  focal overrides were needed.
+
+**Stage aspect is fixed at 1.45.** Frames are sized as a percentage of box *height*, so a fixed
+aspect is what keeps the portrait at the same share of the width. Without it a narrower column made
+the portrait swallow the cascade (at 768 it took 73% of the width instead of 52%).
+
+### Interaction model
+
+- **Hover previews, click locks.** Leaving the list restores whatever is locked, so sweeping the
+  cursor down five names never strands the visitor on a creator they did not choose.
+- Previews are debounced 90ms — that is what stops a fast diagonal cursor firing four transitions on
+  its way past.
+- Rows are real `<button>`s. **Focus previews and Enter locks**, so keyboard gets the same section.
+  `aria-current="true"` tracks the *lock*, never the hover preview.
+- Inactive frames are `aria-hidden`, so the accessibility tree only ever holds the active creator.
+- No cursor system was added. The portrait's hover state is the established one — teal hairline,
+  saturation to full, veil lifts, format tag brightens.
+
+### Transition, not remount
+
+The outgoing frame wipes upward while the incoming one resolves down out of the same edge, so one
+creator *becomes* the next. The name swaps through the same clip mask on the same beat. **No opacity
+cross-fade between two photographs.**
+
+Timing is **~460ms**, supporting frames trailing the portrait by 45ms each so the whole cascade
+resolves inside ~550ms. Verified under a 35ms-per-row cursor sweep with real mouse input: exactly
+one name visible at any moment, exactly one creator in the accessibility tree, no flashing, no stale
+name, and the lock survives a click made mid-sweep.
+
+**This used to work by mounting every creator's frames permanently.** That is what §10b-scale
+replaced — the frames now mount on demand and the switch is gated on the incoming photograph
+instead.
+
+### Idle life
+
+`.crt-crop` 26s scale on the active portrait, `.crt-drift--a/b` 16s/21s 2–3px on the supporting
+frames, and spring-damped pointer parallax (near ×7, far ×17). Nothing bounces, nothing orbits,
+nothing auto-changes.
+
+### Responsive
+
+| Width | Behaviour |
+| --- | --- |
+| ≥1024px | Two-column composition: index + meta + CTA left, cascade stage right |
+| <1024px | Stacked: portrait (capped `max-w-[26rem]`), name + label, roster, CTA |
+| ≤340px | The roster matrix collapses to one column whatever the roster length |
+
+The stacked path uses `COMPACT` geometry — the portrait takes the box and one reel frame tucks into
+its lower corner. Five tiny frames would defeat a section whose power comes from showing people at
+scale. Selection never scrolls the page.
+
+Verified at 1440×900 / 1280×800 / 1024×768 / 768×1024 / 430×932 / 390×844, both themes, and reduced
+motion, with no horizontal overflow and no console errors.
+
+### Reduced motion
+
+Switching becomes a short opacity transition; clip wipe, depth travel, parallax, crop and drift are
+all off. Every creator remains selectable and all information stays present. Verified: `crt-crop`
+and `crt-drift` both compute to `animation-name: none`, and the switch is a plain opacity swap with
+both frames unclipped.
+
+---
+
+## 10b-scale. Carrying 15–20+ creators
+
+The section above was built for the five creators the project has. The business has many more, so
+the architecture — not the design — was rebuilt to carry **15–20 now and 24–30 later**.
+**Stress tested at 24.** Two things had to change: the roster's shape, and what the stage mounts.
+
+### The roster is a matrix, not a list
+
+A single vertical column is right for five names and wrong for twenty — it grows taller than the
+photograph beside it and turns the directory into the subject. So the roster is a CSS grid with
+`grid-auto-flow: column` and an explicit row count, which flows **down column one, then down column
+two**, exactly as an index should read. DOM order stays `01…n`, so Tab order and reading order agree.
+
+**The column count is derived, not fixed.** One column below `MATRIX_MIN` (7), two at or above it —
+so today's five-creator roster renders *identically to the approved design*, matrix and all, and
+only splits when it would otherwise run tall. The desktop spans follow: `4/8` at one column (the
+approved composition, untouched), `5/7` at two, so the photograph never shrinks to make room for
+names that are not there.
+
+Deliberately rejected, and none of them should come back:
+
+- **No inner scroll area.** Nested scrolling hides creators, fights trackpads and is hostile to
+  keyboards.
+- **No pagination.** Fifteen to twenty names do not justify hiding half of them behind "next".
+- **No carousel.** The index is stronger and more editorial.
+- **No virtualisation library.** Thirty text rows are cheap; only the media needed work.
+
+Names **wrap to a second line** rather than truncating — a creator's name is the one thing here that
+must stay whole, so there is no ellipsis. Verified with deliberately long test names.
+
+### The roster header
+
+`SELECTED CREATORS / 05`, where the number is `ROSTER.length`. It becomes `12`, `18`, `24` on its
+own as creators are added. **It is not "network size"** — Mishram's real creator network is larger
+than what is configured here and that figure is not verified, so the page must never imply it. Index
+numbers come from array order via `creatorIndex(i)`, clean to `99`.
+
+### Media loading — the actual reason this needed rebuilding
+
+The stage used to mount **every** creator's three frames permanently. At five that was 15 image
+nodes and made switching instant. At twenty it would be 60, in a section most visitors scroll past.
+
+It now mounts only what a transition needs: the **shown** creator, the **outgoing** one for the
+length of one wipe, the **incoming** one loading behind its clip, the one being **warmed** under the
+cursor, and the creator the section opened on. **At most five, normally one or two — bounded by
+construction, not by roster length.**
+
+Switching still feels instant because of `useCreatorTransition`, not because everything is mounted:
+
+- `shownId` changes only once the incoming portrait has fired `onLoad`, so **a switch never reveals
+  an empty frame.** A 900ms cap stops a slow or failed image stranding the selection, and the worst
+  case is the frame's own `canvas-raise` background — never a white flash.
+- Pointer entry **warms** a creator immediately, ahead of the 90ms preview debounce, so the fetch and
+  the debounce overlap.
+- The **index rows deliberately do not wait** on any of this. They track the raw selection, so a
+  hover always feels acknowledged; the photograph and the large name are what land together.
+
+`CreatorMeta` mounts the same two creators for the same reason, rather than n absolutely-positioned
+name blocks behind the visible one.
+
+**Exactly one image on the page carries `priority`:** the creator the section opens on. Every later
+mount stays lazy, so the roster's length never changes what loads first.
+
+Measured at 24 configured creators, 1440×900:
+
+| | |
+| --- | --- |
+| Image nodes at rest | **3** (one creator × three frames) |
+| Distinct sources fetched on load | **1** |
+| Peak during a 35ms-per-row sweep of the whole roster | **6 nodes, 2 sources** |
+| Peak across the full interaction test | **9 nodes, 3 sources** |
+| Under the old architecture | 72 nodes, 24 sources |
+
+Untouched creators are never fetched. Verified with real mouse input, not dispatched events —
+React's `onPointerEnter` comes from delegated pointer events and does not fire for synthetic
+`pointerenter`, so any future test of this must drive `Input.dispatchMouseEvent`.
+
+### Optional per-frame sources
+
+`media.reel` and `media.content` may now carry their own `src`. Left unset — which is what all five
+current creators do — the frame is a genuine re-crop of the portrait source, because each of them
+has exactly one approved photograph. Set it when a creator genuinely has a separate reel still.
+
+Omit a frame block **entirely** and `resolveFrame` falls back to the portrait's crop with a default
+zoom (`reel 1.5`, `content 1.25`). That is a **layout default, not art direction** — it stops a new
+creator's three frames being the same crop at three sizes, which is the failure this section already
+learned about. Tune the real values once the composition has been looked at. An explicit frame with
+no `zoom` still means 1, which is what keeps the five tuned crops byte-exact.
+
+### Adding a creator
+
+One object in `config/creators.ts`, one image in `public/media/creators/`:
+
+```ts
+{
+  id: "creator-name",
+  name: "Creator Name",
+  alt: "Portrait of creator Creator Name from the Mishram Media network",
+  label: "Creator Network",
+  media: { portrait: { src: "/media/creators/creator-name.webp", position: "50% 20%" } },
+}
+```
+
+Index number, roster count, matrix column count, desktop spans, the selector, the stage, the
+metadata, the mount set and every responsive variant all derive from `ROSTER`. **No component
+changes and nothing hand-counted.** Add `published: false` to keep a record here without showing it
+— one boolean, not a CMS. `followers` / `instagram` stay absent until verified.
+
+### Stress test — and its removal
+
+Twenty-four development-only entries were injected temporarily (existing local images, names
+prefixed `DEV`, two deliberately over-long to test wrapping) to verify matrix geometry, section
+height, wrapping, selection, keyboard, media loading and the mobile layout. **They were removed
+afterwards and are not in production.** The config was restored from a byte-identical backup and
+`src/` was scanned for every marker used. Production contains exactly the five legitimate creators.
+
+Results at 24: section **1382px** at 1440×900 and 1905px at 768; all 24 rows visible with no inner
+scroll; rows **≥48px** everywhere; no horizontal overflow at 1440, 1024, 768, 390 or 320.
+Interaction verified end to end — hover 15 previews, click 15 locks, leaving the roster keeps 15,
+hovering 04 previews without changing the lock, leaving restores 15, focusing 19 previews it and
+Enter locks it.
+
+---
+
+## 10c. 04 / Work Process — built, awaiting review
+
+`src/components/process/` — `WorkProcess.tsx` (shell, selection state, intro, lead-in, CTA),
+`ProcessPipeline.tsx`, `ProcessDetail.tsx`, `ProcessRail.tsx`; data and geometry in
+`src/config/process.ts`; `.prc-*` styles in `globals.css`.
+
+### Copy
+
+Section `04 / WORK PROCESS`, headline **"From idea / to momentum."** (`momentum.` in serif italic),
+lead "A clear system for turning the right direction into work that moves." The headline is
+deliberately a step down in scale from the hero and §02 — this is a system diagram, not the page's
+opening statement. One small text action, `Start a project ↗`, opening the existing contact panel:
+§02 already owns the page's conversion moment, so this is not a second button block.
+
+### Concept — one connected system
+
+Five stages on **one rising line**: an idea entering, becoming structured, made, launched, amplified.
+The rise is the point — it encodes "idea to momentum" rather than being a ruler with ticks on it.
+Not five cards, not five icons, not a corporate timeline.
+
+**Deliberately light.** §02 owns the long pinned scroll and §03 owns the photography. This section is
+~1080px at 1440 (a little over one viewport), one SVG, and **no imagery at all**. Scroll drives the
+entrance only; after that everything comes from stage selection, so the visitor never has to scroll
+precisely to read a stage. Nothing auto-advances.
+
+### The pipeline
+
+One SVG line system with the stage labels as **HTML positioned over it**, so the typography stays
+crisp and themeable while the lines stay resolution-independent. Both read node coordinates from
+`PROCESS_STAGES` in the config — they must, or they drift apart.
+
+Layers, quietest first: a graphite base hairline drawn on entry; a teal progress stroke as far as the
+active stage; one small travelling signal dash; then the nodes. Labels sit **above** their node, so
+they step upward with the rise and get the staggered look for free without a separate offset — and
+without colliding with the line or the feedback loop below it.
+
+**Stroke gotcha (extends §10).** `vectorEffect="non-scaling-stroke"` and an animated `pathLength`
+cannot be combined — dashes get measured in screen px while `pathLength` normalises to user units,
+and the path shatters. So the base draw, the progress stroke and the signal omit `vectorEffect` and
+carry a viewBox-space stroke width; every static line keeps it and stays a true hairline at any size.
+
+### The five stages, and what each does to the line
+
+| # | Stage | The line's behaviour |
+| --- | --- | --- |
+| 01 | Discover | Scattered input dots and three converging traces feed into the first node — information becoming clarity |
+| 02 | Strategy | Two alternative routes appear as quiet dashes and grid intersections resolve — many possibilities becoming one chosen direction |
+| 03 | Create | Three abstract surfaces emit upward from the node (a 4:5 still, a teal 9:16 reel, an interface block) — strategy becoming tangible output |
+| 04 | Launch | Distribution traces fan out with a content fragment part-way along each — work reaching market. **No platform icons** |
+| 05 | Scale | The outgoing path thickens, ascending ticks appear (never a number), and the feedback loop resolves in teal |
+
+### The feedback loop
+
+A thin return trace runs from Scale back to Strategy, under the main line, annotated
+`LEARN → ITERATE`. It is present at **0.16 opacity at every stage** and resolves to a teal dash at
+Scale — so the process visibly does not end on the fifth node. This was the one element that needed
+restraining during the build: at full weight it swept across the whole section and dominated the
+diagram.
+
+### Interaction model
+
+Reuses the pattern proven in §03, now extracted into `hooks/useHoverLock.ts`: hover previews, click
+locks, leaving the group restores the lock, previews debounced 90ms. Creators still carries its own
+copy and is locked, so it was left alone; it can adopt the hook whenever that section is reopened.
+
+Stages are real `<button>`s. **Focus previews and Enter locks**, so keyboard gets the same section.
+`aria-current="true"` tracks the lock, never the preview; the rail adds `aria-expanded`. Every
+stage's description is real DOM text at all times — the drawing never carries the explanation alone.
+
+Verified under a 35ms-per-row cursor sweep across all five stages: exactly one detail block visible
+throughout, no flashing, no stale stage, and a click made mid-sweep survives continued hovering.
+
+### Responsive
+
+| Shape | Behaviour |
+| --- | --- |
+| `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` | Horizontal pipeline + detail panel |
+| Everything else | Vertical rail, stages expanding in place |
+
+The horizontal pipeline needs width for five labels stepping up a rising line; below that — or on a
+portrait tablet however wide — the vertical rail is the honest reading rather than a squeezed
+diagram. Shape first, device classification second, as §11 has it.
+
+The rail is the same progress reading rotated: a hairline with a teal segment filled as far as the
+active stage. **The fill is drawn per row, not as a percentage of the whole rail** — the active row
+expands, so any fraction of the total would land the teal tip in the wrong place. The active row's
+segment stops at a fixed offset from its top, which is where the node sits regardless of how much
+description is showing. The loop is stated as text there rather than drawn; there is no room for a
+return curve at that width and it is the meaning that matters.
+
+Verified at 1440×900, 1024×768, 768×1024 and 390×844 in both themes and under reduced motion: no
+horizontal overflow, no console errors, all five stages selectable everywhere.
+
+### Transition from Creators
+
+Photography hands off to abstraction without a hard reset: the 12-column grid continues, and a thin
+trace descends out of the section boundary and resolves into a teal tip — the line that becomes the
+pipeline. **It belongs entirely to Work Process**, so Creators needed no change at all.
+
+### Reduced motion
+
+The signal dash is removed and the input drift, path draw and long transitions are off. The complete
+process line, the active state, the per-stage graphics, the feedback loop and every description
+remain — and selection still works.
+
+---
+
+## 10d. 05 / Selected Work — foundation built, awaiting review
+
+`src/components/work/` — `SelectedWork.tsx` (shell, selection state, intro, lead-in, CTA),
+`WorkIndex.tsx`, `WorkStage.tsx` (+ `WorkMeta`), `WorkMedia.tsx`; data in
+`src/config/work.ts`; `.wrk-*` styles in `globals.css`.
+
+### Copy
+
+Section `05 / SELECTED WORK`, headline **"Work made / to be watched."** (`watched.` in serif
+italic), lead "Selected creator content, campaigns and visual work from across our network." One
+restrained text action, `Create with us ↗`, opening the existing contact panel.
+
+The section is named **Selected Work**, not Influencer Reels, so it can eventually carry reels,
+creator content, campaign pieces, brand shoots and digital work under one identity. The current
+visual focus is vertical creator content.
+
+### MEDIA AUDIT — no Mishram Media video file has been supplied to this repo
+
+> **CORRECTED 25 August 2026.** This section used to read *"there is no Mishram Media video
+> anywhere"* and *"no agency video of any kind"*. **That was too broad, and the distinction
+> matters.** It was accurate about the *filesystem* and wrong about the world: **genuine Mishram
+> Media social reels exist publicly.** The content-migration audit found **at least nine reels on
+> `@mishram.media`** (plus collaborations with `@filmybande` and `@deepankarmaxx`) — permalinks
+> are recorded in `docs/CONTENT-MIGRATION-AUDIT.md` §10. What does not exist is a **local,
+> production-owned source file**, and that is what this section is actually blocked on.
+>
+> **They must not be scraped, hotlinked or embedded** from Instagram — §14 requires local assets
+> and the platform's terms are a separate reason. **The unblock is the client exporting the source
+> MP4s from their own account**, which is a far narrower ask than "shoot some reels".
+
+A bounded search of the whole workspace (project repo, the extracted old Mishram Media site, and
+both archives, including `mishramsf.zip`) found **no agency video file of any kind**: no reels, no
+creator clips, no campaign footage, no vertical 9:16 content, no poster frames, no captions. The old
+site's `assets/img` holds only theme furniture — backgrounds, icons, logos — and no portfolio media.
+**Re-verified 25 August 2026**, including the 464-file `mishrammediaupdated (2).zip`, which holds
+zero `.mp4` / `.mov` / `.webm`.
+
+**One remote video was missed by that search and is rejected on its own merits.** The old
+`influencerMarketing.html:947` references
+`res.cloudinary.com/dlnux9dga/video/upload/…/INFLUENCERS_to4v66.mp4` (7.5 MB). It is a **1:1
+promotional explainer graphic** in the old brand's purple language — a title card, two captioned
+boxes and baked-in text — not a reel or campaign piece. It was also placed inside an `<img>` tag,
+so it never played on the old site either. **Not Selected Work material at any size.**
+
+The only videos anywhere belong to a **different entity**:
+
+| File | Size | Why not used |
+| --- | --- | --- |
+| `mishramngo/public/video/Mishram.ngo 2.mp4` | 96 MB | Foundation film, not agency creator work |
+| `mishramngo/public/video/ngovideo.mp4` | 44 MB | Same |
+| `mishramngo/public/video/womens day.mp4` | 88 MB | Same |
+
+That directory's `package.json` is `mishram-foundation-site` — a separate organisation from the
+agency. Rendering its footage as Mishram Media "Selected Work" would attribute another entity's
+content to the agency, and at 44–96MB each they are one to two orders of magnitude too large for a
+homepage regardless. **They are deliberately not referenced anywhere.** No optimisation or
+transcoding was attempted, because no asset here belongs in this section at any size.
+
+### Consequence: honest media typing
+
+Every item is `mediaType: "poster"` — a still, labelled as one, with the in-frame tag
+`STILL / 9:16`. **No play control is rendered for a poster**: a play affordance over a photograph
+would tell the visitor they are looking at a reel when they are not. A poster surface is a plain
+`div` — nothing to click, nothing to focus.
+
+Three entries, from the sources that are natively 9:16 (620×1102), so the primary frame crops
+nothing: Zoya Jaan (featured), Mukul Sharma, Nikita Kumawat. Vishnu Priya's 4:5 and Lovkesh
+Kataria's 1:1 would both crop hard into a vertical frame, so they are held back — an art-direction
+reason, not an oversight. **No invented project titles**: the title is the creator actually in the
+frame, the type is the factual category (`Creator Content`), and no `year` is claimed. No
+`COMING SOON` rows padding the index.
+
+**Featured state:** Zoya Jaan — strongest subject separation, and the only one whose supporting 4:5
+crop reads as a genuinely different frame from the primary.
+
+### Playback — built, and smoke-tested
+
+The video path in `WorkMedia` is complete even though nothing uses it yet. Dropping a real reel in
+means setting `mediaType: "video"` and adding `src`; nothing else changes.
+
+- Muted, inline, looped, `preload="metadata"` with the poster covering the first frame. **There is
+  no unmuted code path in the component at all** — audio can never play.
+- Hover starts playback. Leaving pauses and holds the frame rather than snapping back to the poster.
+- Clicking is explicit intent: it toggles, and while the visitor has chosen play, leaving the surface
+  no longer pauses it.
+- Leaving the viewport pauses and clears that intent, so nothing decodes offscreen and returning
+  never resumes mid-reel. Driven by one `useInView` on the section, passed down as
+  `sectionInView`.
+- **Only the primary frame of the active item ever mounts a `<video>`.** The supporting fragment is
+  always a still, and inactive items are posters — so however long the index grows, exactly one
+  decoder can exist.
+- Under reduced motion, hover starts nothing; click still does. User-initiated playback stays
+  available, per §17.
+- The whole media surface *is* the play/pause button, so pointer and keyboard share one control,
+  with `aria-label` and `aria-pressed`. A thin progress hairline sits at the bottom, teal for the
+  played portion. No native controls, no seek bar, no fullscreen viewer, no social UI.
+- `playing` is driven by the element's own `play`/`pause`/`error`/`emptied` events, never set
+  synchronously in an effect. The DOM is the single source of truth.
+
+Verified by temporarily pointing one item at a video source and stepping the lifecycle: mounts
+paused and muted → click plays and the control flips to Pause → switching item unmounts the video
+entirely (one decoder) → scrolling offscreen pauses and resets the control. Two real bugs were found
+this way and fixed: the supporting fragment was mounting a second video, and a failed load left the
+control label stale. **The path has not yet run against real decodable media** — worth one smoke test
+when the first genuine reel lands.
+
+### Composition
+
+Wide layout, `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)`: index `col-span-3` with the CTA
+beneath, then a `col-span-9` stage holding the dominant 9:16 surface at the left, a 4:5 supporting
+fragment hung off its lower-right for depth, and the metadata top-aligned beside it. The reel is
+sized by **height** (`clamp(24rem, 56vh, 36rem)`, ≈284×504 at 1440×900), so it stays a believable
+piece of work rather than stretching with the column. **No device mockup** — a thin editorial frame
+is the entire chrome.
+
+The supporting fragment lives *inside* the primary's box, because the primary's width comes from its
+own aspect against the stage height: percentages on the stage column would resolve against something
+far wider. `WorkMeta` owns its own `relative`, so positioning is applied on a wrapper rather than
+passed in — the two collided unpredictably when passed as a class.
+
+Below that threshold the reel gets the width and everything stacks: reel (capped `19rem`, `17rem`
+from `sm`) then metadata, index and CTA beside it at `sm`+ or under it on a phone. Not full-bleed —
+that would cost the section its composure.
+
+Media sits at **full saturation** in both themes with a lighter veil than §03's, because here the
+work is the proof. Idle life is a 30s crop on the featured surface and a 2px drift on the fragment,
+both suppressed via `data-playing` once a reel runs — from then on the content is the motion.
+
+### Interaction and transition
+
+Selection reuses `useHoverLock` (§10c): hover previews, click locks, leaving restores the lock,
+90ms debounce, `aria-current` on the lock. Switching a work item is a clip wipe, not a source swap —
+all posters are mounted and switched, the same technique §03 uses.
+
+The handoff from §04 runs process → output: §04's line descends past the section boundary and widens
+into a short teal baseline, the line becoming the baseline the media sits on. It belongs entirely to
+this section, so **§04 needed no change**.
+
+### Remaining verified candidates
+
+Vishnu Priya (4:5) and Lovkesh Kataria (1:1) are approved assets but wrong-shaped for a 9:16 frame.
+They become usable if the client supplies vertical crops. **The real unblock is genuine reel video** —
+until then this section shows stills honestly labelled as stills.
+
+Verified at 1440×900, 1024×768, 768×1024 and 390×844 in both themes and under reduced motion: no
+horizontal overflow, no console errors, all three items selectable everywhere.
+
+---
+
+## 10d-notes. Client Notes — built, CONTENT-BLOCKED
+
+`src/components/testimonials/` — `ClientNotes.tsx` (self-suppressing shell, intro, lead-in, local
+grid), `QuoteIndex.tsx`, `QuoteStage.tsx`; data and the full audit in `src/config/testimonials.ts`;
+`.tst-*` styles in `globals.css`.
+
+### The section currently renders nothing, on purpose
+
+`TESTIMONIALS` is empty, so `ClientNotes` returns `null` and **the homepage has no Client Notes
+section.** `<ClientNotes />` already sits in `page.tsx` between §05 and Recognition: adding one real
+entry makes it appear, composed, with no other change. It is **unnumbered**, like the Mishram
+Difference, so Recognition keeps its `06` and `ABOUT_CHAPTER` (§10f) is untouched.
+
+A visible placeholder was rejected for the same reason as §06's. An empty "Client Notes" heading, or
+a `COMING SOON` row, implies Mishram has testimonials it is choosing not to show — which is a claim,
+and an unverified one.
+
+### AUDIT (August 2026) — every testimonial in the old site fails verification
+
+**RE-VERIFIED FROM SOURCE on 25 August 2026 and the verdict is now final, not provisional.** The
+25 August content-migration audit re-opened all three sources rather than inheriting this
+conclusion, confirmed every failure below, and **found a further independent disqualifier** (see
+"the seventh failure"). **These eight candidates are conclusively rejected. Do not re-audit them,
+and do not treat them as material merely awaiting review.** Activation requires *new* first-party
+material — genuine client messages, an approved quote, or another first-party source — never a
+reappraisal of what is here.
+
+Three sources exist, and all three are disqualified. Recorded here so nobody repeats the work.
+
+| Source | Contents | Verdict |
+| --- | --- | --- |
+| Live service pages — `webDevelopment` / `metaAds` / `socialMediaManagement` / `brandshoot` / `influencerMarketing` `.html` | 5 slides: Rahul Mehta, Ayesha Khan, Kunal Verma, Sneha Roy, Vikram Singh | **Excluded** — placeholder avatars, placeholder roles |
+| Live `index.html` + `about.html`, mirrored in the site's own `llms-full.txt` | 3 slides: Rahul Mehta, Kunal Verma, Vishnu Priya | **Excluded** — one quote used twice, verbatim |
+| `_backup_pre_seo/testimonials.html` | A dedicated testimonials page, already deleted from the live site | **Excluded** — unmodified template demo content |
+
+The specific failures:
+
+1. **The portraits are a placeholder service.** Every avatar on the service pages is
+   `https://i.pravatar.cc/40?img=5|7|8` — pravatar.cc generates random stock faces, and `img=8` is
+   used for **three different named people** (Kunal Verma, Sneha Roy, Vikram Singh). This is the
+   "some avatars appeared stock" note from earlier audits, confirmed: **no portrait in any source
+   can be connected to the person it is attached to.**
+2. **One quote is attributed to two people, word for word.** "Vishnu Priya" is given Rahul Mehta's
+   quote verbatim on `index.html`, `about.html` and in `llms-full.txt`. At least one attribution is
+   false and there is no way to tell which — which puts the rest of that set in doubt too.
+3. **The roles are placeholders.** Three different people share "Head of Product" with no employer;
+   two more are "Social Media Influencer" with no handle. No company, link, organisation or date
+   appears anywhere in any source.
+4. **Source C praises a different agency.** Its quotes are about **"SEOC"** — the purchased
+   template's own agency name — signed "David M." and "Emily R." under Google review icons. The
+   previous team deleting that page from the live site was the correct read of what it was.
+5. **Unverifiable figures inside the quotes** — "4x ROI in the first month", "conversions have
+   doubled" — plus a page-level "(40+ Reviews)" claim. §1 forbids all of it.
+6. **★★★★★ on every card** with no rating platform behind it, and source C's Google icon implying
+   Google reviews that do not exist.
+
+7. **THE SEVENTH FAILURE — found 25 August 2026, and it closes the question.** This audit
+   recorded only the `pravatar.cc` problem, which covers the *service pages*. The four **named**
+   Cloudinary avatars used on `index.html` and `about.html` — `rahul_mehta_gh8cuc.png`,
+   `kunal_verma_do6m0m.png`, `sneha_roy_ywxeti.png`, `vikram_singh_s53fhy.png` — were never
+   opened. They were downloaded and viewed on 25 August: **all four are AI-generated portraits**
+   (poreless skin, flawless symmetry, synthetic depth-of-field, stock-neutral wardrobe). So *no
+   portrait in any source connects to the person it is attached to* — now by **two independent
+   mechanisms** rather than one. Same lesson as §10p's award finding, in the opposite direction:
+   a filename that names a person is not evidence of a person either.
+
+Also checked, nothing found: `assets/js/homepage/review.js` (slider logic only — no data),
+`mishram.com.zip` (the same files as the extracted site), `mishramsf.zip` (zero testimonial or
+review entries) and this repo.
+
+**Nothing was published from any of it, and no portrait was used.** Zero of eight candidate
+testimonials cleared the bar, which is below the two-testimonial minimum, so the honest outcome is
+no section.
+
+### To switch it on
+
+Two genuine testimonials are enough — the composition is count-adaptive. Per record: `quote`
+verbatim (trimming allowed **only** as a continuous excerpt of the real words, with the untouched
+original kept in `sourceNote` — never paraphrase and quote it); `role` / `company` left `undefined`
+rather than guessed; `image` **only** when that asset is confirmed to be that person; `sourceNote`
+recording provenance and what was actually verified. `sourceNote` is **development-only and never
+rendered.** Written permission to publish a name is worth having on file. §9 brand safety applies —
+no testimonial from an excluded client category, whatever it says.
+
+### Architecture (verified against a temporary populated config, then reverted)
+
+**An editorial quote index.** A small indexed roster of names on `col-span-4`, one large quotation
+holding `col-span-8` beside it, the author beneath. **No cards, no carousel, no speech bubbles, no
+star ratings, no Google badges, no giant floating quotation glyph** — one small teal serif mark
+hangs into the margin the way a printed pull quote does, and the words carry the rest.
+
+Copy: `— CLIENT NOTES` (a short teal rule, not a chapter number), headline **"What working together /
+feels like."** with `feels` in Instrument Serif italic, lead "A few words from people we've had the
+chance to build with." The accent sits on the **leading** word, as the Mishram Difference does —
+that is what separates the two interludes from the numbered chapters, which all accent the trailing
+one. The quote body stays in Archivo; §4 gives the serif to one accent, not to paragraphs.
+
+**Quotes are mounted together in one grid cell.** The obvious version — active `relative`, the rest
+`absolute` — sizes the field to whatever is live, and measured here that swung the section between
+709px and 808px, so hovering a name shunted the whole page below it. Sharing a cell holds the field
+at the height of the *longest* quote whatever is showing. It matters most on mobile, where the index
+sits **below** the quote and a height change would move the row out from under the finger.
+
+Interaction is `useHoverLock` (§10c): hover previews, click locks, leaving restores the lock, 90ms
+debounce, `aria-current` on the lock. Rows are real `<button>`s — focus previews, Enter locks.
+Inactive quotes are `aria-hidden`, so the accessibility tree only ever holds the one on screen.
+Transition is ~420ms: the outgoing quote clips upward, the incoming resolves down through the same
+edge, author metadata on the same beat. **No CTA** — §05 above and Recognition below both need this
+section to stay proof, and the page's asks live in the Hero, About and the Footer.
+
+**A second local rhythm change: three structural rules instead of twelve.** §05 is the page's most
+media-heavy chapter and the same twelve hairlines had run through most of it, so here the grid steps
+back to the left margin and the two edges of the quote field, and typography is the architecture.
+A different move from the Difference interlude, which keeps its columns and masks out the centre —
+the two must not read as the same trick. §11's global grid behaviour is untouched, and the full grid
+resuming in the section below is what makes the change legible.
+
+The handoff out of §05 is one short descending trace with no teal tip, the restraint About uses. It
+belongs entirely to this section, so **§05 needed no change.**
+
+Below `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` it stacks: label → headline → lead → quote
+→ author → selector, rows ≥48px, no swipe-only carousel and every testimonial reachable without
+gesture discovery.
+
+Verified with four temporary entries covering all four role/company combinations at 1440×900,
+1280×800, 1024×768, 768×1024, 430×932 and 390×844 in both themes and under reduced motion: exactly
+one quote visible and one in the accessibility tree at every moment, section height stable at 808px
+through every selection, no horizontal overflow, no console errors, and the author block correct
+with a role only, a company only, both, and neither. **That config was reverted; nothing fabricated
+ships.** The shipped state was then re-verified: `#client-notes` is absent from the DOM entirely and
+About still reads `06 / About`.
+
+---
+
+## 10e. 06 / Recognition — built, and now ACTIVE
+
+> **SUPERSEDED IN PART BY §10p (Revision 13).** The architecture, the copy and the
+> responsive/reduced-motion behaviour below are all current and unchanged. **The
+> "CONTENT-BLOCKED" status and row 2 of the audit table are not** — the section now renders one
+> verified award. See §10p.
+
+`src/components/recognition/` — `Recognition.tsx` (shell, archive composition, intro, lead-in,
+CTA), `RecognitionMedia.tsx`; data in `src/config/recognition.ts`; `.rcg-*` styles in
+`globals.css`.
+
+### It used to render nothing, on purpose — that state is over
+
+`RECOGNITION_ITEMS` was empty, so `Recognition` returned `null` and the homepage had no §06.
+**It now holds one verified item and the section renders.** Everything the paragraph below argues
+still holds for the *empty* case, which is why it is kept:
+
+A visible placeholder was rejected deliberately. An empty "Recognition" heading, or a
+`COMING SOON` row, implies the agency has awards it simply is not displaying — which is a claim,
+and an unverified one. No section is the honest state.
+
+### AUDIT (August 2026) — **PARTLY SUPERSEDED, see §10p**
+
+Row 2 of this table was **wrong**, and how it was wrong matters more than the row: the pass
+searched the old site's *markup* and never opened the *images*. Rows 1, 4 and 5 still stand.
+
+| Candidate | Verdict |
+| --- | --- |
+| `aditi-landing/awards/*` (4 JPGs) + `aditi_trophy.jpg` | **Excluded — different person.** From "The Career Acceleration Program – Aditi Sharma"; that `index.html` mentions Mishram zero times. Its own alt text names them: a presentation by Ms. Sania Nehwal, a Certificate of Appreciation from Mr. Munaf Patel, Top 100 Women Creators at Womennovator Creators Fest, a formal ceremony honour. Aditi Sharma's recognition, not the agency's |
+| Two remote `*_AWARD_*.gif` on Cloudinary, referenced by the old Mishram Media site | ~~Excluded — promotional, unlabelled, hotlinked~~ **← WRONG. SUPERSEDED (§10p).** "No award name, body, year or category appears anywhere in that markup" was true of the *markup* and false of the *images*, which this pass never opened. The 2048×731 banner reads `"AWARDED AS " BEST DIGITAL MARKETING AGENCY` with a gold `NUFEW 2024-25` badge over an award-plaque presentation. **This is now the configured §06 item.** The hotlinking objection was correct and is honoured — the asset is downloaded, cropped and served locally |
+| `lovkesh-kataria.webp` | **Excluded from §06 — wrong subject.** Genuinely awards-evening photography and an approved local asset, but it documents a *creator* at an awards evening, and the project does not record which figure is him. Under a "Recognition" heading it would imply an agency award by juxtaposition. It stays in §03, where it is honest |
+| `mishram.com.zip`, `mishramsf.zip` | Zero award-related entries |
+| `mishramngo/` (Foundation) | Different entity — would not count even if it had material |
+
+**To add a second item:** one photograph of Mishram Media recognition is enough. Drop it in
+`public/media/recognition/`, add an entry, and fill only the fields that are documented. `title`
+may be a factual generic label ("Award Recognition", "Industry Recognition", "Event Recognition")
+where the specific award is not recorded; `organisation` and `year` stay `undefined` rather than
+guessed. **Never invent an award name, body, year or category.** Every item carries a dev-only
+`source` field so any displayed claim stays traceable; it is never rendered.
+
+### Architecture (verified against a temporary populated config, then reverted)
+
+**The recognition archive** — glimpses, not an award wall. One dominant moment on `col-span-7` plus
+up to two fragments on `col-span-5`, offset down by `18%` so they hang off its lower right rather
+than sitting level with its top edge. **Count-adaptive**: one item renders the dominant alone, two
+adds one fragment, three or more caps at two — a third would start competing. No trophy icons, no
+badges, no star ratings, no gold, no achievement counters.
+
+Copy: `06 / RECOGNITION`, headline **"Work that / gets noticed."** (`noticed.` in serif italic,
+and a deliberate echo of §05's "Work made to be watched."), lead "A few moments of recognition from
+the work and relationships we've built along the way." One restrained text action,
+`Build something worth noticing ↗`.
+
+**Labels use the most specific factual information available and nothing more.** The in-frame
+annotation shows `organisation · year` when both are documented and falls back to
+`Recognition / 01` otherwise. The caption block shows title, then the org/year line only if
+present, then a caption sentence only if present. Verified: an item with no organisation and no year
+renders its title alone.
+
+Captions are **real DOM text at all times, never a hover-only reveal** — the caption is the claim, so
+it has to be readable without a pointer. Hover *strengthens* rather than reveals: the frame lifts
+3px, the hairline goes teal, saturation comes to full, the annotation brightens, and neighbours step
+back 2px via `.rcg-archive:has(.rcg-item:hover)`. No modal, no lightbox, no second cursor system.
+
+Media sits at full colour in both themes — archival prints on parchment in light, cinematic on
+obsidian in dark. **No gold**: an awards section is not a licence to leave the palette.
+
+### Responsive and reduced motion
+
+Below `lg` the archive becomes a vertical editorial column: full-width evidence at meaningful size
+with its caption beneath, fragments side by side from `sm` and stacked on a phone. No thumbnails, no
+carousel, normal scroll. Reduced motion removes the lift and the neighbour step-back and shortens
+transitions; all imagery and captions remain.
+
+Verified at 1440×900, 1024×768, 768×1024 and 390×844 in both themes and under reduced motion, with a
+temporary populated config — no horizontal overflow, no console errors. **That config was reverted;
+nothing fabricated ships.** The shipped state was then re-verified: `#recognition` is absent from
+the DOM entirely.
+
+---
+
+## 10f. About — built, awaiting review
+
+`src/components/about/` — `About.tsx` (shell, story, closing conversion),
+`DisciplineSystem.tsx`; copy and provenance in `src/config/about.ts`; chapter numbering in
+`src/config/sections.ts`. No new CSS — the section is typography, grid and hairlines only.
+
+### Adaptive chapter numbering
+
+§06 Recognition self-suppresses while it has no verified items, so About cannot hardcode its index —
+the page would jump `05 → 07` with nothing between, which reads as a bug. `ABOUT_CHAPTER` in
+`config/sections.ts` derives it: **06 today, 07 automatically once Recognition is populated.**
+Verified both ways by temporarily populating the recognition config, then reverting.
+
+Deliberately a derived constant rather than a section registry. Every existing section owns its own
+index in its own config, and rewriting that system to solve one adaptive label would be the wrong
+trade. Recognition keeps its fixed `06` because it only ever occupies that slot.
+
+### Concept — the calm chapter
+
+An editorial agency manifesto, not an About template. Five chapters of pinned scroll, photography
+and interaction come first, so this one is typography, space and hairlines: the visitor finally gets
+a moment to read. **No team grid, no mission/vision/values cards, no statistics, no timeline, no
+stock office photography.**
+
+Copy: chapter label, headline **"Creative thinking, / built for growth."** (`growth.` in serif
+italic — a deliberate bookend to the hero's "We turn attention into *growth.*"), two paragraphs of
+story, one emphasis line, the `INDIA` locator, then the closing conversion moment.
+
+### Content — every claim traceable
+
+| Element | Source |
+| --- | --- |
+| Positioning and capability list | §1 of this brief |
+| Emphasis line, **verbatim**: "Founded to help brands grow through ideas and measurable impact." | Mishram's own schema.org `description` on the old site's `about.html` |
+| Discipline captions (Meta and Google Ads; content, reels and brand shoots; discovery, collaboration and campaigns; websites, stores and product platforms) | The same markup's per-service `description` fields |
+| `INDIA` locator | `BRAND.locator` in `config/site.ts` |
+
+Body copy is **103 words** across two paragraphs, inside the 80–140 target.
+
+**Deliberately absent, and why:**
+
+- **No metrics.** No client count, reach, years-in-business or creator count. §1 forbids unverified
+  figures, and the page already earns credibility through §01, §03, §05 and now §06.
+  **This no longer excludes the founding year** — see the history band below.
+- **No team members.** The old about page does list four role titles (Founder & CMO, Chief Client
+  Officer, Influencer Marketing Manager, CFO), but every headshot is a remote Cloudinary file with a
+  placeholder-looking filename, and staff change. Available if the client supplies confirmed names
+  and photos — though a team block is out of scope for this chapter's design.
+- **No specific city.** The old site contradicts itself: its schema says New Delhi / Nainital /
+  Bareilly while the visible page lists a US Nagar head office with Bareilly and Delhi branches.
+  `INDIA` is the one locator certainly right, and the contact panel owns the details.
+
+### The history band — added Revision 13, and it is not a timeline
+
+Three dated moments on one hairline, between the story grid and the closing rule: **2021 Starcrown
+Media · 2023 New disciplines · 2025 Mishram.Media.** Copy and provenance live in `HISTORY` in
+`config/about.ts`; the component is `History` inside `About.tsx`.
+
+**Why this does not break §10f's "no timeline" rule.** It reuses the grammar already on the site —
+`ServiceProcess` puts four steps on a shared `border-t` with a teal tick marking where each one
+starts — so About gains **no new visual language**. There is no axis, no connecting arrow, no card,
+no dot-and-date rail, no scroll behaviour and nothing selectable. It reads as a colophon under an
+essay, which is why it supports the manifesto instead of competing with it. **Do not grow it into
+a timeline section, and do not add a fourth moment without evidence of the same quality.**
+
+The years carry themselves: `2021 · 2023 · 2025` in sequence reads as chronology on sight, so
+there is **no eyebrow and no "Our Story" heading** — that is exactly the template heading §18 rules
+out.
+
+**THE "no founding date" RULE IS SUPERSEDED.** §19's earlier instruction was written when the
+project believed no history evidence existed. It does exist, verbatim, in Mishram's own
+`about.html`, identically in `_backup_pre_seo/about.html` and in the site's own `llms-full.txt` —
+the same provenance class as the `emphasis` line this chapter already publishes. **2021 may be
+published.**
+
+Deliberately not imported from the same source sentence: its "broader vision and impact" (marketing
+language, §1), any growth claim, and the non-profit arm it also names — that is held pending a
+client decision (§10p).
+
+Cost: **+212px**, absorbed by two one-step spacing reductions so About lands at **1,403px /
+1.56 viewports** — in line with Project Inquiry's accepted 1.53, and still a preview rather than
+a page. §10p has the arithmetic.
+
+### The connecting idea
+
+The hero's eyebrow reads `CREATIVE × PERFORMANCE × TECHNOLOGY`. Five chapters later the site has
+demonstrated a fourth dimension, so `DisciplineSystem` is that equation with **CREATORS** written
+in: one teal hairline threading four disciplines, a node at each, the hero's own `×` glyph between
+them, and a rule reaching out to each caption. Typographic, not an infographic — no cards, no icons,
+no four-feature grid. A real `<ul>` of real text, so the section never depends on decorative
+graphics to be understood.
+
+**No photography at all in About**, and that is the honest choice: the project has no agency, team or
+behind-the-scenes imagery, and borrowing a creator portrait here would read as a team photo. The
+absence also gives the page its calm chapter after five media-heavy sections. A genuine agency or
+BTS photograph would slot into the right column if the client supplies one.
+
+### Closing moment — now a bridge, not a second booking ask
+
+A full-width hairline, then **"Let's build something worth paying attention to."** left, and on the
+right the action **`Tell us what you're building ↓`** anchoring to `#project-inquiry`, with an
+understated `Contact Us` beside it opening the global panel. Built from the grid, hairlines and
+whitespace — no banner, no gradient, no glow.
+
+**This was `Book a 15-Min Call` + `Contact Us` as a two-button row, and it is gone.** Once the
+Project Inquiry form landed directly beneath it (§10h), About was making the page's primary booking
+ask immediately above a form asking for the same thing — two conversions competing in one screen,
+and the third `Book a 15-Min Call` on a page that already opens with one.
+
+The primary action deliberately **says the next section's own headline**, so the link names its
+destination rather than describing itself. Native hash navigation, no modal, no scripted scroll,
+`scroll-margin-top` supplying the header clearance as everywhere else (§10g). `primaryCtaNote`
+("15 min · no obligation") went with the booking button — it described the call, not the form.
+
+**Do not turn this back into a button row**, and do not reintroduce a booking CTA here.
+
+### Responsive
+
+Single flowing column below `lg`: label → headline → story → emphasis → locator → discipline
+system → closing CTA. The discipline rows go inline with their rule only from `xl` up — below that
+the caption is wider than the column it sits in, which overflowed the page by 93px at 390 and 32px
+at 1024 before the fix, so name and caption stack and the rule drops out. CTA buttons sit on one row
+from `sm` and stack below it, 52px throughout, with the note attached under the pair.
+
+Verified at 1440×900, 1280×800, 1024×768, 768×1024, 430×932 and 390×844 in both themes and under
+reduced motion: no horizontal overflow, no console errors, chapter number correct in both
+Recognition states.
+
+---
+
+## 10h. Project Inquiry — built
+
+`src/components/inquiry/` — `ProjectInquiry.tsx` (shell, intro, context column, grid resolve),
+`InquiryForm.tsx` (state, validation, submission, every outcome state), `fields.tsx` (primitives);
+copy, options, limits and the shared validator in `src/config/inquiry.ts`; delivery in
+`src/app/api/inquiry/route.ts`; `.inq-*` styles in `globals.css`.
+
+### Why it exists
+
+The page could show everything and still leave a visitor with no way to say what they need short of
+phoning or opening WhatsApp. This is the final conversion moment, and About now hands straight into
+it. **Unnumbered**, like the other interludes, so Recognition keeps `06` and `ABOUT_CHAPTER` is
+untouched.
+
+Copy: `— START A PROJECT`, headline **"Tell us what / you're building."** (`building.` in serif
+italic — the trailing accent the numbered chapters use), lead "Share a little about the project and
+we'll figure out the most useful next step." No "fill out the form below" anywhere.
+
+### An editorial project brief, not a lead form
+
+Bottom rules instead of boxes, four large fields rather than fifteen small ones, hairline option rows
+instead of pills, the site's own type doing the work. **No card, no 16px radius, no Typeform, no
+SaaS input chrome, no CRM wall of questions.** Left column: one short paragraph and the two direct
+routes out (email, WhatsApp, both from `config/site.ts`) — deliberately *not* a three-step explainer,
+since §04 Work Process already owns that.
+
+**No CTA of any kind in this section** beyond the submit button. No `Book a 15-Min Call`, no
+`Contact Us` — the whole section *is* the ask.
+
+### Fields
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| Your name | **Yes** | 2–80 chars |
+| Email | **Yes** | 5–160, structure-checked both sides |
+| Phone / WhatsApp | No | `type="tel"`; email is already a working route back, so nobody is made to give both |
+| Business / Brand | No | "Company, creator or brand name" — a personal-brand client has no company to type |
+| What can we help with? | No | Multi-select, real checkboxes |
+| Project budget | No | Single-select. **Engagement budget, never "ad budget"** |
+| When would you like to start? | No | Single-select |
+| Tell us about the project | **Yes** | 10–2000 chars, counter appears in the last 240 |
+
+Services: `Social & Personal Brand Growth` · `Influencer Marketing` · `Performance Marketing` ·
+`Web & Digital Experiences` · **`Custom Software / CRM`** · `Brand Shoots & Content` ·
+`Not sure yet`. Software gets its own choice even though it sits inside Web & Digital Experiences
+strategically (§10) — someone looking for a CRM does not read "digital experiences" as software, and
+a service list is no use if it lacks the words the visitor has in their head.
+
+Budget: `Under ₹50K` · `₹50K – ₹1L` · `₹1L – ₹3L` · `₹3L – ₹5L` · `₹5L+` · `Let's discuss`.
+Timeline: `As soon as possible` · `Within 30 days` · `1–3 months` · `Just exploring`.
+
+**Deliberately not asked:** address, employee count, industry dropdown, revenue, account creation,
+"how did you hear about us", file upload, visible captcha.
+
+### Delivery — honest, and server-side
+
+`config/inquiry.ts` is the single source for the copy, the allowed option values, the limits **and
+the validator**, imported by both the browser and the route — so a value the client can send is by
+definition one the server accepts.
+
+`POST /api/inquiry` validates, then delivers by `fetch` against Resend's REST API. **The browser
+never holds a credential and never talks to an email provider directly.** No npm package for one
+HTTP call (§15). **No database, no file, no log of the message** — the route only delivers, which is
+what lets the microcopy honestly say the details are used to respond and nothing else. `reply_to` is
+the inquirer's address, so replying from the inbox reaches them.
+
+| Status | `error` | Meaning |
+| --- | --- | --- |
+| 200 | — | Delivered, or silently swallowed as spam |
+| 400 | `invalid_request` | Body was not JSON |
+| 400 | `validation` | Field errors, returned in `fields` |
+| 503 | `delivery_not_configured` | No key/sender/recipient |
+| 502 | `delivery_failed` | The provider rejected it |
+
+**Environment** (documented in `.env.example`, none of them `NEXT_PUBLIC_`):
+
+- `RESEND_API_KEY` — required.
+- `INQUIRY_FROM_EMAIL` — required, and **deliberately has no default.** It needs a domain verified
+  with the provider; inventing `leads@mishram.media` would look configured and then fail at send
+  time instead of here.
+- `INQUIRY_TO_EMAIL` — optional, defaults to `CONTACT.email`, Mishram's real published address.
+
+### Fallback, and the states
+
+With any of the three missing the route answers `delivery_not_configured`, and the form **says so
+plainly** — then offers `Continue on WhatsApp ↗`, a link carrying the whole brief built from what was
+actually typed. **It never opens by itself**, and no success is ever faked. The 502 path offers the
+same thing alongside a retry.
+
+- **Success** appears *only* after a confirmed 200: "Brief received. Thanks — we'll take a look and
+  get back to you." **No response-time promise** — that is Mishram's commitment to make, not the
+  site's. `Send another inquiry` resets.
+- **Errors never clear what was typed**, including the services and budget. A visitor who writes a
+  long brief on a site whose email is not switched on yet does not lose it.
+- Submitting shows `Sending…` and disables the button.
+
+### Security and validation
+
+Both sides run the same rules. The route re-validates untrusted JSON through `coerceInquiry`, which
+**allow-lists the option ids** — a bogus service or budget is dropped rather than trusted — and
+bounds every free-text field. One **honeypot** field, off-screen, `tabindex="-1"` and inside
+`aria-hidden`: anything in it gets a 200 and no delivery, with no explanation returned.
+
+**No rate limiting.** A per-process counter is meaningless on serverless and pretending otherwise
+would be worse than nothing — record it as deployment hardening (provider-level or edge middleware).
+
+### Accessibility
+
+Real `<form>`, real `<label>` on every input, real `<fieldset>`/`<legend>` per option group, native
+checkboxes and radios visually hidden but focusable (never `display: none`), correct `type` and
+`inputMode` so mobile keyboards behave. `aria-invalid` + `aria-describedby` on errored fields, one
+`role="status" aria-live="polite"` region for every outcome, and submit moves focus to the first
+invalid field. **Every error has words** — colour is never the only signal. The one new design token,
+`--color-error`, is themed (`#ff8563` dark, `#b4360f` light at 5.35:1 on parchment) because ember
+alone fails as text on paper.
+
+### The grid resolves here
+
+`.inq-grid` masks the twelve-column scaffold out down the section — full strength at the top,
+continuing About, and **gone by the bottom edge**, so the Footer starts on clean ground. §11's global
+behaviour is unchanged.
+
+**Known seam:** the current Footer still draws its own twelve-column grid, so the scaffold reappears
+immediately below the fade. Removing it is explicitly part of the Footer redesign (§19), not this
+task.
+
+### Future — the inquiry pipeline
+
+The route is delivery only, on purpose. It is the natural attachment point for a CRM, a Sheets row,
+lead qualification, or a Slack notification later — and Mishram sells exactly that kind of build, so
+its own pipeline is a reasonable first case. **Not built, and not to be built as part of a homepage
+task.**
+
+### Verified
+
+Every route branch exercised directly: invalid JSON, empty body, bad email, short and over-length
+message, bogus option ids (dropped), honeypot (200 with no delivery — proven because the identical
+payload without it returns 503), unconfigured, and delivery failure. Every UI state driven in the
+browser: required validation with focus moving to the first problem, invalid email, multi-select
+services, optional fields left empty, values preserved across failures, the WhatsApp fallback
+carrying the full brief, a stubbed 200 success, and a stubbed 502.
+
+Section is **1377px at 1440×900 (1.53 viewports)** — a little over the 1.4 guidance, and left there
+rather than cramping 48px touch targets or dropping a field. Verified at 1440×900, 1280×800,
+1024×768, 768×1024, 430×932 and 390×844 in both themes and under reduced motion: no horizontal
+overflow, no console errors, option rows ≥48px everywhere, services one column on a phone and budget
+and timeline paired.
+
+---
+
+## 10g. Navigation, anchors and the Footer — rebuilt
+
+> **SUPERSEDED IN PART BY §10k (Revision 09).** The anchor map, the native hash behaviour and
+> `useHashLanding` below are all current. **The Footer described here is V1 and has been replaced** —
+> see §10k for Footer V2, which keeps the inverted obsidian field and the opening trace, demotes the
+> wordmark to a left-aligned signature roughly a third of the size, and adds contact, navigation,
+> service routes, socials and legal links.
+
+`src/components/Footer.tsx`, copy in `src/config/footer.ts`, navigation and socials in
+`src/config/site.ts`, active state in `src/hooks/useActiveSection.ts`, deep-link correction in
+`src/hooks/useHashLanding.ts`. Two CSS rules in `globals.css`; no new component CSS at all.
+
+### The anchor map — one list, three surfaces
+
+`NAV_ITEMS` in `config/site.ts` is the **only** navigation source. The header, the mobile menu and
+the footer all render it, so there is no second routing layer and no way for them to disagree.
+
+| Label | Anchor | Section |
+| --- | --- | --- |
+| Work | `#work` | 05 / Selected Work — **not** Selected Collaborations |
+| Services | `#what-we-do` | 02 / What We Do (labelled "Services": the word a visitor scans for) |
+| Creators | `#creators` | 03 / Creators |
+| About | `#about` | About |
+
+Plus `TOP_ANCHOR = "#hero"` for the skip link and the footer's back-to-top.
+
+Every ID already existed on a section root; **nothing was renamed and no ID was added**, so no
+section component changed. `#collaborations`, `#process` and `#recognition` exist too but are
+deliberately **not** navigation destinations — they are chapters of the page, and listing them
+would flatten a four-item hierarchy that is intentional.
+
+### Behaviour — native, and nothing else
+
+Plain `<a href="#…">`. No click handler intercepts them, no wheel handling, no scroll library, no
+custom routing. The URL takes the hash normally and back/forward work.
+
+- **Smooth scrolling** is `scroll-behavior: smooth` on `html`. The reduced-motion block at the end
+  of `globals.css` already forces `scroll-behavior: auto !important`, so a visitor who asks for
+  reduced motion gets an instant jump — verified, not assumed.
+- **Fixed-header clearance** is one CSS rule: `section[id] { scroll-margin-top: calc(var(--header-h)
+  + 12px) }`. It covers every section at once and tracks `--header-h` at both its values, so there
+  is **no pixel arithmetic in JavaScript**. Measured: every anchor lands with its section top at
+  90px (desktop) / 78px (mobile), chapter label at 231px — clear of the header.
+
+### Deep links needed one correction, and why
+
+A hash already in the URL at load is scrolled by the browser against the **server-rendered** page,
+and hydration then changes the height underneath it: `useDesktopSequence` resolves `false` on the
+server, so the HTML ships §02's stacked chapters and hydration swaps in the pinned track — **2,247px
+taller at 1440×900**. `/#about` landed 2,250px short.
+
+`useHashLanding` repeats the browser's own `scrollIntoView` (instant, `block: "start"`, so
+`scroll-margin-top` still supplies the clearance) whenever the document height changes, until it
+stops — capped at 1.6s, cancelled by any wheel/touch/key input, and it only runs when the URL
+arrived with a hash. **In-page clicks never reach it**; by then the height is settled.
+
+Verified: `#hero`, `#what-we-do`, `#creators`, `#work` and `#about` all land at exactly the same
+position as an in-page click, with the correct nav item lit.
+
+### Active navigation state
+
+`useActiveSection` — **one IntersectionObserver, no scroll listener, no React state per scroll
+pixel.** `rootMargin: "-45% 0px -55% 0px"` collapses the root to a horizontal scan line at 45% of
+the viewport, and the sections are contiguous siblings, so only one crosses it at a time.
+
+Two decisions:
+
+- **Nothing on the line holds the last reading.** Hero, Collaborations, Work Process and the Footer
+  are not destinations; scrolling through them keeps the previous item lit rather than blanking the
+  header and lighting it again a moment later. `hero` *is* observed, and matches no nav item — which
+  is how the header stays genuinely neutral at the top of the page instead of asserting a section
+  the visitor has not reached.
+- **At a boundary the later section wins**, resolved in document order, so the section being scrolled
+  into takes it rather than the one being left.
+
+Treatment is the header's existing language: the index goes teal, the label to full ink, and the
+hairline the hover state already draws is held open in teal. No pill, no background, no glowing tab.
+`aria-current="true"` tracks it. The mobile menu shows the same state as a teal index and a teal
+rule under the label.
+
+Verified under a stepwise scroll of the whole page in real Chrome: neutral → Services → Creators
+(held through Work Process) → Work → About (held through the Footer), reversing cleanly on the way
+back up, with exactly one item active at every position and never two.
+
+### Mobile menu
+
+Already-approved design, now wired: the four links point at the real anchors, `onClick` closes the
+menu and the browser then performs the hash navigation against a page the menu is no longer
+covering. Verified at 390×844 — menu opens with the scroll lock on, tapping any item closes it,
+releases the lock, sets the hash and lands the section at 78px.
+
+### Footer concept — THE FINAL SIGNAL
+
+**Superseded by Footer V2 — §10k.** Kept here as the record of what V1 was and why.
+
+**The editorial colophon that stood here has been replaced.** It continued the page's twelve-column
+grid, read as one more informational band, scattered small text, and repeated `Book a 15-Min Call` —
+so the site ended by restating itself rather than signing off.
+
+The concept now is the page resolving. It begins highly structured; §10h fades the twelve-column
+scaffold to nothing by its bottom edge; here the scaffolding is gone entirely and what remains is
+the brand. **Creative-studio colophon × oversized brand poster × the final frame of a film** — not a
+corporate footer, and **not another conversion block**: the Project Inquiry form above is the ask.
+
+**DELIBERATE INVERSION.** `.ftr` redefines the theme's **`--color-*`** names to their dark values on
+itself, so the whole subtree flips and every semantic class inside keeps working untouched. On the
+parchment homepage that is the dark back cover of a printed annual. In dark mode the palette is
+already right, so the footer separates itself by composition instead — no grid, more air, and type
+at a scale nothing above it uses. **No second arbitrary dark shade**; the values are the dark
+theme's own.
+
+**Gotcha worth keeping.** Overriding `--t-*` here does *nothing*. `@theme` declares
+`--color-ink: var(--t-ink)` on `:root`, so the `var()` is substituted there and the *resolved* value
+is what inherits down. It has to be the `--color-*` names, which every Tailwind utility resolves at
+the element. The first attempt overrode `--t-*` and the footer stayed parchment.
+
+**No twelve-column background anywhere**, no `.bg-grid`, and **no `border-top`** — the boundary is
+the transition, not chrome. The alignment is still a CSS grid; it just is not drawn. The only rules
+are content-specific. One very low radial tonal lift keeps the full-bleed field from reading flat,
+plus the site's existing `.grain` — no texture asset.
+
+| Region | Content |
+| --- | --- |
+| Marker row | `MISHRAM MEDIA / INDIA` left, `Back to top ↑` right |
+| Contact | `GET IN TOUCH`, then the **email as the largest functional element** (clamping to 24px), with phone and `WHATSAPP ↗` beneath |
+| Navigate | The four `NAV_ITEMS` as `01 / Work` … |
+| Follow | The verified social icons |
+| Closing mark | The Mishram wordmark at poster scale |
+| Colophon | `© <year> Mishram Media` and the discipline equation |
+
+Height is **851px at 1440×900** — above the 650–800 guidance, and left there because the closing
+mark is the point of the section and shrinking it to hit a number would defeat the redesign. 916px
+at 768, ~1110px on a phone.
+
+### The Inquiry → Footer transition
+
+§10h's grid reaches zero at its own bottom edge. The footer opens with **one short teal trace
+descending from the boundary into the dark field, resolving into a 3px dot** — the last structural
+line arriving and becoming a signal. Verified at the seam: the inquiry's rules are gone before the
+boundary, the footer draws **zero** grid lines and has **no border-top**, so there is no moment where
+the grid fades and then reappears. That reappearance was the whole reason §10h's fade existed.
+
+**Reduced-motion gotcha, and a real bug it caught.** The signal draws by animating **height**, not
+`scaleY`. `MotionConfig reducedMotion="user"` strips transform animations, and `initial` is read once
+at hydration — when `usePrefersReducedMotion` is still returning its server snapshot of `false`. The
+`scaleY` version therefore mounted at 0, never animated, and left the signal permanently invisible
+for exactly the visitors who were promised a static one. Height is not a transform, so it survives.
+The same reasoning is why About's lead-in animates height.
+
+### The closing mark
+
+The real Mishram wordmark, reused as a CSS mask exactly as the header does — the brand's own artwork
+at poster scale, never a substitute logotype.
+
+**It is an integrated wordmark, not a stacked lockup:** MISHRAM with a studio light built into the
+first M, headphones over the A, and two diagonal slashes, so its ink spans the full 420×199 box.
+**Cropping its lower edge removes the word and leaves only the light** — the first attempt did
+exactly that and produced an unreadable blob.
+
+One aspect cannot be both full-bleed and short, so there are two art directions:
+
+- **≥640px — height-driven.** `clamp(200px, 26vw, 292px)`, mark complete, 616px wide at 1440. That
+  lands in the 12–18vw the closing frame wants.
+- **<640px — width-driven.** `138%`, so the mark genuinely runs off **both** edges and the outer
+  slashes crop. On a phone the poster reading is earned rather than forced.
+
+**The one signature interaction:** a teal band inside the letterforms tracking the pointer. The mark
+is a mask filled with a gradient, so the band only ever appears *within* the mark; moving it sets one
+custom property — no layout, no re-render. At rest the default position sits off-canvas, so the mark
+is plain ivory. **Off entirely under reduced motion and for non-mouse pointers.** Verified: `--ftr-x`
+tracks 25% → 75% and clears on leave, and never appears at all under reduced motion.
+
+### Social — icons, and only verified destinations
+
+The three marks are **inline SVG**, one family: each platform's mark inside the same rounded square,
+on the same 24px grid at the same 1.5 stroke. **No icon dependency** for three symbols (§15), and
+inline paths inherit `currentColor` so they stay in the Mishram palette — **never a platform's own
+blue, pink or gradient**, on hover or otherwise.
+
+48px tile, 20px glyph. At rest a graphite hairline; on hover or keyboard focus the border and icon go
+teal, the icon lifts 2px, and the platform name reveals beneath through an **absolutely positioned**
+label, so the row never moves. Every link carries `aria-label="Mishram Media on <Platform>"`,
+`target="_blank"` and `rel="noopener noreferrer"`.
+
+| Platform | URL | Evidence | Rendered |
+| --- | --- | --- | --- |
+| Instagram | `instagram.com/mishram.media` | The old site's schema.org `sameAs`, its footer and its contact page | **Yes** |
+| Facebook | `facebook.com/mishram` | Same — `sameAs` on every page, plus both social rows | **Yes** |
+| LinkedIn | **none** | Only ever `https://linkedin.com` — a bare domain, no profile path, absent from `sameAs`, sitting in the purchased template's social row beside an identical bare `twitter.com` | **No — suppressed** |
+
+`sameAs` is the structured-data field for an organisation's own official profiles, so a URL declared
+there is Mishram stating it about themselves. That is what promoted Facebook; LinkedIn has no such
+declaration anywhere.
+
+`SOCIAL_URLS` in `config/site.ts` holds all three keys, LinkedIn as `null`. **A null renders
+nothing** — no icon, no disabled control, no `href="#"`. Filling the URL in makes the icon appear
+with **zero component edits**; `SOCIAL_LINKS` is derived from it and never hand-edited.
+
+### Footer data — all of it from shared config
+
+| Rendered | Source |
+| --- | --- |
+| Email / Call / WhatsApp | `CONTACT` in `config/site.ts`, as `mailto:` / `tel:` / `whatsappHref(GENERAL_WHATSAPP_MESSAGE)` |
+| Navigation | `NAV_ITEMS` |
+| Socials | `SOCIAL_URLS` → `SOCIAL_LINKS` |
+| Locator | `BRAND.locator` = `India` |
+| Equation | `DISCIPLINES` in `config/about.ts`, joined with ` × ` |
+
+**NO BOOKING CTA.** `FOOTER_COPY.bookingCta` is deleted and `bookingHref` is no longer imported here.
+`Book a 15-Min Call` now appears **exactly once on the rendered homepage, in the Hero** — verified by
+walking the page. Do not add one back.
+
+`INDIA` stays the public locator, for the reason in §10f. **No city.**
+
+**No dead links anywhere.** Ten footer destinations, all real: `#hero`, `mailto:`, `tel:`, the
+WhatsApp deep link, the four section anchors, Instagram and Facebook. No privacy or terms route
+exists, so none is implied. The year is `new Date().getFullYear()`, resolved at build time.
+
+### Responsive
+
+| Width | Behaviour |
+| --- | --- |
+| ≥1024px | Contact on `col-span-5`, Navigate and Follow to its right, asymmetric — invisible grid |
+| 768–1023px | Two functional columns, closing mark beneath |
+| <768px | One column: marker → contact → navigate → follow → cropped mark → colophon |
+
+The mark switches art direction at 640px (see above). Social tiles are 48px at every width; nav rows
+and the direct links carry their own padding.
+
+Verified at 1440×900, 1280×800, 1024×768, 768×1024, 430×932 and 390×844 in both themes and under
+reduced motion: **zero grid lines drawn, no `border-top`, no booking CTA, and no horizontal page
+overflow at any of them** — the mark's overhang is clipped by the footer's own `overflow: hidden`.
+
+Accessibility, verified with real Tab presses rather than programmatic focus: every footer control
+matches `:focus-visible` and takes the site's 1px teal ring at 3px offset, which reads clearly on
+the obsidian field. Tab order is Back to top → email → phone → WhatsApp → 01–04 → socials. Focusing a
+social tile reveals its platform name, so the icon is never the only label. Full-page pass in both
+themes: no console errors.
+
+---
+
+## 10i. Homepage final review (Revision 06)
+
+A full end-to-end pass of the rendered page — Hero through Footer, both themes, seven viewports,
+reduced motion — rather than a code read. Audit first, then fix; only Critical and Important were
+implemented.
+
+### The page as measured
+
+**16,296px at 1440×900 — 18.1 viewports.** 02 / What We Do is 7,450px of that (8.3 viewports, 46% of
+the page), which is the pinned sequence doing exactly what `SERVICE_SCROLL_VH` says. Every other
+chapter sits between 0.95 and 1.5 viewports, so the rhythm the page was designed around does hold in
+the render: one immersive chapter, then a run of one-viewport chapters at different densities.
+
+Section boundaries are **0px** — no phantom gaps, and nothing left behind by the two suppressed
+sections. The empty run at each boundary is 256px, which is two standard `lg:py-32` paddings meeting.
+That is the design system, not accidental space, so it was left alone.
+
+### Fixed
+
+**CRITICAL — three below-the-fold images carried `priority`.** Service 01's Nikita portrait, Creators'
+opening Zoya portrait (~9,500px down) and Selected Work's featured poster (~11,800px down) were each
+emitting a `<link rel="preload">` and an eager fetch on first load, competing with the Hero for
+bandwidth before the visitor had scrolled a pixel. Both of the standing Next LCP warnings were these.
+Removed from all three; the Hero's WebGL fallback keeps its own.
+
+Verified on a first load with no scrolling: **zero priority images, zero eager images, zero image
+preload links, and both LCP warnings gone.** All 23 images keep their `sizes`.
+
+**IMPORTANT — the serif accent had become a template.** Every one of eight consecutive sections
+carried an italic Instrument Serif word, which is the opposite of what §4 gives the serif to. 04 /
+Work Process lost its: "momentum." also heads the Mishram Difference two sections earlier, so one
+edit removed an accent echo and a word echo together. Seven sections keep an accent, with a
+deliberate gap at §04.
+
+**IMPORTANT — `Discuss this project ↗` × 5.** One per service chapter. On the pinned path only one
+shows at a time, but the stacked path puts five identical actions down 4,500px, where it reads as
+boilerplate rather than an offer. Demoted from full ink to `ink-soft` with a hover return: the lead
+path is intact, it just no longer competes with the copy it sits under.
+
+**IMPORTANT — Footer slack.** Trimmed 48px of padding around the closing mark (marker row, the gap
+above the mark, the colophon), **without touching the wordmark**: 851 → **803px** desktop and 1,110 →
+**1,070px** mobile. The mark is still 292px tall and 616px wide on desktop, still cropped on a phone.
+
+### Left alone, deliberately
+
+- **The 256px chapter boundaries.** Consistent, and the product of the shared padding scale.
+- **`02 / WHAT WE DO` appearing twice** for one screen as the sticky panel pins. The panel's label is a
+  persistent chapter marker across 6,750px of pinned scroll, and the intro's label is the chapter
+  opener; both earn their place. Polish at most.
+- **Selected Work's sparse right column.** A composition consequence of three honest entries and no
+  reels. Architecture is right; the fix is content.
+- **Project Inquiry at 1,377px / 1.53 viewports**, against a 1.3–1.5 target. Roughly 60px over, and
+  every remaining candidate is either a specified field or a 48px touch target. Left, rather than
+  cramped to hit a number.
+- **The three.js `Clock` deprecation warning.** It comes from `new THREE.Clock()` inside
+  `@react-three/fiber`'s own store (`dist/events-*.esm.js`), not from this codebase — reading
+  `state.clock` or not makes no difference. No safe local fix; it clears when R3F ships a release
+  built on `THREE.Timer`. **Do not attempt a three.js migration for it.**
+- **Recognition's `priority` flag.** Same class as the bug above, but the section renders nothing, so
+  it is not a live issue. Worth removing whenever that section is populated.
+
+### Verified in this pass
+
+| | |
+| --- | --- |
+| Booking CTA | `Book a 15-Min Call` appears **exactly once**, in the Hero |
+| WebGL | **1 canvas**, Hero only. **0 videos** anywhere |
+| Overflow | No body overflow at 1440×900, 1440×768, 1280×800, 1024×768, 768×1024, 430×932 or 390×844 |
+| Suppressed sections | No wrapper, no phantom spacing; About still reads `06 / About` |
+| Navigation | Under continuous scroll: neutral → Services → Creators → Work → About, held through Inquiry and Footer. All four anchors land at 90px |
+| Reduced motion | Full page at 1440 and 390: nothing missing, no zero-size traces, footer intact |
+| Accessibility | One `h1`; 8 `h2`; H3s correctly nested inside §02; every image has `alt`; form errors and honeypot intact |
+| Creators | Hover previews, click locks, leaving restores, focus/Enter — unaffected by the priority change |
+
+The only overflow found anywhere is the documented `svc-surface` tilt overhang (≤19px at 430),
+clipped by `body { overflow-x: hidden }` and already recorded in §19 as a non-defect.
+
+**One measurement worth recording rather than chasing:** on a first load ~11 creator-image requests
+fire before any scroll. Five are the Hero's own WebGL textures, which it genuinely needs; the rest are
+Chrome pulling lazy images in early under dev-server conditions. No preload links and no priority
+flags remain, so the actionable part is fixed. Worth one look against a production build if load time
+is ever measured properly.
+
+---
+
+## 10j. THE SERVICE PAGE SYSTEM — shared architecture, and the first page built
+
+`src/config/service-pages.ts` (registry + the shared section vocabulary),
+`src/config/service-social.ts` (this page's words), `src/components/service-page/*` (the shared
+primitives), `src/components/service-page/social/*` (this page's own compositions),
+`src/app/services/social-personal-brand-growth/page.tsx` (the route). `.svp-*` styles in
+`globals.css`.
+
+**Built and live: `/services/social-personal-brand-growth` (§10j), `/services/influencer-marketing` (§10l) and `/services/performance-marketing` (§10m). The other two routes do not exist.**
+No placeholder page, no "coming soon", and nothing anywhere links to them — see *Prev / next* below.
+
+### THE PUBLIC ROUTE INVENTORY (Revision 08)
+
+Read off `src/app/**` rather than off this document, because a plan is not a
+route. **Two public pages exist. That is the whole site.**
+
+> **Now seven — §10k (Revision 09) added `/privacy`, `/terms` and `/cookies`; §10l (Revision 10)
+> added `/services/influencer-marketing`; §10m (Revision 11) added
+> `/services/performance-marketing`.** The two rows below are still accurate; the current inventory
+> is the table in §10k.
+
+| URL | File | Purpose | Discoverable from |
+| --- | --- | --- | --- |
+| `/` | `src/app/page.tsx` | The homepage — nine sections | Header wordmark, every footer/header anchor, the service page's breadcrumb |
+| `/services/social-personal-brand-growth` | `src/app/services/social-personal-brand-growth/page.tsx` | 01 / Social & Personal Brand Growth service page | `02 / What We Do`, Service 01's `Explore service ↗` |
+
+**Not pages, and deliberately not linked as such:**
+
+- `src/app/api/inquiry/route.ts` — a route handler. It has no UI, it is reached
+  only by the form's `fetch`, and it must never appear in navigation.
+- `/_not-found` — Next's built-in 404, which shows in build output. No
+  `not-found.tsx` is authored.
+
+**There are no internal, development, debug, design-lab or preview routes**, and
+nothing is hidden behind a route group. Verified: no `src/pages`, no
+`middleware`, no rewrites in `next.config.ts`, no `(group)`, `[dynamic]`,
+`@parallel` or intercepting segments, and no static HTML in `public/`.
+
+**There is no `/services` index page.** Nothing links to one, and the service
+page's breadcrumb points at `02 / What We Do` rather than implying one exists.
+
+### Homepage Service 01 → its service page
+
+`02 / What We Do` is the discovery layer for service routes. Service 01's copy
+column now carries **two contextual actions on one row**:
+
+| Action | Job | Weight | Target |
+| --- | --- | --- | --- |
+| `Explore service ↗` | Information | Full `ink` | `/services/social-personal-brand-growth` |
+| `Discuss this project ↗` | Conversion | `ink-soft`, the §10i treatment, unchanged | The global contact panel |
+
+They are separated by the site's own hairline rather than a second button, and
+`Explore service` takes the heavier ink **because it can never become
+boilerplate** — it only appears on a service that has a page, where the other
+action appears five times. `Explore service` is a real `<a>` (Next `Link`,
+client-side, so Back returns to the homepage naturally); `Discuss this project`
+stays a `<button>` opening the panel. **No clickable divs, and the service title
+stays typography rather than becoming a giant invisible link** — the explicit
+action is the better affordance.
+
+**One row, not two, and that is load-bearing.** The pinned panel gives the copy
+a fixed `h-[22rem]` holder (§11); a second row would push the block into the
+progress indicator beneath it. Measured, the action row is **20px and the copy
+block 355px — byte-identical to before this change**, because `.svc-action`
+pins `line-height: 1.5`, which is exactly what Tailwind's `text-[0.8125rem]`
+paired with the action that stood there. (Service 04's copy has always been
+378px in that holder — a pre-existing 26px, absorbed by the `mt-8` gap below it.
+Not introduced here.)
+
+**Touch targets are gated on `data-sequence`**, the attribute §10 already uses
+for the scene annotations: `padding-block: 0.85rem` on the stacked path gives a
+47px target at 390, and `0` on the pinned path, which is mouse-only territory by
+definition (`min-width: 1280px`, landscape) and has no room to spare.
+
+### The service-link architecture — one flag, no dead links
+
+**`servicePageHrefFor(serviceId)` in `config/service-pages.ts` is the whole
+mechanism.** It returns the path of a service's page only when that entry is
+`built: true`, and `ServiceCopy` renders `Explore service ↗` only when a href
+comes back.
+
+```ts
+const pageHref = servicePageHrefFor(service.id);   // undefined ⇒ no action
+```
+
+Consequences worth keeping:
+
+- **An unbuilt service can never render a dead link.** Services 02–05 show only
+  their existing contextual action, and will keep doing so until their routes
+  exist. **No `Coming Soon`, no disabled control, no placeholder route.**
+- **Shipping the next page is one `built: true` plus its `metadata`.** The
+  homepage link, the prev/next rail and the page's own SEO all switch on
+  together. **No component edit, and no `if (service.id === …)` anywhere.**
+- **The URL is written once.** Deliberately derived rather than copied onto
+  `config/services.ts` as a `pageHref` field — two configs holding the same URL
+  is exactly how a navigation layer starts to drift.
+
+### Header active state on a service route
+
+`Services` lights while the visitor is inside `/services/...`, resolved **from
+the URL, not from an observer**:
+
+- On `/`, `useActiveSection(SECTION_ORDER)` behaves exactly as §10g describes —
+  unchanged.
+- Off `/`, the observer is handed a stable empty list and never attaches; there
+  are no homepage sections to watch. `isServiceRoute(pathname)` then resolves
+  the active item to `SERVICES_ANCHOR`.
+- `SERVICES_ANCHOR` (`#what-we-do`) is declared once in `config/site.ts` and
+  used by `NAV_ITEMS`, by the header's active state and by the service page's
+  breadcrumb — three consumers, one string.
+
+Verified on the route: `Services` carries `aria-current="true"`, the other three
+carry nothing, and the treatment is the header's existing one (teal index, full
+ink label, teal hairline held open). **No fifth nav item was added**, and the
+Footer was not turned into a sitemap — both keep the approved four.
+
+### The service page's back-context
+
+The hero eyebrow **is** the breadcrumb rather than a second row above it:
+
+```
+SERVICES / SOCIAL & PERSONAL BRAND GROWTH
+```
+
+A real `<nav aria-label="Breadcrumb">` with an `<ol>`; only `SERVICES` is
+actionable, and the current page carries `aria-current="page"`. The chapter
+index that used to open this line is gone — a dedicated route needs a way back
+to the chapter it came from more than it needs to repeat that chapter's number,
+and `resolveServicePage` no longer computes an `eyebrow` string.
+
+`SERVICE_PARENT` in `config/service-pages.ts` supplies both halves, and takes
+its label and destination from `NAV_ITEMS`, so the crumb can never disagree with
+the header above it. **Plain `<a href="/#what-we-do">`, not `<Link>`** — §10g's
+rule: only a real navigation re-runs `useHashLanding`, which is what corrects
+the landing after the homepage's hydration changes its height.
+
+**No bulky breadcrumb bar, and no `/services` index implied.**
+
+### Route strategy
+
+| Route | Service | State |
+| --- | --- | --- |
+| `/services/social-personal-brand-growth` | 01 Social & Personal Brand Growth | **Built** |
+| `/services/influencer-marketing` | 02 Influencer Marketing | **Built** — §10l |
+| `/services/performance-marketing` | 03 Performance Marketing | **Built** — §10m |
+| `/services/web-digital-experiences` | 04 Web & Digital Experiences | **DEFERRED** — a deliberate milestone, not an oversight. Required scope in §10; see §10o |
+| `/services/brand-shoots-content` | 05 Brand Shoots & Content | **Built** — §10n |
+
+`SERVICE_PAGES` carries all five with a `built` flag, mirroring `config/services.ts`. It is
+deliberately **thin** — slug, which homepage service it expands, which inquiry option it
+preselects, `built`, and (once built) its metadata. Title, chapter index and the hero eyebrow are
+**derived** from `SERVICES` by `resolveServicePage`, so a service name is never written twice and
+can never drift from the homepage.
+
+### What is shared, and what stays unique
+
+The line is drawn on purpose: **shared = the system; unique = the story.**
+
+| Shared primitive | What it owns |
+| --- | --- |
+| `ServiceSection` | Section wrapper, `aria-labelledby`, one padding scale, grid mode |
+| `ServiceSectionHead` | Teal rule + label, two-line clipped headline, optional serif accent, lead |
+| `ServiceGrid` | `full` / `edges` / `none` — the page's grid rhythm |
+| `ServiceHero` | Breadcrumb, `h1`, lead, detail, CTA hierarchy, entry choreography, `id="hero"` |
+| `ServiceStatement` | The calm editorial beat: headline, two paragraphs, a baseline of terms |
+| `ServiceSystem` | N pillars on one spine, with the spine returning at the foot |
+| `ServiceScope` | The typographic scope index + active detail |
+| `ServiceAudience` | One statement plus a restrained audience rail |
+| `ServiceProcess` | Four steps on a hairline, each opening with a teal tick |
+| `ServiceFaq` | Hairline disclosure rows, real `button` + `aria-expanded` |
+| `ServicePageNav` | Previous / next service — renders nothing until a second route exists |
+
+Each page still brings its **own hero composition, its own signature interaction and its own proof
+section** as ordinary React components. `ServiceSectionCopy`, `ServicePillar`, `ServiceScopeItem`,
+`ServiceStep` and `ServiceFaqItem` describe *copy*, never visuals — which is what stops five service
+pages becoming one JSON template rendered five times. **Do not extend the config types to describe
+layout.**
+
+### Section rhythm, and the grid moving with it
+
+```
+hero            high / structured grid
+positioning     calm / grid reduced to its outer columns
+brand system    structural / no grid — the spine is the structure
+content board   interactive / no grid
+scope           structured / full grid
+creator proof   photographic / no grid
+who it's for    calm / grid reduced
+process         structural / full grid
+FAQ             practical / no grid
+inquiry         conversion / grid resolves to nothing by the footer boundary
+footer          the existing Final Signal, unchanged
+```
+
+Measured at 1440×900: **9,921px — 11.0 viewports including the Footer, 10.1 for `<main>` alone.**
+A little over the 7–10 guidance and left there: the boundaries are one constant padding scale
+(`py-24 md:py-28 lg:py-28`, deliberately one step tighter than the homepage's `lg:py-32` because
+this page has ten sections rather than a pinned sequence), and every remaining section is between
+0.6 and 1.5 viewports. Nothing is padding to hit a number.
+
+### Service-page CTA rules
+
+Different from the homepage's, and deliberately so — a service page is a conversion surface that a
+visitor may land on cold.
+
+- **`Book a 15-Min Call` appears exactly once**, in the hero. Verified on the rendered page.
+- **`Start a Project`** sits beside it and is an in-page anchor to `#project-inquiry`.
+- **Mid-page: one contextual text link only** — `Explore our creator network ↗` → `/#creators`.
+- **The foot is the inquiry form.** No booking CTA after a section, ever.
+- §13's homepage rule (`Book a 15-Min Call` exactly once on `/`) is a **homepage** rule; what
+  carries to a service route is the restraint, not the count.
+
+### Inquiry integration — one form, one endpoint
+
+The service page renders the **same `ProjectInquiry` section, the same `InquiryForm` and the same
+`POST /api/inquiry`.** No fork, no second form architecture, no second route. Three optional props:
+
+| Prop | Effect |
+| --- | --- |
+| `initialServices` | Seeds the service checkboxes. Allow-listed through `preselectedServices` in `config/inquiry.ts`, exactly as `coerceInquiry` allow-lists the wire |
+| `note` | A small label beside `Start a project` naming the service |
+| `context` | Replaces the general context paragraph with a route-specific one |
+
+**Preselected, never locked.** They are ordinary checkboxes from the first render — verified: the
+route opens with `social` ticked, it can be unticked, another can be added, and `Send another
+inquiry` returns the form to the state the route opened in rather than a blank one it never had.
+The headline stays *"Tell us what you're building."* on every surface.
+
+### Navigation from a subpage
+
+`NAV_ITEMS` stays the single navigation source. Every href now goes through `sectionHref` /
+`useSectionHref`: a bare fragment on `/`, `/#section` everywhere else. The header, the mobile menu
+and the footer all use it — **no second nav config, and the homepage's markup is unchanged.**
+
+Two decisions worth keeping:
+
+- **Plain `<a>`, never `<Link>`, for anything carrying a hash.** A client-side navigation to
+  `/#work` would scroll before the homepage's hydration changes its height — the 2,247px problem
+  §10g documents — and only a real navigation re-runs `useHashLanding` to correct it. A plain route
+  link with no hash (`Explore service ↗` → `/services/...`) has no such constraint and uses `Link`.
+- **Every service page's opening section is `id="hero"`.** That makes the layout's skip link and the
+  Footer's back-to-top work off the homepage with no change to either.
+- **Active state off the homepage comes from the URL** — see *Header active state on a service
+  route* above. `Services` lights on `/services/...`; the IntersectionObserver is not attached
+  there at all.
+
+Verified from the route: `Work → /#work`, `Services → /#what-we-do`, `Creators → /#creators`,
+`About → /#about`, logo `→ /`, `Contact Us` opens the global panel, footer identical, back-to-top
+and skip link both in-page, breadcrumb `SERVICES → /#what-we-do`.
+
+**Dead-link audit (Revision 08), run against both rendered pages.** Every `<a href>` collected and
+resolved: all in-page hashes have a matching element; `/`, `/#work`, `/#what-we-do`, `/#creators`,
+`/#about` and `/services/social-personal-brand-growth` all return **200** with the fragment's id
+present in the served HTML; the rest are `mailto:`, `tel:`, WhatsApp, Instagram and Facebook.
+**Nothing anywhere points at an unbuilt service route.** Browser Back from the service page returns
+to `/` naturally, with the header's anchors back to bare fragments and the WebGL hero remounted —
+no history handling was written.
+
+### Prev / next service — built, and now rendering
+
+`adjacentServicePages` reads `BUILT_SERVICE_PAGES`, so a neighbour whose route does not exist comes
+back `null`. **Three pages are built, so the rail now renders on all three** — 01 shows only a next,
+03 shows only a previous, and 02 shows both. With one page built it returned `null` and was absent
+from the DOM entirely — the same honesty as Recognition and Client Notes. Do not add a placeholder link.
+
+### Responsive strategy
+
+Shape first, device classification second, as §11 has it. Two JS-driven switches, both on
+`(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` — the same query §10a and §10c use — mirrored by
+`data-layout` on the element so the CSS and the layout in use cannot disagree:
+
+| | Wide | Otherwise |
+| --- | --- | --- |
+| Scope index | Index left, one large detail beside it | Rows expand in place |
+| Content board | Index left, board right | Board first, then a tap-selectable rail |
+
+Everything else is pure CSS. The hero stacks copy-then-composition below `lg`; the system's pillars
+go from a two-column row to a block; the audience rail is 5 → 2 → 1; the process is 4 → 2 → 1; the
+creator field is 5 → 3 → 2 across.
+
+Measured, both themes: **no horizontal overflow at 1440×900, 1280×800, 1024×768, 768×1024, 430×932
+or 390×844.** The only overhang anywhere is the Footer's deliberately cropped wordmark, clipped by
+the footer's own `overflow: hidden` and already recorded in §10g. Every row is ≥48px (scope 58,
+board 84, FAQ 65) and the hero CTAs are 52px throughout. At 390 the creator frames are 167px wide,
+two across — meaningful photography rather than five thumbnails.
+
+### SEO / metadata architecture
+
+Page metadata comes from the registry, so it is written once per route and never drifts.
+
+- **Title:** `Social & Personal Brand Growth` — the layout's `%s — Mishram Media` template supplies
+  the brand, so the rendered title is **`Social & Personal Brand Growth — Mishram Media`.** (An em
+  dash rather than a pipe, matching the rest of the site.)
+- **Description:** *Social media management, personal branding, creator growth and content systems
+  built to turn attention into a brand people recognise.* (136 characters.)
+- `alternates.canonical` and an `openGraph` block, both derived from the same fields.
+- **Positioning only.** No "#1", no "best agency", no "guaranteed growth", no "10X" (§1).
+
+The route is **statically prerendered** — confirmed in the production build output.
+
+### Social & Personal Brand Growth — the visual concept
+
+**THE BRAND SIGNAL** (`social/BrandSignal.tsx`). The hero composition, and the page's thesis in one
+image: *identity → system → recognition.*
+
+One creator (Zoya Jaan, from the verified roster) anchors it as a 3:4 portrait. Around her the
+**same identity resolves into the formats a brand is actually made of** — a 9:16 frame, a 4:5 frame,
+an abstract positioning fragment and a publishing-rhythm fragment — with one continuous signal
+circling the whole arrangement behind them and a short teal segment travelling it.
+
+- **Deliberately not the homepage's Service 01 scene.** That one is three *different* creators
+  around a planning surface, because §02 is introducing a category. This is *one* creator resolving
+  into three formats, because the page is about one person becoming recognisable. Same grammar,
+  different sentence.
+- The three crops are `resolveFrame(zoya, portrait|reel|content)` — §03's own tuned art direction
+  and its `--crt-zoom` / `--crt-origin` mechanism, reused rather than re-guessed.
+- **No WebGL.** The homepage Hero remains the site's only 3D moment (§12). This is DOM, CSS, one SVG
+  and Motion.
+- Composition is percentages of a **fixed-aspect box** (`100 / 109`) — the `.svc-stage-box` lesson
+  from §10 without the scroll machinery. Verified identical at 1440 and at 390: portrait 3→49%,
+  reel 56→83%, content 62→92%, positioning 1→45%, rhythm 47→81%, nothing past 92% right or 97.7%
+  bottom.
+- Fragment padding and gaps are **percentages of the fragment's own width**. Fixed rem padding held
+  at 1440 and clipped the publishing ticks at 390, where the fragment is a third the size.
+
+**THE CONTENT SYSTEM BOARD** (`social/ContentSystemBoard.tsx`) is the page's one interactive moment:
+five pillars — Positioning, Education, Personality, Proof, Community — and a board that reconfigures
+into whichever one is selected. Hover previews, click locks, leaving restores the lock, previews
+debounced 90ms, `aria-current` on the lock and never the preview (`useHoverLock`, §10c). Every
+pillar's sentence is real DOM text at all times, and all five are mounted in one grid cell so the
+block holds the height of the longest and switching never shunts the page (§10d-notes).
+
+The board is a fixed **7/5** box and every state draws into `viewBox="0 0 140 100"` — the same
+ratio — so strokes stay uniform hairlines and no state needs re-checking at a second viewport.
+
+**The connected system** (`ServiceSystem`) is four editorial rows hanging off one spine, with the
+spine turning at the foot and an arrow pointing back to the top: the loop is the argument, so it is
+drawn rather than described. It is **deliberately not interactive** — two selectable sections in a
+row would make a visitor work for four sentences, and the board is where the interaction budget
+goes. The return arc is a fixed-size SVG rather than a percentage-scaled one, because a
+`preserveAspectRatio="none"` path shears its stroke (§10a).
+
+### Content integrity on this page
+
+Nothing on this route claims anything the project cannot evidence.
+
+- **No follower figures, growth percentages, reach, engagement, ROI, campaign results, testimonials
+  or named brand relationships** anywhere.
+- **No fake social UI.** No profile chrome, feed, follower count, likes, comments or metric in any
+  board state or hero fragment. Every composition is structure — hairlines, frames, format labels —
+  and the only photography is the creator roster's own.
+- **The proof section claims exactly what the homepage claims about the same portraits:** they are
+  creators in the Mishram Media network. `SELECTED CREATORS FROM OUR NETWORK`, real names from
+  config, and a caption saying so. §10b's verification pass closed off every figure; none has
+  reappeared here.
+- The hero carries a factual attribution line — `PICTURED — ZOYA JAAN, MISHRAM CREATOR NETWORK` — so
+  the composition cannot be read as a case study.
+- Every capability listed in the scope index is one §1 already states Mishram offers.
+- **Who it's for narrows the claim** rather than widening it: *"Not every business needs this."*
+- FAQ answers are factual and **promise no result**.
+- §9 brand safety: no excluded category appears in any state, hidden or otherwise.
+
+### Accessibility
+
+One `h1`; eight `h2`s; `h3`s correctly nested under the system pillars, the process steps and the
+FAQ. Every section but the hero carries a resolving `aria-labelledby`; the hero uses `aria-label`,
+as the homepage's does. Every image has `alt`, and the three decorative crops are `alt=""` plus
+`aria-hidden`. No unnamed button or link on the page.
+
+**One defect found and fixed during the build:** the FAQ and the scope rail originally unmounted
+their panels, which left every collapsed `aria-controls` pointing at an element that did not exist.
+Both panels are now **always mounted**, with `inert` keeping the closed ones out of the
+accessibility tree and the tab order, and the open/close transition moved to CSS
+(`.svp-disclosure`, `grid-template-rows: 0fr → 1fr`) — the platform's own way to transition to
+content height, with nothing to measure and nothing to strip under reduced motion.
+
+### Reduced motion
+
+The orbit signal stops and the loop stays fully drawn; active markers still move, because a
+selection has to be visible, but in 120ms. Every content block, the board interaction, the FAQ and
+the form stay usable.
+
+**One guard worth keeping.** Motion implements an animated `pathLength` as an inline
+`stroke-dasharray` / `stroke-dashoffset`, so a draw that is stripped or never runs leaves the line
+permanently invisible — the same class of bug §10g records for the footer signal. The reduced-motion
+block forces `.svp-orbit-base` and the loop path to their drawn state with `!important`, which is
+what reaches past Motion's inline style.
+
+### Performance
+
+- **No new dependency.** Plain React, the platform, and the animation engine already installed.
+- **No second WebGL canvas, no video, no autoplay, no new asset.** Verified on the rendered page:
+  0 canvases, 0 videos. All nine images are existing creator `.webp` files.
+- **Exactly one eager image** — the hero portrait, the route's genuine above-the-fold LCP
+  candidate. `loading="eager"` + `fetchPriority="high"` rather than `priority`, which Next 16
+  deprecated in favour of `preload`; React hoists a single responsive preload for it. **Every other
+  image on the page is lazy**, which is the §10i rule applied from the start.
+- Every image carries a `sizes` matched to its measured box, so a phone never pulls a desktop-sized
+  file.
+
+### Homepage
+
+**The homepage's design was not changed.** No section redesigned, no scene touched, no copy edited
+beyond Service 01 gaining its route action (Revision 08, above). Verified after both passes: nine
+sections in the same order, `what-we-do` **7,449px** (§10i recorded 7,450), Project Inquiry 1,376px,
+Footer 803px, page 16,245px, one canvas, `Book a 15-Min Call` exactly once, and the header and
+footer anchors still bare fragments on `/`.
+
+**Revision 07 deferred the homepage wiring on the grounds that one of five services quietly becoming
+a link would read as asymmetric. Revision 08 reversed that**, because the asymmetry is the honest
+state: one service has a page and four do not, and hiding a real destination to keep the row tidy
+costs the visitor more than the unevenness does. The architecture is what makes it safe — the link
+is derived from `built`, so the other four cannot render one, and all five even out by themselves as
+the routes ship.
+
+---
+## 10k. THE GLOBAL SHELL (Revision 09) — Footer V2, the services menu, the route transition, and the legal routes
+
+`src/components/Footer.tsx` + `config/footer.ts`, `src/components/header/ServicesMenu.tsx`,
+`src/components/transition/RouteTransition.tsx` + `src/components/ui/PageLink.tsx`,
+`src/config/routes.ts`, `src/config/legal.ts`, `src/components/legal/LegalArticle.tsx`,
+`src/app/{privacy,terms,cookies}/page.tsx`. `.ftr-*`, `.hdr-*` and `.rt-*` in `globals.css`.
+
+### The public route inventory, after Revision 09
+
+Read off `src/app/**`. **Nine public pages after Revision 15. That is the whole site.**
+
+| URL | File | Reachable from |
+| --- | --- | --- |
+| `/` | `app/page.tsx` | Header wordmark, every header/footer anchor, the service page's breadcrumb, the transition |
+| `/services/social-personal-brand-growth` | `app/services/social-personal-brand-growth/page.tsx` | Header services menu, Service 01's `Explore service ↗`, footer Services list, Service 02's prev/next |
+| `/services/influencer-marketing` | `app/services/influencer-marketing/page.tsx` | Header services menu, Service 02's `Explore service ↗`, footer Services list, Service 01's and 03's prev/next |
+| `/services/performance-marketing` | `app/services/performance-marketing/page.tsx` | Header services menu, Service 03's `Explore service ↗`, footer Services list, Service 02's prev/next, Service 03's own mid-page creator-campaign link |
+| `/services/brand-shoots-content` | `app/services/brand-shoots-content/page.tsx` | Header services menu (listed as `05`), Service 05's `Explore service ↗`, footer Services list, Service 03's prev/next |
+| `/about` | `app/about/page.tsx` | Header nav (04 / About) on every route, footer Navigate list, the homepage About chapter (`Read our story ↗`) — §10r |
+| `/privacy` | `app/privacy/page.tsx` | Footer legal rail, on every page |
+| `/terms` | `app/terms/page.tsx` | Footer legal rail, on every page |
+| `/cookies` | `app/cookies/page.tsx` | Footer legal rail, on every page |
+
+`/api/inquiry` is a route handler, not a page, and never appears in navigation. `/_not-found` is
+Next's built-in. **There are still no internal, debug, design-lab or preview routes**, no route
+groups, no dynamic segments, no middleware and no rewrites. **No page is an orphan** — verified by
+crawling every rendered `href` on all eight routes; every internal href returns **200**. **The one
+unbuilt service route (`/services/web-digital-experiences`) returns 404 and is referenced
+nowhere** — verified after Revision 12 by collecting every internal `href` on all eight pages.
+
+**One pre-existing dead anchor, found during Revision 11's crawl and deliberately not fixed here.**
+The layout's skip link and the Footer's back-to-top both point at `TOP_ANCHOR` (`#hero`), and the
+three legal routes have no `#hero` element — so on `/privacy`, `/terms` and `/cookies` both resolve
+to nothing. It predates this revision, it is in the global shell rather than in any service page,
+and fixing it means touching §10k's locked components. **Worth one small fix when the shell is next
+opened**: either give `LegalArticle`'s root `id="hero"`, or have `TOP_ANCHOR` fall back to scrolling
+to the document top off the homepage.
+
+### FOOTER V2 — the agency desk
+
+V1's Final Signal ended the page on one 616px centred wordmark and almost nothing else. It read as a
+poster, it left the last screen empty, and it could not carry the legal links or the service routes
+the site now has. **The field is kept; the composition is replaced.**
+
+Kept: the full-bleed obsidian canvas in **both** themes (the `--color-*` inversion, unchanged), no
+twelve-column grid, no `border-top`, the teal trace the inquiry's grid resolves into, the verified
+contact data, and **no booking CTA** — `Book a 15-Min Call` still appears exactly once on the site,
+in the homepage Hero.
+
+**Desktop composition** — an invisible twelve-column grid, four directories on one row with a
+deliberate empty column between the contact block and the rest:
+
+```
+MISHRAM MEDIA / INDIA                                    Back to top ↑
+
+GET IN TOUCH        NAVIGATE       SERVICES              FOLLOW
+mediamishram@…      01 Work        01 Social & Personal  ⃞ Instagram ↗
++91 63993 99333     02 Services       Brand Growth       ⃞ LinkedIn
+WhatsApp ↗          03 Creators                          ⃞ Facebook ↗
+                    04 About
+───────────────────────────────────────────────────────────────────
+MISHRAM wordmark                     PRIVACY  TERMS  COOKIES
+(bottom-left, 340px)                 © 2026 · Strategy × Content × …
+```
+
+Measured column offsets at 1440: contact at 63px, Navigate 624, Services 848, Follow 1184 — all on
+one row. **Heights: 681px at 1440×900, 681 at 1440×768, 677 at 1280×800, 646 at 1024×768** — inside
+the 550–700 target, against V1's 803.
+
+**The wordmark is a signature, not the composition.** 340px at 1440 (V1: 616px), left-aligned to the
+page gutter, centre sitting 487px left of the viewport centre — decisively asymmetric. **Not
+cropped**, deliberately: it is an integrated mark with a studio light inside the first M and slashes
+at the end, so trimming an edge removes a letterform rather than reading as a bleed. At this size it
+does not need a crop to sit as a signature.
+
+**Mobile.** 60vw wide (234px at 390), left-aligned at the gutter, 111px tall — against V1's 138% of
+the viewport. The four directories pair up instead of stacking as full-width blocks: contact, then
+Navigate | Follow side by side, then Services full width. From `md` the contact block pairs with the
+directories.
+
+| Width | Footer height |
+| --- | --- |
+| 1440 / 1280 / 1024 | 681 / 677 / 646 |
+| 768 portrait | 886 |
+| 430 / 390 | 1,013 / 1,012 |
+
+**390 is 1,012px against V1's 1,070, and that is the honest result rather than the 700–900 target.**
+The brief asked for both a materially shorter mobile footer *and* materially more content in it, and
+on a 390px screen those pull against each other: contact, four navigation rows, three social rows,
+the service list, three legal links and the colophon at 44px touch targets cost what they cost.
+Getting under 900 needed either dropping a directory or shrinking the tap targets, and neither was
+worth 100px. Every row is ≥44px and there is no horizontal overflow at any width.
+
+**Everything in it is derived.** Services from the `built` flags, legal from `LEGAL_DOCS`,
+navigation from `NAV_ITEMS`, contact from `CONTACT`, socials from `SOCIAL_URLS`. Shipping the next
+service route makes it appear here with **no edit to the footer**.
+
+**The finishing detail** is a slow teal segment travelling the base rule — the same signal the footer
+opens on and the same one the route transition draws. It replaced V1's pointer-tracked band inside
+the letterforms, which was composed for a poster-scale mark that no longer exists.
+
+### The social rail, and LinkedIn
+
+Icon, platform name, and an arrow **only where there is somewhere to go** — a directory row rather
+than an isolated app tile, which is what lets it fill a column instead of floating in one.
+
+| Platform | Rendered as | Evidence |
+| --- | --- | --- |
+| Instagram | `<a>` | schema.org `sameAs` on the old site, plus its footer and contact page |
+| Facebook | `<a>` | Same |
+| **LinkedIn** | **`<span aria-disabled="true">`** | **No verified URL.** The only one that ever existed was a bare `linkedin.com` in the purchased template's social row |
+
+**LinkedIn is visually present and is not a link.** No `href="#"`, no bare domain, no `COMING SOON`
+label. The visual signal is that the row is quieter — muted ink, a dimmer mark, no arrow, no hover
+affordance, `cursor: default` — and a screen-reader-only "Profile not published yet" carries the
+state to assistive technology without putting clutter on the page.
+
+**Filling `SOCIAL_URLS.linkedin` in turns that same row into a real link with zero component
+edits.** `SOCIAL_LINKS` now carries all three platforms with a nullable `href` rather than filtering
+the unverified one out; `VERIFIED_SOCIAL_LINKS` exists for anywhere a dead row would not be
+acceptable.
+
+### The header services menu
+
+`Services` **stays a plain anchor** to `02 / What We Do`. A small chevron disclosure sits beside it
+and opens a 352px panel listing the overview again, explicitly, and then every service page that
+exists. A visitor never has to choose between the overview and the pages beneath it.
+
+- Real `<button>` with `aria-expanded` and `aria-controls`. Click toggles; **Escape closes and
+  returns focus to the trigger**; a pointer-down outside closes; choosing anything closes; a route
+  change closes it during render rather than in an effect, so it never paints open over the new page.
+- The active service carries `aria-current="page"` inside the panel, and `Services` itself stays lit
+  in the header on any `/services/...` route (Revision 08).
+- **Not a mega-menu**: hairline rows, a numbered list, the page's own palette, one line of the
+  service's own description from `config/services.ts`.
+- **No fifth top-level nav item**, and the footer is not a sitemap — both keep the approved four.
+
+**Mobile** gets the same content as an expandable group inside the existing sheet, using the shared
+`.svp-disclosure` CSS (always mounted, `inert` when closed, so `aria-controls` names something real).
+The label still navigates to the overview; the `+` expands in place. No nested scroll panel.
+
+Both surfaces read `BUILT_SERVICE_PAGES`, so **an unbuilt service can never appear** and the next
+route joins both menus with no component edit.
+
+### THE MISHRAM SIGNAL WIPE — one route transition for the site
+
+`RouteTransition` lives in `app/layout.tsx`, so **every internal route change gets it, including
+pages built later**, and no page carries transition state of its own.
+
+An obsidian field wipes up across the viewport, a teal hairline crosses its leading edge, and the
+Mishram wordmark plus the destination's name resolve at the lower left — the same three things the
+footer is built from, so a page change reads as part of the same object rather than a system message.
+
+```
+cover 230ms  →  (destination arrives)  →  reveal 280ms
+```
+
+≈ **510ms end to end** for a prefetched route. **No spinner, no percentage, no progress ring, no
+bouncing dots**, and **navigation is never stalled**: `router.push` fires on the same tick as the
+click and the panel animates over the top of it. The reveal waits for whichever finishes last — the
+cover's own span or the destination actually rendering — so a slower route is simply covered for
+longer. A 2.2s escape hatch clears the panel unconditionally; nothing can be left behind it.
+
+The destination's name comes from `routeMarker` in `config/routes.ts`, derived from the service and
+legal registries — `Services / 01 — Social & Personal Brand Growth`, `Legal — Privacy Policy` — so a
+new page names itself.
+
+**Scope, and what deliberately does not transition:**
+
+| Navigation | Behaviour |
+| --- | --- |
+| `/` → `/services/…`, `/privacy` → `/terms`, logo → `/` | Full wipe, via `PageLink` |
+| Same-page hash (`#creators`, `#project-inquiry`) | **Native and immediate.** Verified: the panel never mounts |
+| Cross-page hash (`/#what-we-do` from a service page) | **Full navigation, no wipe.** §10g's rule — only a real navigation re-runs `useHashLanding`, which corrects the landing after the homepage's hydration changes its height |
+| `mailto:`, `tel:`, WhatsApp, Instagram, Facebook | Untouched |
+| Browser Back / Forward | **Left entirely alone.** No history hijacking, no overlay |
+
+`PageLink` wraps Next's `Link`, so **prefetching is unchanged** — which is exactly why the wipe can
+be short. Modifier-clicks and middle-clicks fall through, so open-in-new-tab still works.
+
+**Reduced motion** gets the navigation and nothing else: no overlay, no delay, a plain `router.push`.
+**Scroll**: the new route is scrolled to its top while the field is opaque, so a visitor never
+watches a 9,000px homepage scroll unwind. **Focus** is left to Next's own route handling — the panel
+is `aria-hidden`, holds nothing focusable, and can neither trap focus nor be announced twice. No
+`loading.tsx` was added: all five routes are statically prerendered, so the overlay already covers
+the only gap there is.
+
+### The legal routes
+
+`/privacy`, `/terms`, `/cookies`. Content and the full audit live in `config/legal.ts`; the routes
+are shells around one shared `LegalArticle`. Updated **25 August 2026** — the date they were written,
+not the old documents' 5 July 2025.
+
+**Design.** The service pages' typography and restraint, and none of their theatre: an eyebrow
+(`LEGAL / 01`), the title, the updated date, and a readable column — measured 736px at 1440, inside
+the 680–800 target. Numbered sections on hairlines, one `h1` and an `h2` per section. No hero, no
+composition, no imagery, no gimmick. The header stays **neutral** on these routes, which is correct:
+a legal page is not inside Work, Services, Creators or About.
+
+**The audit.** The previous site's three documents were read in full and **almost none of the content
+survived**, because it describes a site that behaves nothing like this one. The full table is in
+`config/legal.ts`; the headline removals:
+
+- "Website Usage Data … via cookies or analytics" — **this site has neither.**
+- A cookie policy listing Google Analytics, Facebook Pixel, Google Ads and a LinkedIn Insight Tag —
+  **none of them exists here.** Carrying that over would have been a fabrication in the one document
+  whose entire job is accuracy.
+- `info@mishram.com`, `support@mishram.com`, two conflicting phone numbers and a Dehradun address —
+  all contradict each other and all contradict `config/site.ts`. Every contact detail on the new
+  pages is imported, not typed.
+- The old Terms' payment, refund, revision-count and delivery clauses — **removed from the website
+  terms**, because they belong in a signed proposal. The new Terms say so explicitly.
+- Kept: "cannot guarantee specific results", and Indian law / Uttarakhand jurisdiction.
+
+**What the Privacy Policy documents, all verified in the code:** the inquiry fields (name, email and
+description required; phone, business, services, budget and timing optional); that the route
+validates and delivers through Resend when configured and **writes no database row, no file and no
+log**; that it is nonetheless processed by the email provider and kept in Mishram's inbox, so the
+page never claims it is "never stored anywhere"; the WhatsApp fallback and that **nothing is sent
+unless the visitor follows it themselves**; the honeypot; that fonts are downloaded at build time and
+served from this origin, so no request reaches Google; and a complete third-party list — hosting
+provider, Resend, WhatsApp, and the social platforms only if an outbound link is followed. **Hosting
+is not named**: no hosting configuration is committed here, so naming a provider would be a guess.
+
+**What the Cookie Policy documents:** this site **sets no cookies at all** — verified, nothing in
+`src/` touches `document.cookie` — runs no analytics and embeds no third-party script, so there is
+no consent banner because there is nothing to consent to. The one thing stored is
+`localStorage["mishram-theme"]`, and the page explains why that is **not** a cookie: it is never
+transmitted with a request.
+
+### Global navigation architecture
+
+Every public page has an obvious route into it, from everywhere:
+
+| From | Routes available |
+| --- | --- |
+| Homepage | Header nav, header services menu, Service 01's `Explore service ↗`, footer Services list, footer legal rail |
+| Service page | Header nav (`/#…`), header services menu, breadcrumb → `02 / What We Do`, footer everything |
+| Legal page | Header nav (`/#…`), header services menu, footer everything |
+
+**Dead-link audit, run against the rendered HTML of all five routes:** every internal href returns
+200, every in-page hash has a matching element, and the rest are `mailto:`, `tel:`, WhatsApp,
+Instagram and Facebook. **No `href="#"`, no bare `linkedin.com`, and nothing pointing at an unbuilt
+service route** anywhere on the site.
+
+---
+
+## 10l. 02 / INFLUENCER MARKETING — the second service page (Revision 10)
+
+`src/app/services/influencer-marketing/page.tsx`, copy in
+`src/config/service-influencer.ts`, compositions in
+`src/components/service-page/influencer/*`. `.inf-*` styles in `globals.css`.
+
+**Built and live: `/services/influencer-marketing`.** It is the first real test of
+whether §10j's shared system carries a *different* story, and the answer is yes: it reuses every
+shared primitive and shares no composition, no rhythm and no section order with Service 01.
+
+### The concept — many creators, one campaign
+
+Service 01 runs **one identity outward into a system**: a person becoming recognisable. Service 02
+runs **a field of distinct voices inward onto one objective**. That inversion is the whole page, and
+it is told three times in three different forms — the hero draws it, the match field interacts with
+it, the campaign system braids it. It is one argument, not a template with new words in it.
+
+**The rhythm is deliberately reordered**, so the two pages do not walk in step even where they share
+components:
+
+```
+Service 01   hero → positioning → system → interaction → scope → proof → audience → process → FAQ → inquiry
+Service 02   hero → relevance → interaction → system → proof → scope → fit → audience → process → FAQ → inquiry
+```
+
+The interaction arrives **third** here rather than fourth, because on this service the decision *is*
+the pitch; proof comes **before** scope, because the network is the credential.
+
+Measured at 1440×900: **10,567px — 11.74 viewports including the Footer, 10.98 for `<main>`.**
+That is above the 9–11 guidance and it is worth saying why rather than hiding it: this page carries
+**eleven** sections against Service 01's ten, and the shared `ServiceSection` padding is 224px per
+section — 2,464px, 2.7 viewports, of chapter boundary before a word is written. Hero, the shared
+inquiry and the Footer are another 3.3 between them. The eight middle sections average ~950px each,
+which is not padded. Shortening it further meant losing a section the brief asked for.
+
+### Hero — the Campaign Constellation
+
+A campaign signal at the centre; **five real creators distributed around it at genuinely different
+scales and depths**; five arcs connecting each back to the centre, hand-placed so none crosses a
+photograph; and one teal segment travelling the network. The concept line beneath reads
+`Objective → Creator Fit → Collaboration → Distribution`.
+
+- **Nothing is reused from Service 01's Brand Signal.** That is one creator re-cropped three ways
+  around a positioning fragment; this is five creators at five sizes around a node. Different box
+  aspect (100/92 against 100/109), different geometry, different SVG, different motion.
+- Percentages of a **fixed-aspect box** with a `viewBox` that matches it exactly — a collision
+  checked at one viewport is checked at all of them, and no stroke can shear. Verified: **zero
+  elements escape the box** at 1440, 1280, 1024, 768, 430 or 390.
+- Motion is restrained: 1–3px idle drift on four out-of-phase periods, arcs drawing on entry,
+  spring-damped pointer parallax at five different depths, and one travelling signal. **No WebGL, no
+  canvas, no video** (§12).
+- Each frame carries **the creator's real name and nothing else.** No follower count, no audience
+  demographic, no engagement figure, no campaign score, no price. The line beneath says what they
+  are: creators from the network.
+
+### The Creator Match Field — the signature interaction
+
+Choose one of five campaign intents — Awareness, Product Story, Launch, Cultural Relevance,
+Creator-Led Content — and the route redraws from an objective node, through the formats that intent
+needs, into a brief. Same brand, five different plans.
+
+**THE CONSTRAINT THAT SHAPED IT, and it must survive any redesign.** The obvious build is: pick an
+intent, two or three creators light up. **That version cannot ship.** It would assert that a named
+real person is the right choice for "Launch", and the project holds no evidence of any such thing —
+inventing a characteristic for a real human being on a client's live site is exactly what §1 forbids
+and what §10b's follower-count audit already refused once.
+
+So **the route runs through format and stage nodes, never through people.** The creator field is an
+evenly-treated backdrop, and **no intent ever changes which creator is emphasised, because none of
+them ever is.** Verified empirically: the five backdrop portraits compute to the *same* opacity
+(0.62) under every one of the five intents. The disclaimer is rendered on the page, not left in a
+comment.
+
+**No claimed software.** There is no matching engine, no audience-intelligence platform and no
+proprietary score, so nothing is drawn to look like one — no dashboard chrome, no percentages, no
+fit meters, no charts. The brief it resolves into is four typographic fields (`Objective` /
+`Creator mix` / `Format` / `Distribution`) whose values are shapes a plan can take, never a campaign
+anyone ran and never a number.
+
+Selection is the proven pattern: hover previews, click locks, leaving restores the lock, 90ms
+debounce, `aria-current` on the lock and never the preview, real `<button>`s so focus previews and
+Enter locks, every intent's sentence and brief mounted in one grid cell so switching never shunts
+the page.
+
+### The campaign system — five strands braiding into one
+
+Four separate voices enter on the left and merge, stage by stage, until a single trunk leaves on the
+right. **The drawing is the page's title in line form.** Objective → Creator Fit → Brief →
+Coordination → Launch + Learn.
+
+Deliberately not the other two line sections on the site: §04 Work Process is five stages on a
+**rising** line with a feedback loop and a selectable panel; Service 01's `ServiceSystem` is four
+rows on a **vertical spine that turns back on itself**. That is a loop; this is a convergence.
+Nothing is selectable — all five sentences are on screen at once, and the interaction budget belongs
+to the match field. Below `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` the braid becomes a
+vertical rail and the convergence is stated rather than drawn, the same honesty §10c's rail applies.
+
+### Creator proof — the casting wall
+
+One continuous horizontal strip at a single height with **deliberately uneven widths** (264 / 197 /
+280 / 344 / 197 at 1440) and a different crop of a different creator in each. Not Service 01's
+five-up offset field; hovering one keeps it at full strength and steps the rest back, the casting
+gesture.
+
+**What is claimed:** these are creators in the Mishram Media network. **What is not claimed
+anywhere:** that any of them appeared in a client campaign, that they worked together, that a result
+followed, or anything at all about audience size. The caption says so on the page.
+
+### Scope, and how the shared index was art-directed
+
+Eight capabilities, using the shared `ServiceScope`: Influencer Campaign Strategy · Creator
+Discovery · Creator Shortlisting · Campaign Briefing · Creator Communication · Collaboration
+Coordination · Content Planning & Rollout · Campaign Review.
+
+**Deliberately absent: negotiation, contracts, rate cards and creator payments.** A service page is
+the wrong place for a brand to find out a capability was overstated.
+
+> **EVIDENCE UPDATE — 25 August 2026. The premise for omitting *negotiation* has changed; the
+> public scope has deliberately NOT.** This section used to justify the omission as "the project
+> holds no evidence Mishram manages any of them." That is no longer true of negotiation: the old
+> site's own `influencerMarketing.html` states Mishram will *"manage outreach, **negotiations**,
+> and briefs, and build strong, long-term collaborations"* — first-party copy, the same class of
+> source `config/about.ts` already cites.
+>
+> **The scope index was left unchanged in Revision 13 on purpose.** Promoting a row is a public
+> promise, this is historical copy about a previous incarnation of the business, and the decision
+> belongs in a service-content pass rather than a content-migration one. **Contracts, rate cards
+> and creator payments remain wholly unevidenced.** So: the reason for the omission is now
+> "deferred pending client confirmation", not "no evidence exists" — and anyone revisiting this
+> should know the difference.
+
+`ServiceScope` gained one optional prop — `accessory`, a page-specific mark rendered under the active
+detail. Service 02 passes a miniature of the hero constellation. **That is the pattern for
+art-directing a shared primitive: add a slot, never fork the component.** `ServiceProcess` likewise
+now derives its column count from the step count, so Service 01 keeps four moves and Service 02 gets
+five without either being padded to match the other.
+
+### Automatic discovery — verified, with zero component edits
+
+`built: true` was flipped **only after** the route existed, the page was complete, the responsive
+sweep passed, preselection worked and the production build succeeded. Flipping it lit four surfaces
+on its own:
+
+| Surface | Result |
+| --- | --- |
+| Header services menu | `Overview` + `01` + `02` |
+| Mobile services group | `Overview` + `01` + `02` |
+| Homepage `02 / What We Do` | Service 02 gained `Explore service ↗` |
+| Footer Services directory | Both routes listed |
+| Service-page prev/next | Service 01 → `Next service — Influencer Marketing`; Service 02 → `Previous service — Social & Personal Brand Growth` |
+
+**No JSX was edited in the Header, the mobile menu, the Footer, `ServiceCopy` or `ServicePageNav`.**
+The registry architecture from §10j and §10k carried it, which is what it was built to do.
+
+The **global Mishram signal wipe** (§10k) plays for every one of those routes with no page-specific
+code: the marker resolves to `Services / 02 — Influencer Marketing` because `routeMarker` reads the
+same registry. Verified on homepage → Service 02 and Service 02 → Service 01.
+
+### Responsive
+
+Two shape-first switches, both on `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` and both
+mirrored by `data-layout`: the match field goes index + field → intents then field then brief; the
+campaign band goes braid → vertical rail. The scope index uses the shared switch. The casting wall
+is a flex strip from `sm` and a two-column grid below it.
+
+At **390** the hero keeps its dominant creator and its supporting frames at genuinely different
+sizes rather than five equal thumbnails, the casting wall is two columns of 169px portraits, and the
+process is one column. **No horizontal overflow at 1440×900, 1440×768, 1280×800, 1024×768, 768×1024,
+430×932 or 390×844.** The only overhang anywhere is a zoomed crop inside `.svp-frame`, clipped by
+its own `overflow: hidden` — the same benign case §10i records for the homepage's surfaces.
+
+### SEO and performance
+
+- **Title:** `Influencer Marketing — Mishram Media` (the layout template supplies the brand).
+- **Description:** *Creator discovery, campaign strategy and influencer collaborations built around
+  the right people, the right content and a coordinated launch.* (141 characters.)
+- `alternates.canonical` and an `openGraph` block, both derived from the registry. Statically
+  prerendered.
+- **15 images, 1 eager, 1 preload, 0 canvases, 0 videos, and every image has `sizes`.** Five
+  above-the-fold portraits competing for bandwidth is §10i's bug with a different cast, so only the
+  anchor is eager — the rest load normally.
+- **No new dependency.** The compositions are CSS, SVG and the Motion already installed.
+
+### Content integrity — the boundary on this page
+
+Influencer marketing is the category where invented numbers are normal, so this page is stricter
+than any before it. **There is not one figure on it.** No reach, impressions, views, follower counts,
+engagement rate, ROI, conversion lift, creator count, campaign count, client name or case study. No
+claimed software. No creator categorised. No testimonial — Client Notes stays content-blocked. §9
+brand safety holds: no excluded category appears in any state.
+
+The full boundary, and the reasoning behind each omission, is at the head of
+`config/service-influencer.ts`.
+
+---
+
+## 10m. 03 / PERFORMANCE MARKETING — the third service page (Revision 11)
+
+`src/app/services/performance-marketing/page.tsx`, copy in
+`src/config/service-performance.ts`, compositions in
+`src/components/service-page/performance/*`. `.pfm-*` styles in `globals.css`.
+
+**Built and live: `/services/performance-marketing`.** It is the harder test of
+§10j's shared system than Service 02 was, because it has to carry a story with
+**no creators in it at all** — and, on the one service a visitor most expects
+numbers on, without a single figure.
+
+### The concept — THE EXPERIMENT ENGINE
+
+Service 01 runs **one identity outward into a system**. Service 02 runs **a
+field of voices inward onto one objective**. Service 03 is neither: it
+**travels and comes back**.
+
+```
+hypothesis → creative variants → paid distribution → landing → signal ↺ next test
+```
+
+Every composition on the route draws that same loop at a different scale. The
+hero draws it spatially, the creative section lets the visitor operate one turn
+of it, the path draws it as a closed circuit, and the destination section argues
+the half of it everyone inherits rather than builds. **One argument, four
+forms** — the §10l rule, applied to a different sentence.
+
+### Section rhythm, and why it is nine chapters rather than twelve
+
+```
+Service 01   hero → positioning → system → interaction → scope → proof → audience → process → FAQ
+Service 02   hero → relevance → interaction → system → proof → scope → fit → audience → process → FAQ
+Service 03   hero → hypothesis → creative + interaction → path → destination → scope → audience → process → FAQ
+```
+
+The interaction arrives **second**, earlier than on either page before it,
+because on this service the method *is* the product: a visitor who has operated
+one test has understood the pitch. Scope arrives late, after the page has shown
+the work rather than listed it.
+
+**Two sections carry two movements each, and both merges removed a genuine
+repeat rather than trimming content:**
+
+| Section | Movement one | Movement two | Why merged |
+| --- | --- | --- | --- |
+| Creative | The variant sheet — what a test produces | The test bench — how it is decided | Both showed abstract rectangles that vary. Read a screen apart they were the same idea twice; read together they are one argument with a hinge in it. **−474px** |
+| The performance path | The loop drawn — six moves and a return arc | The optimisation rail — what the loop may change | They repeated each other's nouns (distribution, destination, creative) a screen apart. Together the second is the first at a different altitude, and the copy says so. **−674px** |
+
+### Length — measured, and honestly over the guidance
+
+**11,384px at 1440×900 — 12.65 viewports including the prev/next rail and the Footer.** The target
+was 9.5–11 and this does not reach it. The arithmetic, rather than an excuse:
+
+| | |
+| --- | --- |
+| Shared `ServiceSection` padding × 9 sections | **2,016px** (2.24 viewports) |
+| Hero (`min-h: 100svh`) | 900 |
+| Shared Project Inquiry (§10h) | 1,376 |
+| Footer V2 + prev/next rail | 902 |
+| **Structural cost before a word of this page's own content** | **5,194px — 5.8 viewports** |
+
+That leaves nine sections averaging ~688px of actual content each, which is not
+padded: the two heaviest are the merged ones above, and the lightest is 590px.
+Measured section by section: hero 900 · hypothesis 590 · **creative 1,881** ·
+**path 1,570** · destination 1,036 · scope 1,101 · audience 652 · process 697 ·
+FAQ 681 · inquiry 1,376 · rail 221 · footer 681.
+
+The page went **13.57 → 12.75 → 12.40 viewports** across three passes (all
+measured before `built: true` added the 221px prev/next rail) — the two merges,
+a shallower bench box, a shorter destination composition and tighter internal
+margins. **Every further reduction from here removes a section the brief asked
+for**, and the two candidates are recorded below rather than taken unilaterally.
+
+**If a shorter page is wanted, in order of least damage:**
+
+1. **Fold `Who it's for` into the hypothesis statement** (−~390px). Both are
+   quiet typographic beats; the audience rail would replace the statement's
+   three-word baseline.
+2. **Fold the destination section into the path's stage 04** (−~390px). It is
+   already that stage expanded, but it costs the page one of its best lines
+   ("The ad is only half the journey.") and buries the web capability.
+
+Neither reaches 11.0 on its own; both together land at ~11.5.
+
+### Hero — the Experiment Field
+
+A directed route with a return trace: three creative variants at the left, a
+distribution node, a landing surface at the right, a response mark below it, and
+a quiet feedback arc running back underneath. **No photography at all.**
+
+- **Nothing radiates and nothing converges.** Service 01's Brand Signal is one
+  identity circled by a closed loop on a photograph; Service 02's Campaign
+  Constellation is five people converging on a node. This one *travels*.
+- **The narrow composition is a different composition, not a smaller one.**
+  Below 640px the route turns vertical, the cluster becomes one primary plus two
+  fragments, and the landing sits beside its own signal. Both layouts are the
+  same data shape — one render path, two tables — so a change to either is a
+  table edit. `useMediaQuery(query, true)` so the desktop layout is what ships
+  in the HTML; a phone corrects it inside the 300ms the hero holds the whole
+  composition at `opacity: 0`.
+- Percentages of a fixed-aspect box with a `viewBox` matching it exactly.
+  **Verified: zero elements escape the box** at 1440×900, 1440×768, 1280×800,
+  1024×768, 768×1024, 430×932 or 390×844.
+- Motion: entry from depth, 1–3px idle drift on four out-of-phase periods,
+  spring-damped pointer parallax at four depths, and **one** travelling dash on
+  the route the spend follows. No WebGL, no canvas, no video (§12).
+
+**Three layers, and they must stay three.** The parallax MotionValues own the
+outer transform, the entry animation owns the middle one, and the CSS idle
+drift owns the inner one. An animated `y` on the same element as a `y`
+MotionValue makes the two fight — §10's rule, and the reason `SurfaceNode` looks
+over-nested.
+
+### The abstract creative surface — the page's smallest unit
+
+`CreativeSurface` renders a stack of structural rows: lines of type, a media
+region, and the thing being clicked. **No words, no imagery, no brand, no
+number.** Three separate reasons, all of them load-bearing:
+
+1. A headline written into a mockup is a claim nobody wrote, and on a
+   performance page it reads as copy from a campaign that ran.
+2. A logo or a recognisable product implies a client relationship the project
+   cannot evidence — and §9's excluded categories can never reach the DOM if
+   nothing in here names a company at all.
+3. **A figure would be a fabrication.**
+
+What is left is exactly what a structural test varies — hierarchy, weight,
+proportion, shape, and where the ask sits — which is the honest thing to draw.
+Two tones: `wire` (schematic, for the bench) and `media` (denser and tonal, for
+the sheet), which is what stops the two movements reading as one.
+
+### The Creative Test Bench — the signature interaction
+
+Five variables — **Hook · Message · Format · Offer · Destination**. Choosing one
+replaces the three surfaces on the bench with three that differ in exactly that
+way, and rewrites a four-field record: `Variable` / `Variants` / `Held constant`
+/ `Next decision`.
+
+**What makes it different from the other two signature interactions.** Service
+01's board redraws one board into five arrangements of the same objects;
+Service 02's match field redraws a route between fixed nodes. This one
+**replaces the objects themselves** — and under `Format` the three surfaces are
+not even the same shape, because that is what that variable means.
+
+**THE CONSTRAINTS, and they are the design:**
+
+- **No variant is ever shown winning.** A green tick, a highlighted champion, a
+  "+32%" — each would be a fabricated result, and on this page a fabricated
+  result is a business claim. The record resolves into a **decision rule**
+  ("keep the opening that earned the next second"), which is method, not outcome.
+- **No claimed software.** There is no testing platform behind it, so nothing is
+  drawn to look like one: no dashboard chrome, no ad-manager UI, no charts, no
+  gauges, no confidence bars, no percentages. **The disclaimer saying so is
+  rendered on the page**, not left in a comment — the rule §10l set.
+- `Held constant` is on the record deliberately. It is the one field that shows
+  the method is a method rather than a mood board.
+
+Selection is the proven pattern (`useHoverLock`, §10c). **Verified with real
+input:** hovering previews without moving the lock, clicking locks, leaving the
+list restores the lock, focus previews, Enter locks, `aria-current` tracks the
+lock and never the preview, and exactly one record is outside `aria-hidden` at
+any moment. **The section height is 1,881px through every state** — the bench is
+a fixed-aspect box and all five records share one grid cell (§10d-notes).
+
+**The bench box uses `box-sizing: content-box` on purpose.** `aspect-ratio` then
+sizes the surfaces area alone and the tag strip is padding *below* it, so every
+slot's height percentage resolves against one viewport-invariant box. Folding
+the tag strip into the aspect makes the usable height — and therefore the
+surface widths — depend on the viewport, which is how a composition starts
+overflowing at one size and not another.
+
+### The performance path
+
+Six moves on a single **flat** line, each marked by a glyph that says what that
+move does to the work: a dashed hypothesis frame, variants stacking,
+distribution fanning, a destination receiving, a response arriving, and an arc
+turning back. Flat because a performance loop does not climb — it repeats.
+
+Deliberately none of the other three line sections on this site: §04 Work
+Process is five stages **rising** and selectable; Service 01's `ServiceSystem`
+is four rows on a **vertical spine**; Service 02's band is four strands
+**converging**. This is a **closed circuit**.
+
+**The forward reading dominates** — creative → distribution → landing at full
+weight — and the return trace is 0.2 opacity with only its arrowhead in teal.
+A page that draws the feedback loop as loudly as the campaign is describing a
+process rather than selling a service.
+
+Six columns with **no gap** (each carries its own padding), so a node's x is
+exactly its column's centre at every width with no gap arithmetic to drift.
+Below `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)` it becomes a vertical
+rail and the loop is stated in words — §10c's honesty.
+
+### What we optimise
+
+Five tracks — Message · Creative · Distribution · Destination · Next action —
+each moving through **Test → Learn → Adjust**, drawn as position on a hairline.
+**No axis, no scale, no percentage, no gauge, no red/green.** The teal segment
+reaches the third state because that is where a round *ends*, not because
+anything was measured.
+
+The risk this movement carries is reading as a repeat of the bench. It does not,
+and the lead says why on the page: the bench is **what one experiment varies
+inside a round**; this is **what changes between rounds**, and it includes two
+things a creative test never touches — how the media is structured, and how
+often anything is allowed to change at all.
+
+### The landing experience
+
+Two abstract interface surfaces and a three-word conversion path. The mobile one
+is **genuinely re-laid out rather than scaled** — one column, the action pinned
+to the foot — because that is the section's own argument about paid-social
+traffic.
+
+**No browser chrome, no address bar, no phone bezel, no client site, no brand,
+no product, no checkout, no form, no cookie banner, no figure.**
+
+Below `md` the two screens simply stack, the mobile one at 52% of the column: a
+22%-wide phone mockup on a 350px screen is the microscopic webpage the brief
+rules out. Each slot carries its own label, which is what lets one markup serve
+both layouts (`column-reverse` at `md`+ puts the phone's label above it).
+
+**FUTURE — the one cross-service link this page is missing.** `/services/web-digital-experiences`
+does not exist, so nothing here links to it (§18). **When Service 04 ships, a
+contextual link belongs in this section** — it is the natural place on the site
+where paid media hands off to the destination, and the copy already sets it up
+("Mishram builds the destination as well"). Recorded here rather than left as a
+comment nobody finds.
+
+### Scope, and the platform claim
+
+Nine capabilities: Performance Strategy · **Meta Advertising** · Campaign
+Structure · Campaign Creative · Creative Testing · Audience Strategy · Landing
+Experience Direction · Campaign Optimisation · Reporting & Learning.
+
+**Google Ads is deliberately not a scope row.** `config/services.ts` lists
+`Meta Ads` as this service's capability and the homepage has said so since §02
+was approved, so Meta advertising is what the page is built around — and a scope
+index is a promise. It is acknowledged **once**, in the platform FAQ, because
+Mishram's own schema.org service description (the same source `config/about.ts`
+cites for "Meta and Google Ads") does state it. Naming it there and nowhere else
+is the honest reading of both facts. **Promote it to a scope row the moment the
+client confirms search is a service they run.**
+
+**Deliberately absent from the scope, and from every FAQ answer:** any promised
+result. No ROAS optimisation, no guaranteed CPA, no lead volume, no revenue, no
+"scale profitably". The language is method — structure, testing, optimisation,
+learning — because that is what Mishram can commit to before seeing an account.
+
+`ServiceScope.accessory` carries a miniature **experiment trace** for this page:
+three variants branching off one hypothesis, one continuing into a destination
+and a response, and a faint return arc. Nothing in common with Service 02's
+constellation mark, which converges inward on one point.
+
+### Content integrity — the strictest boundary on the site
+
+Performance marketing is the category where invented numbers are normal, so this
+page is stricter than Service 02's already-strict rule.
+
+**There is not one performance figure on the route.** No ROAS, CTR, CPA, CPC,
+CPM, spend, revenue, conversion count, lead volume, percentage lift, growth
+multiple, client name or case study — **not even decoratively.** A "4.8 ROAS"
+drawn as illustration is read as a claim, and Mishram has no account data it may
+publish.
+
+**Verified by walking every text node in `<main>`:** the only digits anywhere on
+the page are `Book a 15-Min Call`, `15 min · no obligation`, the format ratios
+`9:16 / 4:5 / 1:1`, `D2C`, and the shared inquiry form's own engagement-budget
+and timing options (§10h). **No dashboard, no ad-manager chrome, no Meta UI, no
+logo, no chart with an axis, and no red/green state anywhere** — teal remains
+the only accent, so nothing here can be mistaken for a performance indicator.
+
+**No invented minimum budget.** The project holds no record of one, so the FAQ
+says what the budget actually depends on — objective, market, creative
+requirement, campaign scale — and that it is settled during planning.
+
+The full boundary, and the reasoning behind each omission, is at the head of
+`config/service-performance.ts`.
+
+### Automatic discovery — verified, with zero component edits
+
+`built: true` was flipped **only after** the route existed, the page was
+complete, the responsive sweep passed, preselection worked, accessibility passed
+and the production build succeeded. Flipping it lit five surfaces on its own:
+
+| Surface | Result |
+| --- | --- |
+| Header services menu | `Overview` + `01` + `02` + `03`, with `03` carrying `aria-current="page"` |
+| Mobile services group | The same four rows |
+| Homepage `02 / What We Do` | Service 03 gained `Explore service ↗` — three now |
+| Footer Services directory | All three routes, on every page |
+| Service-page prev/next | 01 → Next 02; 02 → Prev 01 / **Next 03**; 03 → **Prev 02** |
+
+**No JSX was edited in the Header, the mobile menu, the Footer, `ServiceCopy` or
+`ServicePageNav`.** The **global Mishram signal wipe** (§10k) plays for the route
+with no page-specific code — verified: the marker resolves to
+`Services / 03` + `Performance Marketing` because `routeMarker` reads the same
+registry, and hash navigation (`#project-inquiry`) still never mounts the panel.
+
+### Responsive
+
+One shape-first switch on `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)`
+(the bench index/field split and the path band → rail), mirrored by
+`data-layout`, plus three pure-CSS ones: the hero field at 640, the variant
+sheet at 768 and the destination at 768.
+
+**The sheet's breakpoint is measured, not chosen.** Five surfaces sized by
+height plus four gaps plus a caption under the narrowest of them need ~605px; at
+640 the content column is 584 and the last caption ran **67px past the right
+edge, taking the whole page with it**. Below 768 the two-column grid — one
+dominant version across the full width, four alternates two-up — is the honest
+layout. The caption strip is likewise sized for the worst case (a three-line
+note under the narrowest surface at 768), because an overhanging caption lands
+on the rule that closes the block.
+
+**Verified at 1440×900, 1440×768, 1280×800, 1024×768, 768×1024, 640×900,
+430×932 and 390×844:** no horizontal overflow at any of them, and **zero
+elements escaping any composition box** — hero field, bench, variant sheet, path
+band and destination all clean. Rows: test variables ≥84px, scope ≥57, FAQ ≥65,
+hero CTAs 52 throughout.
+
+### Accessibility
+
+One `h1`; nine `h2`s; `h3`s under the path stages, the bench sub-label, the
+optimisation headline, the process steps and the FAQ; `h4` on the optimisation
+track names, which sit under that `h3`. Every section but the hero carries a
+resolving `aria-labelledby`; the hero uses `aria-label`. **No unnamed button or
+link anywhere in `<main>`, and no image to caption — there are none.**
+
+### Reduced motion
+
+The travelling dash stops and is **removed**, not left parked on the route:
+`opacity: 0 !important`, because Motion resolves its entry to an inline
+`opacity: 1` that a plain rule cannot reach past. Without it the dash survives as
+a static thicker stroke over the line it travels — the §10j inline-style problem
+in the opposite direction, and worth knowing about.
+
+Both `pathLength` guards are in place (`.pfm-route`, `.pfm-path` forced to their
+drawn state with `!important`), and so is the equivalent for a **transform**:
+`.pfm-track-fill` is held at `scaleX(0)` before it animates, so a stripped
+transform animation would leave every optimisation track looking empty.
+`transform: scaleX(1) !important` is what stops that.
+
+Verified by applying the guard declarations directly and confirming every route,
+path and return arc resolves to `stroke-dasharray: none` at full opacity, and
+the track fill to `scaleX(1)`. **The media query itself could not be emulated in
+this session's browser** — see *Visual verification* below.
+
+### SEO and performance
+
+- **Title:** `Performance Marketing — Mishram Media` (the layout template
+  supplies the brand).
+- **Description:** *Performance marketing built around creative testing, paid
+  distribution, conversion-focused experiences and continuous campaign
+  learning.* (135 characters.) No ranking, no superlative, no promised return.
+- `alternates.canonical` and an `openGraph` block, both derived from the
+  registry. **Statically prerendered** — confirmed in the production build.
+- **0 images, 0 canvases, 0 videos, 0 image preloads.** A deliberate inversion of
+  Service 02's fifteen images: this page is about method rather than people, so
+  every surface on it is CSS, SVG and type. The only image request on the route
+  is the shared `mishram-wordmark.png` the Header and Footer already use.
+  1,664 DOM nodes, 25 inline SVGs, 23 requests in total.
+- **No new dependency.** Plain React, the platform, and the Motion already
+  installed.
+
+### Visual verification — what was and was not possible
+
+**No composited screenshot was available in this session.** The Browser pane was
+not displayed, so the page never composited frames: `computer{action:
+"screenshot"}` timed out, and no Chrome instance was connected for the
+`claude-in-chrome` path. Verification was therefore **DOM, geometry and
+computed-style measurement**, driven with real CDP input where interaction
+mattered.
+
+Three consequences of a non-compositing pane are worth recording, because they
+look like page bugs and are not:
+
+1. **`IntersectionObserver` never fires**, so every `whileInView` element sits at
+   its `initial` state. Confirmed against the shipped Service 02 page, which
+   showed 66 elements stuck at `opacity: 0`. Geometry has to be measured after
+   neutralising Motion's pre-animation inline styles.
+2. **CSS transitions never advance.** A theme swap left `.pfm-surface` borders
+   at the previous theme's value until `transition: none` was forced; both
+   themes then resolved correctly through the semantic tokens.
+3. **`scroll-behavior: smooth` never scrolls.** `document.documentElement.style.scrollBehavior = "auto"`
+   is needed before any programmatic scroll.
+
+**The whole layout was measured rather than looked at**, which is enough for
+geometry, overflow, contained-ness, row heights, hierarchy, state and the
+numbers audit — and is *not* enough for art direction. **The compositions on this
+page should be looked at by a person before approval.**
+
+> **Revision 12 note: the pane composited again**, so Service 05 *was* reviewed
+> visually. Two of Service 03's compositions have still never been looked at by
+> a person — worth ten minutes at review.
+
+---
+
+## 10n. 05 / BRAND SHOOTS & CONTENT — the fourth service page built (Revision 12)
+
+`src/app/services/brand-shoots-content/page.tsx`, copy in
+`src/config/service-shoots.ts`, compositions in
+`src/components/service-page/shoots/*`. `.sht-*` styles in `globals.css`.
+
+**Built and live: `/services/brand-shoots-content`.** It keeps its canonical
+index — **05, not 04** — because Service 04 is deferred (§10o), so the built
+sequence is temporarily `01 → 02 → 03 → 05`.
+
+### THE PHOTOGRAPHY AUDIT — the old brand-shoot portfolio cannot be used
+
+This is the finding that shaped the page, and it is recorded so nobody spends
+the time again. `Mishram.Media/public_html/brandshoot.html` carries a 19-image
+gallery, and **its own `alt` attributes name the brands**:
+
+| Category | Named in the old gallery's alt text | Count |
+| --- | --- | --- |
+| Fantasy betting / real-money gaming | dream11, my11circle, mpl, winzo | 4 |
+| Betting / casino | 1xbet, melbet, parimatch, leon, slottica, glory casino | 6 |
+| Offshore CFD / binary options — §9 treats these as gambling-adjacent | olymp trade, binomo, pocket option, octafx, capital.com, currency.com | 6 |
+| **Permitted** (§8's approved rail) | mamaearth, cashkaro, upstox | 3 |
+
+**Sixteen of nineteen are categories §9 permanently excludes from every surface
+of this site.** The three permitted ones do not rescue it either: all 19 are
+**remote Cloudinary files**, which §14 forbids hotlinking; none has a local
+copy, a date, a credit or any record tying a photograph to a piece of work; and
+the same Cloudinary account hosts the placeholder testimonial portraits
+§10d-notes already disqualified, so the account is not a provenance signal.
+
+**Consequence: the photographic library for this page is the five approved
+creator portraits in `public/media/creators/`, and nothing else** — which
+§10d's media audit had already established for video, now confirmed for stills.
+
+**That is the page's argument rather than a compromise it hides.** Brand Shoots
+& Content sells *creative direction and format*. A page that shows one source
+resolving into 9:16, 4:5, 1:1 and 16:9 makes its own case more honestly than a
+borrowed client portfolio would, and every frame on the route is a real,
+approved photograph art-directed through §10b's tuned per-creator crops. **Five
+source files carry twenty-nine frames**, because `resolveFrame` gives each
+creator three genuinely different crops.
+
+### The concept — THE SHOOT BOARD
+
+`idea → direction → frame → format → library`. A creative director's wall, not a
+portfolio: the hero is a working contact sheet, the interaction builds a
+different kind of frame, the format section proves one photograph becomes four
+shapes, and the selects are the library that comes out of it.
+
+**This is the site's most photographic page and its least diagrammatic.**
+Services 01–03 argue with lines, nodes and abstract surfaces. This one argues
+with photographs, crops and crop marks — **there is no connected-system diagram
+on it at all**, and the only SVG on the route is the scope accessory. That
+contrast with Service 03, which carries zero images, is deliberate.
+
+### Section rhythm
+
+```
+01  hero → positioning → system → interaction → scope → proof → audience → process → FAQ
+02  hero → relevance → interaction → system → proof → scope → fit → audience → process → FAQ
+03  hero → hypothesis → creative + interaction → path → destination → scope → audience → process → FAQ
+05  hero → direction → interaction → formats + outputs → scope → selects → audience → process → FAQ
+```
+
+**Both of the brief's authorised merges were applied up front rather than as a
+length fix**, because in each case the two halves were the same sentence twice:
+
+| Section | Movement one | Movement two |
+| --- | --- | --- |
+| Before the shutter | the statement — production is mostly decisions | the Direction Desk — the six decisions, and a framing study |
+| One production | the format system — one frame, four shapes | the output rail — the five places content has to appear |
+
+**Proof comes late here** (the selects sit after scope), the reverse of Service
+02, because on this service the method is what is being sold and the library is
+the payoff.
+
+### Length — measured, and over the guidance
+
+**11,189px at 1440×900 — 12.43 viewports including the prev/next rail and the
+Footer.** The target was 9–11.5. The arithmetic:
+
+| | |
+| --- | --- |
+| Shared `ServiceSection` padding × 9 sections | **2,016px** |
+| Hero (`min-h: 100svh`) | 900 |
+| Shared Project Inquiry (§10h) | 1,376 |
+| Footer V2 + prev/next rail | 902 |
+| **Structural cost before a word of this page's own content** | **5,194px — 5.8 viewports** |
+
+The remaining 6,000px is nine sections averaging ~665px, which is not padded.
+**Photographs are simply tall**: a 4:5 frame in a four-column cell at 1440 is
+430px on its own, and the two photographic showpieces — formats (1,436) and
+selects (1,586) — are 27% of the page between them.
+
+**The brief's own remedy was exhausted before the first measurement**: both
+named merges (Creative Direction + Shoot Starts Before Camera; Content With a
+Job + Multi-Format System) were built merged from the start. Everything after
+that was trimming — a shorter format-crop scale, tighter select spans and gaps,
+narrower study and source columns — which took it from 12.56 to 12.43 without
+cramping anything. **Going lower means removing a section the brief asked for.**
+If a shorter page is wanted, the two candidates in order of least damage are
+folding `Who it's for` into the direction statement, and dropping the output
+rail back to a single line inside the format section.
+
+### Hero — the Live Contact Sheet
+
+Six frames at different crops, aspects and depths, each carrying its index and
+its format; crop marks on the board itself; a teal selection bracket on the
+frame that has been chosen; and a sheet rail beneath with a marker per frame.
+
+**Deliberately not the homepage's Service 05 scene.** That is four frames and a
+playhead, sized to survive a pinned scroll and to continue Service 04's
+photograph — a transition, seen for a few seconds. This is a static board with
+two extra frames, in-frame indices and formats, crop marks, a selection bracket
+and a counted rail. Nothing is copied across; the geometry is authored for this
+box.
+
+**Frame selection was corrected on sight, and this is worth keeping.** The first
+build used §10b's `content` crops for three prominent frames. Those crops are
+tuned to drop *below* the face — Zoya's "past the chin entirely to the dress" —
+which is right for a small fragment inside a scrolling scene and **wrong for a
+labelled frame on a page selling photography**: two of them rendered as flat
+rectangles of fabric. The rule now is: `portrait` and `reel` for prominent
+frames, and `content` only where a genuine detail is wanted *and* the source has
+something to show (Mukul's jacket graphic, Lovkesh's pair). **Zoya-content and
+Nikita-content are not used at any prominent size anywhere on the route.**
+
+**The narrow arrangement is a different composition, not a smaller one:** one
+dominant 4:5 at 66% of the box, two supporting crops beside it, and the rail —
+because six frames at 350px is six thumbnails, which is what a contact sheet on
+a phone must not be.
+
+### The Shot Builder — the signature interaction
+
+Five production directions — Hero · Product & Detail · Portrait · Social ·
+Campaign. Choosing one replaces the frames, their aspects and their positions,
+and rewrites a shot record (`Shot` / `Role` / `Format` / `Use`) and a three-row
+shot list.
+
+**Different from the other three signature interactions in what it changes.**
+Service 01's board rearranges the same abstract objects; Service 02's field
+redraws a route between fixed nodes; Service 03's bench replaces wireframe
+surfaces. This one changes **photographs and their crops** — the only one of the
+four whose subject is an image rather than a diagram, and the only one with no
+SVG in it.
+
+**The record is hairline rows, label above value** — deliberately not §10m's
+four-column table, because two service pages should not resolve into the same
+block of type.
+
+**PRODUCT & DETAIL is named, and the evidence is Mishram's own.** The old
+`about.html` schema.org service description reads "creative reels, video ads and
+product photography" — the same source `config/about.ts` cites. **No product
+photograph is shown anywhere**, because none exists locally; that direction's
+frames are genuine detail crops of the creator work, which is what a detail
+frame is.
+
+Selection is the proven pattern (`useHoverLock`, §10c). **Verified with real CDP
+input:** hovering previews without moving the lock, leaving the list restores
+the lock, clicking locks, `aria-current` tracks the lock only, and **the section
+holds 1,026px through every state** — the stage is a fixed-aspect box with the
+five arrangements absolutely stacked inside it and all five records in one grid
+cell.
+
+### One production, many formats
+
+One source frame and four crops of it — **the same photograph, four aspect
+ratios** — so the section proves its claim rather than asserting it. Then the
+output rail: Social · Campaign · Web · Creator · Launch.
+
+**NO PLATFORM CHROME ANYWHERE.** No feed frame, no story bar, no phone shell, no
+handle, no like, no comment, no view count, no play control. Ratios are
+described as *usage* ("reels and stories", "most feeds") rather than as platform
+specifications, because common usage is what the project can stand behind.
+
+**The crop sits above its text, never beside it, and that is a measured
+decision.** Sizing the crops by height is what makes four genuinely different
+footprints — but it also makes the 16:9 nearly three times the width of the
+9:16, and side by side that left the widest one about **9px of column** for its
+sentence. The frame height is also set per column-count rather than by one
+shared clamp: at the shared value the phone's crops came out **50px wide**,
+which is a thumbnail rather than a demonstration.
+
+### The selects — the content library
+
+Seven frames across two irregular rows, heights *and* aspects both varying, with
+frame indices and format tags.
+
+- Service 01's `CreatorField` is five **equal 3:4 frames** on a grid — a field.
+- Service 02's `CreatorCast` is one **strip at a single height** with uneven
+  widths, abutted — a casting wall.
+- This is neither: the bottom edges are uneven without a hand-tuned pixel,
+  because widths come from the column span and heights from each frame's aspect.
+
+On a phone it staggers **full-width, half, half, full-width, half, half, half**
+(measured: 350 · 167 · 167 · 350 · 167 · 167 · 167), so the photography stays
+large and it never becomes a three-column thumbnail gallery.
+
+**Three column counts, not two, and the middle one is a height decision.** Phone
+keeps the stagger; `lg` uses the twelve-column spans that make the sheet
+irregular; **between them the sheet is three even columns.** Carrying the phone
+stagger into tablet width made a full-width 4:5 select 750px across and 937px
+tall, and an even two-column tablet grid made each 9:16 select 637px tall on its
+own — the section came out at **2,945px**. Three columns brought it to **1,844**
+without shrinking anything that matters. Row height is always set by the tallest
+frame in the row, so on this sheet the column count *is* the height control.
+
+**What is claimed:** creator photography from Mishram Media's own work, shown as
+examples of framing and format. **What is not claimed anywhere:** that the
+frames belong to one shoot, that any was made for a client, or that a brand,
+campaign, location, photographer, camera or date attaches to any of them. The
+caption says so on the page.
+
+### The direction desk
+
+Typographic on purpose — it sits between a photographic hero and a photographic
+interaction, and the page needs one place where the thinking is the subject.
+Six decisions on hairlines, and beside them one framing study: thirds, and a
+crop bracket, drawn over a real frame.
+
+**The study is not a camera interface.** No histogram, no exposure readout, no
+focus box, no grid toggle, no shutter or aperture value — §10's rule for the
+homepage scene holds here. The guides are canvas-coloured, so they invert
+correctly over photography in both themes (verified: `rgba(243,240,232,0.55)`
+light, `rgba(10,10,10,0.55)` dark).
+
+### Scope
+
+Eight capabilities: Creative Direction · Shoot Planning · Brand Shoots · Creator
+Shoots · Product & Detail Photography · Campaign Content · Short-Form Content
+Direction · Format Adaptation.
+
+**Deliberately absent, because the project holds no evidence of any of them:**
+studio rental, hair and makeup, equipment or lighting hire, drone, a
+cinematography crew, full film production, post-production or VFX, retouching as
+a standalone service, location scouting and permits, talent contracting. The
+process is likewise kept at the creative and strategic level for the same
+reason. `ServiceScope.accessory` carries a **frame index** — a crop-marked
+rectangle with a thirds guide and three format outlines beside it, which does
+not travel anywhere, unlike Service 02's constellation and Service 03's route.
+
+### Content integrity
+
+No client, campaign, brand relationship, photographer or creative-director
+credit, camera, lens, location, date or production budget. **No shoot count,
+turnaround time, package or price** — the "how do we plan a shoot" answer says
+the scale follows from what the work needs rather than publishing a package. No
+result of any kind. §9 holds absolutely: the one obvious source of brand-shoot
+imagery on this project is excluded wholesale, and nothing from it reaches the
+DOM in any state.
+
+**Alt text describes the photograph, never an achievement** — the roster's own
+`alt` strings, and `alt=""` plus `aria-hidden` on any crop that repeats a
+photograph already described in the same composition, so a screen reader hears
+each person once rather than once per crop.
+
+### Responsive
+
+One shape-first switch on `(min-width: 1024px) and (min-aspect-ratio: 5 / 4)`
+for the builder, plus three pure-CSS ones: the hero board at 640, the format
+grid at 640 and the selects grid at 1024.
+
+**Verified at 1440×900, 1280×800, 1024×768, 768×1024, 430×932 and 390×844:** no
+horizontal overflow at any of them, and **zero elements escaping any composition
+box** — board, builder stage, format grid, selects and study all clean. Rows:
+directions 82px, scope 58, FAQ 65, hero CTAs 52. The one apparent overhang is
+`.sht-source-mark` at 6px, which is the crop bracket sitting deliberately
+*outside* its frame at `inset: -6px`.
+
+### SEO and performance
+
+- **Title:** `Brand Shoots & Content — Mishram Media`.
+- **Description:** *Creative direction, brand shoots and content production
+  designed to build a distinctive visual language across social, campaigns and
+  digital experiences.* (155 characters.) Statically prerendered.
+- **29 image nodes, 5 unique source files, 11 fetched variants, 1 eager, 1
+  preload, 28 lazy, 0 canvases, 0 videos.** The variant count is the point:
+  every frame picks one of **three** `sizes` buckets, because Next emits a
+  separate `srcset` entry per distinct `sizes` and a dozen bespoke ones would
+  have turned five photographs into a dozen downloads. Exactly one image is
+  eager — the hero's dominant frame, the route's genuine LCP candidate.
+- **No new dependency.**
+
+### Visual verification
+
+**Real composited screenshots were available in this session**, unlike
+Revision 11. The hero board, the direction axes, the framing study, the shot
+builder in three of its five states, the format system, the FAQ and the whole
+mobile hero were reviewed as images at 820×560 (the pane's native resolution,
+1:1 and sharp), at 1440×900 (downscaled but legible for composition) and at
+390×844.
+
+**Three defects were found by looking that measurement would not have caught:**
+the three fabric-only crops in the hero, the 16:9 format crop squeezing its
+sentence to 9px, and the phone's 50px-wide format crops. All three are fixed
+above. Two layout bugs were found by measurement in parallel — a builder grid
+spanning past column 12, and dead space under the mobile board.
+
+---
+
+
+## 10p. CONTENT MIGRATION — Recognition activated, About gains its history (Revision 13)
+
+The first revision in a while that ships **content rather than architecture**. Nothing was
+redesigned; two already-built sections were filled from verified evidence, and one long-standing
+performance defect was cleared.
+
+Full evidence ledger: **`docs/CONTENT-MIGRATION-AUDIT.md`** (25 August 2026). This section records
+what shipped and what it corrected.
+
+### THE METHODOLOGICAL LESSON, and it is the most reusable thing here
+
+**A text search cannot clear an image.** Three separate earlier conclusions in this brief were
+reached by grepping markup and filenames, and two of them were wrong in opposite directions:
+
+| Earlier conclusion | Reached by | Reality |
+| --- | --- | --- |
+| The old site's `*_AWARD_*.gif` are "unlabelled" promotional banners | grepping the markup | The **images** carry the award category, the awarding badge and the year. §06 exists because of them |
+| The named testimonial avatars are plausible | trusting filenames like `rahul_mehta.png` | All four are **AI-generated portraits** |
+| "No Mishram Media video of any kind" | searching the filesystem | True of the filesystem; **nine reels exist publicly** |
+
+**Open the file.** Filenames, alt attributes and surrounding markup are hypotheses, not evidence.
+
+### 06 / Recognition — active
+
+One item, every field read directly off the photograph:
+
+| Field | Value | Why it is safe |
+| --- | --- | --- |
+| `title` | **Best Digital Marketing Agency** | Verbatim from the banner's display type |
+| `organisation` | **NUFEW** | Verbatim from the gold badge |
+| `year` | **2024–25** | Verbatim from the badge (en dash for the site's range convention) |
+| `type` | Award | Factual category |
+| `caption` | "Recognition for Mishram Media's work in digital marketing." | States the scope and nothing more |
+
+**Rendered on the page as** `06 / RECOGNITION` → *Work that gets noticed.* → the photograph, with
+the in-frame tag and the caption line both reading **`NUFEW · 2024–25`**.
+
+**THE FOUR THINGS IT DELIBERATELY DOES NOT SAY**, and they are content-integrity constraints
+rather than style choices — the full reasoning is at the head of `config/recognition.ts`:
+
+1. **`NUFEW` is never expanded.** It appears nowhere as text in either repository — `grep -i nufew`
+   returns **zero matches across both**, because the string exists only as pixels. Any expansion
+   would be invented. **Do not write "National …" or anything like it.**
+2. **Nobody in the photograph is named.** The recipient strongly resembles the old site's founder
+   photograph and the presenter's only identification anywhere is an `alt="Tushar Kapoor"` on the
+   mobile crop. Resemblance and an alt attribute are not documentation. **The award is the claim;
+   the people are not.** No presenter, no recipient, no celebrity endorsement.
+3. **No rank, scale or jurisdiction.** Not "#1", not "national", not "winner among N agencies", not
+   a government award.
+4. **Nothing is quoted from the plaque** — its inscription is illegible at the source's resolution.
+
+**The asset, and why it looks the way it does.** `public/media/recognition/
+mishram-best-digital-marketing-agency-nufew-2024-25.webp`, **850×680 (exactly 5:4), 108 KB.**
+Downloaded from the old deployment's Cloudinary original (2048×731), cropped to `left 1198, top 45,
+850×680` and converted with `sharp` — **not hotlinked** (§14). The crop deliberately excludes the
+banner's promotional headline typography and its clipart trophies; the lilac field that remains is
+the event's own backdrop, so **nothing was recoloured, retouched or faked**.
+
+**The existing §10e treatment is what controls it, and no CSS changed.** `.rcg-photo` already damps
+to `saturate(0.94)` at rest and comes to full on hover; the frame is a hairline, the veil is the
+canvas token, and the caption carries the facts in the site's own type. **The homepage does not
+become gold**, and no trophy iconography was added anywhere. §10e's "No gold: an awards section is
+not a licence to leave the palette" holds as written.
+
+850px is the ceiling the evidence supports, so **the image is never upscaled** — verified: Next caps
+its srcset at the source width even when asked for 1920. Delivered variant at 1440 is **750×600
+WebP, 20.9 KB**, and the badge text stays legible at that size (checked by rendering it).
+
+**THE `priority` DEFECT IS FIXED, and the affordance is gone.** §10i removed stale `priority` flags
+from three below-the-fold images and left this one because the section rendered nothing. It renders
+now, ~12,800px down the page. `priority={dominant}` was removed from `RecognitionItemView`, **and
+the `priority` prop was deleted from `RecognitionMedia` entirely** so it cannot be reinstated by
+accident. Verified on the shipped page: **0 eager images, 0 image preload links, 24 of 24 lazy**,
+and the Recognition image resolves `loading="lazy"`, `fetchpriority="auto"`.
+
+**Numbering derives, as designed.** `ABOUT_CHAPTER` read `RECOGNITION_ITEMS.length > 0` and About
+became **`07 / ABOUT`** with no code change. Verified on the rendered page.
+
+**Composition at one item.** The archive's count-adaptive path puts the dominant frame on 7 of 12
+columns (measured 56.4%) with the fragment column empty — the state §10e designed for. Section is
+**1,309px / 1.45 viewports**, inside the 0.95–1.5 band, and nothing in it is padded: 256px chapter
+padding, 140 intro, 65 rule, 752 archive, 84 CTA.
+
+### About — the history band
+
+See §10f. Three moments, `+212px`, two one-step spacing reductions applied, **1,403px / 1.56
+viewports**.
+
+### 03 / Creators — Akash Sagar prepared, deliberately unpublished
+
+`@xbhandesiri_` is the **only creator the agency currently manages**, and the relationship is the
+best-evidenced on the roster — user-confirmed, then corroborated by a public chain: the creator's
+bio credits `@filmybande` → that account is publicly "Prashant mishra" with a `mishram.media`
+highlight → Prashant Mishra is named **Founder & CMO** in the old site's schema.org `employee`
+array.
+
+**He ships as `published: false`, and the reason is the photograph.** A bounded attempt was made
+against all three legitimate sources: this repo (nothing), the old repo (`grep -i bhandesiri`
+returns zero matches anywhere), and the official public profile — whose **only** exposed asset is a
+**150×150** avatar with **no `srcset` and no larger variant**. That is ~7% of the pixels this
+section needs: the portrait frame renders 400–520px wide, so ~1000px at 2× DPR, against approved
+roster assets of 620×1102, 720×720 and 640×800. **Stock, a scraped substitute, a fan-page crop and
+a generated portrait are all ruled out (§1); hotlinking Instagram is ruled out twice over (§14).**
+
+So `ROSTER` still holds **five**, the roster header still reads `SELECTED CREATORS / 05`, index
+numbering is untouched and the approved composition is byte-identical. **Supply the portrait and
+flip one boolean.** He is positioned **second, not last** — appending the one current management
+relationship below five historical "worked with" ones would bury it — while **Zoya keeps the
+opening slot**, because she is the creator the section opens on, the single image that loads first
+(§10b-scale) and §10d's featured work item.
+
+**Two small generic capabilities were added, and both are config-driven:**
+
+- **Relationship labels are per-creator.** `label` already existed and is a free string, so
+  `"Currently Managed"` applies to Akash alone and the historical five keep `"Creator Network"`.
+  **Do not relabel them** — the old site's own ceiling for those relationships is "We've
+  successfully worked with influencers".
+- **A verified handle now renders as a real external link** — `@handle ↗`, `target="_blank"`,
+  `rel="noopener noreferrer"`, `aria-label="<Name> on Instagram"`, with the site's existing `Arrow`.
+  It renders **only where a handle is configured**, which is nowhere on the public page today.
+
+**One accessibility fix went with it.** `CreatorMeta`'s inactive lines carried `aria-hidden` only,
+which hides them from the accessibility tree but **leaves them in the tab order** — fine when the
+block held nothing focusable, a defect the moment it holds a link. They now carry `inert` as well,
+the same idiom §17 uses for closed disclosure panels.
+
+**Verified against a temporary config, then reverted** — the method §10d-notes and §10e both used.
+Temporarily publishing him confirmed: the roster becomes 6, he renders at **02**, the header derives
+to `SELECTED CREATORS / 06`, the label renders **`CURRENTLY MANAGED`** while the others keep
+`CREATOR NETWORK`, the link resolves to `https://www.instagram.com/xbhandesiri_/` with the correct
+`aria-label`, and **media loading stays bounded — 3 image nodes, 1 distinct source at rest.** The
+config was then restored; the shipped state was re-verified at five creators.
+
+### What was found and deliberately NOT shipped
+
+Everything below is evidenced to some degree and is **held pending a client decision**. None of it
+is a gap to be filled opportunistically.
+
+| Held | Status |
+| --- | --- |
+| Client Notes / testimonials | **Conclusively rejected, 8 of 8.** See §10d-notes, including the seventh failure found this pass. Section stays suppressed |
+| Fukra Insaan, Prerna Malhan, Sahil Gambhir, Tehelka Bhai, Deepankar Maxx | **B — needs confirmation.** Named in Mishram's own copy or on its Instagram, but identity unverifiable and no usable local image. A later creator-expansion pass |
+| Irwin Javier, Boss Toni, Argoni X, Vijay 3 Guy, `xx_mrswag` | **C — permanently rejected.** The first three are one 1920×1920 stock menswear photoshoot series on the same grey arched backdrop, two in near-identical poses, sold as three creators. Vijay 3 Guy is a 1024×1536 generated/stock studio portrait — and the neighbouring Fukra Insaan tile carries `alt="Vijay 3 Guy"`, so the old site's own labelling is unreliable there. `xx_mrswag` is unnamed with a third-party photographer's watermark. **Never add these** |
+| Team — Prashant Mishra, Upendra Singh, Subhash Kumar, Abhishek Gautam | Named in visible markup **and** schema.org `employee` (stronger than §10f recorded), but every headshot is a numbered placeholder GIF and staff change. **Publish none** |
+| Influencer geography — India, Philippines, Bangladesh, Nepal, Morocco | First-party claim; needs to still be true |
+| Non-profit arm — "Starcrownmedia Zone Foundation" / Mishram.NGO | Links the agency to a separate legal entity |
+| WOW Skin Science | The **only** new brand-safe candidate in the whole old estate, named twice in Mishram's own prose — but it appears in **no logo rail on any page**, so there is no artwork, and §8 requires explicit approval |
+| Negotiation in the Influencer Marketing scope | Evidence recorded in §10l; public scope deliberately unchanged |
+
+**§9 brand safety re-confirmed.** The old estate's rails carry **16 betting, casino,
+fantasy-gaming and offshore-CFD brands**. They remain absent from `collaborations.ts` entirely and
+are recorded as rejections only. The five approved brands are unchanged.
+
+### Measured, before and after (1440×900)
+
+| | Before | After |
+| --- | --- | --- |
+| Homepage height | 16,122px | **17,612px** (19.57 viewports) |
+| Recognition | absent | **1,309px** |
+| About | 1,223px | **1,403px** (+212 history, −32 tightening) |
+| Public creator roster | 5 | **5** (+1 configured, unpublished) |
+| Image nodes | 23 | **24** |
+| Creator image nodes at rest | 3 | **3** |
+| Distinct creator sources at rest | 1 | **1** |
+| Eager images | 0 | **0** |
+| Image preload links | 0 | **0** |
+| Canvases / videos | 1 / 0 | **1 / 0** |
+| Horizontal overflow | none | **none** |
+
+Section order is **Selected Work → Recognition → About**, boundaries **0px** on both sides, and
+`#client-notes` is still absent from the DOM entirely.
+
+### Visual verification — measurement again, not looking
+
+**No composited screenshot was available in this session**, as in Revision 11: the Browser pane was
+not displayed, so `computer{action:"screenshot"}` timed out and **CDP input was unavailable too**
+(a `left_click` by ref timed out on the hidden pane). Verification was DOM, geometry and
+computed-style measurement, plus the temporary-config technique for anything interactive.
+
+The three non-compositing artefacts §10m records all reappeared and were worked around:
+`IntersectionObserver` never fires, CSS transitions never advance (a theme probe read the previous
+theme's border until `transition: none` was forced — both themes then resolved correctly through
+the semantic tokens), and `scroll-behavior: smooth` never scrolls.
+
+**What that does and does not cover.** Geometry, overflow, containment, numbering, loading
+behaviour, both themes' token resolution and the content audit are all verified. **Art direction is
+not.** The Recognition crop was reviewed as an image file directly — the source, the candidate
+crops and the delivered 750px variant were all rendered and looked at — so the *photograph* has been
+seen. **The Recognition section and the About history band as composed on the page have not been,
+and are worth ten minutes at review**, alongside Service 03's compositions, which are still
+outstanding from Revision 11.
+
+---
+
+## 10q. POST-MIGRATION VISUAL QA (Revision 14)
+
+The first pass on this project where **real composited screenshots were available**, and it earns
+its own section because looking at the pages found nine defects that three prior passes of
+measurement had not.
+
+### How screenshots were finally obtained — reuse this
+
+The Browser pane has been non-compositing for most of this project (§10m, §10p), and the
+`claude-in-chrome` extension is not connected. **Neither is a dead end.** Chrome is installed on
+the machine, so it was launched headless with `--remote-debugging-port` and driven over CDP by a
+~100-line script using Node's **global `WebSocket`** — no Playwright, no Puppeteer, **no dependency
+added to this project**.
+
+That gives everything the pane could not: `Emulation.setDeviceMetricsOverride` for any viewport,
+`Emulation.setEmulatedMedia` for `prefers-color-scheme` **and** `prefers-reduced-motion`,
+`Page.captureScreenshot` with `captureBeyondViewport` and a `clip` rect for whole-section or
+whole-page captures at any scale, and `Runtime.evaluate` for scroll sweeps and probes.
+
+**One gotcha, and it cost a wrong verdict.** A scroll sweep is required before capturing: without
+it `IntersectionObserver` never fires and every `whileInView` element sits at `opacity: 0`, so a
+capture of an unvisited section shows a half-empty page that looks like a bug.
+
+### THE SECOND METHODOLOGICAL LESSON
+
+§10p's was *a text search cannot clear an image*. This pass adds the counterpart:
+
+> **Geometry cannot clear a composition.** Every defect below sat inside a correctly measured
+> layout. Nothing overflowed, every box was the right size, every row cleared its touch target —
+> and labels were still being struck through by the lines they named.
+
+### What was found, and fixed
+
+| # | Defect | Fix |
+| --- | --- | --- |
+| 1 | **Recognition's award image was a lilac promotional banner** dominating the obsidian canvas — decorative sunburst, gold rosette and a band of flat lilac around two small figures. It read as an advertisement pasted onto an editorial page | **Recropped from the original**, raising the top edge: `left 1236, top 150, 775×581` (4:3). Sunburst gone, figures and plaque fill the frame, badge retained. **Pure crop** — nothing recoloured, retouched or generated |
+| 2 | **The in-frame `NUFEW · 2024–25` tag duplicated the caption line 60px away** — and, being ink over pale photography, was the illegible copy of the two | The in-frame mark now renders **only as a fallback**, when there is no organisation or year for the caption to carry |
+| 3 | **Recognition's single item left five empty columns** and a caption stranded under a wide frame | With one item the frame takes seven columns and the **caption moves beside it** as a museum label. Two- and three-item states untouched. Section **1,317 → 1,232px** |
+| 4 | **`sizes` under-declared the frame at 52vw** when it is 824px (58vw), so the browser fetched the 750w variant for an 824px box | `sizes` corrected for the aside case |
+| 5 | **About's history ticks floated with no rule on mobile.** The shared `border-t` works across three columns; stacked, moments 02 and 03 were teal dashes in empty space | The rule moves with the layout — shared `border-t` from `sm`, per-row `border-t` below it |
+| 6 | **The years read too quietly** to be the chronology | 9px `ink-muted` → **10px `ink-soft`**. Still under the milestone names |
+| 7 | **Service 03's hero had three label collisions**: `PAID DISTRIBUTION` struck through by the teal curve, `SIGNAL` cut by its own disc, and the `ITERATE` arrowhead landing on the `VARIANT C` label | The **halo trick §10n uses for tags over photography** applied to `.pfm-anno`, plus two geometry corrections: the signal label moved clear of the disc, and the return trace shortened to point into Variant C's edge rather than through its label. Same corrections applied to the stacked layout, where `SIGNAL` also ran into the ascending ticks |
+| 8 | **The hero concept rail wrapped with `→ Signal` orphaned** on a line of its own — and measurement showed **Service 01 had the same defect**, unnoticed since Revision 07. Both were over by **under 10px** | Rail tracking 0.26em → **0.16em** (§11's own remedy) and gaps `3` → `2`. **All four service heroes now fit on one line**, with 17–157px to spare |
+| 9 | **Service 03's content-integrity disclaimer was effectively invisible** — 9px at 80% of `ink-muted`. §10m requires it *rendered*; a disclaimer nobody can read is not rendered in any meaningful sense | Full `ink-muted`, `leading-[1.7]`, `max-w-[46ch]` |
+
+**Plus the known defect from §10k, now closed:** `LegalArticle`'s root carries `id="hero"`, so the
+layout's skip link and the Footer's back-to-top resolve on `/privacy`, `/terms` and `/cookies`.
+Verified: `id="hero"` appears exactly once on each of the three routes and the homepage is unchanged.
+
+### Verdicts
+
+**Recognition — passes.** Reads as evidence rather than an ad: the presentation fills the frame,
+`Best Digital Marketing Agency` and `NUFEW · 2024–25` carry the claim in the site's own type
+beside it, and the section is **1,232px / 1.37 viewports**. The remaining gold badge and rosette
+are *in the photograph*; they were not added and cannot honestly be removed. The homepage itself
+stays obsidian and teal — **no gold anywhere in the CSS**.
+
+**About's history — passes.** Reads as chronology on sight, sits as a colophon under the
+manifesto rather than competing with it, and is not a timeline, not cards, not a diagram. At 390
+it becomes a genuine **vertical chronology** with each moment on its own rule.
+
+**Proof rhythm — passes.** Selected Work (vertical 9:16 reel, index left) and Recognition
+(landscape 4:3, frame left, label right) share no orientation, side or structure, so Recognition
+does not read as a second gallery. Recognition → About steps from photographic proof to
+typographic story. Inquiry does not arrive too late.
+
+**Service 03 — passes after the fixes above.** The experiment loop reads immediately, the bench's
+active state is unmistakable, the return trace is present and secondary, and **nothing on the route
+resembles a dashboard**. The narrow layout is genuinely a different composition, not stacked
+desktop fragments.
+
+**Two observations recorded rather than acted on**, because fixing either means restructuring an
+approved section: the variant sheet's right third is empty beneath the `WHAT CHANGED` header, and
+the test bench's left column runs ~380px shorter than the record beside it. Neither is a defect;
+both are the cost of an index-plus-detail layout with a short index.
+
+### Measured after (1440×900)
+
+Homepage **17,550px / 19.5 viewports** · Recognition 1,232 · About 1,405 · 24 images ·
+**0 eager, 0 preloads, 24 lazy** · Recognition `loading="lazy"` · 1 canvas · 0 videos · no
+horizontal overflow at 1440×900, 1280×800 or 768×1024.
+Service 03 **11,410px / 12.68 viewports** · 0 images · 0 canvases · 0 videos · 0 preloads.
+Under emulated `prefers-reduced-motion`: **zero elements stuck at `opacity: 0`**, Recognition's
+image present, all three history moments at full opacity.
+
+---
+
+## 10r. `/about` — THE EDITORIAL ARCHIVE (Revision 15)
+
+`src/app/about/page.tsx`, copy in `src/config/about-page.ts`, components in
+`src/components/about-page/*`. `.abt-*` styles in `globals.css`.
+
+**Built and live: `/about`.** The site's **fifth page type** and its ninth public route.
+
+### The concept, and why it has no signature interaction
+
+Service 01 is a brand system, 02 a creator network, 03 an experiment engine, 05 a shoot board —
+each built around one thing the visitor operates. **This page has none, deliberately.** Nothing on
+it is selectable, nothing reconfigures, and there is no system diagram beyond one small convergence
+mark. It argues by **provenance**: dates, records, portraits, a recognition, and the type around
+them.
+
+That is the correct form for the one page read by someone who has *already* decided to take
+Mishram seriously. A fifth interactive chapter would have made About the sixth service page.
+
+### The chapters, and the three merges
+
+```
+hero            the archive — five fragments from five chapters
+origin          2021 → 2023 → 2025, what it taught, and who it was with
+disciplines     four practices converging on one name
+practice        the five services as a capability index
+principles      four operating positions
+on the record   recognition + collaborations, as one credibility chapter
+now             where the practice is going, and the bridge into the form
+inquiry         the shared form — no service preselected
+footer          Footer V2, unchanged
+```
+
+**Three merges were applied up front rather than as a length fix**, because in each case the halves
+are one argument: **origin with creator-native** (the second is the consequence of the first — told
+apart, the chronology is trivia and the creator claim has no evidence under it), **recognition with
+collaborations** (both short, both evidence, neither the subject), and **"where we are now" with
+the closing bridge**.
+
+### The hero — THE MISHRAM ARCHIVE
+
+Five fragments on one fixed-aspect board at different depths: a **creator** portrait, a **format**
+(a 9:16 re-crop), the **recognition** photograph, a **beginning** (a 2021 record card set as type),
+and a **build** (an abstract interface fragment). Each carries a small label naming which chapter of
+the company it is from, and **a note rendered on the page says they are five separate things, not
+one project.**
+
+- **Every image is a local approved asset.** Two roster crops using §10b's own tuned art direction
+  via `resolveFrame`, and the verified §06 photograph. **No stock, nothing invented.**
+- The two non-photographic fragments are **drawn** — there is no photograph of 2021, and a mocked
+  client screenshot would be a portfolio claim this page does not make (§10m's `CreativeSurface`
+  rule, applied here).
+- Percentages of a fixed-aspect box, so a collision checked at one width is checked at all of them.
+  **Verified: zero fragments escape the board** at 1440×900, 1440×768, 1280×800, 1024×768,
+  768×1024, 430×932 or 390×844.
+- Motion is 2–3px idle drift on four out-of-phase periods plus a staggered entry. **No WebGL, no
+  canvas, no video, no parallax.**
+
+**The narrow board is a different composition, not a smaller one.** Two fragments are removed
+outright and the three that remain are re-placed and re-sized — five archival items at 390px would
+be five thumbnails, which is what an archive must never become. The record card also takes a
+**taller aspect** there, because the same two tracked-out caps lines buy far less room at 56% of a
+phone than at 30% of a desktop column.
+
+### The origin chapter — an archive index, not a timeline
+
+A large year on the left, the milestone and its sentences on the right, one hairline per chapter.
+**No axis, no connecting arrows, no dots-on-a-rail, no cards.** The homepage's `History` band is
+the three-line summary of exactly this; giving it room is the whole reason the route exists.
+
+Every date and milestone is **verbatim-traceable** to Mishram's own `about.html` (§10p). The
+chronology then lands: *what starting there taught us* — attention is earned not bought, platforms
+have cultures, collaboration beats direction — so the history is never left as trivia.
+
+**The creator claim uses the safer wording.** *"Creators were where we started"*, which the
+chronology supports, **not** "creator-native before it was a category", which would be a claim about
+the industry rather than about Mishram.
+
+The portrait sequence is a **stagger** — alternating frame heights on one baseline — deliberately
+none of §03's selectable index, Service 01's five equal frames or Service 02's single-height
+casting wall.
+
+### The service index — registry-driven, and that is the point
+
+All five services render, because all five are genuine capabilities the homepage already states.
+The **action** comes from `servicePageHrefFor`, which returns a path only for a `built` route — so
+**Service 04 / Web & Digital Experiences appears as a named capability with no link at all.**
+
+**No `Coming Soon`, no disabled control, no `href="#"`, no placeholder page.** Verified on the
+rendered route: four rows link, `Web & Digital Experiences => NO LINK`. **Shipping that route lights
+this index with no edit here.**
+
+### Recognition and collaborations — neither duplicates its homepage counterpart
+
+- §06 puts the award on seven columns with a museum label. Here the same photograph is **small** —
+  a record inside the company's story rather than a chapter's subject. No trophy treatment, no gold.
+- §01 is a continuous marquee. Here the same five brands are a **static numbered index** with the
+  ink-tinted mask beside each name. Same config, same brands, completely different composition,
+  and nothing moves. §08's optical `scale` is applied, without which Muuchstac's stacked lockup
+  rendered as an 18px glyph.
+
+Brands are described as **worked with** — the old site's own wording — never clients, partners or
+"trusted by".
+
+### WHAT THIS PAGE DELIBERATELY DOES NOT SAY
+
+The full list with sources is at the head of `config/about-page.ts`. The load-bearing ones:
+
+- **NO TEAM AND NO FOUNDER.** The old site names four people in visible markup *and* in a schema.org
+  `employee` array; the content-migration audit classified all four **B — needs current
+  confirmation**. Publishing a historical employment record as a current one is exactly what §1
+  forbids. The founder is the best-evidenced of the four and is still not named.
+- **NO CITY, OFFICE OR ADDRESS.** `INDIA` only (§10f).
+- **NO SCALE CLAIMS.** No client, creator, campaign or head count; no years-in-business, reach or
+  revenue; not the old homepage's "1000+ influencers".
+- **NO AWARD EMBELLISHMENT.** `NUFEW` unexpanded, nobody in the frame named, no rank or
+  jurisdiction (§10p, §10q).
+- **NO NGO STORY, NO INFLUENCER GEOGRAPHY** — both evidenced, both held pending a client decision.
+- **The technology paragraph is a signal, not a landing page.** It names technology as a growing
+  part of the practice and stops. Web & Digital Experiences gets its own deep discovery (§10o).
+
+### Navigation — `About` now means the page, everywhere
+
+**`NAV_ITEMS`' About entry is `/about`, not `#about`.** One word in the header cannot mean a
+section on one route and a page on another. The homepage About chapter remains, reached by
+scrolling, and gained one restrained **`Read our story ↗`** text action beside its history band —
+not a third button in a chapter that already carries two.
+
+- `sectionHref` returns a route href untouched; only fragments resolve against the current route.
+- `isRouteHref` is the one predicate the header, the mobile sheet and the footer all branch on, so a
+  route item renders as `PageLink` (playing the shared wipe) and an anchor stays a plain `<a>` for
+  `useHashLanding` (§10g).
+- **Active state is derived from the pathname** on `/about`, never from the homepage observer.
+  `#about` is still in `SECTION_ORDER` on purpose: it matches no nav item, so scrolling the homepage
+  chapter leaves the header neutral exactly as `#hero` does.
+- The **Footer's About row points at `/about`** on every route.
+
+**Verified on all four route types** — `/`, a service page, a legal page and `/about` itself: About
+resolves to `/about` in the header and the footer everywhere, and carries `aria-current` only on
+`/about`. Outbound links from the page: `/#creators`, the four built service routes, and
+`#project-inquiry`. **Nothing points at an unbuilt route.**
+
+The **global Mishram signal wipe** plays with no page-specific code — `routeMarker` resolves
+`Mishram Media / About` from `config/routes.ts`, derived from `ABOUT_PAGE_COPY`.
+
+### Length — measured, and over the guidance
+
+**10,595px at 1440×900 — 11.77 viewports** against a 8–10.5 target. The arithmetic rather than an
+excuse:
+
+| | |
+| --- | --- |
+| Hero | 1,000 |
+| Shared Project Inquiry (§10h) | 1,377 |
+| Footer V2 | 681 |
+| Shared section padding × 7 | **1,344** |
+| **Structural cost before a word of this page's content** | **4,402px — 4.9 viewports** |
+
+That leaves seven chapters averaging ~885px each, and the heaviest is the merged origin chapter at
+2,490. A spacing pass took the page from 11,139 → 10,595 without removing a word.
+
+**Reaching 10.5 means removing content the brief asked for**, and the two candidates are recorded
+here rather than taken: the creator stagger (~810px, but the brief asks for 3–5 portraits) and the
+three "what it taught us" points (~450px, but they are the payload of the chronology). For
+comparison the page is **shorter than Service 03 (12.68) and Service 05 (12.43)**.
+
+### SEO, performance and accessibility
+
+- **Title** `About — Mishram Media` (the layout template supplies the brand). **Description:**
+  *Mishram Media began in creator marketing and grew into a multidisciplinary practice across
+  content, performance, technology and digital experiences.* Canonical and `openGraph` derived from
+  the same fields. **Statically prerendered.**
+- **8 images · 1 eager · 1 preload · 7 lazy · 0 canvases · 0 videos · no new dependency.** The one
+  eager image is the hero's dominant creator fragment, the route's genuine LCP candidate. The
+  recognition photograph and every strip portrait are lazy.
+- **One `h1`, seven `h2`, twelve `h3`.** Every section carries a resolving `aria-labelledby`; the
+  hero uses `aria-label`. Decorative fragments and the convergence mark are `aria-hidden`.
+- **No horizontal overflow** at 1440×900, 1440×768, 1280×800, 1024×768, 768×1024, 430×932 or
+  390×844. **Under reduced motion: zero text elements and zero images hidden**, and the archive
+  drift resolves to `animation-name: none`.
+
+---
+
+## 11. Responsive strategy
+
+| Breakpoint | Behaviour |
+| --- | --- |
+| What We Do pinned | `(min-width: 1280px) and (min-height: 680px) and (min-aspect-ratio: 5 / 4)` |
+| Everything else | What We Do stacks — no pinning, in-view animation instead |
+| ≥768px (stacked) | Chapters split into two columns — copy `col-span-5`, stage `col-span-7` |
+| <768px (stacked) | One column: copy, then stage |
+| 768–1100px portrait | Hero uses the **stacked** composition (media in the lower band) |
+| <768px | Mobile: stacked hero, mobile menu, bottom-sheet contact |
+
+Two independent shape-aware queries, both in `hooks/useMediaQuery.ts`. **Neither is a device guess.**
+
+**`STACKED_HERO_QUERY`** — the hero switches on frame *shape*: a portrait tablet needs the stacked
+composition even at 820px. Mirrored by `.hero-media` / `.hero-scrim` in `globals.css`; **change both
+together.**
+
+**`DESKTOP_SEQUENCE_QUERY`** — the pinned What We Do sequence. The 1280 is measured, not chosen: the
+capability rail needs a ~168px cell to hold `Creative Production` on one line and stay two columns,
+and below two columns it becomes four rows and overflows the fixed `h-[22rem]` copy holder into the
+progress indicator (at 1024px it overshot by 65px). A 12-column grid only gives `col-span-4` that
+much room from about 1254px up. The height and aspect guards catch the rest: a 100svh panel is only
+worth pinning if there is height to pin, and a portrait tablet cannot carry the composition however
+wide it looks. Mirrored by `data-sequence` on the section, which gates the scene annotations in CSS.
+
+### What We Do across sizes
+
+- **Scene geometry** is handled once, by `.svc-stage-box` (§10) — the composition box holds a
+  constant 1.141 aspect at every viewport, so no scene can spill and no annotation placement can
+  drift. This replaced the per-scene spill that existed at 768–1023px.
+- **Tablet 768–1279px** gets the stacked path deliberately, laid out as two columns rather than a
+  full-width band a scene has to letterbox inside. Copy left, scene right, vertically centred, one
+  hairline between chapters.
+- **Capability rail** uses `auto-fit` with a minimum that steps at 768px alongside the `.caps`
+  font-size, and tracks at 0.16em rather than the 0.26em `.caps` default. Two columns at 1440, 1280
+  and every phone down to 375px; one column on the narrow stacked copy column at 768–1023px. Never a
+  wrapped capability label.
+- **Closing CTA** keeps the buttons on one row wherever they fit and lets them fall into a clean
+  left-aligned stack below that (they wrap at 375px), 52px tall throughout, with
+  `15 MIN · NO OBLIGATION` under the group exactly as the Hero does it.
+
+Verified at 1440×900 / 1440×768 / 1366×768 / 1280×800 / 1152×800 / 1024×768 / 820×1180 / 768×1024 /
+430×932 / 390×844 / 375×812 — both themes and `prefers-reduced-motion` — with no horizontal
+overflow, no scene spill, no wrapped capability and no console errors.
+
+---
+
+## 12. Motion philosophy
+
+Motion communicates the work; it is never decoration.
+
+- Hero is the site's only heavy 3D moment. **No second WebGL canvas.** Later sections get
+  progressively lighter — CSS transforms, perspective, masks, Motion values.
+- Restrained: slow drifts, small offsets, long periods. No blobs, particles, bouncing loops,
+  scroll-jacking or gimmicks.
+- Prefer depth and position over `opacity: 0 → 1`.
+- Standard easing `[0.16, 1, 0.3, 1]`; entry sequences stay under ~1.5s. No splash screen, no
+  loading counter.
+- Avoid React state per scroll pixel — use MotionValues.
+
+---
+
+## 13. CTA & lead generation
+
+- **Primary:** `Book a 15-Min Call`, with `15 MIN · NO OBLIGATION`. Low friction, no aggressive sales
+  language.
+- **Secondary:** `Contact Us` → the panel (WhatsApp / Email / Call / Book a Call), for visitors who
+  won't schedule immediately.
+- **Placement is strategic, not repeated.** Hero (strong) → Services (contextual, e.g. "Discuss this
+  project") → a major proof section → closing section. Never a large CTA after every block.
+- **`Book a 15-Min Call` appears twice on the homepage: the Hero and the Footer.** §02's closing
+  booking block went first (§10 — the second ask before any proof), then About's (§10f — the primary
+  ask sitting immediately above a form asking the same thing). The Footer's is the **last remaining
+  duplication** and the Footer redesign in §19 removes it.
+- **Project Inquiry (§10h) is the page's conversion endpoint.** About bridges into it with
+  `Tell us what you're building ↓`. Adding another booking CTA anywhere needs a real argument, not a
+  spare gap.
+- **Service pages have their own hierarchy** — §10j. `Book a 15-Min Call` **once**, in the hero,
+  beside `Start a Project`; one contextual text link mid-page; the shared inquiry form at the foot.
+  The "exactly once on the page" count above is a **homepage** rule; what carries to a service route
+  is the restraint, not the number.
+- Journey the homepage should walk: attention → credibility → capabilities → proof → process →
+  results → conversion. Hero owns attention; Collaborations owns credibility.
+- **Portfolio-first:** show the work rather than claiming it. "Creator Growth" means showing
+  creators; "Web Development" is evidenced by this site itself.
+
+---
+
+## 14. Key files
+
+```
+src/app/layout.tsx            fonts, metadata, theme boot script, providers, RouteTransition,
+                              Header + Footer
+src/app/globals.css           tokens, both themes, .caps/.page-x, smooth scroll + anchor offset,
+                              hero + collab + service CSS
+src/app/page.tsx              homepage composition — the nine sections, nothing else
+src/app/services/social-personal-brand-growth/page.tsx
+                              01 / Social & Personal Brand Growth — the first service route
+src/app/services/influencer-marketing/page.tsx
+                              02 / Influencer Marketing — the second service route
+src/app/services/performance-marketing/page.tsx
+                              03 / Performance Marketing — the third service route
+src/app/services/brand-shoots-content/page.tsx
+                              05 / Brand Shoots & Content — the fourth built route (04 deferred)
+
+src/config/site.ts            brand, NAV_ITEMS + SECTION_ORDER + TOP_ANCHOR, SOCIAL_LINKS,
+                              real contact data, BOOKING_URL, WhatsApp helpers
+src/config/hero.ts            hero copy, media surfaces, annotations
+src/config/collaborations.ts  public brand rail + brand-safety note
+src/config/services.ts        five services, `built` flags, SERVICE_SCROLL_VH, section copy
+src/config/creators.ts        the roster, per-creator media + crops, publish flag, section copy
+src/config/process.ts         five process stages, pipeline geometry, paths, section copy
+src/config/work.ts            work items, media typing, crops, the media audit record
+src/config/recognition.ts     recognition items (empty) + the full recognition audit
+src/config/testimonials.ts    testimonials (empty) + the full testimonial audit
+src/config/about.ts           About copy, disciplines, and the source note for every claim
+src/config/sections.ts        adaptive visible-chapter numbering
+src/config/difference.ts      the interlude's copy and its four differentiators
+src/config/inquiry.ts         inquiry copy, options, limits + the shared validator
+src/config/footer.ts          Footer V2 labels + the discipline equation (values come from
+                              site.ts, service-pages.ts and legal.ts)
+src/config/legal.ts           Privacy / Terms / Cookies content, the audit of the old site's
+                              documents, and the record of what this site actually does
+src/config/routes.ts          the public route map + the transition's destination marker
+src/config/service-pages.ts   the service-route registry (`built` flags), the homepage→route
+                              link helper (`servicePageHrefFor`), `isServiceRoute`,
+                              `SERVICE_PARENT`, + the shared section vocabulary every service
+                              page's copy is written into
+src/config/service-social.ts  all of the Social & Personal Brand Growth page's words
+src/config/service-influencer.ts
+                              all of the Influencer Marketing page's words + its content boundary
+src/config/service-performance.ts
+                              all of the Performance Marketing page's words, the test-bench and
+                              variant-sheet surface definitions, + the strictest content boundary
+                              on the site (no figure of any kind, and why)
+src/config/service-shoots.ts   all of the Brand Shoots & Content page's words, the shot-builder
+                              arrangements, + the photography audit that disqualified the old
+                              site's brand-shoot gallery under §9
+
+src/components/Header.tsx     header + mobile menu, live anchors, active-section state,
+                              the services disclosure
+src/components/header/*       the services menu — desktop panel + mobile group
+src/components/Footer.tsx     Footer V2, the agency desk
+src/components/transition/*   the Mishram signal wipe — one route transition, mounted globally
+src/components/legal/*        the shared legal article shell
+src/components/ui/PageLink    internal route link that plays the wipe (wraps next/link)
+src/components/Hero.tsx
+src/components/Collaborations.tsx
+src/components/hero/*         WebGL scene, shader card, spatial layout, procedural textures, fallback
+src/components/whatwedo/*     section shell, copy, progress, stage, closing statement, scenes/
+src/components/difference/*   interlude shell + axis, connected stack, rail, evidence fragments
+src/components/inquiry/*      inquiry shell, form, field primitives
+src/components/ui/SocialIcon  the three platform marks, inline SVG
+src/app/api/inquiry/route.ts  server-side inquiry delivery (the only holder of the API key)
+src/components/creators/*     section shell, talent index matrix, photographic stage, meta
+                              block, load-gated transition
+src/components/process/*      section shell, pipeline SVG, active-stage detail, vertical rail
+src/components/work/*         section shell, work index, media stage, media surface
+src/components/recognition/*  section shell (self-suppressing), evidence surface
+src/components/testimonials/* Client Notes shell (self-suppressing), quote index, quote stage
+src/components/about/*        agency chapter, discipline system, closing conversion
+src/components/service-page/* shared service-page primitives — section shell + head + grid, hero,
+                              statement, connected system, scope index, audience rail, process,
+                              FAQ, prev/next rail
+src/components/service-page/social/*
+                              the Social page's own art direction — the Brand Signal hero
+                              composition, the Content System board, the creator field
+src/components/service-page/influencer/*
+                              the Influencer page's own art direction — the Campaign
+                              Constellation hero, the Creator Match Field, the braided campaign
+                              system, the casting wall, the fit relations
+src/components/service-page/performance/*
+                              the Performance page's own art direction — CreativeSurface (the
+                              abstract, wordless, numberless ad surface every composition is
+                              built from), the Experiment Field hero, the variant sheet, the
+                              Creative Test Bench, the performance path, the optimisation rail,
+                              the landing experience, the scope experiment mark
+src/components/service-page/shoots/*
+                              the Brand Shoots page's own art direction — ShootFrame (one
+                              photographic frame, three size buckets, §10b crops reused), the
+                              Live Contact Sheet hero, the Shot Builder, the format system, the
+                              direction desk, the selects, the scope frame mark
+src/components/theme/*        ThemeProvider (+ boot script), ThemeToggle
+src/components/contact/*      provider, panel, icons
+src/components/ui/*           CtaButton, Magnetic, Arrow, Wordmark
+src/app/{privacy,terms,cookies}/page.tsx
+                              the three legal routes — shells around LegalArticle
+src/hooks/*                   useMediaQuery (+ useStackedHero, useDesktopSequence),
+                              usePrefersReducedMotion, useDialogBehaviour, useHoverLock,
+                              useActiveSection, useHashLanding, useSectionHref
+```
+
+Assets: `public/media/creators/*.webp` (5 portraits), `public/media/brands/*.png` (5 mask + 5 colour),
+`public/media/recognition/mishram-best-digital-marketing-agency-nufew-2024-25.webp` (850×680, the
+§06 award — cropped from the old deployment's original and stored locally, §10p),
+`public/brand/mishram-wordmark.png` (used as a CSS mask so it inherits `currentColor`). Everything is
+local — nothing is hotlinked.
+
+---
+
+## 15. Dependencies
+
+Runtime: `next@16.3.2`, `react@19.2.8`, `react-dom`, `three@^0.185`, `@react-three/fiber@^9.7`,
+`motion@^13.1`, `clsx`.
+Dev: `typescript`, `tailwindcss@4`, `@tailwindcss/postcss`, `eslint` + `eslint-config-next`,
+`@types/three`, `sharp` (asset pipeline only).
+
+The Project Inquiry form added **none**: plain React, native form controls, and one server-side
+`fetch` against Resend's REST API rather than their npm package. No form library, no validation
+package, no email SDK.
+
+The service-page system, the services menu, Footer V2, the route transition and the legal pages
+(§10j, §10k) added **none either**. The wipe is Motion and one fixed element; the menu is a real
+`<button>` and a `<ul>`; the legal pages are typography. **No router library, no transition package,
+no icon set, no headless-UI dependency, and no analytics or consent SDK** — the last of which is why
+the cookie policy can honestly say the site sets no cookies.
+
+`@react-three/drei` was **removed** — `useLoader(TextureLoader)` and a hand-rolled projection replaced
+its two uses. Do not reinstall it, a carousel library, a cursor package or a second animation engine.
+
+Next 16 notes: Turbopack by default, `next dev` regenerates `AGENTS.md`/`CLAUDE.md`, and version-
+specific docs live in `node_modules/next/dist/docs/`.
+
+---
+
+## 16. Performance rules
+
+- Hero WebGL is the only heavy runtime cost and is lazy, pausable and DPR-capped.
+- three.js chunk (~875KB uncompressed) is lazy-loaded client-side only; it never blocks first paint.
+- Images pre-encoded to WebP at display-appropriate sizes (5 creator photos ≈ 220KB total).
+- Prefer CSS transforms and MotionValues; no per-pixel React renders.
+- No new runtime dependency without a real justification.
+- Sections below the hero must stay lightweight.
+
+---
+
+## 17. Accessibility & reduced motion
+
+- Semantic HTML, one `<h1>` (hero), section `aria-labelledby`, skip link.
+- Single focus treatment site-wide: 1px accent outline, 3px offset.
+- `MotionConfig reducedMotion="user"` strips transform animation from the DOM layer, leaving fades.
+- `prefers-reduced-motion` also: hero canvas → `frameloop="demand"` (composition settles, then
+  stops); marquee → static centred grid of five; service drift and parallax off; content and
+  hierarchy always preserved — never hidden.
+- Hover-only feedback is gated to fine pointers; keyboard `:focus-within` equivalents exist for the
+  logo rail (activate once logos become links).
+- Contact panel and mobile menu: full dialog semantics, focus trap, Escape, focus restoration.
+- Header nav links (`Work / Services / Creators / About`) are live plain anchors — see §10g. Native
+  hash navigation, `scroll-margin-top` for the fixed header, `scroll-behavior: smooth` disabled
+  under reduced motion, `aria-current` on the section in view, and the mobile menu closes before the
+  browser performs the navigation. No clickable divs anywhere in the header or the footer.
+- **Disclosure panels stay mounted.** `aria-controls` has to name an element that exists, so a
+  collapsed FAQ answer is hidden with `inert` and a CSS `grid-template-rows: 0fr → 1fr` transition,
+  never unmounted (§10j). Unmounting it leaves every closed button pointing at nothing.
+- **A `pathLength` draw needs a reduced-motion fallback.** Motion implements it as an inline
+  `stroke-dasharray` / `stroke-dashoffset`, so a draw that is stripped or never fires leaves the
+  line invisible — force the drawn state in CSS with `!important` (§10j), the same class of bug
+  §10g records for the footer signal.
+- **So does an animated `transform` that starts at zero.** §10m's optimisation tracks hold their
+  teal fill at `scaleX(0)` until it animates; a stripped transform animation leaves every track
+  looking empty. `transform: scaleX(1) !important` in the reduced-motion block is the fix — the same
+  reasoning as the `pathLength` guard, on a different property.
+- **And the reverse case: hiding something under reduced motion needs `!important` too.** §10m's
+  travelling dash resolves its entry to an inline `opacity: 1`, which a plain
+  `.pfm-flow { opacity: 0 }` cannot reach past — the dash would survive as a static thicker stroke
+  over the line it was meant to travel.
+
+---
+
+## 10o. SERVICE 04 / WEB & DIGITAL EXPERIENCES — DEFERRED BY THE CLIENT
+
+**This is a scheduled milestone, not an unfinished page.** Read this before
+concluding the service pages are "nearly done bar one" or offering to fill the
+gap quickly.
+
+`/services/web-digital-experiences` **does not exist**, `built` stays `false`,
+and nothing on the site links to it — verified after Revision 12 by crawling
+every internal `href` on all eight public routes. It returns 404.
+
+### Why it is held back
+
+Its page has to demonstrate a materially wider scope than any other service
+page: **websites, landing experiences, custom software, CRM systems, internal
+business tools and automation** — the required list is in §10's Service 04 note,
+and the homepage's own capability rail already states the software half out
+loud. It is also the one service where **the site itself is the portfolio**, so
+the page sets the ceiling for how technically credible Mishram looks.
+
+A version built in the same pass as another service would inevitably be a
+web-agency page with software bolted on. **The client asked for it to get its
+own deep design and build pass**, and that is the right call.
+
+### The temporary numbering gap, and why it is honest
+
+The built sequence is **`01 → 02 → 03 → 05`**. Service 05 keeps its canonical
+index — it is **05, never renumbered to 04** — because the numbering belongs to
+the five-service system in `config/services.ts`, not to the order the routes
+happened to ship in.
+
+Everything derives, so nothing had to be special-cased:
+
+| Surface | Behaviour with 04 deferred |
+| --- | --- |
+| Header + mobile services menu | `Overview · 01 · 02 · 03 · 05`. **No disabled Service 04 row**, and no renumbering to hide the gap |
+| Homepage `02 / What We Do` | Services 01, 02, 03 and 05 show `Explore service ↗`; Service 04 shows none, because `servicePageHrefFor` returns `undefined` for it |
+| Footer Services directory | The same four routes |
+| Prev / next | 03 → **Next: Brand Shoots & Content**; 05 → **Previous: Performance Marketing**. `adjacentServicePages` walks `BUILT_SERVICE_PAGES`, so it steps straight over 04 |
+| Route transition | `Services / 05 — Brand Shoots & Content`, from the same registry |
+
+**When Service 04 ships, the sequence repairs itself** — one `built: true` plus
+its metadata, and 03 → 04 → 05 falls out with no component edit. Two things are
+already waiting for it: §10m's landing-experience section is the natural home
+for a contextual link to it, and §10n's `ShootFrame` shows the pattern its own
+media primitive should follow rather than one it should share.
+
+**Do not build it as part of another task, and do not propose building it
+immediately after one.** It follows the About page in the current plan.
+
+---
+
+## 18. Do NOT redesign
+
+Approved and locked. Extend, don't rebuild:
+
+- Header (layout, wordmark, nav, theme toggle placement)
+- Growth Orbit Hero — composition, copy, WebGL architecture, shader, `layout.ts` values, exposure
+  tiers, entry sequence, scroll recede
+- Custom cursor / pointer caption system
+- Dark + light theme system and token names
+- Contact panel and its data
+- Selected Collaborations — layout, marquee, speed, logo treatment, hover colour, brand list
+- **02 / What We Do — the whole section is locked.** Intro, scroll architecture, all five service
+  scenes, the progress indicator, the closing statement, and the responsive behaviour in §11. Extend
+  nothing here without explicit approval. Service 04's copy and its `Custom Build` annotation were
+  changed under an explicit instruction (§10); the scene itself was not, and **the closing statement
+  must not regain a CTA block**
+- **03 / Creators — locked again, now that the roster has been scaled.** The talent index, the
+  cascade geometry, the five per-creator crops in §10b, the selection model, the matrix and the
+  media-loading architecture in §10b-scale, and the empty follower fields all stand. Fill
+  `followers`/`instagram` when the client confirms a handle, and add creators by config — that is
+  what §10b-scale exists for. **Do not reintroduce mount-everything media loading, an inner scroll
+  area, pagination, a carousel or a virtualisation dependency**
+
+- **Footer V2, the services menu and the route transition (§10k) — awaiting review, then locked.**
+  The wordmark stays a left-aligned signature, not a centred poster. `Services` stays a plain anchor
+  with a disclosure beside it, never a nav item replaced by a dropdown. The wipe stays under ~550ms
+  and never stalls a navigation. **Every service link, footer service row and menu row stays derived
+  from `built`.**
+- **LinkedIn stays present and unlinked** until a real profile URL is confirmed — `aria-disabled`
+  on a non-anchor, never `href="#"` and never a bare domain (§10k).
+- **The legal pages describe this site, not a template.** If the site gains an analytics tool, a
+  cookie, an embed or a new processor, the policy changes in the same commit — never after.
+- **Service 02 (§10l) — awaiting review, then locked.** The Creator Match Field routes through
+  formats, never through people, and its creator backdrop is evenly treated under every intent —
+  **that is a content-integrity constraint, not a style choice.** Do not "improve" it by lighting
+  up creators per campaign type. The page carries no figure of any kind, and the scope carries no
+  negotiation, contract or payment claim until the client confirms one.
+- **Service 03 (§10m) — awaiting review, then locked.** **Not one performance figure appears on the
+  route, and that is a content-integrity constraint rather than a style choice.** Do not "improve"
+  the test bench by showing a winning variant, adding a confidence bar, a percentage, a chart or a
+  red/green state — every one of them would be a fabricated result, and on a performance page a
+  fabricated result is a business claim. The creative surfaces stay wordless, imageless and
+  brandless for the three reasons at the head of `CreativeSurface`. **Google Ads stays out of the
+  scope index** until the client confirms it, and no FAQ answer promises a result. The page carries
+  **no photography at all**, which is a decision, not a gap.
+- **Service 05 (§10n) — awaiting review, then locked.** **The old site's brand-shoot gallery stays
+  out**: 16 of its 19 images are betting, casino, fantasy-gaming or offshore-CFD brands, which §9
+  excludes permanently, and all 19 are hotlinked. Do not reintroduce them, and do not substitute
+  stock photography — the five approved creator files are the library, and one source resolving
+  into four formats is the page's argument rather than a shortage it is hiding. **Prominent frames
+  use the `portrait` and `reel` crops**; §10b's `content` crops drop below the face and render as
+  flat fabric at any size that matters. Nothing on the page names a client, campaign, photographer,
+  camera, location, date, package or price.
+- **Service 04 stays deferred (§10o).** Do not build it inside another task, do not create a
+  placeholder, and do not renumber Service 05 to close the gap. **It now needs the client discovery
+  listed under *Exact next step* before any design work begins.**
+- **`/about` (§10r) — awaiting review, then locked.** It has **no signature interaction and no system
+  diagram**, and that is the design rather than an omission — a fifth interactive chapter would make
+  it the sixth service page. **No team member, no founder, no city, no scale claim** ever appears on
+  it; the four historical names stay unpublished until the client confirms them. The archive board
+  shows five fragments from five chapters with a note on the page saying so — **do not let it imply
+  one campaign**, and do not add a stock image to fill it. The service index stays derived from
+  `built`, so Web & Digital Experiences renders as a capability with no link.
+- **`About` in the navigation means the page.** Header, mobile sheet and footer all resolve it to
+  `/about`, and active state comes from the pathname. **Do not point it back at `#about`** — one
+  word cannot mean a section on one route and a page on another.
+- **Art-direct a shared primitive with a slot, never a fork** (§10l). `ServiceScope.accessory` and
+  `ServiceProcess`'s derived column count are the pattern; a second copy of either component is not.
+- **06 / Recognition's content (§10p) — content-integrity constraints, not style choices.**
+  **`NUFEW` is never expanded** — it exists only as pixels on a badge and `grep` returns zero text
+  matches in either repository. **Nobody in the photograph is named**, including the presenter the
+  old markup's alt text guesses at and the recipient who resembles the founder photograph. No rank,
+  no "national", no "#1", no jurisdiction, nothing quoted from the illegible plaque. The asset stays
+  a **local** crop that excludes the source banner's promotional typography and clipart — do not
+  recolour it, do not add gold, and do not add trophy iconography anywhere. **Recognition's image
+  never carries `priority` or eager loading**; the prop was deleted from `RecognitionMedia` so it
+  cannot come back.
+- **Client Notes stays suppressed.** All eight old-site testimonial candidates are **conclusively
+  rejected** after two independent audits (§10d-notes). Do not re-audit them, do not soften a quote
+  into usability, and do not populate the section because the architecture exists. It switches on
+  with genuine first-party client material and nothing else.
+- **The creator roster's rejected names never return (§10p).** Irwin Javier, Boss Toni and Argoni X
+  are one stock photoshoot series relabelled as three creators; Vijay 3 Guy is a generated/stock
+  portrait on a tile whose own `alt` names a different person; `xx_mrswag` is unnamed and carries
+  another photographer's watermark. **`Currently Managed` belongs to Akash Sagar alone** — the
+  historical five keep `Creator Network`, because "worked with" is the old site's own ceiling for
+  them. A handle renders as a link **only where it is verified**.
+- **NEVER LINK TO A ROUTE THAT DOES NOT EXIST.** No `Coming Soon` label, no disabled control, no
+  `href="#"`, and no placeholder page committed to make a link valid. Every service link on the site
+  is derived from the `built` flag in `config/service-pages.ts` (§10j), so an unbuilt service
+  renders nothing at all. The same rule already governs Recognition, Client Notes and the
+  suppressed LinkedIn icon — a missing thing is absent, never faked.
+- **The service-page system (§10j) — awaiting review, then locked.** The shared primitives, the
+  section rhythm, the grid rules, the CTA hierarchy, the navigation helper and the inquiry
+  integration are what the remaining four routes inherit. Extend them with new *content*; do not
+  fork a page's own copy of a primitive, and **do not extend the config types to describe layout** —
+  each service keeps its own hero composition, signature interaction and proof section as React.
+
+Also permanent: no generic agency cards, no SaaS layouts, no Bento grids, no card-grid landing-page
+components, no six-icon feature grids, no pricing cards and no template FAQ blocks. The homepage is
+one art-directed system, and so is every service page.
+
+---
+
+## 19. Current status & next step
+
+**Done and approved (locked, see §18):** design system, both themes, Header, Growth Orbit Hero,
+Selected Collaborations, **02 / What We Do**, **03 / Creators**.
+
+**Awaiting review:** **The Mishram Difference** (§10a), **04 / Work Process** (§10c),
+**05 / Selected Work** (§10d), **06 / Recognition** (§10e, §10p — **now active with one verified
+award**), **About** (§10f, §10p — the last storytelling chapter, now carrying the verified
+2021/2023/2025 history band and the page's closing conversion moment),
+the **navigation + Footer** (§10g), **the service-page system + `/services/social-personal-brand-growth`** (§10j),
+**`/services/influencer-marketing`** (§10l), **`/services/performance-marketing`** (§10m), and
+**`/services/brand-shoots-content`** (§10n).
+
+**The homepage shell is complete.** Header → Hero → Collaborations → What We Do → The Mishram
+Difference → Creators → Work Process → Selected Work → (Recognition) → About → Footer, with the
+global contact panel over it. Every header, mobile-menu and footer link resolves to a real section;
+the development spacer after About is gone and there is no blank area below the Footer.
+
+**The site now has a second page type.** `/services/social-personal-brand-growth` is built on the
+shared service-page architecture in §10j, and the homepage's Service 01 links to it.
+
+**Four service pages now exist** — §10l, §10m and §10n. Each shipped on the shared system and lit
+the Header menu, the mobile menu, the homepage `Explore service ↗`, the Footer Services directory
+and prev/next on every built page **with no component edit at all**. **Service 04 is deliberately
+deferred (§10o)**, so the built sequence is `01 → 02 → 03 → 05` and Service 05 keeps its canonical
+index. `/services/web-digital-experiences` returns 404 and nothing links to it.
+
+**The shared system has now carried four genuinely different stories** (§10j, §10l, §10m, §10n):
+one identity outward into a system; many voices inward onto one campaign; a loop that travels and
+comes back; and a board of frames resolving into a library. The last two are the extremes of the
+set — Service 03 carries **zero images and no figure of any kind**, Service 05 carries **29 frames
+and no diagram at all** — and both reuse every shared primitive while sharing no composition, no
+section order and no interaction model with anything before them.
+
+**The global shell is now complete** — §10k. Eight public routes: the homepage, four service pages
+and the three legal documents. Footer V2 is a working directory rather than a poster, `Services` in
+the header opens a menu of the routes that exist, and every internal route change plays one shared
+transition. Nothing in any of it is hand-listed; it all derives from the registries.
+
+### Revision 12
+
+**05 / Brand Shoots & Content** — §10n. The fourth service page built, and the most photographic
+one on the site: **no connected-system diagram anywhere on it**, and the only SVG on the route is
+the scope accessory. It is built around **the shoot board** — idea → direction → frame → format →
+library — with a **Live Contact Sheet** hero of six frames, indices, crop marks and a selection
+bracket; a **Shot Builder** whose five directions replace the photographs and their crops rather
+than redrawing a diagram; a **format system** that proves one photograph becomes 9:16, 4:5, 1:1 and
+16:9 by actually doing it; and a **sheet of selects** whose heights and aspects both vary.
+
+**The old site's brand-shoot portfolio was audited and disqualified wholesale** — 16 of its 19
+images are betting, casino, fantasy-gaming or offshore-CFD brands (§9), and all 19 are hotlinked.
+So the library is the five approved creator files, which turns out to be the honest way to sell
+creative direction: **29 frames, 5 source files, 11 fetched variants, 1 eager, 0 videos.**
+
+**Service 04 was deliberately not built** — §10o. It is a scheduled deep-build milestone, so the
+route sequence is temporarily 01 → 02 → 03 → 05 and Service 05 keeps its canonical index. The gap
+is visible in the header menu on purpose.
+
+**Screenshots worked in this session**, and looking at the page caught three defects measurement
+would not have: three crops that rendered as flat fabric, a format crop squeezing its sentence to
+9px, and 50px-wide crops on a phone. Measured **11,189px / 12.43 viewports**, above the 9–11.5
+guidance — both of the brief's authorised merges were applied before the first measurement, so the
+arithmetic and the two remaining cuts are recorded in §10n rather than taken unilaterally.
+
+### Revision 11
+
+**03 / Performance Marketing** — §10m. The third service page, and the hardest content problem on
+the site: performance marketing is the service a visitor most expects numbers on, and Mishram has
+none it may publish. **The route carries no performance figure at all** — no ROAS, CTR, CPA, spend,
+revenue or conversion count, not even decoratively — and no dashboard, no ad-manager chrome, no Meta
+UI and no chart with an axis. What it draws instead is **the experiment engine**: hypothesis →
+creative variants → paid distribution → landing → signal ↺ next test, told four ways. The
+**Experiment Field** hero travels left to right and returns; the **Creative Test Bench** lets a
+visitor change one variable and watch three genuinely different surfaces replace three others; the
+**performance path** is a flat closed circuit rather than a rising pipeline or a convergence; and
+the **landing experience** argues the half of a campaign everyone inherits. The page has **zero
+images, zero canvases and zero videos** — a deliberate inversion of Service 02's fifteen. Two
+sections carry two movements each, both merges removing a genuine repeat rather than trimming
+content, which took ~1,150px out of the route. Measured **11,384px / 12.65 viewports**, above the
+9.5–11 guidance, with the arithmetic and the two available cuts recorded in §10m rather than taken
+unilaterally.
+
+### Revision 10
+
+**02 / Influencer Marketing** — §10l. The second service page, and the first real test of whether
+the shared architecture carries a different story. It reuses every shared primitive and shares no
+composition or section order with Service 01: a **Campaign Constellation** hero of five creators
+converging on one signal, a **Creator Match Field** where five campaign intents redraw the route,
+a **campaign system** of four strands braiding into one trunk, and a **casting wall** of uneven
+portraits. Two primitives gained slots rather than forks — `ServiceScope.accessory` and a derived
+column count on `ServiceProcess`. `built: true` was flipped only after validation, and four
+discovery surfaces plus prev/next lit on their own. **Not one figure appears on the page**, and the
+match field routes through formats rather than people so no real creator is ever categorised.
+
+### Revision 09
+
+**Global shell refinement** — §10k. **Footer V2**: the 616px centred wordmark became a 340px
+left-aligned signature, and the space it freed carries contact, navigation, the built service
+routes, socials and legal — 803px → **681px** at 1440, 1,070 → **1,012** at 390 with far more in it.
+**LinkedIn is now visually present and still not a link** (`aria-disabled`, no href), turning into a
+real one the moment its URL is configured. **A services menu** was added beside the header's
+`Services` anchor, listing the overview and every built route, with a matching expandable group in
+the mobile sheet. **One route transition** — the Mishram signal wipe — now runs for every internal
+pathname change from the root layout, with hash navigation deliberately left native. **Three legal
+routes** were written after auditing the old site's documents and discarding almost all of them: the
+old cookie policy claimed Google Analytics, Facebook Pixel, Google Ads and a LinkedIn Insight Tag,
+and **this site has none of them**. No homepage section was redesigned and Service 01 is untouched.
+
+### Revision 08
+
+**Public route discovery, and the homepage → service-page link** — §10j, *The public route
+inventory* onward. The App Router tree was inventoried from the filesystem rather than from this
+document: **two public pages, one API route handler, and no internal, debug or design-lab route
+anywhere.** Service 01 in `02 / What We Do` gained `Explore service ↗` beside its existing
+`Discuss this project ↗`, derived from the registry's `built` flag so Services 02–05 render nothing
+rather than a dead link. The header now lights `Services` on any `/services/...` route, resolved
+from the URL with the homepage observer left unattached. The service page's hero eyebrow became a
+real breadcrumb — `SERVICES / SOCIAL & PERSONAL BRAND GROWTH`, with the parent linking back to
+`02 / What We Do`. **No homepage layout, scene, scroll or section copy was otherwise touched**, and
+the copy block's metrics are byte-identical to before.
+
+### Revision 07
+
+**The service-page system, and the first page on it** — §10j. Shared primitives (section shell,
+head, grid modes, hero, statement, connected system, scope index, audience rail, process, FAQ,
+prev/next), a thin route registry deriving its titles from `config/services.ts`, and one
+fully art-directed page: **01 / Social & Personal Brand Growth**, whose hero composition resolves a
+single creator identity into the formats a brand is made of, and whose signature interaction is a
+five-pillar content-system board. The shared `ProjectInquiry` gained three optional props so a route
+can preselect its own service without a second form or a second endpoint; `NAV_ITEMS` gained one
+helper so header and footer anchors leave a subpage correctly. **The homepage was not changed.**
+
+### Revision 06
+
+**Full homepage review** — §10i. Audit of the rendered page end to end, then four fixes: three
+below-the-fold `priority` images removed (both LCP warnings cleared), the serif accent dropped from
+§04 to break an eight-section template, the per-service CTA quietened, and 48px of Footer slack
+trimmed without shrinking the closing mark. **The homepage is structurally complete.**
+
+### Revision 05
+
+**The Footer was completely redesigned** — §10g, "The Final Signal". The old editorial colophon is
+gone: it continued the page grid, read as another band, and repeated the booking CTA. The new one is
+a full-bleed closing canvas that **inverts to obsidian even in light mode**, draws no grid and no
+border, opens on the teal trace §10h's fade resolves into, and ends on the Mishram wordmark at poster
+scale with a pointer-tracked teal band inside the letterforms. **Its `Book a 15-Min Call` was
+removed, so the ask now appears exactly once on the homepage, in the Hero.** Facebook was promoted to
+a published social link on the strength of the old site's schema.org `sameAs`; LinkedIn stays
+suppressed because the only URL that ever existed for it is a bare domain.
+
+### Revision 04
+
+**Project Inquiry added** above the Footer — §10h. The homepage's final conversion moment: an
+editorial project brief with real validation, a server-side delivery route that never exposes a
+credential, and an honest WhatsApp fallback for when email delivery is not configured. **About's
+closing `Book a 15-Min Call` was removed** and replaced with a bridge into the form (§10f), leaving
+the Footer's as the last remaining duplication. The twelve-column grid now resolves through this
+section so the Footer can become a distinct ending.
+
+### Revision 03
+
+**Client Notes added** between §05 and Recognition — §10d-notes. An unnumbered interlude, built and
+**shipped rendering nothing**: a bounded audit of the old site found eight candidate testimonials
+across three sources and disqualified all of them (placeholder avatars, one quote attributed to two
+people verbatim, placeholder job titles, and a testimonials page still praising the template's own
+agency). Verified against a temporary populated config, which was then reverted.
+
+### Revision 02
+
+**03 / Creators rearchitected to carry 15–20+ creators** — §10b-scale. The concept, composition and
+interaction model are untouched; the roster became a derived-column matrix and the stage stopped
+mounting every creator's frames. Stress tested at 24, then the synthetic entries were removed —
+production holds exactly the five legitimate creators. §03 also adopted the shared `useHoverLock`,
+which §10c had flagged as worth consolidating whenever that section was next opened.
+
+### Revision 01
+
+Four targeted corrections after reviewing the whole page. Nothing was redesigned.
+
+1. **§02's duplicated booking CTA removed.** `Book a 15-Min Call` + `Contact Us` at the end of
+   What We Do — the second ask on the page, before any proof. See §10; do not reinstate.
+2. **Service 04 now states the software capability.** New description and a
+   `Web Design / Web Development / Custom Software / CRM Systems` rail, plus one annotation in the
+   scene (`Interaction` → `Custom Build`). The scene is otherwise unchanged. The future service
+   page's required scope is recorded in §10.
+3. **The Mishram Difference interlude added** between §02 and §03 — §10a.
+4. **Vertical rhythm tightened at the §02 boundary.** §02's closing runs to `lg:pb-16` and the
+   interlude's axis carries the gap, so the mostly-empty viewport between the two chapters is gone
+   without losing the whitespace.
+
+### Revision 15
+
+**The dedicated About page** — §10r. `/about` is built: the site's **fifth page type**, ninth public
+route, and deliberately the calmest thing on it. **THE EDITORIAL ARCHIVE** — no signature
+interaction, nothing selectable, no system diagram beyond one small convergence mark. It argues by
+provenance rather than mechanism, which is the right form for the page read by someone who has
+already decided to take Mishram seriously.
+
+The **hero archive** lays five fragments from five chapters of the company on one board — a creator,
+a format, the recognition, a 2021 record card and an abstract build — with a note on the page saying
+they are five separate things. The **origin chapter** gives the verified 2021 → 2023 → 2025
+chronology real room and then lands it in what starting with creators taught the practice. The
+**service index** is registry-driven, so **Web & Digital Experiences appears as a named capability
+with no link at all**. Recognition and collaborations merge into one credibility chapter, neither
+duplicating its homepage counterpart.
+
+**`About` in the navigation now means the page, everywhere** — header, mobile sheet and footer — with
+active state derived from the pathname, and the homepage chapter gaining one restrained
+`Read our story ↗`. **No team, no founder, no city, no scale claim, no award embellishment**; every
+held item from the content-migration audit stayed held.
+
+Measured **10,595px / 11.77 viewports**, above the 8–10.5 target with the arithmetic and the two
+available cuts recorded in §10r rather than taken. **No dependency added.**
+
+### Revision 14
+
+**Post-migration visual QA** — §10q. The first pass with **real composited screenshots**, obtained
+by driving the machine's own Chrome headless over CDP from a dependency-free Node script after the
+Browser pane and the Chrome extension both proved unavailable. Looking at the pages found **nine
+defects that three prior passes of measurement had not** — the counterpart to §10p's lesson:
+*geometry cannot clear a composition.*
+
+**Recognition** was the worst of it: the award asset was a lilac promotional banner with a
+sunburst, a gold rosette and two small figures, reading as an advertisement on the obsidian
+canvas. It was **recropped from the original** so the presentation fills the frame, the duplicated
+and illegible in-frame tag was suppressed, and the caption **moved beside the frame** to fill the
+five empty columns a single item left — 1,317 → **1,232px**. **About's history** gained a per-row
+rule on mobile, where the ticks had been floating in space, and the years a step of weight.
+**Service 03's hero** had three label collisions, all fixed with §10n's halo trick plus two
+geometry corrections; the concept rail's orphaned `→ Signal` turned out to affect **Service 01
+too**, unseen since Revision 07, and both now fit on one line. The **legal-route `#hero` anchor**
+recorded as a known defect in §10k is closed.
+
+No content was added, no concept redesigned, and **no dependency introduced**.
+
+### Revision 13
+
+**Content migration — Recognition activated, About gains its history** — §10p. The first revision
+in a while to ship content rather than architecture, and it corrected three earlier conclusions
+this brief had reached by grepping markup instead of opening files.
+
+**06 / Recognition is live.** The old site's `*_AWARD_*.gif` — dismissed by §10e as "promotional,
+unlabelled" — turn out to carry `"AWARDED AS " BEST DIGITAL MARKETING AGENCY` and a gold
+`NUFEW 2024-25` badge over an award-plaque presentation. The banner was downloaded, cropped to the
+photograph and the badge (**850×680, stored locally, never hotlinked**), and configured with only
+the fields the image visibly supports. **`NUFEW` is not expanded and nobody in the frame is named.**
+`ABOUT_CHAPTER` derived `07 / ABOUT` on its own. **The stale `priority` flag §10i left behind is
+gone**, and the prop was deleted so it cannot return: 0 eager, 0 preloads, 24 of 24 lazy.
+
+**About carries three verified milestones** — 2021 Starcrown Media · 2023 New disciplines · 2025
+Mishram.Media — as a hairline band reusing the service pages' tick grammar. Not a timeline. **This
+supersedes the "no founding date" rule**, which was written before the evidence was found.
+
+**Akash Sagar (`@xbhandesiri_`) is configured and deliberately unpublished.** The relationship is
+the best-evidenced on the roster; the official profile exposes only a **150×150** avatar, which is
+~7% of the pixels the section needs. Supply the portrait and flip one boolean. Two generic
+capabilities shipped with him — per-creator relationship labels and a verified handle rendering as
+a real external link — plus one accessibility fix (`inert` on inactive meta lines).
+
+**Held, not shipped:** all 8 testimonials (conclusively rejected, now by two independent
+mechanisms), five B-class historical creators, four team members, the influencer geography, the
+non-profit arm, WOW Skin Science and the negotiation scope row.
+
+Measured **16,122 → 17,612px**; Recognition 1,309; About 1,223 → 1,403 (1.56 viewports).
+
+### Four open items, all blocked on client-supplied material
+
+Each is recorded rather than guessed, and each is a config change away from working:
+
+1. **No creator follower data.** §03's `followers` and `instagram` fields are empty for all five
+   creators. §10b lists the candidate handles found and why each was rejected. The client can
+   confirm the handles in minutes; the meta block renders them the moment they land.
+2. **No Mishram Media reel *file* has been supplied to this repo.** **Corrected in Revision 13:**
+   genuine reels **do** exist publicly — at least nine on `@mishram.media` — but none is available
+   locally, and they must not be scraped, hotlinked or embedded (§10d, §14). §05 therefore shows
+   stills honestly typed as `mediaType: "poster"`, with no play control over a photograph. The
+   playback path is built and smoke-tested, so a real reel is a config change. **The unblock is the
+   client exporting the source MP4s from their own account.**
+3. ~~No verified Mishram Media recognition exists.~~ **CLOSED IN REVISION 13.** §06 is active with
+   one verified award — see §10p. A second item is one config entry plus a local asset.
+4. **No verifiable Mishram Media testimonial exists — and this is now settled, not open.**
+   §10d-notes has both audits. All eight candidates are **conclusively rejected**: placeholder
+   `pravatar.cc` faces on the service pages, **AI-generated portraits** behind the named avatars on
+   the homepage and about page, a quote reused verbatim under a second person's name, placeholder
+   job titles, and a page praising the template's own agency. Client Notes renders nothing rather
+   than publishing an unverified claim about a named real person. **Two genuine testimonials switch
+   it on**, and they must be new first-party material — **not a reappraisal of this set.**
+5. **No usable photograph of Akash Sagar (`@xbhandesiri_`).** The relationship is verified and the
+   config entry is written; the official profile exposes only a 150×150 avatar. **Supply a portrait
+   and flip `published` to `true`** — §10p.
+
+**Not built yet:** one service route — `/services/web-digital-experiences`, **deferred on purpose**
+(§10o, required scope in §10) — plus case studies and work detail routes. It returns 404 and is
+linked from nowhere. **The three legal routes exist** (§10k) and the footer links to all of them.
+**`/services/social-personal-brand-growth` (§10j), `/services/influencer-marketing` (§10l),
+`/services/performance-marketing` (§10m) and `/services/brand-shoots-content` (§10n) are built.**
+`NEXT_PUBLIC_BOOKING_URL` is still unset, so every booking CTA falls back to WhatsApp.
+
+**Homepage → service-page links are wired, and self-extending.** Services 01, 02, 03 and 05 show
+`Explore service ↗`; Service 04 shows nothing, because `servicePageHrefFor` returns `undefined` for
+a service whose route is not `built`. It joins the row by flipping that one flag — no component
+edit, and a dead link is not reachable.
+
+**Known, deliberate, and not defects:**
+
+- What We Do surfaces overhang their composition box by up to ~6px — the bounding box of a tilted
+  surface plus idle drift, not layout. It drops to ~2px with motion reduced.
+- Services 03 and 04 use the upper ~77% of their box, so their stacked chapters carry more empty
+  space beneath the scene than 01, 02 and 05. Spacing values are identical; the difference comes
+  from the compositions, which is the intended rhythm.
+- The Hero closing CTA row has a 4px-slack button row at 390px. Left alone because the Hero is
+  locked; worth a look if that section is ever reopened.
+- Lovkesh Kataria's asset is the only two-person photograph in the creator roster, and its weakest
+  link. A solo portrait would lift that state, make him usable in §05 (which needs vertical crops),
+  and is unrelated to §06 — his current photo is a creator at an awards evening, not agency
+  recognition.
+- The three.js `Clock` deprecation warning originates in `@react-three/fiber`, not this code. See §10i;
+  it clears when R3F ships on `THREE.Timer`.
+- ~~Recognition still sets `priority` on its dominant image.~~ **FIXED in Revision 13 (§10p)** — and
+  the prop was removed from `RecognitionMedia` entirely so it cannot be reinstated. Verified on the
+  shipped page: 0 eager images and 0 image preload links with §06 rendering.
+- `useHoverLock` now holds the hover-preview/click-lock pattern for §03, §04 and §05. §03's private
+  copy was removed when that section was reopened for §10b-scale.
+- §05's video path has not run against real decodable media. Smoke-tested end to end against a
+  deliberately broken source; give it one pass when the first genuine reel arrives.
+- **§10n is 12.43 viewports against a 9–11.5 guidance**, and both of the brief's authorised merges
+  were applied before the first measurement. Photographs are tall; nothing on the page is padded.
+  The arithmetic and the two remaining cuts are in §10n.
+- **§10m is 12.65 viewports against a 9.5–11 guidance.** The arithmetic is in §10m and nothing on the
+  page is padded; the two cuts that would shorten it are recorded there rather than taken. Decide
+  at review whether the length or the content gives.
+- **§10m was verified by measurement, not by looking at it.** No composited screenshot was
+  available in that session — see *Visual verification* in §10m for what that does and does not
+  cover, and for the three non-compositing artefacts that look like page bugs. **The pane
+  composited in Revision 12 and did not in Revision 13**, so this is genuinely intermittent.
+  **§10q SOLVES THIS FOR GOOD: drive the machine's own Chrome headless over CDP** — see *How
+  screenshots were finally obtained*. No dependency, and full control of viewport, theme and
+  reduced motion. **Do not accept a geometry-only pass again without trying it first.**
+  **Everything on the site has now been looked at**: Service 03, §06 Recognition and About's
+  history band were all reviewed as images in Revision 14.
+- **A hidden pane blocks CDP input as well as screenshots** — a `computer` click by ref timed out
+  in Revision 13, so interaction was verified through the temporary-config technique instead.
+  Generalises the §10b-scale note. The headless-Chrome route above is unaffected by either limit.
+- **Programmatic `focus()` and synthetic pointer events do not reach React in the preview pane.**
+  Revision 12 confirmed it twice: `element.focus()` dispatches no focus event when the pane lacks
+  OS focus, and a synthetic `pointerover` never reaches React's delegation. Only CDP input
+  (`computer` hover/click) drives these components — the §10b-scale note, generalised.
+- ~~The skip link and the Footer's back-to-top point at `#hero`, which does not exist on the three
+  legal routes.~~ **FIXED in Revision 14 (§10q)** — `LegalArticle`'s root carries `id="hero"`.
+  Verified: exactly one `id="hero"` on each of `/privacy`, `/terms` and `/cookies`, homepage
+  unchanged.
+
+### Exact next step
+
+## **DEEP WEB & DIGITAL EXPERIENCES DISCOVERY — before any code.**
+
+`/services/web-digital-experiences` is the last unbuilt service route and **the
+second-most-important conversion page on the site** (§10o). It must **NOT** be generated from the
+current generic service summary, and it should not be started until the client has supplied:
+
+- Mishram's real web-development experience, and the projects actually built
+- technologies and capabilities; process
+- software, CRM and internal-tool experience
+- automation and integration experience
+- ideal clients, and the strongest differentiators
+- examples and screenshots
+- the preferred conversion offer
+
+Only then design and build it, at the depth §10o describes. **Do not build it inside another task,
+do not create a placeholder, and do not renumber Service 05 to close the gap.**
+
+**After that:** final production QA, then GitHub + Netlify deployment.
+
+*(Revision 15 completed the dedicated About page — §10r. Revision 14 completed the visual QA that
+was blocking it.)*
+
+The About page expands the homepage manifesto (§10f) into a fuller company story: positioning,
+operating philosophy, capabilities and credibility, at the length a visitor who has already decided
+to take Mishram seriously will actually read.
+
+**What it must not invent, and this is the whole difficulty.** §10f already records why the
+homepage chapter carries no team block: the old about page lists four names and role titles, but
+every headshot is a remote Cloudinary file with a numbered placeholder filename, and staff change.
+**No founder name, no team member, no headshot, no headcount, no client count, no
+years-in-business, no city** — the old site contradicts itself on location, so `INDIA` stays the
+locator. Every claim needs the same traceability §10f applies: the emphasis line is verbatim from
+Mishram's own schema.org description, and the discipline captions come from its own per-service
+copy.
+
+> **"no founding date" was struck from that list in Revision 13.** The 2021 / 2023 / 2025
+> chronology is verbatim-traceable to Mishram's own `about.html`, identically in the pre-SEO
+> backup and in the site's own `llms-full.txt`. **The homepage already publishes it** (§10f, §10p),
+> so the About page may expand on it. Everything else in the sentence above still stands — in
+> particular **the founder is still not named**, even though the same source names him, because
+> that is a person's current role rather than a dated event.
+
+**What it can legitimately carry**: the positioning in §1, the four disciplines, the **verified
+2021/2023/2025 history**, the operating argument the Mishram Difference makes (§10a — fewer
+handoffs, one connected partner), the creator network as evidence, **the NUFEW recognition
+(§10p)**, this site as evidence of the web capability, and the four service pages as the detailed
+proof. It should read as the long form of §10f rather than a second homepage.
+
+**Then a navigation and content review** across all eight routes: whether About earns a fifth nav
+item or stays a footer / `#about` destination, whether the homepage About chapter should shorten now
+that a full page exists, and whether the four service pages still read as one system when visited
+in sequence. **After that: final production QA, then GitHub + Netlify deployment.**
+
+**Service 04 / Web & Digital Experiences remains a separate future milestone** — §10o. It is
+deferred deliberately, it is not next, and it should not be built inside another task.
+
+
+**Content blockers, none of them fabricated:**
+
+1. **Genuine Mishram Media reel *files*** (§10d, §10p) — the reels exist publicly; the source MP4s
+   have not been supplied here. §05 shows stills honestly typed as posters.
+2. **A portrait of Akash Sagar** (§10p) — everything else about him is verified and configured.
+3. **Verified creator handles and follower counts** (§10b) — the fields render the moment they land.
+   `@xbhandesiri_` is the first verified handle and already renders as a real link when published.
+4. **Real client testimonials** (§10d-notes) — Client Notes is built and renders nothing. Must be
+   **new** first-party material; the old set is closed.
+5. ~~Genuine award evidence~~ — **CLEARED in Revision 13 (§10p).**
+6. **A LinkedIn profile URL** (§10g, §10k) — the row is already rendered in Footer V2, present but
+   not clickable. Filling `SOCIAL_URLS.linkedin` in turns it into a real link with no code change.
+7. **`NEXT_PUBLIC_BOOKING_URL`** and the three inquiry-delivery variables in `.env.example` (§10h)
+   are all still unset.
+
+**Decisions waiting on the client, all evidenced but none shipped** (§10p): the five B-class
+historical creators, the four team members, the influencer geography, the non-profit arm,
+WOW Skin Science, and whether negotiation joins the Influencer Marketing scope index.
