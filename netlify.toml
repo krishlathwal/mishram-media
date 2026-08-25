@@ -1,0 +1,22 @@
+# Netlify build configuration.
+#
+# WHY THIS FILE EXISTS. The site was created through the Netlify API rather than
+# the UI's new-project flow, so the Next.js Runtime was never attached to it and
+# the first deploy published the raw `.next` directory as static files — every
+# route 404'd because `/` was sitting at `/server/app/index.html`. Declaring the
+# runtime here fixes it for this deploy and every future one, and keeps the
+# build configuration in version control rather than in dashboard state.
+#
+# `@netlify/plugin-nextjs` is Netlify's **current** Next.js Runtime (v5), not one
+# of the superseded community plugins. It is what the UI installs automatically
+# when it detects Next.js.
+#
+# The app is NOT statically exported: `/api/inquiry` is a real route handler and
+# the runtime is what serves it (§10h).
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
