@@ -5670,6 +5670,33 @@ configuration in version control rather than in dashboard state.
 server at runtime (§10h) — verified on the deployed site, which answers `503
 delivery_not_configured` and `400 invalid_request` correctly.
 
+> ### ⚠ GIT-CONNECTED DEPLOYMENTS ARE BLOCKED, AND THE REASON IS THE PLAN
+>
+> **The Git integration is configured correctly and it does fire.** A push to `main` creates a
+> Production deployment on its own — verified twice. **Vercel then refuses to build it.**
+>
+> The deployment's own record says `readyState: BLOCKED`, with no build log and no error code, and
+> GitHub carries Vercel's commit status as **`failure — "Deployment was blocked"`**. It is not a
+> build failure, a permissions problem or a queue: **the same source builds in 47 seconds when the
+> CLI uploads it.**
+>
+> **The cause is that `silksora` is on the Hobby plan and `krishlathwal/mishram-media` is a private
+> repository.** The evidence is on the same account: `mishramngo` deploys from Git without
+> trouble, and its repository — `krishlathwal/mishram.org` — is **public**. Hobby deploys public
+> repos from Git and uploads from the CLI; **private repos from Git need a paid plan.**
+>
+> **Three ways out, and the choice is the client's:**
+>
+> | Option | Consequence |
+> | --- | --- |
+> | **Upgrade `silksora` to Vercel Pro** | The repository stays private and continuous deployment starts working immediately. Nothing in this repo changes |
+> | **Make the repository public** | Free, and Git deployments start working — **but it publishes this document.** The brief carries the client's contact strategy, the withheld-brand reasoning, held creator identities, the Shadab Jakati brand-safety finding and every audit. **Do not take this option without reading what is in `docs/` first** |
+> | **Keep deploying with `npx vercel deploy --prod`** | Works today on the current plan, costs nothing, and is manual — somebody has to remember |
+>
+> **Until one is chosen, `npx vercel deploy --prod` is the deployment command**, and the live site
+> is one of those. A blocked deployment is inert: it never becomes the production alias, so a push
+> cannot take the site down.
+
 > **`netlify.toml` AND `.netlify/state.json` ARE STILL IN THE TREE, AND THIS NEEDS A DECISION.**
 > The site was previously wired to Netlify (site `d41f4d3c-…`, and `.netlify/` is gitignored so it
 > never reached the remote). `netlify.toml` **is** committed. Vercel ignores it, so it breaks
@@ -5728,10 +5755,11 @@ unrelated TXT record stay exactly as they are.
 ### What is still outstanding
 
 1. **The GoDaddy DNS change**, which is the client's to make.
-2. **The Netlify decision** above.
-3. **Deployment protection is off** and the deployment URL is public, which is correct for an
+2. **The plan-vs-visibility decision** above, which is what unblocks continuous deployment.
+3. **The Netlify decision** above.
+4. **Deployment protection is off** and the deployment URL is public, which is correct for an
    outreach campaign. Say so out loud if that ever changes.
-4. **No rate limiting on `/api/inquiry`** — §10h records this as deployment hardening, and it is
+5. **No rate limiting on `/api/inquiry`** — §10h records this as deployment hardening, and it is
    now genuinely deployment-time. Provider-level or edge middleware; a per-process counter is
    meaningless on serverless.
 
