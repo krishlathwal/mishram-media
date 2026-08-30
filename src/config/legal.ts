@@ -79,6 +79,12 @@ export const LEGAL_UPDATED = "25 August 2026";
 const CONTACT_SECTION: LegalSection = {
   heading: "Contact",
   body: [
+    // "on WhatsApp at the same number" is true again as of Revision 17. It was
+    // removed in Revision 16 because the published phone line had changed and
+    // the site's WhatsApp action still pointed at the previous number; the
+    // client has since confirmed the two are one line. A legal page is the one
+    // document that cannot carry a convenient approximation, which is why this
+    // sentence has now been corrected twice rather than left roughly right.
     `Questions about this document, or a request about information you have sent us, go to ${CONTACT.email}. You can also reach us on ${CONTACT.phoneDisplay}, or on WhatsApp at the same number.`,
     `${BRAND.name}, ${CONTACT.address}.`,
   ],

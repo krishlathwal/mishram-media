@@ -1713,6 +1713,251 @@ html.theme-transition *::after {
     }
   }
 
+  /* ── 03 / Creators — the worked-with index ──────────────────────
+     Names as type, on hairlines. No cards, no avatars, no counts.
+
+     `grid-auto-flow: column` with an explicit row count flows down column one
+     and then down column two, which is how an index reads — the same
+     reasoning §10b-scale applies to the roster matrix. The row count is
+     derived in CSS from the item count so the two columns stay balanced
+     however long the list gets. */
+
+  .wwi-list {
+    display: grid;
+    grid-auto-flow: row;
+    column-gap: 3rem;
+  }
+
+  /* Two columns from `sm`, three once there is room. Three is what keeps
+     eighteen names to six rows — an index this long in two columns is 400px
+     of list in a chapter that already carries a photographic stage, and
+     Revision 17's instruction was to absorb its own growth here rather than
+     let the page run. Row counts come from the component, derived from the
+     roster length, so adding a name rebalances the columns with no CSS edit. */
+  @media (min-width: 640px) {
+    .wwi-list {
+      grid-auto-flow: column;
+      grid-template-rows: repeat(var(--wwi-rows-2, 9), auto);
+      column-gap: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .wwi-list {
+      grid-template-rows: repeat(var(--wwi-rows-3, 6), auto);
+    }
+  }
+
+  .wwi-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    /* A row now carries a name and, where they exist, an organisation and a
+       verified handle. At three columns those do not fit on one line, so the
+       row wraps to a second register rather than the name truncating — the
+       name is the one thing here that must stay whole (§10b-scale). */
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--color-line);
+    /* Still clears 44px, which is the bar even though the only interactive
+       thing in a row is the handle — a row a thumb lands on should not feel
+       cramped. */
+    padding-block: 0.8rem;
+  }
+
+  .wwi-name {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+
+  /* The row's secondary register. `margin-left: auto` keeps it right-aligned
+     when it fits beside the name and lets it fall to its own line when it does
+     not, with no media query deciding where that happens. */
+  .wwi-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-left: auto;
+  }
+
+  .wwi-context {
+    flex: none;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    text-align: right;
+  }
+
+  /* The verified handle. Lowercase and untracked — a handle is a literal
+     string and uppercasing it would misrepresent it, which is why this is not
+     the `.caps` utility every other small label on the site uses. */
+  .wwi-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: none;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: var(--color-ink-soft);
+    /* The tap target extends past the text without moving the baseline, so a
+       thumb gets the full row height while the index keeps its rhythm. */
+    padding-block: 0.65rem;
+    margin-block: -0.65rem;
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .wwi-link:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  /* ── The lead names ─────────────────────────────────────────────
+     Two high-recognition relationships with no first-party photograph, set at
+     display scale so type carries the weight a portrait would. Reading
+     emphasis, not a tier: nothing here is numbered, ranked or measured. */
+
+  .wwi-lead {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .wwi-lead {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2.5rem;
+    }
+  }
+
+  .wwi-lead-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 1.5rem 1.6rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .wwi-lead-name {
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.032em;
+    line-height: 1.04;
+  }
+
+  .wwi-link--lead {
+    margin-top: 0.95rem;
+    font-size: 0.8125rem;
+  }
+
+  /* ── Current Management — the identity plate ────────────────────
+     REVISION 17B. This chapter used to be two large photographic frames. The
+     user confirmed the images were not the person, so the only traceable
+     image left is the official account's own 150x150 profile picture — see
+     `config/management.ts`.
+
+     So the media is a PLATE, not a portrait: the avatar at a hard 72px (never
+     upscaled, inside its own resolution at 2x DPR), the handle set as display
+     type, and the site's hairline vocabulary carrying the composition. It is a
+     complete treatment of the evidence that exists, not a placeholder.
+
+     It is sized by TYPE rather than by height, which is what keeps the chapter
+     shorter than the photographic version it replaced — the page was
+     deliberately shortened in Revision 16 and this gives some of that back. */
+
+  /* The plate fills its six-column span rather than floating at some
+     intermediate width — its right edge lands on the page gutter, which is
+     what stops it reading as a card dropped onto the layout. Capped below
+     `lg`, where there is no column to align to. */
+  .mgt-plate {
+    position: relative;
+    display: block;
+    max-width: 27rem;
+    padding: 2.1rem 2rem 1.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    background-color: var(--color-surface);
+  }
+
+  @media (min-width: 1024px) {
+    .mgt-plate {
+      max-width: none;
+      padding: 2.4rem 2.4rem 2.1rem;
+    }
+  }
+
+  /* A short teal corner rule instead of an accent border on all four sides —
+     the same restraint the unnumbered chapters use for their index. */
+  .mgt-plate-mark {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    display: block;
+    width: 2.25rem;
+    height: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .mgt-plate-head {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+  }
+
+  .mgt-avatar {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .mgt-avatar-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The same restraint the other photographs on this page carry. */
+    filter: saturate(0.96);
+  }
+
+  .mgt-plate-caption {
+    display: block;
+  }
+
+  .mgt-handle {
+    margin-top: 1.9rem;
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    /* The handle can be long and must never be cut or hyphenated. */
+    overflow-wrap: anywhere;
+  }
+
+  .mgt-plate-note {
+    margin-top: 1.5rem;
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (max-width: 1023px) {
+    .mgt-plate {
+      max-width: 24rem;
+      padding: 1.9rem 1.6rem 1.7rem;
+    }
+  }
+
   /* ── 06 / Recognition — archive ─────────────────────────────────
      Evidence, so it sits at full colour in both themes. Archival prints on
      parchment in light, cinematic on obsidian in dark. No gold: an awards
@@ -4375,7 +4620,11 @@ html.theme-transition *::after {
     display: flex;
     width: max-content;
     will-change: transform;
-    animation: collab-scroll 46s linear infinite;
+    /* The duration is supplied by the component, derived from the roster's
+       own width so the rail keeps one approved speed however long the roster
+       gets (see `railTiming` in Collaborations.tsx). The fallback is the
+       original five-brand value. */
+    animation: collab-scroll var(--collab-duration, 46s) linear infinite;
   }
 
   .collab-rail:hover .collab-viewport,
@@ -4549,9 +4798,15 @@ html.theme-transition *::after {
     }
 
     /* Only the first, announced pass survives; the loop clone and every
-       repeat are removed from the layout entirely. */
+       repeat are removed from the layout entirely.
+
+       And with the roster past a dozen marks, the static set is the
+       **featured** marks rather than all of them: a wrapped grid of every
+       logo is the sponsor wall this section exists to avoid, and the
+       section's own line already says the brands shown are selected. */
     .collab-track--clone,
-    .collab-item:not(.collab-item--primary) {
+    .collab-item:not(.collab-item--primary),
+    .collab-item[data-roster] {
       display: none;
     }
   }

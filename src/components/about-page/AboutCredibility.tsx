@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { ABOUT_PAGE_COPY } from "@/config/about-page";
-import { VISIBLE_COLLABORATIONS } from "@/config/collaborations";
+import { FEATURED_COLLABORATIONS } from "@/config/collaborations";
 import { RECOGNITION_ITEMS } from "@/config/recognition";
 
 import { AboutSection, AboutSectionHead, EASE } from "./AboutSection";
@@ -96,7 +96,7 @@ export function AboutCredibility() {
           </p>
 
           <ul className="mt-8">
-            {VISIBLE_COLLABORATIONS.map((brand, i) => (
+            {FEATURED_COLLABORATIONS.map((brand, i) => (
               <motion.li
                 key={brand.name}
                 initial={{ opacity: 0, y: 14 }}

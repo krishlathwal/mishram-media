@@ -95,16 +95,21 @@ function Line({
         ) : null}
 
         {/* A real destination, not decoration. Renders only where a handle is
-            verified — one creator today, and none of the historical five, for
-            the reason in `config/creators.ts`. The label carries the name so
-            "@handle" is never the only thing a screen reader hears. */}
+            verified — see `config/creators.ts` for the bar. The label carries
+            the name so "@handle" is never the only thing a screen reader
+            hears.
+
+            **Deliberately not the `.caps` utility**, which every other small
+            label in this block uses: a handle is a literal string, and
+            `@ALIFAZAL9` is not the account's name. Same reasoning as
+            `.wwi-link` in the index below. */}
         {creator.instagram && !creator.followers ? (
           <a
             href={`https://www.instagram.com/${creator.instagram}/`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${creator.name} on Instagram`}
-            className="caps group/ig inline-flex items-center gap-1.5 text-ink-muted transition-colors duration-300 hover:text-ink"
+            className="wwi-link group/ig"
           >
             @{creator.instagram}
             <span aria-hidden className="block h-2.5 w-2.5 overflow-hidden">

@@ -255,10 +255,16 @@ export const ABOUT_PAGE_COPY = {
     /**
      * Says exactly what the homepage rail says and no more. **Do not upgrade
      * this to "clients", "partners" or "trusted by"** — the old site's own
-     * wording for these five was "Worked with brands".
+     * wording was "Worked with brands".
+     *
+     * The index renders `FEATURED_COLLABORATIONS`, not the whole roster.
+     * Revision 16 took the roster from five names to eighteen, and eighteen
+     * rows here would turn a supporting beat inside the company's story into
+     * the longest block on the page. "A few of the brands" is what the lead
+     * above already promises.
      */
     connectionsNote:
-      "Brands Mishram Media has worked with. Shown as a record, not as an endorsement.",
+      "A selection of the brands Mishram Media has worked with. Shown as a record, not as an endorsement.",
   },
 
   now: {

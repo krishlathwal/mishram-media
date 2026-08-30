@@ -5,14 +5,62 @@ import { motion, useScroll, useTransform } from "motion/react";
 
 import {
   COLLABORATIONS_COPY,
-  VISIBLE_COLLABORATIONS,
+  ORDERED_COLLABORATIONS,
   type Collaboration,
 } from "@/config/collaborations";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/** Copies per track — enough to fill a wide viewport before the loop repeats. */
-const REPEATS = 4;
+/* ────────────────────────────────────────────────────────────────
+   RAIL GEOMETRY — derived from the roster, not hand-tuned.
+
+   The rail was approved at five brands, four copies per track, translating
+   half its width over 46 seconds. Revision 16 took the roster to eighteen.
+   Left alone, that would have run the same animation across a track three and
+   a half times longer — the same 46s over far more pixels, so **every logo
+   would have swept past at roughly three times the approved speed.**
+
+   Both numbers below therefore come off the config: copies per track fall as
+   the roster grows, and the duration tracks the resulting width so the rail
+   keeps the pace it was approved at whatever length the roster reaches.
+   ──────────────────────────────────────────────────────────────── */
+
+/**
+ * The seam-free loop needs one track wider than the viewport. Twelve marks at
+ * this rail's proportions clear ~2,000px, which covers every supported width;
+ * a shorter roster repeats until it does.
+ */
+const MIN_ITEMS_PER_TRACK = 12;
+
+/**
+ * Reference geometry — the desktop rail the 46s was composed against:
+ * 29px logo height and an 86px gap at 1440px. Only the *ratio* of track
+ * widths matters here, so these being viewport-specific is fine.
+ */
+const REF_LOGO_H = 29;
+const REF_GAP = 86;
+const APPROVED_DURATION = 46;
+const APPROVED_TRACK_UNITS = 21.07 * 4; // the five approved marks, four copies
+const APPROVED_TRACK_GAPS = 20;
+
+/** A mark's width in logo-heights, which is what the rail actually lays out. */
+function widthUnits(c: Collaboration): number {
+  return (c.size.w / c.size.h) * (c.scale ?? 1);
+}
+
+function railTiming(items: readonly Collaboration[]) {
+  const repeats = Math.max(1, Math.ceil(MIN_ITEMS_PER_TRACK / items.length));
+  const count = items.length * repeats;
+  const units = items.reduce((n, c) => n + widthUnits(c), 0) * repeats;
+
+  const approvedPx = APPROVED_TRACK_UNITS * REF_LOGO_H + APPROVED_TRACK_GAPS * REF_GAP;
+  const trackPx = units * REF_LOGO_H + count * REF_GAP;
+
+  return {
+    repeats,
+    duration: (APPROVED_DURATION * trackPx) / approvedPx,
+  };
+}
 
 /**
  * Credibility bridge between the hero and everything below it. Same editorial
@@ -23,7 +71,8 @@ const REPEATS = 4;
  * right treatment (ivory on obsidian, ink on parchment) from one asset.
  */
 export function Collaborations() {
-  const items = VISIBLE_COLLABORATIONS;
+  const items = ORDERED_COLLABORATIONS;
+  const { repeats, duration } = railTiming(items);
   const section = useRef<HTMLElement>(null);
 
   // Handoff into 02 / What We Do: as this section leaves the top of the
@@ -86,10 +135,11 @@ export function Collaborations() {
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 1, delay: 0.15, ease: EASE }}
           className="collab-rail mt-11 md:mt-14"
+          style={{ ["--collab-duration" as string]: `${duration.toFixed(1)}s` }}
         >
           <div className="collab-viewport">
             <div className="collab-track">
-              {Array.from({ length: REPEATS }).map((_, copy) =>
+              {Array.from({ length: repeats }).map((_, copy) =>
                 items.map((c) => (
                   <LogoItem
                     key={`${copy}-${c.name}`}
@@ -102,7 +152,7 @@ export function Collaborations() {
             </div>
             {/* Second track makes the loop seamless; never announced. */}
             <div className="collab-track collab-track--clone" aria-hidden>
-              {Array.from({ length: REPEATS }).map((_, copy) =>
+              {Array.from({ length: repeats }).map((_, copy) =>
                 items.map((c) => (
                   <LogoItem key={`clone-${copy}-${c.name}`} item={c} silent />
                 )),
@@ -120,6 +170,11 @@ function LogoItem({ item, silent }: { item: Collaboration; silent: boolean }) {
     <div
       className={`collab-item${silent ? "" : " collab-item--primary"}`}
       data-dark-mono={item.darkKeepsMono ? "" : undefined}
+      /* Reduced motion collapses the rail to one static set. At five marks
+         that was the whole roster; at eighteen it would be a wall, which is
+         the one thing this section must not become. The featured marks stand
+         for the roster there — the section's own claim is "selected". */
+      data-roster={item.priority === "roster" ? "" : undefined}
       aria-hidden={silent || undefined}
     >
       <span

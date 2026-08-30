@@ -90,7 +90,7 @@ export function ProjectInquiry({
               />
               <DirectRow
                 label="WhatsApp"
-                value={CONTACT.phoneDisplay}
+                value={INQUIRY_COPY.whatsappValue}
                 href={whatsappHref(GENERAL_WHATSAPP_MESSAGE)}
                 external
               />

@@ -7,8 +7,12 @@
  * drifting — a value the client can send is by definition a value the server
  * accepts, and vice versa.
  *
- * It imports nothing client-only, so it is safe on the server.
+ * It imports nothing client-only, so it is safe on the server. `config/site.ts`
+ * is the one import, and it is data only — the published contact details, so
+ * the form's direct routes cannot drift from the rest of the site.
  */
+
+import { CONTACT } from "./site";
 
 export type Option = { id: string; label: string };
 
@@ -199,6 +203,17 @@ export const INQUIRY_COPY = {
   context:
     "Whether it's a brand that needs momentum, a campaign that needs creators, or a system that needs building — start with the goal and we'll work back from there.",
   directLabel: "Prefer to talk directly?",
+  /**
+   * The WhatsApp row's value — the number again, and it is true again.
+   *
+   * Revision 16 had to replace this with a wording ("Chat with the team")
+   * because the published phone line had changed and WhatsApp was not
+   * confirmed on it, so printing the number under a WhatsApp label would have
+   * been a claim the project could not stand behind. **Revision 17 closed
+   * that**: the client confirmed the line, so the row prints the number it
+   * actually dials. Rendered from `CONTACT`, never retyped.
+   */
+  whatsappValue: CONTACT.phoneDisplay,
   fields: {
     name: "Your name",
     email: "Email",

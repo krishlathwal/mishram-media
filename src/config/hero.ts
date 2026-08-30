@@ -75,10 +75,17 @@ export const HERO_SURFACES: readonly HeroSurface[] = [
     onMobile: true,
   },
   {
+    // THE HERO KEEPS THE ORIGINAL PHOTOGRAPH, and that is deliberate. Revision
+    // 17B replaced this creator's roster image with a user-supplied file
+    // (`featured/lovekesh-kataria.webp`), but the Hero's exposure tiers,
+    // `layout.ts` positions and 1:1 aspect were all composed against *this*
+    // square source and the whole scene is locked (§05). Only the **spelling**
+    // was normalised — the site must never show `Lovkesh` and `Lovekesh` as two
+    // people (§10u §4).
     id: "lovkesh",
     src: "/media/creators/lovkesh-kataria.webp",
-    alt: "Creator Lovkesh Kataria at an awards evening",
-    label: "Lovkesh Kataria",
+    alt: "Creator Lovekesh Kataria at an awards evening",
+    label: "Lovekesh Kataria",
     caption: "Creator Network",
     aspect: 1,
     onMobile: false,

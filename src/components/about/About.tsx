@@ -5,27 +5,39 @@ import { motion } from "motion/react";
 import { useContact } from "@/components/contact/ContactProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import { PageLink } from "@/components/ui/PageLink";
-import { ABOUT_COPY, HISTORY } from "@/config/about";
+import { ABOUT_COPY } from "@/config/about";
 import { ABOUT_PATH } from "@/config/site";
 import { ABOUT_CHAPTER } from "@/config/sections";
-
-import { DisciplineSystem } from "./DisciplineSystem";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
- * ABOUT — the agency chapter, and the last substantial storytelling before the
- * footer.
+ * ABOUT — a preview of the chapter, and the bridge into the form.
  *
- * Deliberately the calm one. Five chapters of pinned scroll, photography and
- * interaction come before it, so this is typography, space, hairlines and one
- * restrained visual — the visitor finally gets a moment to actually read. No
- * team grid, no mission/vision/values cards, no statistics.
+ * ─────────────────────────────────────────────────────────────────────────
+ * **SHORTENED TO A PREVIEW — Revision 16. 1,468px → ~740px.**
  *
- * **And still no timeline.** `History` below adds three dated moments as a
- * hairline baseline under the story, reusing the tick grammar the service
- * pages already use for process steps. It is a colophon, not a chapter of its
- * own — see the note on that component.
+ * This was the page's last long storytelling chapter: two paragraphs, a
+ * verbatim emphasis line, the `INDIA` locator, the four-discipline system
+ * drawing and the 2021 / 2023 / 2025 history band. All of it was written
+ * before `/about` existed. Once it did (§10r), the homepage was telling the
+ * company's story twice — the shorter version immediately above a form, and
+ * the full one a click away.
+ *
+ * So the chapter keeps its headline and gives up its body: one sentence of
+ * positioning, one sentence of provenance, `Read our story ↗`, and then the
+ * closing conversion moment it always ended on. **Nothing was deleted from the
+ * site.** The discipline system, the emphasis line, the locator and the full
+ * chronology are all on `/about`; the second paragraph's argument is what the
+ * Mishram Difference interlude already makes on this page.
+ *
+ * **Do not rebuild the long version here.** If this chapter needs to say more,
+ * that is a signal `/about` is not doing its job.
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Still the calm one, and now emphatically so — typography, space and
+ * hairlines, no visual at all. No team grid, no mission/vision/values cards,
+ * no statistics, no timeline.
  *
  * Its chapter number is adaptive (see `config/sections.ts`): it was 06 while
  * §06 Recognition self-suppressed and is **07 now that Recognition has a
@@ -46,7 +58,11 @@ export function About() {
       <Grid />
       <LeadIn />
 
-      <div className="page-x relative pt-20 pb-28 md:pt-28 md:pb-32 lg:pt-32 lg:pb-40">
+      {/* One step tighter than the chapter used to run, top and bottom. A
+          preview does not need the approach a five-block chapter did, and the
+          §10i boundary rhythm still reads because the sections either side are
+          untouched. */}
+      <div className="page-x relative pt-16 pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         {/* ── Chapter label ─────────────────────────────────────────── */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -65,79 +81,60 @@ export function About() {
         {/* ── Statement ─────────────────────────────────────────────── */}
         <Headline />
 
-        {/* ── Story + the connecting system ─────────────────────────── */}
-        <div className="mt-16 lg:mt-20 lg:grid lg:grid-cols-12 lg:gap-x-8">
-          <motion.div
+        {/* ── The preview: positioning, provenance, and the way in ────
+            Two columns rather than a stack, because the whole point of the
+            block is that it is short — set one under the other, the same
+            three sentences read as the start of a chapter that then stops. */}
+        <div className="mt-10 md:mt-12 lg:grid lg:grid-cols-12 lg:gap-x-8">
+          <motion.p
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-12% 0px" }}
             transition={{ duration: 0.85, ease: EASE }}
-            className="lg:col-span-5"
+            className="max-w-[62ch] text-[clamp(0.9375rem,1.05vw,1.0625rem)] leading-[1.72] text-ink/72 lg:col-span-6"
           >
-            {/* Line length held near 62ch — this is the one place on the page
-                with real reading to do. */}
-            {ABOUT_COPY.body.map((para, i) => (
-              <p
-                key={para.slice(0, 24)}
-                className={`max-w-[58ch] text-[clamp(0.9375rem,1.05vw,1.0625rem)] leading-[1.72] text-ink/72 ${
-                  i > 0 ? "mt-6" : ""
-                }`}
+            {ABOUT_COPY.body[0]}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-12% 0px" }}
+            transition={{ duration: 0.85, delay: 0.12, ease: EASE }}
+            className="mt-8 lg:col-span-5 lg:col-start-8 lg:mt-0"
+          >
+            {/* The chronology, compressed to the two dates that carry it. The
+                dated band this replaces is on `/about`, with the room to say
+                what starting there taught the practice. */}
+            <p className="max-w-[60ch] text-[0.8125rem] leading-[1.7] text-ink-soft">
+              <span aria-hidden className="mr-3 inline-block h-px w-4 align-middle bg-accent/60" />
+              {ABOUT_COPY.historyPreview}
+            </p>
+
+            {/* The route into the long form. A text action, not a third
+                button — this chapter already carries two below. */}
+            <div className="mt-6">
+              <PageLink
+                href={ABOUT_PATH}
+                className="group inline-flex items-center gap-2.5 text-[0.8125rem] font-medium text-ink transition-colors duration-300"
               >
-                {para}
-              </p>
-            ))}
-
-            <span aria-hidden className="mt-10 block h-px w-14 bg-accent/60" />
-
-            {/* Verbatim from Mishram's own schema.org description. */}
-            <p className="mt-8 max-w-[30ch] font-display text-[clamp(1.15rem,1.7vw,1.6rem)] leading-[1.28] font-medium tracking-[-0.025em] text-ink">
-              {ABOUT_COPY.emphasis}
-            </p>
-
-            <p className="caps mt-10 flex items-center gap-3 text-ink-muted">
-              <span aria-hidden className="block h-px w-4 bg-line-strong" />
-              {ABOUT_COPY.locator}
-            </p>
+                <span className="relative">
+                  {ABOUT_COPY.storyCta}
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+                  />
+                </span>
+                <span aria-hidden className="block h-3 w-3 overflow-hidden">
+                  <Arrow
+                    size={12}
+                    className="-rotate-45 transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-4 group-hover:-translate-y-4"
+                  />
+                </span>
+              </PageLink>
+            </div>
           </motion.div>
-
-          <div className="mt-14 lg:col-span-6 lg:col-start-7 lg:mt-0 lg:pt-2">
-            <DisciplineSystem />
-          </div>
         </div>
-
-        {/* ── Where it came from ────────────────────────────────────── */}
-        <History />
-
-        {/* The route into the long form. One restrained text action beside the
-            history band — the part of this chapter `/about` most obviously
-            expands — rather than a third button in a chapter that already
-            carries two. */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.7, delay: 0.28, ease: EASE }}
-          className="mt-10"
-        >
-          <PageLink
-            href={ABOUT_PATH}
-            className="group inline-flex items-center gap-2.5 text-[0.8125rem] font-medium text-ink-soft transition-colors duration-300 hover:text-ink"
-          >
-            <span className="relative">
-              {ABOUT_COPY.storyCta}
-              <span
-                aria-hidden
-                className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
-              />
-            </span>
-            <span aria-hidden className="block h-3 w-3 overflow-hidden">
-              <Arrow
-                size={12}
-                className="-rotate-45 transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-4 group-hover:-translate-y-4"
-              />
-            </span>
-          </PageLink>
-        </motion.div>
 
         {/* ── Closing conversion moment ─────────────────────────────── */}
         <motion.span
@@ -146,14 +143,14 @@ export function About() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-14% 0px" }}
           transition={{ duration: 1.1, ease: EASE }}
-          /* One step tighter than it was (was `mt-20 md:mt-24`). The history
-             band now closes the chapter body with real structure, so the
-             closing rule no longer needs to announce itself across 96px of
-             empty column. */
-          className="mt-16 block h-px w-full origin-left bg-line md:mt-20"
+          /* Tightened twice: once when the history band gave the chapter body
+             its own structure, and again when the body became a preview. The
+             rule's job is to separate the story from the ask, and across three
+             sentences it does that without a runway. */
+          className="mt-10 block h-px w-full origin-left bg-line md:mt-12"
         />
 
-        <div className="mt-12 flex flex-col gap-10 md:mt-14 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+        <div className="mt-10 flex flex-col gap-10 md:mt-12 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <motion.p
             initial="hidden"
             whileInView="shown"
@@ -222,72 +219,6 @@ export function About() {
         </div>
       </div>
     </section>
-  );
-}
-
-/**
- * THREE DATED MOMENTS, as a baseline under the chapter.
- *
- * **Not a timeline section**, and the distinction is the whole design. §10f
- * rules out a timeline, and it still does: this is one hairline with three
- * moments hanging off it, sitting between the story and the closing rule the
- * way a printed colophon sits under an essay. No axis, no connecting arrows,
- * no cards, no dates-and-dots rail, no scroll behaviour, no interaction.
- *
- * The grammar is **already on this site** — `ServiceProcess` puts four steps on
- * a shared `border-t` with a teal tick marking where each one starts. Reusing
- * it means About gains no new visual language, which is what keeps this a
- * supporting beat rather than a second subject competing with the manifesto.
- *
- * The years need no eyebrow: 2021 · 2023 · 2025 in sequence reads as
- * chronology on sight, and a "Our Story" label would be exactly the template
- * heading §18 rules out.
- *
- * Copy and its provenance live in `HISTORY` in `config/about.ts`.
- */
-function History() {
-  return (
-    // 64px of approach rather than the story block's 80: this block opens on
-    // its own hairline, so it needs less room to read as separate.
-    //
-    // The rule moves between layouts, and that is deliberate. Across three
-    // columns one shared `border-t` is the structure every tick sits on. Once
-    // the moments stack, that single rule leaves moments 02 and 03 with a teal
-    // tick hanging in empty space — visible immediately on a 390px screenshot —
-    // so each row takes its own rule instead and the chronology keeps reading
-    // as marks on a structure rather than as three floating dashes.
-    <ol className="mt-16 grid sm:grid-cols-3 sm:border-t sm:border-line">
-      {HISTORY.map((moment, i) => (
-        <motion.li
-          key={moment.year}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.75, delay: 0.08 + i * 0.09, ease: EASE }}
-          className="relative border-t border-line pt-7 pb-7 sm:border-t-0 sm:pr-8 sm:pb-0"
-        >
-          {/* The tick on the hairline — where this moment starts, marked on the
-              structure itself, exactly as §10j's process rows do it. */}
-          <span
-            aria-hidden
-            className="absolute top-0 left-0 block h-4 w-px bg-accent"
-          />
-          {/* The year is the chronology, so it carries a step more weight than
-              a decorative index would: 10px and `ink-soft` rather than 9px and
-              `ink-muted`. It still sits under the name in the hierarchy — the
-              band is read by its milestones, dated. */}
-          <span className="caps block text-[0.625rem] text-ink-soft">
-            {moment.year}
-          </span>
-          <h3 className="mt-4 max-w-[16ch] font-display text-[clamp(1.05rem,1.45vw,1.3rem)] leading-[1.15] font-medium tracking-[-0.028em] text-ink">
-            {moment.name}
-          </h3>
-          <p className="mt-3 max-w-[32ch] text-[0.8125rem] leading-[1.65] text-ink-soft">
-            {moment.detail}
-          </p>
-        </motion.li>
-      ))}
-    </ol>
   );
 }
 

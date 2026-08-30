@@ -151,10 +151,10 @@ export function InfluencerMarketingScene({ m }: { m: StageMotion }) {
       <Surface m={m} spec={LOVKESH}>
         <Photo
           src="/media/creators/lovkesh-kataria.webp"
-          alt="Creator Lovkesh Kataria, part of the Mishram Media creator network"
+          alt="Creator Lovekesh Kataria, part of the Mishram Media creator network"
         />
         <span aria-hidden className="svc-name">
-          Lovkesh Kataria
+          Lovekesh Kataria
         </span>
       </Surface>
 

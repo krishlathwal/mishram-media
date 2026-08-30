@@ -1,9 +1,51 @@
 /**
  * Single source of truth for brand, navigation and contact details.
  *
- * Everything in CONTACT is real information carried over from the previous
- * Mishram Media site. Do not invent numbers, addresses or booking links here.
+ * Everything in CONTACT is real, user-confirmed first-party information. Do not
+ * invent numbers, addresses or booking links here.
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * PUBLIC CONTACT DETAILS REPLACED — Revision 16 (August 2026)
+ *
+ * The client supplied a new public contact set and it supersedes the details
+ * carried over from the previous Mishram Media site. Every published surface —
+ * the contact panel, the footer, the inquiry section's direct routes and the
+ * legal pages — reads this file, so the change propagates from here.
+ *
+ * | Channel   | Now                                    | Was                    |
+ * | --------- | -------------------------------------- | ---------------------- |
+ * | Email     | `info@mishram.media`                   | `mediamishram@gmail.com` |
+ * | Phone     | `+91 95482 78558`                      | `+91 63993 99333`      |
+ * | Instagram | `@filmybande`                          | `@mishram.media`       |
+ * | LinkedIn  | Prashant Mishra / Mishram Media        | none — suppressed      |
+ *
+ * **The brand name did not change.** The source the details arrived in carried
+ * the phrase "Prashant Ads Agency"; that is context around the contact block,
+ * not a rename. This site is **Mishram Media**, everywhere.
+ * ─────────────────────────────────────────────────────────────────────────
  */
+
+/**
+ * THE PRODUCTION ORIGIN — written once, for the whole site.
+ *
+ * `app/layout.tsx` passes this to Next's `metadataBase`, which is what every
+ * relative `alternates.canonical` and `openGraph.url` on every route resolves
+ * against. **Those paths stay relative in each page's own metadata** — the
+ * domain appears here and nowhere else, so moving origins is one edit rather
+ * than nine.
+ *
+ * **Why it is a hardcoded constant rather than an env var.** Without a
+ * `metadataBase`, Next falls back to the deployment's own URL — on Vercel that
+ * is the per-deployment `*.vercel.app` hostname, so **every preview build would
+ * publish canonicals and OG URLs pointing at itself**, and a preview that got
+ * indexed would compete with the real site. An env var would have the same
+ * failure mode the moment it was missing on one environment. The canonical
+ * origin is a fact about this business, not about where it happens to be
+ * hosted, so it is written down.
+ *
+ * No trailing slash — `new URL()` joins paths correctly without one.
+ */
+export const SITE_URL = "https://mishram.media";
 
 export const BRAND = {
   name: "Mishram Media",
@@ -14,14 +56,39 @@ export const BRAND = {
   descriptor: "Creative growth & digital studio",
 } as const;
 
-const WHATSAPP_NUMBER = "916399399333";
+/**
+ * ONE NUMBER, EVERYWHERE — resolved in Revision 17.
+ *
+ * Revision 16 replaced the published phone line but had to leave the `wa.me`
+ * deep link on the previous number, because nothing supplied with the new
+ * details said the new line was also on WhatsApp and a link to a number with
+ * no account behind it fails silently at exactly the moment a visitor is
+ * trying to reach the business. That was the last open contact question on the
+ * site.
+ *
+ * **The client has now confirmed `+91 95482 78558` is the current WhatsApp
+ * number**, so this constant matches `CONTACT.phone` and the split is closed:
+ * the panel, the footer, the inquiry fallback, every booking CTA and the legal
+ * pages all resolve to the same line. **The previous number `916399399333` is
+ * gone from production entirely** — it survives only in this comment and in the
+ * revision history, which is where an obsolete contact detail belongs.
+ *
+ * Derived from `CONTACT.phone` rather than retyped, so the two can never drift
+ * apart again.
+ */
+const PHONE_E164 = "+919548278558";
+
+/** `wa.me` wants the digits without the `+`. One number, written once. */
+const WHATSAPP_NUMBER = PHONE_E164.replace("+", "");
 
 export const CONTACT = {
   whatsappNumber: WHATSAPP_NUMBER,
-  email: "mediamishram@gmail.com",
-  phone: "+916399399333",
-  phoneDisplay: "+91 63993 99333",
-  instagram: "https://www.instagram.com/mishram.media/",
+  email: "info@mishram.media",
+  phone: PHONE_E164,
+  phoneDisplay: "+91 95482 78558",
+  instagram: "https://instagram.com/filmybande",
+  /** Rendered wherever the handle itself is shown rather than the URL. */
+  instagramHandle: "@filmybande",
   address: "Rameshwarpur, Lalpur, US Nagar, Uttarakhand, India",
 } as const;
 
@@ -72,25 +139,46 @@ export type SocialLink = {
  *
  * | Platform | URL | Evidence |
  * | --- | --- | --- |
- * | Instagram | `instagram.com/mishram.media` | In the old site's schema.org `sameAs`, its footer and its contact page |
- * | Facebook | `facebook.com/mishram` | Same — `sameAs` on every page, plus both social rows |
- * | LinkedIn | **none** | Only ever `https://linkedin.com` — a bare domain with no profile path, absent from `sameAs`, and sitting in the purchased template's social row next to an identical bare `twitter.com`. That is the template's placeholder, not a profile |
+ * | Instagram | `instagram.com/filmybande` | **Supplied directly by the client, Revision 16**, as the public contact Instagram. It supersedes `@mishram.media` as the account this site points a visitor at |
+ * | Facebook | `facebook.com/mishram` | The old site's schema.org `sameAs` on every page, plus both social rows |
+ * | LinkedIn | `linkedin.com/in/prashant-mishra-mishram-media` | **Supplied directly by the client, Revision 16.** This is the profile URL the row waited for |
  *
  * `sameAs` is the structured-data field for an organisation's own official
- * profiles, so a URL declared there is Mishram stating it about themselves.
+ * profiles, so a URL declared there is Mishram stating it about themselves. A
+ * URL the client hands over directly is stronger evidence still.
  *
- * **A null is presented, never linked.** LinkedIn is shown in the footer's
- * social rail — the profile is coming and the platform belongs in the set — but
- * as a non-interactive row with `aria-disabled`, not an anchor. There is no
- * `href="#"`, no bare `linkedin.com`, and nothing a visitor can click into
- * nowhere. **Filling the URL in below turns that same row into a real link with
- * zero component edits.**
+ * **LINKEDIN IS NOW LIVE.** It rendered for three revisions as a present but
+ * non-interactive row (`aria-disabled`, no `href`) because the only URL that
+ * had ever existed for it was a bare `linkedin.com` in the purchased
+ * template's social row. That blocker is resolved, and filling the URL in was
+ * the whole change — the footer's rail turned it into a real link with **zero
+ * component edits**, exactly as it was built to.
+ *
+ * **`@mishram.media` is not deleted, it is demoted.** It is the account the
+ * old site declared in `sameAs` and it is kept below as evidence; the public
+ * contact action points at the account the client asked for. Do not render
+ * both — two Instagram rows in one social rail reads as an unresolved
+ * migration rather than as a choice.
  */
 export const SOCIAL_URLS: Record<SocialPlatform, string | null> = {
   instagram: CONTACT.instagram,
   facebook: "https://www.facebook.com/mishram",
-  linkedin: null,
+  linkedin: "https://www.linkedin.com/in/prashant-mishra-mishram-media",
 };
+
+/**
+ * Development-only provenance. **Never rendered.**
+ *
+ * The Instagram account the previous Mishram Media site declared in its
+ * schema.org `sameAs`. Kept so the historical record is not lost when the
+ * public contact account changes — §10p's audit cites reels on it, and a
+ * later pass may want it back.
+ */
+export const LEGACY_INSTAGRAM = {
+  handle: "@mishram.media",
+  url: "https://www.instagram.com/mishram.media/",
+  source: "old site schema.org sameAs, footer and contact page",
+} as const;
 
 /** Render order, and the accessible name each icon carries. */
 const SOCIAL_ORDER: readonly { id: SocialPlatform; label: string }[] = [

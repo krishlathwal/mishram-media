@@ -2,6 +2,7 @@ import { About } from "@/components/about/About";
 import { Collaborations } from "@/components/Collaborations";
 import { ClientNotes } from "@/components/testimonials/ClientNotes";
 import { Creators } from "@/components/creators/Creators";
+import { CurrentManagement } from "@/components/management/CurrentManagement";
 import { Difference } from "@/components/difference/Difference";
 import { Hero } from "@/components/Hero";
 import { ProjectInquiry } from "@/components/inquiry/ProjectInquiry";
@@ -15,6 +16,15 @@ export default function Home() {
     <>
       <Hero />
       <Collaborations />
+      {/*
+        The page's strongest single relationship claim, and it sits second on
+        purpose. The brand rail above says which brands the work has run
+        alongside; this says the agency manages a creator, today. Those are the
+        two things an outreach recipient is scanning for, so they arrive back
+        to back before the site starts explaining itself. Unnumbered, like the
+        other interludes, so §02, §03 and ABOUT_CHAPTER keep their numbering.
+      */}
+      <CurrentManagement />
       <WhatWeDo />
       {/*
         An unnumbered interlude, not a chapter: §02 has just said what Mishram

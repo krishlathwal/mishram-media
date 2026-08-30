@@ -25,10 +25,14 @@
  * strategic attribute. See `CreatorMatchField` for how that constraint shaped
  * the interaction rather than being bolted on afterwards.
  *
- * **Nothing about money.** Negotiation, contracts, rate cards and creator
- * payments are deliberately absent from the scope: the project has no evidence
- * Mishram manages any of them, and a service page is the wrong place to find
- * out. They can be added the moment the client confirms it.
+ * **Still nothing about money — narrowed, not lifted, in Revision 17.**
+ * Outreach and **negotiation** are now published in the scope, because the
+ * client confirmed both and the old site's own copy already stated them.
+ * **Contracts, legal contracting, rate cards, talent exclusivity and creator
+ * payments remain absent**: none is confirmed, each is a materially different
+ * promise, and a service page is the wrong place for a brand to discover that
+ * a capability was overstated. Add one only when that specific thing is
+ * confirmed.
  */
 
 import type {
@@ -353,10 +357,24 @@ export const INFLUENCER_SCOPE_COPY: ServiceSectionCopy = {
 };
 
 /**
- * **Deliberately no negotiation, contracts, rate cards or creator payments.**
- * The project holds no evidence Mishram manages any of those, and a service
- * page is the wrong place for a brand to find that out. Add them the moment the
- * client confirms it.
+ * SCOPE — and two rows were added in Revision 17, deliberately and no more.
+ *
+ * §10l recorded that *negotiation* had stopped being unevidenced: the old
+ * site's own `influencerMarketing.html` states Mishram will "manage outreach,
+ * **negotiations**, and briefs". Revision 13 left the index unchanged anyway,
+ * because promoting a row is a public promise and that was historical copy
+ * about a previous incarnation of the business. **The client has now confirmed
+ * both**, so the reason for holding them is gone and they are published:
+ *
+ * - **Creator Outreach** — first-party copy, now client-confirmed.
+ * - **Negotiation** — same. Deliberately named as the conversation, not as a
+ *   commercial function.
+ *
+ * **STILL ABSENT, AND STILL DELIBERATE: contracts, legal contracting, rate
+ * cards, talent exclusivity and creator payments.** None of those is confirmed
+ * and each is a materially different promise — a brand should never discover
+ * on a service page that a capability was overstated. Add one only when the
+ * client confirms that specific thing.
  */
 export const INFLUENCER_SCOPE: readonly ServiceScopeItem[] = [
   {
@@ -381,36 +399,50 @@ export const INFLUENCER_SCOPE: readonly ServiceScopeItem[] = [
       "A considered shortlist with the reasoning attached, so the choice is a decision you can make rather than a list you have to sift.",
   },
   {
-    id: "briefing",
+    id: "outreach",
     index: "04",
+    name: "Creator Outreach",
+    detail:
+      "Making the approach and carrying the conversation, so a brand is not cold-messaging people it has never worked with.",
+  },
+  {
+    id: "negotiation",
+    index: "05",
+    name: "Negotiation",
+    detail:
+      "Agreeing scope, deliverables and usage with each creator before anything is committed, so both sides start from the same understanding.",
+  },
+  {
+    id: "briefing",
+    index: "06",
     name: "Campaign Briefing",
     detail:
       "The brief each creator actually works from: direction, boundaries and reference, without flattening the voice you picked them for.",
   },
   {
     id: "communication",
-    index: "05",
+    index: "07",
     name: "Creator Communication",
     detail:
       "Being the line between brand and creator through the whole campaign, so neither side is chasing the other for an answer.",
   },
   {
     id: "coordination",
-    index: "06",
+    index: "08",
     name: "Collaboration Coordination",
     detail:
       "Timelines, deliverables, approvals and revisions tracked in one place across everyone involved.",
   },
   {
     id: "content",
-    index: "07",
+    index: "09",
     name: "Content Planning & Rollout",
     detail:
       "What goes out, from whom, in what order and when — so a campaign across several people lands as one thing.",
   },
   {
     id: "review",
-    index: "08",
+    index: "10",
     name: "Campaign Review",
     detail:
       "What the response suggests about the creative, the mix and the timing, written down so the next campaign starts further along.",

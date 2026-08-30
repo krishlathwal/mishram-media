@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { PageLink } from "@/components/ui/PageLink";
 import {
-  BUILT_SERVICE_PAGES,
+  PUBLIC_SERVICE_PAGES,
   resolveServicePage,
   servicePagePath,
 } from "@/config/service-pages";
@@ -21,17 +21,24 @@ export const SERVICES_MENU_ID = "services-menu";
 export const SERVICES_MENU_COPY = {
   label: "Services",
   overview: "Overview",
-  overviewDetail: "What We Do — all five services",
+  /**
+   * Deliberately carries no count. It read "all five services" until
+   * Revision 16 hid one of them, at which point it was quietly wrong — a
+   * number in copy is a claim that has to be maintained, and the overview
+   * itself already shows how many there are.
+   */
+  overviewDetail: "What We Do — the full service overview",
   toggle: "Show service pages",
 } as const;
 
 /**
- * The built service routes, resolved. **Derived from the `built` flags**, so a
- * route that does not exist can never appear in a menu — and shipping the next
- * one puts it here with no edit to this file or to the header.
+ * The service routes on public discovery, resolved. **Derived**, so a route
+ * that does not exist — or one whose service is deliberately hidden — can
+ * never appear in a menu, and shipping or unhiding one puts it here with no
+ * edit to this file or to the header.
  */
 export function useServiceMenuItems() {
-  return BUILT_SERVICE_PAGES.map((page) => resolveServicePage(page.slug));
+  return PUBLIC_SERVICE_PAGES.map((page) => resolveServicePage(page.slug));
 }
 
 /**

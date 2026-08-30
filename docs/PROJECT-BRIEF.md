@@ -31,13 +31,25 @@ Header (fixed)
   ↓
 Hero — Growth Orbit                     [APPROVED / LOCKED]
   ↓
-01 / Selected Collaborations            [APPROVED / LOCKED]
+01 / Selected Collaborations            [18 brands, featured-first — §10s]
   ↓
-02 / What We Do                         [Services 01-05 + closing statement — LOCKED]
+Current Management — Xbhandesiri        [interlude, unnumbered; §10t.
+                                         Akash Sagar, published Revision 17.
+                                         MEDIA CORRECTED IN 17B — the Revision
+                                         17 photographs were not him and are
+                                         gone; the chapter is now typographic
+                                         with the official 72px avatar. §10u]
+  ↓
+02 / What We Do                         [Services 01-04 public, 05 hidden but built
+                                         + closing statement — LOCKED. §10s]
   ↓
 The Mishram Difference                  [interlude, unnumbered; built — see §10a]
   ↓
-03 / Creators                           [scaled to 15-20+ — see §10b-scale]
+03 / Creators                           [two layers: the image-backed stage
+                                         (now 6, with Ali Fazal opening it),
+                                         + scale facts and the worked-with
+                                         index, which now carries verified
+                                         profile links. §10b-scale, §10t, §10u]
   ↓
 04 / Work Process                       [built; awaiting review]
   ↓
@@ -48,8 +60,8 @@ Client Notes                            [interlude, unnumbered; built —
   ↓
 06 / Recognition                        [ACTIVE — one verified award. §10e, §10p]
   ↓
-07 / About                              [built; carries the 2021/2023/2025
-                                         history band. §10f, §10p]
+07 / About                              [a PREVIEW of /about — 0.80 viewports.
+                                         §10f, §10s]
   ↓
 Project Inquiry                         [interlude, unnumbered; built — §10h.
                                          The page's final conversion moment]
@@ -64,12 +76,14 @@ Contact panel — global overlay          [APPROVED / LOCKED]
 rendered from `app/layout.tsx`, after `</main>`, because it is the page's footer rather than a
 footer belonging to About.
 
-**The homepage shell is complete.** What remains is content (reels, creator handles, recognition)
-and routes that do not exist yet: case studies, work detail pages, and two of the five service
-pages. **Three service routes are built** — Services 01, 02 and 03, on the
-shared system described in §10j — and **each of them is linked from `02 / What We Do`** with
-`Explore service ↗`. Services 04 and 05 render no such action, because their routes do not exist; the
-link is derived from the registry's `built` flag, so a dead one is not possible.
+**The homepage shell is complete.** What remains is content (reels, creator handles, the creator
+roster expansion) and routes that do not exist yet: case studies and work detail pages.
+
+**Four service routes are built and three are public** — Services 01, 02 and 03 each carry
+`Explore service ↗` in `02 / What We Do`. Service 04's route does not exist (§10o) and Service
+05's is built but **hidden from public discovery** (§10s), so neither renders the action. Both the
+link and every menu, footer row and prev/next entry derive from `PUBLIC_SERVICE_PAGES`
+(`built && public`), so a dead link is not possible and neither is an accidental one.
 
 ---
 
@@ -211,6 +225,14 @@ sticky state.
 
 ## 7. Contact panel — LOCKED
 
+> **CONTACT DATA SUPERSEDED BY §10s (Revision 16).** The panel's design, its four rows and its
+> accessibility behaviour are all current and unchanged. **The details in the table below are
+> not** — the client replaced the public contact set. Email is now `info@mishram.media`, the
+> published phone is `+91 95482 78558`, Instagram is `@filmybande`, and LinkedIn is live.
+> **The WhatsApp split is closed as of §10t (Revision 17)** — the client confirmed the new line is
+> also the WhatsApp number, so the panel, the footer, the inquiry fallback and every booking CTA
+> all resolve to `+91 95482 78558`. The previous number is gone from production.
+
 `contact/ContactProvider.tsx` (context: `open`, `openContact`, `closeContact`) +
 `contact/ContactPanel.tsx`. Any new section opens it with `useContact().openContact()` — never build
 new modal logic.
@@ -240,6 +262,14 @@ trap, focus restoration, `role="dialog" aria-modal`.
 ---
 
 ## 8. Selected Collaborations — LOCKED
+
+> **THE BRAND LIST AND THE RAIL'S TIMING ARE SUPERSEDED BY §10s (Revision 16).** The composition,
+> the marquee, the two-layer logo treatment and the hover colour are all current and unchanged.
+> **The five-brand table below is not** — the roster is now **eighteen rendered brands** with a
+> `priority` flag, and copies-per-track and animation duration are derived from the roster rather
+> than fixed, so the rail keeps its approved speed at any length. Reduced motion now shows the
+> **featured** set rather than every mark. The section's lead is now
+> *"Selected brands we've worked with."*
 
 `src/components/Collaborations.tsx`, `src/config/collaborations.ts`.
 
@@ -286,9 +316,26 @@ brands, which are also excluded as gambling-adjacent). They are **absent from
 accident. Do not reintroduce them from old data. Do not substitute fabricated companies — a shorter
 list is correct.
 
+**THE RULE HAS NOW BEEN APPLIED TO A GENUINE, CLIENT-CONFIRMED RELATIONSHIP, and it held.**
+Revision 16's brand list included **Fun N Earn**, and the product turned out to be a real-money
+cash-contest app — money added to an in-app wallet to enter paid contests, winnings withdrawn
+after KYC, a commission taken on winnings. **It is not published anywhere on this site.** §9 does
+not turn on whether the relationship is real; it turns on the category, and no exception was made.
+The record lives in `WITHHELD` in `config/collaborations.ts`, development-only and deliberately
+outside `COLLABORATIONS` so it cannot reach the DOM by any render path. **Check the category
+before publishing a brand, not after** — see §10s §2.
+
 ---
 
 ## 10. 02 / What We Do — COMPLETE & LOCKED (Services 01–05 + closing)
+
+> **SERVICE 05 IS HIDDEN FROM PUBLIC DISCOVERY — §10s (Revision 16). The scene is untouched.**
+> Everything below is current, including Service 05's scene, its continuity with Service 04 and
+> its five measured entry values. What changed is one boolean: `public: false` in
+> `config/services.ts`. The chapter now runs **four** services, the pinned track is one
+> `SERVICE_SCROLL_VH` slot shorter (7,449 → 6,279px), and the progress indicator reads
+> `01 … 04`. **Canonical numbering is unchanged** — Brand Shoots is still 05 and Web & Digital
+> Experiences is still 04. Flipping the flag back restores the chapter exactly.
 
 `src/components/whatwedo/` — `WhatWeDo.tsx`, `ServiceCopy.tsx`, `ServiceProgress.tsx`,
 `ServiceStage.tsx`, `useServiceSlot.ts`, `scenes/parts.tsx` (shared Surface / Photo / Annotation),
@@ -701,6 +748,18 @@ rendered at all, and every layer's sentence is still in the DOM.
 
 ## 10b. 03 / Creators — rearchitected for scale, awaiting review
 
+> **EXTENDED BY §10t (Revision 17), not replaced.** Everything below is current: the stage, the
+> composition, the five tuned crops, the selection model and the media-loading architecture are all
+> untouched. What was added is a **second layer beneath them** — two scale facts and a
+> **worked-with index** of fifteen further confirmed names, published as type because the project
+> has approved photography for one of them and inventing the rest is not an option. The chapter's
+> own padding came down one step to absorb it.
+>
+> **Akash Sagar is now published, but not here.** `published: false` still excludes him from
+> `ROSTER`, deliberately: he has his own Current Management chapter high on the page (§10t), and
+> putting the one managed creator into a worked-with roster as well would blur the distinction the
+> two layers exist to draw.
+
 `src/components/creators/` — `Creators.tsx` (shell, selection state, intro, CTA),
 `CreatorIndex.tsx`, `CreatorStage.tsx`, `CreatorMeta.tsx`, `useCreatorTransition.ts`; data in
 `src/config/creators.ts`; `.crt-*` styles in `globals.css`.
@@ -1108,6 +1167,16 @@ remain — and selection still works.
 
 ## 10d. 05 / Selected Work — foundation built, awaiting review
 
+> **THE BLOCKER NARROWED IN §10t (Revision 17), and the section is unchanged.** The media audit
+> found a **finished, local, vertical 9:16 Mishram reel** — so "no local production-owned file"
+> is no longer the reason this section shows stills. **That particular file is held on three
+> independent grounds**: it is internal office humour rather than creator or campaign work, its
+> burnt-in captions describe two identifiable employees as a couple, and a third-party brand
+> banner runs through it. Every other video in the library is a raw take.
+>
+> **The ask is now specific:** a creator or campaign piece, cleared for publication. The playback
+> path in `WorkMedia` remains built and still has not run against real decodable media.
+
 `src/components/work/` — `SelectedWork.tsx` (shell, selection state, intro, lead-in, CTA),
 `WorkIndex.tsx`, `WorkStage.tsx` (+ `WorkMeta`), `WorkMedia.tsx`; data in
 `src/config/work.ts`; `.wrk-*` styles in `globals.css`.
@@ -1473,9 +1542,18 @@ the DOM entirely.
 
 ## 10f. About — built, awaiting review
 
-`src/components/about/` — `About.tsx` (shell, story, closing conversion),
-`DisciplineSystem.tsx`; copy and provenance in `src/config/about.ts`; chapter numbering in
-`src/config/sections.ts`. No new CSS — the section is typography, grid and hairlines only.
+> **SUPERSEDED IN PART BY §10s (Revision 16). THE HOMEPAGE CHAPTER IS NOW A PREVIEW —
+> 1,468px → 718px, 1.63 → 0.80 viewports.** The adaptive chapter numbering, the content-integrity
+> rules and the closing conversion moment below are all current. **The chapter's body is not.**
+> The second paragraph, the verbatim emphasis line, the `INDIA` locator, `DisciplineSystem` and
+> the 2021/2023/2025 history band are all gone from the homepage — every one of them lives on
+> `/about` (§10r) or, in the second paragraph's case, is the argument the Mishram Difference
+> interlude already makes on this page (§10a). `DisciplineSystem.tsx` was deleted;
+> `DISCIPLINES` still feeds `FOOTER_EQUATION`. **Do not rebuild the long version here.**
+
+`src/components/about/` — `About.tsx` (shell, preview, closing conversion); copy and provenance in
+`src/config/about.ts`; chapter numbering in `src/config/sections.ts`. No new CSS — the section is
+typography, grid and hairlines only.
 
 ### Adaptive chapter numbering
 
@@ -1554,13 +1632,18 @@ Cost: **+212px**, absorbed by two one-step spacing reductions so About lands at 
 1.56 viewports** — in line with Project Inquiry's accepted 1.53, and still a preview rather than
 a page. §10p has the arithmetic.
 
-### The connecting idea
+### The connecting idea — MOVED TO `/about` IN REVISION 16
+
+> `DisciplineSystem.tsx` was **deleted from the homepage chapter** (§10s §6). `/about`'s
+> disciplines chapter carries the same idea at full length, and `DISCIPLINES` in
+> `config/about.ts` still feeds `FOOTER_EQUATION`, so the data and the footer's colophon are
+> unchanged. The description below is kept as the record of what the homepage treatment was.
 
 The hero's eyebrow reads `CREATIVE × PERFORMANCE × TECHNOLOGY`. Five chapters later the site has
-demonstrated a fourth dimension, so `DisciplineSystem` is that equation with **CREATORS** written
+demonstrated a fourth dimension, so `DisciplineSystem` was that equation with **CREATORS** written
 in: one teal hairline threading four disciplines, a node at each, the hero's own `×` glyph between
 them, and a rule reaching out to each caption. Typographic, not an infographic — no cards, no icons,
-no four-feature grid. A real `<ul>` of real text, so the section never depends on decorative
+no four-feature grid. A real `<ul>` of real text, so the section never depended on decorative
 graphics to be understood.
 
 **No photography at all in About**, and that is the honest choice: the project has no agency, team or
@@ -2596,6 +2679,13 @@ the letterforms, which was composed for a poster-scale mark that no longer exist
 
 ### The social rail, and LinkedIn
 
+> **LINKEDIN IS LIVE — §10s (Revision 16).** The mechanism below is exactly what shipped it: the
+> client supplied `linkedin.com/in/prashant-mishra-mishram-media`, filling `SOCIAL_URLS.linkedin`
+> turned the row into a real link, and **no component was edited.** The `aria-disabled` path
+> stays in the code for the next unverified platform. The Instagram row now points at
+> `@filmybande`, the client's supplied public contact account; `@mishram.media` is kept as
+> `LEGACY_INSTAGRAM` in `config/site.ts` — development-only, never rendered.
+
 Icon, platform name, and an arrow **only where there is somewhere to go** — a directory row rather
 than an isolated app tile, which is what lets it fill a column instead of floating in one.
 
@@ -2857,6 +2947,12 @@ Coordination · Content Planning & Rollout · Campaign Review.
 **Deliberately absent: negotiation, contracts, rate cards and creator payments.** A service page is
 the wrong place for a brand to find out a capability was overstated.
 
+> **RESOLVED IN §10t (Revision 17): `Creator Outreach` and `Negotiation` are now published rows.**
+> The client confirmed both, so the "deferred pending client confirmation" state the note below
+> describes is over. The index is ten rows, renumbered `01`–`10`. **Contracts, legal contracting,
+> rate cards, talent exclusivity and creator payments remain absent and unconfirmed.** The note
+> below is kept as the record of how the decision was reached.
+>
 > **EVIDENCE UPDATE — 25 August 2026. The premise for omitting *negotiation* has changed; the
 > public scope has deliberately NOT.** This section used to justify the omission as "the project
 > holds no evidence Mishram manages any of them." That is no longer true of negotiation: the old
@@ -4098,6 +4194,1129 @@ comparison the page is **shorter than Service 03 (12.68) and Service 05 (12.43)*
 
 ---
 
+## 10s. CURRENT PROOF / OUTREACH PREPARATION (Revision 16)
+
+The first revision aimed at a **specific commercial use of the site**: the client is about to
+run a high-value creator and brand outreach campaign, and the recipient of that outreach will
+open this page cold. So it ships **current contact details, the brand relationships the client
+actually has, and a shorter page** — and takes one finished discipline off public discovery
+because the campaign is not selling it.
+
+Nothing was redesigned. Every change is data, one derived flag, or copy.
+
+---
+
+### 1 — PUBLIC CONTACT DETAILS REPLACED
+
+The client supplied a new public contact set. It supersedes the details carried over from the
+old Mishram Media site, and it lives in `config/site.ts` exactly as before — the contact panel,
+the header strip, the footer, the inquiry section's direct routes and the legal pages all read
+that file, so nothing was retyped anywhere.
+
+| Channel | Now | Was |
+| --- | --- | --- |
+| Email | **`info@mishram.media`** | `mediamishram@gmail.com` |
+| Phone | **`+91 95482 78558`** (`+919548278558`) | `+91 63993 99333` |
+| Instagram | **`@filmybande`** — `instagram.com/filmybande` | `@mishram.media` |
+| LinkedIn | **`linkedin.com/in/prashant-mishra-mishram-media`** | none — the row rendered unlinked |
+
+**THE BRAND NAME DID NOT CHANGE.** The material the details arrived in carried the phrase
+*"Prashant Ads Agency"*. That is context around the contact block, not a rename, and it appears
+nowhere in this repository. The site is **Mishram Media**, everywhere.
+
+**LinkedIn is live, and it cost one line.** §10k built the footer's social rail so an unverified
+platform renders as a present-but-non-interactive row with `aria-disabled` — never an
+`href="#"`, never a bare domain. Filling `SOCIAL_URLS.linkedin` turned that same row into a real
+link with **zero component edits**, which is what it was built to do. The three-platform set and
+its treatment are unchanged.
+
+**`@mishram.media` was demoted, not deleted.** It is the account the old site declared in its
+schema.org `sameAs`, and §10p's audit cites reels on it, so it is kept in `config/site.ts` as
+`LEGACY_INSTAGRAM` — development-only, never rendered. **One Instagram row, not two**: a social
+rail carrying both would read as an unresolved migration rather than as a choice.
+
+#### THE WHATSAPP NUMBER IS DELIBERATELY NOT THE PUBLISHED NUMBER, and this needs a decision
+
+`whatsappNumber` still points at `916399399333`. **Nothing supplied with the new details says the
+new line is on WhatsApp**, and a `wa.me` link built from a number with no WhatsApp account behind
+it fails silently at exactly the moment a visitor is trying to reach the business — so the
+working route was left pointing at the number the project knows answers.
+
+Two consequences, both handled rather than hidden:
+
+- **The old number is never rendered as text anywhere.** It survives only inside the `wa.me`
+  deep link. The site publishes exactly one phone number, and there is no surface where two
+  contradictory numbers appear.
+- **Two places that printed the published number under a WhatsApp label were corrected**, because
+  after the change they would have been false:
+  - Project Inquiry's WhatsApp row showed `CONTACT.phoneDisplay`. It now says
+    `INQUIRY_COPY.whatsappValue` — *"Chat with the team"* — which is what the action does.
+  - The legal pages' contact section said *"or on WhatsApp at the same number"*. It now says
+    *"or through the WhatsApp link on this site"*. **A legal page is the one document that cannot
+    carry a convenient approximation.**
+
+**THE UNBLOCK IS ONE CONFIRMATION.** When the client confirms WhatsApp on the new line, change
+that one constant to `919548278558` and every WhatsApp action on the site follows. Do not "tidy"
+it into agreement with `phone` before then.
+
+**No structured data was updated, because there is none.** The site ships no JSON-LD and no
+schema.org markup of any kind — verified, not assumed. `app/layout.tsx` carries `metadata` and
+`openGraph` only, neither of which contains contact information. If organisation structured data
+is ever added, it reads `CONTACT` like everything else.
+
+---
+
+### 2 — THE BRAND ROSTER: 5 → 19, and one withheld
+
+`config/collaborations.ts` carried five names inherited from the old site's client rail. The
+client supplied **eighteen relationships** as user-confirmed first-party business information.
+Four of the five were in that list; the fifth, Muuchstac, is a legitimate earlier relationship
+and **stays** — a longer list of newer names is not a reason to drop a real older one.
+
+**Eighteen brands render on the site**, and a nineteenth relationship (VYRL) is recorded without
+an asset — see below. Every entry carries a development-only `source` and `logoSource` so a
+published claim stays traceable, and neither field is ever rendered.
+
+| # | Brand | Category | Priority |
+| --- | --- | --- | --- |
+| 01 | Swiggy | food-delivery | featured |
+| 02 | Canva | technology | featured |
+| 03 | Yash Raj Films | entertainment | featured |
+| 04 | Mamaearth | beauty-d2c | featured |
+| 05 | Groww | fintech | featured |
+| 06 | Swiggy Instamart | quick-commerce | featured |
+| 07 | Excel Entertainment | entertainment | featured |
+| 08 | Wondershare | technology | featured |
+| 09 | Upstox | fintech | featured |
+| 10 | Pilgrim | beauty-d2c | featured |
+| 11 | CashKaro | shopping | featured |
+| 12 | Kapiva | wellness-d2c | featured |
+| 13 | Navi | fintech | roster |
+| 14 | Pintola | food-d2c | roster |
+| 15 | AVVATAR | wellness-d2c | roster |
+| 16 | DermaTouch | beauty-d2c | roster |
+| 17 | Troovy | food-d2c | roster |
+| 18 | Muuchstac | grooming-d2c | roster |
+| — | VYRL | media | configured, **not rendered** — no asset exists |
+
+**Spelling was normalised to each company's current official identity**, not to how the list
+arrived: `Grow` → **Groww** (the brand already on the rail — deduplicated, not added twice),
+`Navi UPI` → **Navi** (the company; UPI is a product surface inside it), `AVVATAR India` →
+**AVVATAR**, and Swiggy and Swiggy Instamart are two entries because they are two marks.
+
+#### FUN N EARN — WITHHELD UNDER §9, AND THE RULE WAS NOT WEAKENED
+
+**`Fun N Earn` is real-money gaming and is not published anywhere on this site.**
+
+It was researched before publication rather than after. The product is a cash-contest app:
+**money is added to an in-app wallet to enter paid contests, winnings are withdrawn to a payment
+wallet after KYC, and the platform takes a commission on winnings** — its own terms and FAQ say
+so. §9 excludes betting, gambling, casino, real-money gaming and fantasy-betting companies from
+**every** public surface of this site, permanently, and this is squarely inside it.
+
+**No exception was made because the relationship is genuine.** §9 does not turn on whether the
+relationship is real; it turns on the category. The record lives in `WITHHELD` at the foot of
+`config/collaborations.ts` — development-only, and **deliberately not part of `COLLABORATIONS`**,
+so it cannot reach the DOM through a render path, a marquee duplicate or a reduced-motion
+fallback. That is the same architecture §9 already required for the old site's sixteen excluded
+brands.
+
+Every other brand on the list was checked against §9 before publication. None of the remaining
+eighteen is in an excluded category.
+
+#### VYRL — confirmed, and the one asset that could not be sourced
+
+VYRL is configured with `visible: false` and a written reason. **No legitimate official logo
+exists to download**: `vyrl.in`, `vyrloriginals.in` and `vyrloriginals.com` all resolve to a
+redirect stub with no site behind them, there is no media or press page, and the mark is on
+neither Wikimedia Commons nor Wikipedia. The only images available are logo-aggregator sites and
+a rounded platform avatar, both of which the logo policy below rules out.
+
+The record is kept rather than deleted so a confirmed relationship is not lost. **Supply an
+official file and flip one boolean.** This is the same rule the site already applies to
+Recognition, Client Notes and the suppressed social row: *a missing thing is absent, never
+faked.*
+
+---
+
+### 3 — THE LOGO PIPELINE, and where every mark came from
+
+Thirteen new marks were sourced. **All are local**; nothing is hotlinked (§14). Source preference
+was, in order: the brand's own media/press pack, its own website or CDN, then a reliable vector
+repository where the file is clearly the current official mark. **No logo blog, no icon
+marketplace, no screenshot, no watermarked file.**
+
+| Brand | Source | Format |
+| --- | --- | --- |
+| Swiggy | Current official mark, vector — identical to the lockup on Swiggy's own corporate site | SVG |
+| Swiggy Instamart | **Swiggy's own corporate domain**, `Instamart-Logo-1.svg` | SVG |
+| Canva | Current official wordmark, vector | SVG |
+| Yash Raj Films | Current official mark, vector | SVG |
+| Wondershare | **Wondershare's own asset CDN**, horizontal wordmark | SVG |
+| Navi | **navi.com**, the site's own header mark | SVG |
+| Kapiva | **kapiva.in**, the inline SVG in the site's own header | SVG |
+| Pilgrim · Pintola · DermaTouch · Troovy | Each brand's **own website/CDN** | PNG |
+| AVVATAR | **avvatarindia.com**, the site's own header mark | PNG |
+| Excel Entertainment | **excelmovies.com**, the site's own header mark | PNG |
+
+Mamaearth, Groww, CashKaro, Upstox and Muuchstac keep their existing approved assets, untouched.
+
+**The two layers are still generated in one pass from one source**, exactly as §8 requires, so
+they overlay to the pixel: `<name>.png` is the mask the rail tints with the theme's ink, and
+`<name>-color.png` is the genuine artwork the hover reveals. Wordmarks normalise to 128px tall
+and stacked lockups to 160px (the existing convention), trimmed to tight bounds so every mark
+sizes optically rather than by whatever padding its source carried. **Nothing is stretched,
+redrawn or recoloured**, and no full-colour mark was reduced to a house palette.
+
+#### THE MASK DERIVATION — a real problem, and the fix generalises
+
+The rail's rest state is the mark reduced to one flat silhouette. For artwork drawn dark on
+transparency, its alpha channel *is* the mark. **Four of these are drawn the other way round** —
+a solid field of brand colour with the letterforms painted white **on top of** it rather than
+knocked out of it. Their alpha channel is a featureless slab: Troovy reduced to a blob, Swiggy
+and Instamart to a rounded square, Yash Raj Films to a rectangle. **None was identifiable at
+29px**, which was visible immediately on a rendered proof and would not have shown up in any
+measurement.
+
+Those four use an `ink` mask instead: `(1 − luminance) × alpha`, stretched so the darkest ink in
+the mark is fully opaque. The white letterforms fall out as transparent — which is what the
+printed mark does on paper. Swiggy's pin, Instamart's full `insta mart` wordmark, Troovy's
+lettering and YRF's figure all read at rest. **The genuine artwork is untouched and is what the
+hover layer shows.**
+
+Seven marks are near-black artwork and carry `darkKeepsMono`, the flag §8 already had: on
+obsidian the ivory-tinted mask is the correct treatment because the colour layer would be
+invisible. Navi is the one non-obvious member — its `navi` wordmark is a near-black purple that
+reads as nothing on a `#0a0a0a` canvas.
+
+**Weight: 150KB for thirteen new brands across 26 files** — *less* than the five existing brands
+cost between them (307KB), thanks to palette quantisation on flat artwork at display-appropriate
+sizes.
+
+**The load cost, stated rather than buried.** The brand directory is **456KB across 36 files** for
+eighteen brands, against 307KB across 10 for five, and **all 36 are fetched on load** rather than
+lazily: the rest layer is a CSS `mask-image` and the hover layer a `background-image`, both on
+elements inside the viewport. Nothing regressed — §10i's rules hold, and the page still reports
+**0 eager images and 0 image preloads**, because none of these is an `<img>`. That is the honest
+price of the section carrying the roster it now carries, and it buys the page's primary proof.
+**If it is ever worth reducing, the lever is deferring the colour layer to first hover** — roughly
+250KB and 18 requests, traded for a flash on the first hover of each mark. Not taken here, because
+the cross-fade is part of the approved treatment (§8).
+
+**Known weak asset, recorded rather than hidden:** AVVATAR publishes its mark at **111×95** and
+nothing larger exists on its site. That is enough for the 29px rail at 2× DPR and it is the
+official mark, but it is the one asset on the rail with no headroom. Excel Entertainment's is
+154×104 for the same reason. Neither was upscaled or substituted.
+
+---
+
+### 4 — THE RAIL: priority, and a timing bug the roster would have caused
+
+**The section stays exactly where it was — directly after the Hero, second on the page.** Brand
+credibility is now the most important thing on this site after the Hero itself, and it is 298px
+of the page at 1440.
+
+`priority` is what stops eighteen marks becoming a sponsor wall:
+
+- **`featured`** — the twelve strongest and most current relationships. They lead the rail, so
+  they are what a visitor meets in the first screen after the Hero.
+- **`roster`** — the six remaining legitimate relationships, continuing through the same rail. **No "see
+  more", no second rail, no wall above the fold.**
+
+Order is editorial and deliberately mixed by category, so the opening does not read as a block of
+fintech or a block of D2C. `ORDERED_COLLABORATIONS` sorts by priority regardless of array order,
+so a misplaced entry cannot break the invariant.
+
+#### THE MARQUEE TIMING HAD TO BECOME DERIVED, and this was a genuine defect
+
+The rail was approved at five brands, four copies per track, translating half its width over
+**46 seconds**. Left alone, eighteen brands would have run **the same 46 seconds across a track
+three and a half times longer** — every logo sweeping past at roughly three times the approved
+speed. That is not a length problem, it is the approved section breaking.
+
+Both numbers now come off the config (`railTiming` in `Collaborations.tsx`):
+
+- **Copies per track fall as the roster grows.** `MIN_ITEMS_PER_TRACK = 12` is what the seam-free
+  `-50%` loop needs to stay wider than the viewport; five brands still repeat four times, so the
+  approved five-brand rail is byte-identical.
+- **Duration tracks the resulting track width**, against the reference geometry the 46s was
+  composed at (29px logo height, 86px gap). Measured on the shipped page: **37.3s** for eighteen
+  visible marks — the same pixels per second the section was approved at.
+
+**Reduced motion shows the featured twelve, not all eighteen.** The rule collapses the rail to
+one static centred set; at five marks that was the whole roster, at eighteen it would be the
+wrapped wall this section exists to avoid. `data-roster` on the supporting entries is what the
+reduced-motion block hides, and the section's own line already says the brands shown are
+selected. Verified under emulated `prefers-reduced-motion`: twelve marks, two centred rows,
+372px.
+
+#### SECTION LANGUAGE
+
+The lead is now **"Selected brands we've worked with."** — previously *"Brands, creators and
+teams we've built with"*, which stopped being accurate the moment the rail became eighteen brands
+and no creators.
+
+**Not "Trusted by", not "Partners", not "Our clients".** Those describe a relationship this
+project cannot evidence for every mark on the rail. *Worked with* is true of all of them and is
+the old site's own wording. The chapter title `01 / SELECTED COLLABORATIONS` is unchanged.
+
+#### `/about` TAKES THE FEATURED SET, and that is the only change to that page
+
+`AboutCredibility` renders `FEATURED_COLLABORATIONS` rather than the whole roster — one import.
+Eighteen rows would have turned a supporting beat inside the company's story into the longest
+block on the page; the chapter's own lead already promises *"a few of the brands"*. The credibility
+chapter went **1,232 → 1,329px** and `/about` **10,595 → 10,864px (12.07 viewports)**. Nothing
+else on that route was touched.
+
+---
+
+### 5 — SERVICE 05 HIDDEN: `built` and `public` are now two different questions
+
+The client wants **Brand Shoots & Content off public discovery** during the outreach campaign.
+**The implementation is untouched.** The homepage scene, `/services/brand-shoots-content` and
+every composition on it (§10n) are exactly as they were, and the route still resolves.
+
+**`built` was the wrong flag to use, and this is the reusable part.** It records that the
+implementation exists. Setting it `false` to hide something would mean the registry lies about
+the code, and prev/next, the menus and the footer would all be reasoning from a false premise.
+So `Service` gained a second boolean:
+
+```ts
+built: boolean;   // the implementation exists — a fact about the code
+public: boolean;  // it appears in public discovery — the editorial decision
+```
+
+`PUBLIC_SERVICES` (`built && public`) and `PUBLIC_SERVICE_PAGES` are what everything derives
+from. One flag took the service off **six** surfaces with **no component edit and no
+`if (service.id === "shoots")` anywhere**:
+
+| Surface | Result |
+| --- | --- |
+| Homepage `02 / What We Do` | Four chapters. The pinned track shortened by exactly one `SERVICE_SCROLL_VH` slot — **7,449 → 6,279px** |
+| Progress indicator | `01 ──────● 04`, four accent dots, fill reaching its own last dot |
+| Header services menu | `Overview · 01 · 02 · 03` |
+| Mobile services group | The same four rows |
+| Footer Services directory | Three routes |
+| Prev / next | 03 shows only a previous. The hidden page renders no rail at all |
+| `/about` service index | Brand Shoots & Content renders as a **named capability with no link**, exactly as Web & Digital Experiences does |
+
+**No empty scroll, no blank slot, no lingering transition, no wrong count** — verified by
+measurement and by looking at the sequence: the last scene is Service 04, and it resolves into
+*"Different disciplines. One growth system."* as it always did.
+
+**CANONICAL NUMBERING IS PRESERVED.** Brand Shoots is still `05` and Web & Digital Experiences is
+still `04`. Numbering belongs to the five-service system in `config/services.ts`, not to what
+happens to be visible this month. The progress indicator's endpoints are the first and last
+*visible* indices — `01` and `04` — which is a different thing from renumbering.
+
+**`robots: noindex, nofollow` while hidden, and it is derived.** The route's metadata reads
+`PAGE.service.public`, so the directive lifts by itself when the flag goes back — which is what
+stops a `noindex` being left behind on a page that is public again. Verified on the rendered
+route: `noindex, nofollow`, the page renders in full, and **no internal link on any surface
+points at it**.
+
+One piece of copy was wrong the moment this shipped and was fixed: the services menu's overview
+row read *"What We Do — all five services"*. It now carries **no count at all** — a number in copy
+is a claim that has to be maintained, and the overview itself shows how many there are.
+
+---
+
+### 6 — THE HOMEPAGE ABOUT CHAPTER IS NOW A PREVIEW
+
+**1,468px / 1.63 viewports → 718px / 0.80 viewports.**
+
+The chapter was written before `/about` existed. Once it did (§10r), the homepage was telling the
+company's story twice — the short version immediately above a form, and the full one a click away.
+
+| Removed from the homepage | Where it lives now |
+| --- | --- |
+| The second body paragraph (the "handoffs are where results get lost" argument) | **The Mishram Difference interlude already makes it on this page** (§10a) |
+| The `emphasis` line, verbatim from Mishram's schema.org description | `/about`'s opening claim |
+| The `INDIA` locator | The Footer, and `/about` |
+| `DisciplineSystem` — the four-discipline drawing | `/about`'s disciplines chapter, at full length. `DISCIPLINES` still feeds `FOOTER_EQUATION`, so the data is unchanged |
+| The 2021 / 2023 / 2025 history band | `/about`'s origin chapter, with room to land in what starting there taught the practice |
+
+**What the preview keeps:** the chapter label, the headline *"Creative thinking, built for
+growth."* unchanged, one sentence of positioning, **one concise historical sentence** — *"It began
+in 2021 as Starcrown Media, an influencer marketing practice, and became Mishram.Media in 2025 as
+the disciplines grew."* — `Read our story ↗`, and the closing conversion moment it always ended on.
+
+**`HISTORY` stays in `config/about.ts`** as the evidence ledger. It is where the verbatim source
+sentence is written down, and both the homepage's one-liner and `/about`'s chapter are checked
+against it.
+
+Two columns rather than a stack, because the block's whole point is that it is short: set one
+under the other, three sentences read as the start of a chapter that then stops. Section padding
+came down one step top and bottom, and the closing rule's approach with it — **that is the only
+whitespace reduced anywhere on the site.** The reduction is otherwise all content.
+
+**Do not rebuild the long version here.** If this chapter needs to say more, that is a signal
+`/about` is not doing its job.
+
+---
+
+### 7 — MEASURED, before and after (1440×900)
+
+| | Before | After |
+| --- | --- | --- |
+| **Homepage** | **17,591px / 19.55 vh** | **15,671px / 17.41 vh** |
+| 02 / What We Do | 7,449 | **6,279** (−1,170, one service slot) |
+| About | 1,468 / 1.63 vh | **718 / 0.80 vh** (−750) |
+| 01 / Selected Collaborations | 298 | **298** (unchanged) |
+| Brands rendered | 5 | **18** (+1 confirmed, no asset — VYRL) |
+| Public services in §02 | 5 | **4** |
+| Homepage images | 24 | **20** |
+| Eager images / image preloads | 0 / 0 | **0 / 0** |
+| Canvases / videos | 1 / 0 | **1 / 0** |
+| Horizontal overflow at 1440 | none | **none** |
+
+**−1,920px, −10.9%**, and the arithmetic accounts for all of it: one fewer public service scene
+and the About preview. The §10q headless-Chrome route independently measures the shipped page at
+**15,694px**; the 23px is instrument rounding between a DPR-1 and a DPR-2 pass, not a
+discrepancy.
+
+At **390×844** the page is **14,963px**, `02 / What We Do` is four stacked chapters (3,938px) and
+About is 785px. No horizontal overflow at 1440×900 or 390×844 in either theme.
+
+**Homepage image count fell by four** — the About chapter's discipline system and history band
+carried none, so the drop is Recognition and the creator frames being reached by a shorter page;
+the loading behaviour §10p established is intact: **0 eager, 0 preloads, everything lazy.**
+
+---
+
+### 8 — VISUAL VERIFICATION — real composited screenshots
+
+**The §10q headless-Chrome-over-CDP route was used**, and the Browser pane was also compositing
+this session. Reviewed as images at 1440×900 in **both themes**, at 390×844, and under emulated
+`prefers-reduced-motion`:
+
+- **The brand rail**, dark and light, at rest — optically balanced, real whitespace, marks
+  readable at 29px, no two marks forced to the same physical width.
+- **The rail at 390** — three marks visible at 22px, clearly readable. Not eighteen tiny marks.
+- **The rail under reduced motion** — twelve featured marks, two centred rows, static.
+- **The About preview**, dark at 1440 and at 390 — composed, not a stub.
+- **`02 / What We Do`** at four scroll positions, including the progress rail reading `01 … 04`
+  and the hand-off from Service 04 into the closing statement.
+- **`/about`'s credibility chapter** with the twelve-brand index.
+
+**One defect was found by looking that measurement would not have caught**, and it is §10q's
+lesson repeating: the four solid-field marks reducing to unrecognisable slabs at rest. See the
+mask-derivation note above. Both prior methodological lessons held — *a text search cannot clear
+an image*, and *geometry cannot clear a composition*.
+
+---
+
+### 9 — WHAT WAS DELIBERATELY NOT DONE
+
+Recorded because each was explicitly in scope for a **later** task and doing any of it here would
+have made it worse:
+
+| Held | Why |
+| --- | --- |
+| **The creator roster expansion** — Ali Fazal, Fukra Insaan, Purav Jha, Sahil Gambhir, Vibhu Varshney, Allen Chaudhary, Manish Jain, Mukesh Jain, Anubhav Golia, Sagar Rathee, Shadab Jakati, Shubham Kochale, Sahida Ansari, Famous Ram, Deepankar | **Not one name was added.** `config/creators.ts` is untouched; the roster is still the five verified creators and the header still reads `SELECTED CREATORS / 05`. The client is supplying images next, and §10b's rule stands: **no creator without approved local photography** |
+| **The Xbhandesiri case study** — 1B dashboard, 800K+ follower growth, 30M+ average views, 130M+ reels, 35%+ retention, a 100K starting point | **No metric was published.** Turning unverified numbers into decorative metrics is precisely what §1 forbids, and it is what the analytics screenshots exist to prevent. Akash Sagar remains configured and `published: false` (§10p) |
+| **Red Bull** | **A prospect, not a client.** No logo, no mention, no implied relationship, nothing in `collaborations.ts`. The site's job here is to be strong enough that the recipient sees the credibility that genuinely exists |
+| **Service 04 / Web & Digital Experiences** | Still deferred (§10o). Not started, not stubbed, not renumbered |
+
+---
+
+### 10 — DEPENDENCIES, and the files that changed
+
+**No dependency was added.** The logo pipeline is `sharp`, already a dev dependency for the asset
+pipeline; the rail timing is arithmetic; the visibility flag is a boolean.
+
+```
+src/config/site.ts               new contact set, LinkedIn live, LEGACY_INSTAGRAM, the
+                                 WhatsApp note
+src/config/collaborations.ts     19 brands, priority/source/logoSource, WITHHELD, new
+                                 categories, the derived ordering
+src/config/services.ts           `public` on every service, PUBLIC_SERVICES
+src/config/service-pages.ts      PUBLIC_SERVICE_PAGES; href + prev/next derive from it
+src/config/about.ts              one-paragraph body, historyPreview, notes on what moved
+src/config/about-page.ts         the connections note says "a selection"
+src/config/inquiry.ts            whatsappValue
+src/config/legal.ts              the WhatsApp claim corrected
+src/components/Collaborations.tsx   railTiming, ordered roster, data-roster
+src/components/about/About.tsx      the preview; History and DisciplineSystem removed
+src/components/about/DisciplineSystem.tsx   deleted — /about carries the idea in full
+src/components/whatwedo/WhatWeDo.tsx        drives from PUBLIC_SERVICES
+src/components/whatwedo/ServiceProgress.tsx the visible span, 01 … 04
+src/components/Footer.tsx                   services from PUBLIC_SERVICE_PAGES
+src/components/header/ServicesMenu.tsx      same, plus the countless overview line
+src/components/about-page/AboutCredibility.tsx  the featured set
+src/components/inquiry/ProjectInquiry.tsx   the WhatsApp row's value
+src/app/services/brand-shoots-content/page.tsx  derived robots + the hidden-state notice
+src/app/globals.css              --collab-duration, reduced-motion roster rule
+public/media/brands/*            26 new files, 13 brands, 149KB
+```
+
+---
+
+## 10t. CREATOR CREDIBILITY + MEDIA INTEGRATION (Revision 17)
+
+The revision where the site stopped being blocked on client-supplied material. Revision 16 ended
+with five open items waiting on an upload; the client supplied a **local media library** and two
+confirmations, and this revision closes four of them.
+
+**The library is `F:\Drive data`** — read directly from disk, and it is the authoritative source.
+The Drive folder `1IAU2wgNarM8G3hyfa9NusHIg3K-ayNKB` is recorded as provenance only; nothing was
+fetched from it.
+
+**The raw library stays outside the repository.** 210 files were audited, **two** were copied in.
+No folder was mirrored, no camera dump committed, and not one of the 140 `.MOV` files was moved.
+The full ledger is `docs/MEDIA-ASSET-AUDIT.md`; this section records what shipped and why.
+
+---
+
+### 1 — HEIC → JPG, and the tool that actually worked
+
+**13 HEIC/HEIF files, 13 converted, 0 failures, 0 originals touched.**
+
+Both obvious tools fail on these files, and the reasons are worth keeping:
+
+- **Sharp cannot decode them.** libheif rejects every one — *"Number of references in iref box
+  (40–48) exceeds the security limits of 16"*. These are ordinary iPhone **grid** HEICs, stored as
+  40–48 tiles, and libheif's default `max_iref_references` is below that. Sharp exposes no way to
+  raise it. **Do not spend time on this again.**
+- **ffmpeg returns one 512×512 tile.** The build available here (CapCut's, the only one on the
+  machine) opens the file and hands back a single grid tile rather than the assembled image.
+  Fine for video, useless for these stills.
+- **ImageMagick is not installed.** `C:\Windows\system32\convert.exe` is the Windows *filesystem*
+  tool — never invoke it for images.
+
+**Windows Imaging Component decodes all of them at full resolution**, through .NET's
+`BitmapDecoder` from PowerShell, using the HEIF Image Extensions already on the machine.
+**No dependency was added**, which was the constraint.
+
+Settings: **JPEG quality 92**, original dimensions, orientation resolved by the decoder (so nothing
+downstream re-rotates), **all metadata stripped** — no EXIF, no GPS, no device identifiers. Staging
+mirrors the source tree at `F:\Drive data\_website-converted-jpg\`, so every JPEG traces to exactly
+one original, and a manifest sits beside them.
+
+Verified after the fact: every output readable, correctly sized and oriented, **none black, blank or
+corrupt** (channel means 105–159, standard deviations 58–73).
+
+---
+
+### 2 — Identity discipline, and what it cost
+
+**No face was used to identify anybody.** Identity was accepted only from an explicit folder name, a
+filename, existing project metadata, or the client's own instruction.
+
+That rule is what shaped the whole revision. The library contains genuinely good photography of
+people the project cannot name — production BTS, campaign environments, group shots — and **all of
+it is unpublished**, because a folder called `PRASHANT SIR - PICTURES` tells you whose collection it
+is, not who is in each frame.
+
+**Exactly one person cleared the bar**, and by two independent allowed sources agreeing: the folder
+is literally `AKASH COVER PHOTO`, and the client named `IMG_2188/2189/2190.jpg` directly.
+
+Three further rules the audit had to apply, each of which held something back:
+
+- **A third-party brand in frame is a brand claim.** zingbus, OPPO and Cream Bell all appear in
+  otherwise usable material. All three keep it unpublished — the same logic §9 applies to the rail.
+- **A filename that names a person is not evidence of a person.** §10p established this about an
+  `alt` attribute; it recurred here on a file whose name thanks a named individual for an award.
+- **Unclear context means hold**, even when the file is exactly what the site has wanted.
+
+---
+
+### 3 — WHATSAPP: one number again
+
+**The client confirmed `+91 95482 78558` is also the current WhatsApp line**, which closes the split
+Revision 16 had to leave open.
+
+`config/site.ts` now derives both from one constant — `PHONE_E164` is written once and
+`whatsappNumber` is that string without the `+`, so the two **cannot drift apart again**. The
+previous number `916399399333` is **gone from production entirely**; it survives only in comments
+and revision history, which is where an obsolete contact detail belongs.
+
+Two hedges Revision 16 introduced were reverted, because both were only true while the numbers
+differed:
+
+- Project Inquiry's WhatsApp row prints `CONTACT.phoneDisplay` again instead of *"Chat with the
+  team"*.
+- The legal pages say *"or on WhatsApp at the same number"* again. **That sentence has now been
+  corrected twice in two revisions** — which is the point: a legal page carries no convenient
+  approximations, so it changes whenever the fact does.
+
+`Continue on WhatsApp` in the inquiry fallback is unchanged and still a plain `<a href>` — **nothing
+auto-opens**, a click is always required (§10h).
+
+---
+
+### 4 — CURRENT MANAGEMENT — the new chapter
+
+`src/components/management/CurrentManagement.tsx`, copy and provenance in
+`src/config/management.ts`, `.mgt-*` in `globals.css`.
+
+**Akash Sagar (`@xbhandesiri_`) is published**, and not as creator #06.
+
+> ```
+> Hero → 01 / Selected Collaborations → CURRENT MANAGEMENT → 02 / What We Do → …
+> ```
+
+**Second on the page, deliberately.** The brand rail says which brands the work has run alongside;
+this says the agency manages a creator, today. Those are the two things an outreach recipient is
+scanning for, so they arrive back to back before the site starts explaining itself.
+
+**Unnumbered**, like the Mishram Difference, Client Notes and Project Inquiry — a short teal rule
+instead of a chapter index — so `02`, `03` and `ABOUT_CHAPTER` are all untouched and nothing
+downstream was renumbered.
+
+**The composition is type left, photography right**, which is the inverse of §06 Recognition and
+structurally unlike §03's index-plus-cascade. Three photographic chapters on one page, three
+different layouts. The name *is* the headline — every other chapter opens on a statement, this one
+opens on a person. One dominant 3:4 portrait, one supporting 4:5 crop hanging off its lower left,
+one sentence, one quiet `View Instagram ↗`.
+
+**Frames are sized by height** (`clamp(21rem, 60vh, 33rem)`), not by column width — a 3:4 portrait
+filling six columns at 1440 would be 837px on its own, and Revision 16 shortened this page on
+purpose. Same reasoning as §05's reel.
+
+**Measured: 834px / 0.93 viewports at 1440×900**, inside the 0.9–1.2 target. 954px at 390.
+
+**What it never says**, and each is a content-integrity constraint rather than a style choice:
+no metric of any kind · never "exclusive", "signed" or "under contract" (the evidence supports
+*manages*, and does not describe the terms) · no claim that the management caused anything.
+
+**One defect was found by looking rather than measuring:** the frame note ran straight through the
+supporting frame's overhang. The overhang is now one declared custom property that both the frame's
+offset and the note's clearance read, so they cannot drift.
+
+---
+
+### 5 — ANALYTICS: none exists, and every metric stays unpublished
+
+**The entire library was searched. There is not one analytics screenshot, insights export, dashboard
+capture or follower record in it.** Every filename was checked for `analytic`, `insight`,
+`dashboard`, `follower`, `reach`, `views`, `stat`, `screenshot`, `RPReplay`; all four PNGs were
+opened (three are old brand logos, one is a screenshot *of a photograph*).
+
+The only "followers" match is `…\CREATIVES REELS\10th 100 followers\Akash 100 followers 2.m4a` — a
+**voice take for a reel script** inside Mishram's own creative-reel folders. A creative asset, not a
+measurement, and not evidence about `@xbhandesiri_`.
+
+So all of it stays unpublished: **1B dashboard · 800K+ follower growth · joined at ~100K · 30M+
+average reel views · 130M+ reels · 35%+ retention · 200M/500M projections.**
+`MANAGEMENT.metrics` is an empty array and **renders nothing at all** — no placeholder row, no
+dash, no "coming soon", the same self-suppressing pattern §06 and Client Notes use. Populating it is
+the only change needed, and each entry carries a `source` naming the screenshot it came from.
+
+---
+
+### 6 — THE TWO-LAYER CREATOR SYSTEM
+
+§03 keeps its image-backed stage exactly as approved and gains a second movement beneath it.
+
+**Layer one — the stage.** Unchanged: five creators with approved photography, the talent index,
+the cascade, the selection model (§10b).
+
+**Layer two — the worked-with index.** The client confirmed eighteen further relationships. The
+library holds an unambiguously identified photograph for **one** of them. Putting the rest on the
+stage would mean guessing which photograph is whom, or shipping seventeen empty frames — so the
+names are published as **type**: an editorial index on hairlines, three columns at `lg`, two at
+`sm`, one on a phone.
+
+**"WORKED WITH" IS LOAD-BEARING.** Not managed, not signed, not exclusive, not clients, not
+represented — the project can evidence management for exactly one person and it has its own chapter.
+No follower counts, no niches, no tiers, no ranking; `PROMINENT` ordering is reading order only.
+
+**Three names are filtered out by derivation.** Lovekesh Kataria, Nikita Kumawat and Vishnu Priya are
+on the client's list *and* on the image-backed stage; printing them again under a heading that says
+"Also worked with" reads as an error. `WORKED_WITH` keeps all eighteen as supplied and
+`WORKED_WITH_INDEX` derives the fifteen the page needs, so **publishing a roster creator later
+removes them from the index on their own**. The match tolerates the `Lovkesh`/`Lovekesh` spelling
+difference — both spellings are left as supplied rather than one being silently corrected, because
+one is this project's approved-asset spelling and the other is the client's and every public source.
+
+---
+
+### 7 — SCALE — two facts, conservatively worded
+
+**500+ Creators worked with · 1,000+ Promotional videos**, both client-confirmed August 2026.
+
+Published as the **lower bound they were given as**. "500–1,000" was not used: a range invites the
+reader to average it, and the figure the client stands behind is the floor. Nothing rounded up,
+nothing extrapolated.
+
+**Presented as two large editorial facts on one hairline** — display type with the label beneath,
+in the site's own grammar. **Not KPI cards, not a counter, not a chart, no dashboard**; §1 rules
+that reading out and §10m already refused it on the one page where numbers were expected.
+
+---
+
+### 8 — SELECTED WORK: still no video, and the reason is not scarcity
+
+**The library contains a finished, vertical, 9:16 Mishram reel** — `…\14th work load\final.mp4`,
+2160×3840, 14.1s, h264 60fps, with a 1080×1920 sibling. That is exactly the asset class §10d has
+been blocked on for four revisions.
+
+**It is held, on three independent grounds, any one of which is enough:**
+
+1. **It is internal office humour, not creator or campaign work.** §05 is framed as "creator
+   content, campaigns and visual work from across our network".
+2. **Its burnt-in captions describe two identifiable employees as "our two office lovebirds".**
+   Publishing named staff in a romantic framing on a client-facing site, with no consent on file,
+   is not a call to make unilaterally.
+3. **A Cream Bell / MAXUM banner is prominent throughout** — a brand not on the confirmed roster.
+
+The other candidates are raw takes: the Swiggy folder's pieces to camera show nothing Swiggy-related
+in frame and the speaker is unidentified; the `Purav` and `Dr 69` folders hold genuine production
+BTS (a lapel mic being clipped on, a crew walking with a gimbal rig) that would be strong evidence
+if anybody in it could be named.
+
+**So §05 is unchanged and still shows stills honestly typed as posters.** The unblock is narrower
+than it was: not "supply a reel" but "supply a reel that is creator or campaign work, cleared for
+publication". **The video path in `WorkMedia` remains built and untested against real media.**
+
+---
+
+### 9 — INFLUENCER MARKETING: two scope rows, and only two
+
+`/services/influencer-marketing` was **not redesigned**. The scope index gained:
+
+- **Creator Outreach**
+- **Negotiation** — named as the conversation, not as a commercial function.
+
+§10l recorded that *negotiation* had stopped being unevidenced (the old site's own copy states
+"manage outreach, **negotiations**, and briefs") but left the index unchanged, because promoting a
+row is a public promise and that was historical copy. **The client has now confirmed both**, so the
+reason for holding them is gone. Ten rows, renumbered `01`–`10`.
+
+**Still absent, still deliberate: contracts, legal contracting, rate cards, talent exclusivity and
+creator payments.** None is confirmed, each is a materially different promise, and a service page is
+the wrong place for a brand to discover a capability was overstated.
+
+---
+
+### 10 — Measured, before and after (1440×900)
+
+| | Revision 16 | Revision 17 |
+| --- | --- | --- |
+| **Homepage** | **15,671px / 17.41 vh** | **17,061px / 18.96 vh** |
+| Current Management | — | **834** (0.93 vh) |
+| 03 / Creators | 1,161 | **1,695** |
+| Everything else | unchanged | unchanged |
+| Image nodes | 20 | **22** |
+| Eager images / preloads | 0 / 0 | **0 / 0** |
+| Videos / canvases | 0 / 1 | **0 / 1** |
+| Horizontal overflow | none | **none** |
+
+**+1,390px, +1.55 viewports**, against a ≤18.7 guidance — **0.26 over, and the arithmetic accounts
+for all of it**: a new chapter at 0.93 and a Creators chapter carrying two new movements at +0.59.
+
+**The growth was absorbed inside §03 rather than taken from the page**, which was the instruction.
+The index went to three columns at `lg` (six rows became five), row padding and the block's internal
+gaps each came down a step, and the chapter's own approach and run-out gave up one step — while the
+approved stage composition was not touched. That recovered 260px. **No whitespace was reduced
+anywhere else on the site.**
+
+Other viewports: 15,940 at 1280×800 · 13,042 at 1024×768 · 15,884 at 768×1024 · 17,209 at 430×932 ·
+16,971 at 390×844.
+
+---
+
+### 11 — Visual verification
+
+Real composited screenshots via the §10q headless-Chrome-over-CDP route, plus a geometry sweep.
+
+**Verified at 1440×900, 1280×800, 1024×768, 768×1024, 430×932 and 390×844, in both themes and under
+emulated `prefers-reduced-motion`:**
+
+- **Zero horizontal overflow at every one of them.** The only elements measuring past the viewport
+  are `.collab-*` — the brand marquee's own track, clipped by `.collab-rail { overflow: hidden }`,
+  which is the documented benign case.
+- Current Management reads as premium editorial proof in both themes; the supporting frame tucks
+  into the primary's corner below `lg` so nothing reaches past the gutter.
+- The worked-with index reads as an index at three columns, two and one. **Rows are 45–47px**,
+  clear of 44px even though nothing in it is interactive.
+- Under reduced motion, **nothing is hidden** — every element renders at full opacity.
+
+**One defect found by looking that measurement did not catch** (the frame-note collision, §4 above),
+and **one found by measurement that looking did not** (three names duplicated between the stage and
+the index, §6). Both lessons from §10p and §10q, both still earning their place.
+
+---
+
+### 12 — Dependencies and files
+
+**No dependency was added.** HEIC decoding is a Windows facility reached from PowerShell; video
+probing used an ffmpeg already on the machine; the crops are `sharp`, already a dev dependency.
+
+```
+docs/MEDIA-ASSET-AUDIT.md              NEW — the full ledger
+src/config/management.ts               NEW — the chapter's copy, evidence chain and metric slot
+src/components/management/CurrentManagement.tsx   NEW
+src/components/creators/WorkedWithIndex.tsx       NEW — scale facts + the worked-with index
+src/config/creators.ts                 WORKED_WITH, WORKED_WITH_INDEX, CREATOR_SCALE
+src/components/creators/Creators.tsx   mounts the second layer; padding one step tighter
+src/config/site.ts                     one number, derived
+src/config/inquiry.ts                  WhatsApp row prints the number again
+src/config/legal.ts                    the WhatsApp sentence, corrected
+src/config/service-influencer.ts       Creator Outreach + Negotiation
+src/app/page.tsx                       CurrentManagement, second
+src/app/globals.css                    .mgt-* and .wwi-*
+public/media/creators/akash-sagar/     2 files, 273KB
+```
+
+---
+
+## 10u. CREATOR IDENTITY / PROFILE CORRECTION (Revision 17B)
+
+The revision that had to unpublish something. Revision 17's Current Management chapter was built
+around two photographs the audit had cleared by its own strictest rule, **and the user confirmed
+they are not Akash Sagar.** So this revision revokes them, rebuilds that chapter around the only
+image the project can still trace to him, publishes two genuinely user-labelled photographs, and
+turns the worked-with index into a set of real profile links.
+
+**Revision 17 was intact after standby** — the recovery check found nothing missing. See §1.
+
+---
+
+### 1 — RECOVERY CHECK: Revision 17 survived the sleep
+
+Every artefact Revision 17 reported was on disk and coherent before anything new was written:
+
+| Checked | Result |
+| --- | --- |
+| `src/config/management.ts` · `components/management/CurrentManagement.tsx` · `components/creators/WorkedWithIndex.tsx` · `docs/MEDIA-ASSET-AUDIT.md` | All four present |
+| `public/media/creators/akash-sagar/` | Both WebPs present, 273KB |
+| Homepage order | Hero → Collaborations → Current Management → What We Do → Difference → Creators → Work Process → Selected Work → Client Notes → Recognition → About → Project Inquiry → Footer. Exactly as §10t left it |
+| `500+` / `1,000+` | Both rendering |
+| WhatsApp | Every `wa.me` on the page resolves to `919548278558`; `PHONE_E164` is written once and derived |
+| Brand Shoots | `public: false`, route `noindex`, no internal link |
+| Web & Digital | Still deferred, still 404 |
+| `npx tsc --noEmit` | Clean, before any edit |
+
+**Nothing was repaired and Revision 17 was not re-run.**
+
+---
+
+### 2 — THE AKASH SAGAR CORRECTION
+
+#### The images are revoked, and the lesson is not "the rule was too loose"
+
+`IMG_2188/2189/2190.jpg` and both WebPs built from them **do not depict Akash Sagar.** The two
+production files are **deleted from `public/`**; the Drive originals are untouched; the audit
+carries `REVISION 17 IMAGE ASSOCIATION REVOKED BY USER` at the head of the document and struck
+through the entries themselves rather than deleting them.
+
+**Revision 17 cleared those files on two independent allowed sources agreeing** — a folder literally
+named `AKASH COVER PHOTO`, plus the client naming the three files. That is the strongest evidence
+the audit's rules permit, it was applied honestly, and it was still wrong. The correction is
+therefore not "be stricter next time"; it is a specific sentence the audit had already written about
+two *other* folders and failed to apply to this one:
+
+> **A folder name says whose folder it is, not who is in the frame. A client naming *files* is
+> evidence about files. Only a client confirming *this photograph is this person* is evidence about
+> a person.**
+
+That is now rule 7 of the media audit.
+
+#### What replaced the photography, and why it is 72px
+
+`F:\Drive data` was re-searched in full — `akash`, `sagar`, `bhande`, `xbhandesiri`, `bhandesiri`,
+and a fresh listing of every directory to catch anything added since Revision 17. **There is no
+other Mishram-owned photograph of him in the library.**
+
+So the one remaining traceable image is the profile picture published by the exact official account,
+`@xbhandesiri_` — whose own display name is **"Akash Sagar"** and whose bio reads **"Managed by -
+@filmybande"**, which is Mishram's own public Instagram (§10s). That is a stronger identity chain
+than the folder ever was, and it also re-confirms the management relationship from the creator's own
+account.
+
+**Instagram publishes it at 150×150 and nothing larger.** `s320x320`, `s640x640` and the
+unparameterised original all return **HTTP 403** — the URL signature covers the size parameter.
+Recorded so nobody retries it.
+
+**So it is used as an avatar, at 72px, and the chapter's media treatment was rebuilt around type.**
+It is not upscaled, not blurred into a backdrop, not stretched into the frame it replaced.
+
+#### The identity plate — the new right-hand column
+
+`.mgt-frames` / `.mgt-primary` / `.mgt-supporting` are gone. In their place, `.mgt-plate`: a
+surface-tinted panel on a hairline with a short teal corner rule, carrying the **72px official
+avatar** in the site's own square 3px frame, `OFFICIAL PROFILE` beside it, **`@xbhandesiri_` set at
+display scale as the plate's graphic**, and `CREATOR — CURRENTLY MANAGED` under a rule.
+
+It is **not** a social-profile card: no follower count, no verified tick, no Instagram chrome, no
+gradient ring, no Follow button. The avatar frame is the same treatment every other photograph on
+the page uses.
+
+**One duplication was found by looking and removed.** The first build kept the teal `@XBHANDESIRI_`
+caps line under the name *and* set the handle at display scale in the plate — the same string twice
+at the same eye level. The left column's copy is gone; the plate owns the handle.
+
+**The plate fills its six-column span at `lg`** rather than floating at an intermediate width, so
+its right edge lands on the page gutter. At 27rem it read as a card dropped onto the layout.
+
+**Measured: 834px → 491px at 1440 (0.93 → 0.55 viewports); 954 → 680 at 390.** The chapter got
+shorter because type is shorter than a 3:4 portrait, and that headroom is what paid for the creator
+chapter's growth below.
+
+**The relationship is still published.** The claim was never the photograph.
+
+---
+
+### 3 — ALI FAZAL — user-confirmed, and the roster's opening slot
+
+| | |
+| --- | --- |
+| **Input** | `F:\Drive data\ali fazal.jpeg`, 3120×4160 |
+| **Production** | `public/media/creators/featured/ali-fazal.webp`, **1000×1333** WebP q74, 177KB |
+| **Crop** | `extract{left 355, top 747, 2560×3413}` → **3:4**, the stage's portrait frame exactly |
+| **Instagram** | **`@alifazal9`** — verified account, display name "ali fazal" |
+| **Relationship** | **`Worked With`.** Never managed, represented, signed or exclusive |
+| **Where** | §03's featured stage, **position 01** — the creator the section opens on |
+
+**Identity comes from the filename the user gave it.** No face was compared.
+
+**THE BRIEF'S PATH DID NOT EXIST, and this is stated rather than absorbed.** It named
+`F:\Drive data\WEBSITE SHORTLIST\ali-fazal-user-confirmed.jpeg`. **There is no `WEBSITE SHORTLIST`
+folder anywhere on `F:\`**, and no `*user-confirmed*` file anywhere either — both were searched for
+across the drive. What exists, at the root of `F:\Drive data`, is `ali fazal.jpeg` and
+`Lovekesh Kataria.jpeg`: the only files in the library named after those two people, both portrait,
+both absent from Revision 17's own listing of that directory. The brief's own rule is that **the
+filename is the identity mapping** — so the files were used and the deviation is on the record.
+
+**He opens the section, which is what "strongest visual priority" means here.** §10b gave that slot
+to Zoya Jaan; the client has asked for Ali Fazal to lead the creator proof, and the opening slot is
+the one the stage shows first and the only image the section mounts on load. **Editorial priority,
+not a ranking** — nothing on the page numbers the roster by importance.
+
+---
+
+### 4 — LOVEKESH KATARIA — upgraded, de-duplicated, and one spelling
+
+| | |
+| --- | --- |
+| **Input** | `F:\Drive data\Lovekesh Kataria.jpeg`, 8064×6048 with **EXIF orientation 6** → 6048×8064 upright |
+| **Production** | `public/media/creators/featured/lovekesh-kataria.webp`, **1000×1333** WebP q74, 79KB |
+| **Crop** | `extract{left 1286, top 2741, 3800×5067}` → **3:4** |
+| **Instagram** | **`@corrupt_tuber`** — verified account, display name "Lovekesh Kataria" |
+| **Existing record** | **Upgraded in place. No duplicate creator was created** |
+
+**One person, one spelling.** Revision 17 deliberately carried `Lovkesh` on the roster and
+`Lovekesh` in the index, each correct in its own place. The verification pass settled it: the live
+official account publishes **"Lovekesh Kataria"**, so that is now the spelling everywhere the site
+renders. **The `id` stays `lovkesh`** — it is an internal key that eight other compositions look
+this creator up by, and renaming it would be a rename with no reader-facing benefit.
+
+`WORKED_WITH_INDEX` removed him from the index **on its own** when he joined the stage, which is
+what that derivation was built for. Same for Ali Fazal. No second list was edited.
+
+**The old file is not deleted.** `config/hero.ts` still uses `lovkesh-kataria.webp` and the Hero is
+locked (§05). Only the roster's reference moved — **which means five compositions on
+`/services/influencer-marketing` and `/services/brand-shoots-content` inherited the new photograph,
+and all five were re-checked as images.** One defect was found there and fixed; see §7.
+
+---
+
+### 5 — PROFILE VERIFICATION: fourteen published, five held
+
+**Every handle was verified against the live official account, not against a search result.** The
+bar was **two independent sources agreeing**: the client supplying the handle for that name, *and*
+the account's own display name, bio or a stated linkage corroborating the same person. No
+aggregator, follower-counter or biography site was accepted as identity evidence.
+
+| Name | Handle | Corroboration |
+| --- | --- | --- |
+| Akash Sagar | `@xbhandesiri_` | Display name "Akash Sagar"; bio "Managed by - @filmybande" |
+| Ali Fazal | `@alifazal9` | Verified; display name "ali fazal" |
+| Lovekesh Kataria | `@corrupt_tuber` | Verified; display name "Lovekesh Kataria" |
+| Fukra Insaan | `@fukra_insaan` | Verified; display name "ABHISHEK MALHAN"; the handle **is** the stage name supplied |
+| Purav Jha | `@puravjha` | Verified; display name "Purav Jha" |
+| Sahil Gambhir | `@sahilgambhir_` | Verified; display name "Sahil Gambhir" |
+| Vibhu Varshney | `@dilsepaneer` | Verified; display name "Vibhu Varshney" |
+| Mukesh Jain | `@mj.mukesh.jain` | Verified; display name "MJ Mukesh Jain"; **bio links `youtube.com/@shallunishapodcast`**, which is the organisation the client named |
+| Anubhav Golia | `@anubhav_golia` | Verified; the YouTube channel *"BB Pranks \| Anubhav Golia"* matches the client's `BB Prank` context |
+| Nikita Kumawat | `@iamnikitakumawat` | Verified; display name "Nikita Kumawat (Bullet Rani)"; **its own bio names `@imnikkskumawat` as the personal account**, which resolves §10b's four-account problem |
+| Vishnu Priya | `@vishnupriyaaofficial` | Verified; display name "Vishnu Priya" |
+| Sagar Rathee | `@dr.69___` | Full name "Sagar Rathee Skincare" — **and this project's own media library contains a folder named `Dr 69 - sagar bhai shoot +bts`.** Three things agreeing |
+| Sahida Ansari | `@sahida__ansari` | Verified; the handle matches the client's spelling exactly; national coverage of the same creator |
+| Deepankar | `@deepankarmaxx` | Display name "DEEPANKAR MAXX"; multiple independent trade-press reports name *"Deepankar Koshta (@deepankarmaxx)"* as the creator behind the viral clip |
+
+**Held — the name is published, the link is not.** Each keeps its row in the index; only the profile
+link is absent, which is the rule §18 already applies to unbuilt routes and the suppressed LinkedIn
+icon. `WORKED_WITH_UNVERIFIED` in `config/creators.ts` records the candidates and the blocker for
+each, so the search is not repeated:
+
+| Name | Why held |
+| --- | --- |
+| **Allen Chaudhary** | Two live accounts under the name (`@allen_choudhary`, `@allenchoudhary`) with very different followings, and every public source spells it *Choudhary* rather than the supplied *Chaudhary* |
+| **Manish Jain** | Seven-plus accounts all presenting as "Manish Jain (JJ Communication)", **including pairs differing by a single character** — the signature of copycat accounts. Reported followings between 8K and 37M |
+| **Shubham Kochale** | Five accounts under the name, four of them near-identical numbered variants. No source identifies a primary |
+| **Famous Ram** | `@famous_ram` matches the supplied name exactly and is verified, **but its own display name is "NunnaRamesh"** and the content is Telugu-language. Nothing corroborates that this is the person meant |
+| **Shadab Jakati** | No reliable source establishes a handle — **and a separate finding is recorded below** |
+
+> **A BRAND-SAFETY FINDING THE CLIENT NEEDS TO SEE, raised rather than acted on unilaterally.**
+> National outlets (The Statesman, Free Press Journal, Republic) report that **Shadab Jakati was
+> arrested in 2026 over a reel involving a minor**, following a police complaint, with public calls
+> for action under POCSO. **The name is still published**, because the client confirmed the
+> relationship and removing a confirmed name is the client's call, not this project's. **No profile
+> link is attached.** This is flagged in `WORKED_WITH_UNVERIFIED` and here because the page is about
+> to be used for a brand-outreach campaign, and a partnerships recipient scanning this roster is
+> exactly who would recognise the name. **It is a one-word decision for the client.**
+
+**No metric of any kind was published for anybody.** No follower count, engagement rate, average
+views or third-party statistic reached the site, and none was read off any account for publication.
+`followers` remains empty for the whole roster.
+
+**One organisation spelling was normalised**, on §10s's rule that an organisation is spelled the way
+it spells itself: the client's `Shalu Nisha Podcast` → **`Shallu Nisha Podcast`**, which is what its
+own YouTube channel, site and Instagram carry, and what `@mj.mukesh.jain`'s bio links to.
+
+---
+
+### 6 — FEATURED vs WORKED-WITH — the two layers, now both carrying links
+
+**No new homepage chapter was added.** Everything below happened inside §03, which was the
+instruction.
+
+**Layer one — the featured stage, 5 → 6.** The approved talent index, cascade, selection model and
+media-loading architecture are all untouched (§10b, §10b-scale). Six is inside the 6–8 the brief
+asked for, and **below `MATRIX_MIN` (7), so the roster still renders as one column and the desktop
+composition keeps its approved 4/8 spans exactly.**
+
+```
+01 Ali Fazal          Worked With          @alifazal9
+02 Zoya Jaan          Creator Network      —
+03 Nikita Kumawat     Creator Network      @iamnikitakumawat
+04 Lovekesh Kataria   Creator Network      @corrupt_tuber
+05 Mukul Sharma       Creator Network      —
+06 Vishnu Priya       Creator Network      @vishnupriyaaofficial
+```
+
+**The stage did not become a carousel and does not need to.** Quality over count: the six are the
+relationships with approved local photography, and the index carries the scale.
+
+**Two pieces of copy changed, because they stopped being true.** `Creators we've worked with…`
+became **`Creators, actors and personalities we've worked with…`** — Ali Fazal is an actor, and
+calling him a content creator on a live site would misstate who he is. The roster header
+`SELECTED CREATORS / 05` became **`FEATURED / 06`** for the same reason.
+
+**Layer two — the worked-with index, now with real profile links.** `WorkedWith` gained
+`instagram` and `lead`; the URL is **derived** (`workedWithUrl`) so a handle and its href cannot
+drift apart.
+
+- Each row is a name and, where they exist, a quiet second register carrying the organisation
+  and/or the handle. **Names stay dominant**; handles are 12px, lowercase and untracked —
+  deliberately *not* the site's `.caps` utility, because `@ALIFAZAL9` is not what the account is
+  called. The same correction was applied to the stage's own handle link.
+- **No handle renders as a dead link.** No `href="#"`, no disabled control, no greyed row, no
+  "profile coming soon".
+- **Two lead names — Fukra Insaan and Purav Jha — are set at display scale above the index**, on
+  the same hairline grammar. Both are high-recognition relationships with **no first-party
+  photograph**, so type is the only honest way to give them weight; the alternative would be
+  putting a picture on the page this project cannot source. It is reading emphasis, not a tier —
+  the same editorial device the brand rail's `featured` flag already is. `WORKED_WITH_LEAD` and
+  `WORKED_WITH_INDEX` **partition** the same array, so a lead can never be printed twice or vanish.
+
+**Final counts: 14 names below the stage — 2 leads + 12 index rows — carrying 9 verified profile
+links.** Four keep a row and no link.
+
+---
+
+### 7 — Measured, before and after (1440×900)
+
+| | Revision 17 | Revision 17B |
+| --- | --- | --- |
+| **Homepage** | **17,061px / 18.96 vh** | **16,828px / 18.70 vh** |
+| Current Management | 834 (0.93 vh) | **491 (0.55 vh)** |
+| 03 / Creators | 1,695 | **1,805** |
+| Everything else | unchanged | unchanged |
+| Image nodes | 22 | **21** |
+| Eager images / preloads | 0 / 0 | **0 / 0** |
+| Videos / canvases | 0 / 1 | **0 / 1** |
+| Horizontal overflow | none | **none** |
+
+**−233px, and the arithmetic accounts for all of it:** the management chapter gave up 343px by
+becoming typographic, and §03 took 110px back for the sixth creator's roster row, the lead band and
+the index's second register. **No approved whitespace was reduced anywhere**, and the target was
+≤19 viewports.
+
+Other viewports: **15,792** at 1280×800 · **12,976** at 1024×768 · **15,769** at 768×1024 ·
+**17,208** at 430×932 · **16,931** at 390×844. Every one is shorter than Revision 17's.
+
+**Asset weight: −13KB net.** Two Akash WebPs removed (273KB), a 4KB avatar and two 1000×1333
+featured photographs added (256KB). The image *node* count fell because the management chapter went
+from two photographs to one avatar.
+
+---
+
+### 8 — Visual verification
+
+Real composited screenshots via the §10q headless-Chrome-over-CDP route, at **1440×900, 1280×800,
+1024×768, 768×1024, 430×932 and 390×844**, in both themes and under emulated
+`prefers-reduced-motion`.
+
+- **Zero horizontal overflow at every viewport.** The only elements past the frame are `.collab-*`
+  (the marquee's own clipped track, the documented benign case) and the inquiry form's off-screen
+  honeypot, which is what a honeypot is.
+- **Under reduced motion, every element this revision added computes to `opacity: 1`** — the plate,
+  the lead band, the index, the scale facts and the links were each checked individually rather
+  than inferred from a page-wide count.
+- **The index reads as an index** at three columns, two and one. Rows are **45–47px**, and 74px
+  where a row's name and meta wrap to two lines. Clear of 44 everywhere.
+- **At 390 the handles are readable and no record became a card** — names dominant, handle
+  secondary, exactly one row wrapping.
+- **Both new photographs were art-directed by looking**, then re-checked in the rendered cascade.
+
+**Three defects were found by looking that measurement did not catch**, which is §10q's lesson
+earning its place for the fourth revision running:
+
+1. **The handle printed twice** in Current Management, at the same eye level (§2).
+2. **Ali's 9:16 reel frame bisected one of the two heads** at `position: 50%`. A 9:16 window shows
+   ~43% of a 3:4 source's width, and at 50% its edge landed on a face — which starts to read as
+   isolating one figure, the exact thing the crop must not do. Pulled to 46%.
+3. **Lovekesh's two 16:9 frames on `/services/brand-shoots-content` rendered as a headless torso
+   band.** A 16:9 frame crops a 3:4 source to a 42% vertical band, and at `position: 50%` that band
+   sat entirely below both heads. Fixed on the creator's own `portrait.position` (`50% 14%`) rather
+   than on those frames — **and it changes nothing on the homepage**, where the file and the frame
+   share a 3:4 aspect so there is no overflow for `object-position` to move.
+
+---
+
+### 9 — Dependencies and files
+
+**No dependency was added.** The crops are `sharp` (already a dev dependency), the avatar was
+fetched with `curl`, and the QA harness is Node's global `WebSocket` driving the machine's own
+Chrome — the §10q route, no package installed.
+
+```
+src/config/management.ts          MANAGEMENT_MEDIA → MANAGEMENT_AVATAR; the revocation record
+                                  and the avatar's provenance chain; plateLabel / plateNote
+src/components/management/CurrentManagement.tsx
+                                  Frames() → IdentityPlate(); the duplicated handle removed
+src/config/creators.ts            Ali Fazal added at position 01; Lovekesh's photograph, crops
+                                  and spelling; verified handles on three roster creators;
+                                  WorkedWith.instagram + .lead; workedWithUrl;
+                                  WORKED_WITH_LEAD / WORKED_WITH_INDEX partition;
+                                  WORKED_WITH_UNVERIFIED; lead + rosterLabel copy
+src/components/creators/WorkedWithIndex.tsx
+                                  ProfileLink, the lead band, the row's meta register
+src/components/creators/CreatorMeta.tsx
+                                  the stage's handle link stops being uppercased
+src/app/globals.css               .mgt-frames/.mgt-primary/.mgt-supporting → .mgt-plate et al;
+                                  .wwi-meta, .wwi-link, .wwi-lead*
+docs/MEDIA-ASSET-AUDIT.md         the revocation banner, rule 7, and new §7–§9
+public/media/creators/akash-sagar/akash-sagar-xbhandesiri-avatar.webp   NEW, 150×150, 4KB
+public/media/creators/featured/ali-fazal.webp                           NEW, 1000×1333, 177KB
+public/media/creators/featured/lovekesh-kataria.webp                    NEW, 1000×1333, 79KB
+public/media/creators/akash-sagar/akash-sagar-xbhandesiri-primary.webp  DELETED
+public/media/creators/akash-sagar/akash-sagar-xbhandesiri-secondary.webp DELETED
+```
+
+**Untouched, deliberately:** Recognition, Web & Digital Experiences, the Hero, the brand rail, the
+scale facts, the contact set, and every service page's composition (only the photograph five
+`lovkesh` frames resolve to changed, and each was re-checked).
+
+**Red Bull:** still a prospect, still absent. Verified on the rendered page — zero matches for
+`red bull` in the homepage's text.
+
+---
+
 ## 11. Responsive strategy
 
 | Breakpoint | Behaviour |
@@ -4193,7 +5412,7 @@ src/app/layout.tsx            fonts, metadata, theme boot script, providers, Rou
                               Header + Footer
 src/app/globals.css           tokens, both themes, .caps/.page-x, smooth scroll + anchor offset,
                               hero + collab + service CSS
-src/app/page.tsx              homepage composition — the nine sections, nothing else
+src/app/page.tsx              homepage composition — the sections, nothing else
 src/app/services/social-personal-brand-growth/page.tsx
                               01 / Social & Personal Brand Growth — the first service route
 src/app/services/influencer-marketing/page.tsx
@@ -4208,7 +5427,10 @@ src/config/site.ts            brand, NAV_ITEMS + SECTION_ORDER + TOP_ANCHOR, SOC
 src/config/hero.ts            hero copy, media surfaces, annotations
 src/config/collaborations.ts  public brand rail + brand-safety note
 src/config/services.ts        five services, `built` flags, SERVICE_SCROLL_VH, section copy
-src/config/creators.ts        the roster, per-creator media + crops, publish flag, section copy
+src/config/creators.ts        the roster, per-creator media + crops, publish flag, section copy,
+                              WORKED_WITH + the derived index, CREATOR_SCALE (§10t)
+src/config/management.ts      the Current Management chapter — copy, the evidence chain, the
+                              photography, and the empty verified-metric slot (§10t)
 src/config/process.ts         five process stages, pipeline geometry, paths, section copy
 src/config/work.ts            work items, media typing, crops, the media audit record
 src/config/recognition.ts     recognition items (empty) + the full recognition audit
@@ -4253,12 +5475,13 @@ src/components/inquiry/*      inquiry shell, form, field primitives
 src/components/ui/SocialIcon  the three platform marks, inline SVG
 src/app/api/inquiry/route.ts  server-side inquiry delivery (the only holder of the API key)
 src/components/creators/*     section shell, talent index matrix, photographic stage, meta
-                              block, load-gated transition
+                              block, load-gated transition, worked-with index + scale facts
+src/components/management/*   the Current Management chapter
 src/components/process/*      section shell, pipeline SVG, active-stage detail, vertical rail
 src/components/work/*         section shell, work index, media stage, media surface
 src/components/recognition/*  section shell (self-suppressing), evidence surface
 src/components/testimonials/* Client Notes shell (self-suppressing), quote index, quote stage
-src/components/about/*        agency chapter, discipline system, closing conversion
+src/components/about/*        the About preview chapter + its closing conversion moment
 src/components/service-page/* shared service-page primitives — section shell + head + grid, hero,
                               statement, connected system, scope index, audience rail, process,
                               FAQ, prev/next rail
@@ -4290,7 +5513,14 @@ src/hooks/*                   useMediaQuery (+ useStackedHero, useDesktopSequenc
                               useActiveSection, useHashLanding, useSectionHref
 ```
 
-Assets: `public/media/creators/*.webp` (5 portraits), `public/media/brands/*.png` (5 mask + 5 colour),
+Assets: `public/media/creators/*.webp` (5 portraits — `lovkesh-kataria.webp` is now used by the
+**Hero only**, §10u), `public/media/creators/featured/*.webp` (`ali-fazal.webp`,
+`lovekesh-kataria.webp` — both 1000×1333, user-labelled, §10u),
+`public/media/creators/akash-sagar/akash-sagar-xbhandesiri-avatar.webp` (150×150, the official
+profile picture — **the only image on this site that comes from a live account**, §10u),
+`public/media/brands/*.png` (**18 mask + 18
+colour**, one pair per published brand — §10s; all local, all built from official sources, none
+hotlinked),
 `public/media/recognition/mishram-best-digital-marketing-agency-nufew-2024-25.webp` (850×680, the
 §06 award — cropped from the old deployment's original and stored locally, §10p),
 `public/brand/mishram-wordmark.png` (used as a CSS mask so it inherits `currentColor`). Everything is
@@ -4422,6 +5652,76 @@ immediately after one.** It follows the About page in the current plan.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 17B's decisions (§10u) — awaiting review, then locked.**
+  - **`IMG_2188/2189/2190.jpg` NEVER REPRESENT AKASH SAGAR AGAIN**, in any crop, at any size, on
+    any surface. The user revoked the association; the two WebPs are deleted. Do not "restore" them
+    from the audit, and do not reason from the `AKASH COVER PHOTO` folder name.
+  - **A folder name is not a person, and a client naming *files* is not a client naming *a
+    person*.** This is the correction Revision 17B cost, and it is now rule 7 of the media audit.
+    Revision 17 followed the identity rule correctly and still got it wrong.
+  - **The Akash avatar is 150×150 and is rendered at 72px. Never upscale it**, never blur it into a
+    backdrop, never stretch it into a portrait frame. Instagram serves no larger variant — every
+    other size returns 403. The chapter stays typographic until a Mishram-owned photograph with
+    explicit identity exists.
+  - **Ali Fazal is `Worked With`, not managed.** Never *managed*, *represented*, *signed*,
+    *exclusive* or *under contract*. Exactly one person on this site is described as managed.
+  - **Both new photographs keep both figures in every format.** The user's label establishes that
+    each person is *in* the frame, not which figure they are — isolating one asserts something
+    unverified. This is §10b's existing rule, now applying to three photographs.
+  - **A handle is published only where two independent sources agree** — the client supplying it,
+    and the live official account corroborating the person. **Five names are held and keep their
+    rows with no link**; do not "finish the set" from a name match. `WORKED_WITH_UNVERIFIED` says
+    why for each, so the search is not repeated.
+  - **No metric, ever, for anybody.** Handles are destinations; follower counts, engagement rates
+    and third-party statistics are claims. `followers` stays empty for the entire roster.
+  - **Handles render lowercase and untracked, never through `.caps`.** `@ALIFAZAL9` is not what the
+    account is called.
+  - **`lovkesh-kataria.webp` stays on disk.** The Hero uses it and the Hero is locked. Only the
+    roster's reference moved.
+  - **The lead names in the index are reading emphasis, not a tier.** Do not number them, rank
+    them, or add a third level.
+  - **SHADAB JAKATI CARRIES AN UNRESOLVED BRAND-SAFETY FINDING** (§10u §5) — a 2026 arrest reported
+    by national outlets over a reel involving a minor. The name is published because the client
+    confirmed the relationship; **the decision to keep or remove it is the client's**, and it should
+    be put to them before this page is used for outreach.
+- **Revision 17's decisions (§10t) — awaiting review, then locked.**
+  - **NO FACE IS EVER USED TO IDENTIFY ANYBODY.** Identity comes from an explicit folder name, a
+    filename, existing project metadata or the client's own instruction — otherwise the asset is
+    `IDENTITY UNKNOWN` and stays unpublished, however good the photograph is. This kept most of a
+    210-file library off the site and it is not a bar to lower.
+  - **"Worked with" is not "managed".** §03's index and the Current Management chapter are two
+    different claims, and exactly one person has the second. Do not relabel the index, and do not
+    move somebody between the two without separate confirmation.
+  - **No Xbhandesiri metric without a dated insights capture.** `MANAGEMENT.metrics` renders
+    nothing while empty — that is the design, not an unfinished state. Never populate it from the
+    figures discussed in planning.
+  - **The scale facts stay lower bounds and stay editorial.** `500+` and `1,000+`, never a range,
+    never rounded up, never a KPI card, counter or chart.
+  - **A third-party brand in frame is a brand claim.** zingbus, OPPO and Cream Bell all appear in
+    otherwise usable material and all three keep it unpublished. Same logic as §9's rail.
+  - **The raw library stays outside the repository.** `F:\Drive data` is a source, not an asset
+    folder; HEIC originals are never deleted or overwritten, and conversions go to the staging tree.
+  - **`whatsappNumber` derives from `CONTACT.phone`.** One number, written once. Do not re-split it.
+- **Revision 16's decisions (§10s) — awaiting review, then locked.**
+  - **`built` and `public` are two different questions and must stay apart.** `built` is a fact
+    about the code; `public` is the editorial decision. **Never set `built: false` to hide
+    something that exists**, and never hardcode `if (service.id === "shoots")` — every discovery
+    surface derives from `PUBLIC_SERVICES` / `PUBLIC_SERVICE_PAGES`. Brand Shoots & Content comes
+    back with one boolean, and its `noindex` lifts with it because that is derived too.
+  - **Service 05 keeps its canonical `05`** while hidden, and Web & Digital Experiences is not
+    promoted to close the gap.
+  - **The published phone number and the WhatsApp number are deliberately different** until the
+    client confirms WhatsApp on the new line. Do not "fix" the inconsistency by pointing `wa.me`
+    at an unconfirmed number, and do not print the published number under a WhatsApp label.
+  - **Fun N Earn is never published** (§9). Real-money gaming, confirmed from the product's own
+    terms. The rule does not turn on whether the relationship is genuine.
+  - **VYRL renders nothing until an official logo exists.** No aggregator file, no platform
+    avatar, no recreation.
+  - **The rail's timing stays derived.** Copies-per-track and duration come off the roster, so
+    adding brands can never silently triple the marquee's speed again. A brand's `logoSource` and
+    `source` are development-only and are never rendered.
+  - **`Trusted by`, `Partners` and `Our clients` stay out of the collaborations copy.** *Worked
+    with* is what the project can evidence for every mark on the rail.
 - Header (layout, wordmark, nav, theme toggle placement)
 - Growth Orbit Hero — composition, copy, WebGL architecture, shader, `layout.ts` values, exposure
   tiers, entry sequence, scroll recede
@@ -4524,6 +5824,30 @@ one art-directed system, and so is every service page.
 
 ## 19. Current status & next step
 
+> **READ §10u, §10t AND §10s FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 17B.**
+>
+> **§10u (Revision 17B):** **the Revision 17 Akash Sagar photographs were not him** — the user
+> revoked the association, both production files are deleted, and Current Management is now a
+> typographic chapter built around the **official 150×150 profile picture rendered at 72px**. The
+> featured stage carries **six** people: **Ali Fazal opens it** and **Lovekesh Kataria's imagery was
+> upgraded** from two user-labelled photographs at `F:\Drive data`. The worked-with index carries
+> **nine verified profile links**; **five names are held with no link** and one of them,
+> **Shadab Jakati, carries an unresolved brand-safety finding the client needs to decide on.**
+> The homepage is **16,828px / 18.70 viewports**.
+>
+> **§10t (Revision 17):** the homepage has a new second chapter — **Current Management**, publishing
+> Akash Sagar (`@xbhandesiri_`) — and §03 gained a second layer of scale facts and a worked-with
+> index. **WhatsApp is one number again.** The client's media library lives at `F:Drive data` and
+> the full ledger is `docs/MEDIA-ASSET-AUDIT.md`. **No Xbhandesiri metric is published**, because
+> the library contains no analytics evidence at all.
+>
+> **§10s (Revision 16):** the public contact set is new, the brand rail carries eighteen brands
+> rather than five, **Service 05 / Brand Shoots & Content is hidden from public discovery with its
+> implementation fully intact**, and the homepage About chapter is a preview of `/about`.
+>
+> The homepage is **16,828px / 18.70 viewports** at 1440×900 (§10u; it was 17,061 / 18.96 after
+> Revision 17).
+
 **Done and approved (locked, see §18):** design system, both themes, Header, Growth Orbit Hero,
 Selected Collaborations, **02 / What We Do**, **03 / Creators**.
 
@@ -4543,11 +5867,14 @@ the development spacer after About is gone and there is no blank area below the 
 **The site now has a second page type.** `/services/social-personal-brand-growth` is built on the
 shared service-page architecture in §10j, and the homepage's Service 01 links to it.
 
-**Four service pages now exist** — §10l, §10m and §10n. Each shipped on the shared system and lit
-the Header menu, the mobile menu, the homepage `Explore service ↗`, the Footer Services directory
-and prev/next on every built page **with no component edit at all**. **Service 04 is deliberately
-deferred (§10o)**, so the built sequence is `01 → 02 → 03 → 05` and Service 05 keeps its canonical
-index. `/services/web-digital-experiences` returns 404 and nothing links to it.
+**Four service pages exist; three are public.** §10l, §10m and §10n. Each shipped on the shared
+system and lit the Header menu, the mobile menu, the homepage `Explore service ↗`, the Footer
+Services directory and prev/next **with no component edit at all** — and Revision 16 took one of
+them back off all of those surfaces the same way, with one boolean (§10s §5). **Service 04 is
+deliberately deferred (§10o)** and `/services/web-digital-experiences` returns 404 with nothing
+linking to it; **Service 05 is built and deliberately hidden**, its route reachable by direct URL
+and carrying `noindex, nofollow`. The public sequence is `01 → 02 → 03`, and every service keeps
+its canonical index.
 
 **The shared system has now carried four genuinely different stories** (§10j, §10l, §10m, §10n):
 one identity outward into a system; many voices inward onto one campaign; a loop that travels and
@@ -4712,6 +6039,84 @@ Four targeted corrections after reviewing the whole page. Nothing was redesigned
    interlude's axis carries the gap, so the mostly-empty viewport between the two chapters is gone
    without losing the whitespace.
 
+### Revision 17
+
+**Creator credibility + media integration** — §10t. The revision where the site stopped being
+blocked on client-supplied material. The client supplied a **local media library** (`F:\Drive data`,
+210 files) and two confirmations, and four standing blockers closed.
+
+**Akash Sagar (`@xbhandesiri_`) is published**, in a dedicated **Current Management** chapter
+placed **second on the page**, directly after the brand rail — not as creator #06. Unnumbered, one
+dominant portrait and one supporting crop, the name as the headline, one sentence, one quiet
+`View Instagram ↗`. **834px / 0.93 viewports.** No metric appears on it, and `MANAGEMENT.metrics`
+is an empty array that renders nothing: **the entire library was searched and contains zero
+analytics screenshots**, so every figure discussed for that section stays unpublished.
+
+**HEIC conversion came first, as instructed.** All 13 HEIC/HEIF files converted at quality 92 with
+metadata stripped, originals untouched, staged in a mirrored tree. Neither Sharp (libheif rejects
+iPhone grid HEICs on an iref security limit) nor the available ffmpeg (returns one 512×512 tile)
+can do it — **Windows Imaging Component can**, with no dependency added.
+
+**§03 became two layers.** The image-backed stage is untouched; beneath it sit **two scale facts**
+— 500+ creators worked with, 1,000+ promotional videos, published as the lower bounds they were
+given as — and a **worked-with index** of fifteen further confirmed names as type. Three of the
+client's eighteen are filtered out by derivation because they are already on the stage. **"Worked
+with" is load-bearing**: management is a bigger claim and exactly one person has it.
+
+**WhatsApp is one number again** — the client confirmed `+91 95482 78558`, so `whatsappNumber`
+derives from `CONTACT.phone` and the previous number is gone from production. Two Revision 16
+hedges were reverted, the legal sentence among them.
+
+**Influencer Marketing gained Creator Outreach and Negotiation**, both now client-confirmed;
+contracts, rate cards, exclusivity and payments stay out.
+
+**No video was added to Selected Work**, and not for want of one: the library holds a finished 9:16
+Mishram reel, held on three independent grounds including burnt-in captions naming two employees
+and a third-party brand banner throughout. **Identity discipline is what shaped the whole
+revision** — no face was used to identify anybody, and it kept a great deal of good photography
+unpublished.
+
+Measured **15,671 → 17,061px, 17.41 → 18.96 viewports**, with the growth absorbed inside §03 rather
+than taken from the rest of the page. **No dependency added.**
+
+### Revision 16
+
+**Current proof / outreach preparation** — §10s. The first revision aimed at a specific
+commercial use of the site: a high-value creator and brand outreach campaign whose recipient will
+open the page cold. **Nothing was redesigned** — every change is data, one derived flag, or copy.
+
+**The public contact set was replaced** with `info@mishram.media`, `+91 95482 78558` and
+`@filmybande`, and **LinkedIn went live** on the client's supplied profile URL — the row §10k
+built as present-but-unlinked became a real link with **zero component edits**. The WhatsApp deep
+link deliberately still uses the previous number, because nothing confirms the new line is on
+WhatsApp; two surfaces that printed the published number under a WhatsApp label were corrected
+rather than left approximately true, the legal pages among them.
+
+**The brand rail went from five names to eighteen**, all client-confirmed, with a `priority` flag
+so twelve featured marks lead and the rest of the roster follows through the same rail. Fourteen
+new logos were sourced from official brand packs, official sites and official CDNs — **149KB
+across 26 local files, nothing hotlinked** — and four marks whose alpha is a solid slab got an
+ink-derived mask so they are actually identifiable at 29px. **The marquee's timing had to become
+derived**: at eighteen brands the approved 46 seconds would have run the rail at three times its
+approved speed.
+
+**`Fun N Earn` was withheld under §9.** It is a real-money cash-contest app, confirmed from its
+own terms. The rule was not weakened, and no exception was made for a genuine relationship.
+**VYRL is configured and unrendered** — no official logo exists anywhere to download.
+
+**Service 05 / Brand Shoots & Content was hidden**, and the mechanism is the reusable part:
+`built` (the code exists) and `public` (the editorial decision) are now two separate flags, so a
+finished service can come off six discovery surfaces without deleting anything. The pinned track
+shortened by exactly one slot, the progress rail reads `01 … 04`, canonical numbering is
+untouched, and the route carries a **derived** `noindex, nofollow`.
+
+**The homepage About chapter became a preview** — 1,468 → **718px**, since `/about` now tells that
+story properly. The homepage is **17,591 → 15,671px, −10.9%**, and the reduction is one service
+scene plus the About preview rather than whitespace taken from the whole site.
+
+**Held for the next task, deliberately:** the fifteen-name creator roster, the Xbhandesiri
+metrics, and Red Bull, which is a prospect and not a client. **No dependency added.**
+
 ### Revision 15
 
 **The dedicated About page** — §10r. `/about` is built: the site's **fifth page type**, ninth public
@@ -4787,9 +6192,36 @@ non-profit arm, WOW Skin Science and the negotiation scope row.
 
 Measured **16,122 → 17,612px**; Recognition 1,309; About 1,223 → 1,403 (1.56 viewports).
 
-### Four open items, all blocked on client-supplied material
+### Open items, all blocked on client-supplied material
 
-Each is recorded rather than guessed, and each is a config change away from working:
+Each is recorded rather than guessed, and each is a config change away from working.
+
+**Added in Revision 16 (§10s), and both are one line:**
+
+- **Is `+91 95482 78558` on WhatsApp?** Until that is confirmed, `whatsappNumber` in
+  `config/site.ts` stays on the previous number — the one the business is known to answer on — and
+  the site publishes exactly one phone number as text. **Confirm it and change that one constant;**
+  every WhatsApp action on the site follows. Do not point `wa.me` at an unconfirmed number.
+- **An official VYRL logo.** The relationship is confirmed and the config entry is written with
+  `visible: false`. There is no official file anywhere to download — no live site, no press page,
+  nothing on Wikimedia or Wikipedia. **Supply an SVG or a transparent PNG and flip one boolean.**
+
+**Added in Revision 17 (§10t), and both are narrower than what they replaced:**
+
+- **Analytics evidence for the Xbhandesiri chapter.** The whole media library was searched and
+  contains **no analytics screenshot, insights export or dashboard capture of any kind**, so every
+  figure discussed for that section is unpublished. `MANAGEMENT.metrics` is an empty array that
+  renders nothing. **The unblock is a dated capture of the account's own insights**, tied
+  unambiguously to `@xbhandesiri_`; one config entry each, with `source` naming the screenshot.
+- **A publishable Mishram reel.** The library *does* contain a finished 9:16 Mishram reel, so §05's
+  blocker is no longer "no local file" — it is that this particular file is internal office humour,
+  names two employees as a couple in burnt-in captions, and carries a third-party brand banner
+  throughout (§10t §8). **The ask is a creator or campaign piece cleared for publication.**
+
+**Both Revision 16 deferrals are now resolved:** the creator roster shipped as a worked-with index
+(§10t §6) and the Xbhandesiri chapter is live without metrics.
+
+**The standing four:**
 
 1. **No creator follower data.** §03's `followers` and `instagram` fields are empty for all five
    creators. §10b lists the candidate handles found and why each was rejected. The client can
@@ -4809,9 +6241,10 @@ Each is recorded rather than guessed, and each is a config change away from work
    job titles, and a page praising the template's own agency. Client Notes renders nothing rather
    than publishing an unverified claim about a named real person. **Two genuine testimonials switch
    it on**, and they must be new first-party material — **not a reappraisal of this set.**
-5. **No usable photograph of Akash Sagar (`@xbhandesiri_`).** The relationship is verified and the
-   config entry is written; the official profile exposes only a 150×150 avatar. **Supply a portrait
-   and flip `published` to `true`** — §10p.
+5. ~~No usable photograph of Akash Sagar (`@xbhandesiri_`).~~ **CLOSED IN REVISION 17 (§10t).** The
+   client's media library supplied approved, identified photography and he is published in his own
+   **Current Management** chapter. He stays `published: false` on §03's roster deliberately — that
+   is a worked-with list, and management has its own chapter.
 
 **Not built yet:** one service route — `/services/web-digital-experiences`, **deferred on purpose**
 (§10o, required scope in §10) — plus case studies and work detail routes. It returns 404 and is
@@ -4876,6 +6309,44 @@ edit, and a dead link is not reachable.
 
 ### Exact next step
 
+## **FINAL PRODUCTION QA, THEN DEPLOYMENT.**
+
+Revision 17 closed the creator-proof work the last two revisions were waiting on. Nothing on the
+homepage is now blocked on client material, and the remaining items are all *additive* — each is a
+config change against evidence that does not exist yet, not a build:
+
+- **Xbhandesiri metrics** — waiting on a dated insights capture. Architecture is in place and
+  renders nothing until it is filled (§10t §5).
+- **A publishable Mishram reel** — §05's blocker is now specific rather than general (§10t §8).
+- **Creator handles** — **largely cleared in §10u.** Nine render in the index and three on the
+  stage. **Five are held** and close with one message from the client: Allen Chaudhary, Manish Jain,
+  Shubham Kochale, Famous Ram, Shadab Jakati. **Follower labels stay out permanently** — that is a
+  decision, not a blocker.
+- **A Mishram-owned photograph of Akash Sagar** — the one that reopened in §10u. Current Management
+  is typographic until it lands, and *"the client confirms this photograph is him"* is now the bar.
+- **A decision on Shadab Jakati** (§10u §5) — a brand-safety finding the client has to rule on.
+- **An official VYRL logo** — unchanged since §10s.
+
+**Two findings recorded for a scoped revision, both from Revision 17's media audit:**
+
+1. **§06 Recognition could be upgraded to genuine photography.** The library holds **five
+   first-party 3024×4032 photographs of the NUFEW award presentation** — the section currently
+   renders a 775×581 crop of a *promotional banner* that §10q already had to re-crop once because
+   it read as an advertisement. Deliberately not acted on here: Recognition is locked (§18) and
+   this was a creator-proof revision. **All of §10p's constraints would carry over unchanged** —
+   the plaque is still illegible at full resolution, so no new claim can be made, `NUFEW` stays
+   unexpanded, nobody in frame is named, no gold is added. See `docs/MEDIA-ASSET-AUDIT.md` §B.
+2. **Genuine production BTS exists** — a crew with a gimbal rig, a lapel mic being fitted on
+   location — and is unusable only because nobody in it can be named. If the client identifies the
+   people, it becomes strong evidence for §05 or a BTS beat.
+
+**Red Bull remains a prospect and is not represented as a client anywhere.**
+
+**Then: deployment.** Types, lint and the production build are clean, all eleven routes prerender,
+and Revision 17's visual review is done at six viewports in both themes and under reduced motion.
+
+**After that:**
+
 ## **DEEP WEB & DIGITAL EXPERIENCES DISCOVERY — before any code.**
 
 `/services/web-digital-experiences` is the last unbuilt service route and **the
@@ -4937,14 +6408,20 @@ deferred deliberately, it is not next, and it should not be built inside another
 
 1. **Genuine Mishram Media reel *files*** (§10d, §10p) — the reels exist publicly; the source MP4s
    have not been supplied here. §05 shows stills honestly typed as posters.
-2. **A portrait of Akash Sagar** (§10p) — everything else about him is verified and configured.
-3. **Verified creator handles and follower counts** (§10b) — the fields render the moment they land.
-   `@xbhandesiri_` is the first verified handle and already renders as a real link when published.
+2. **A photograph of Akash Sagar** (§10p) — **reopened in Revision 17B**: what Revision 17 published
+   was not him. Everything else about him is verified and configured, and the chapter is a complete
+   typographic treatment in the meantime. **The bar is now the client confirming a specific
+   photograph**, not a folder name (§10u §2).
+3. ~~Verified creator handles~~ — **LARGELY CLEARED in Revision 17B (§10u §5).** Fourteen profiles
+   verified against their own live accounts; nine render in the index, three on the stage, and
+   `@xbhandesiri_` in Current Management. **Five are held** — Allen Chaudhary, Manish Jain, Shubham
+   Kochale, Famous Ram, Shadab Jakati — each with the blocker written down in
+   `WORKED_WITH_UNVERIFIED`. **Follower counts are not a blocker; they are permanently out.**
 4. **Real client testimonials** (§10d-notes) — Client Notes is built and renders nothing. Must be
    **new** first-party material; the old set is closed.
 5. ~~Genuine award evidence~~ — **CLEARED in Revision 13 (§10p).**
-6. **A LinkedIn profile URL** (§10g, §10k) — the row is already rendered in Footer V2, present but
-   not clickable. Filling `SOCIAL_URLS.linkedin` in turns it into a real link with no code change.
+6. ~~A LinkedIn profile URL~~ — **CLEARED in Revision 16 (§10s).** The client supplied it, filling
+   `SOCIAL_URLS.linkedin` turned the row into a real link, and no component was edited.
 7. **`NEXT_PUBLIC_BOOKING_URL`** and the three inquiry-delivery variables in `.env.example` (§10h)
    are all still unset.
 

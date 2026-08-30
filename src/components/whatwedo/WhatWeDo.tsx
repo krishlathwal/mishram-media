@@ -11,7 +11,7 @@ import {
 } from "motion/react";
 
 import {
-  BUILT_SERVICES,
+  PUBLIC_SERVICES,
   SERVICE_SCROLL_VH,
   WHAT_WE_DO_COPY,
   type Service,
@@ -34,9 +34,12 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * no wheel interception, no snapping, no scroll library. Scroll position only
  * drives transforms.
  *
- * The track is sized from the number of *built* services, so the length of the
- * sequence is a property of the config rather than of this component. Service
- * 05 is the last one; the chapter then resolves into WhatWeDoClosing.
+ * The track is sized from the number of services on **public discovery**, so
+ * the length of the sequence is a property of the config rather than of this
+ * component. Revision 16 took Service 05 off public discovery and the pinned
+ * span shortened by one slot on its own — no empty scroll, no blank slot, no
+ * transition left hanging, and no component edit. The chapter then resolves
+ * into WhatWeDoClosing exactly as before.
  */
 export function WhatWeDo() {
   const pinned = useDesktopSequence();
@@ -164,7 +167,7 @@ function DesktopSequence() {
     offset: ["start start", "end end"],
   });
 
-  const count = BUILT_SERVICES.length;
+  const count = PUBLIC_SERVICES.length;
 
   return (
     <div
@@ -180,7 +183,7 @@ function DesktopSequence() {
             <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 
             <div className="relative mt-7 h-[22rem]">
-              {BUILT_SERVICES.map((s, i) => (
+              {PUBLIC_SERVICES.map((s, i) => (
                 <SlotCopy
                   key={s.id}
                   service={s}
@@ -198,7 +201,7 @@ function DesktopSequence() {
 
           {/* Right: one stage, every scene stacked on it. */}
           <div className="relative col-span-8 h-full py-6">
-            {BUILT_SERVICES.map((s, i) => (
+            {PUBLIC_SERVICES.map((s, i) => (
               <SlotStage
                 key={s.id}
                 service={s}
@@ -269,7 +272,7 @@ function StackedSequence() {
       <SectionLabel />
       <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 
-      {BUILT_SERVICES.map((s, i) => (
+      {PUBLIC_SERVICES.map((s, i) => (
         <StackedService key={s.id} service={s} first={i === 0} />
       ))}
 

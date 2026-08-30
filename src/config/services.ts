@@ -1,9 +1,15 @@
 /**
  * 02 / WHAT WE DO
  *
- * Five service states share one sticky stage. Track height, progress fill and
- * per-service slot mapping all derive from `built`, so the length of the
- * sequence is a property of the data rather than of the scroll code.
+ * The service states share one sticky stage. Track height, progress fill and
+ * per-service slot mapping all derive from `PUBLIC_SERVICES`, so the length of
+ * the sequence is a property of the data rather than of the scroll code —
+ * hiding a service shortens the pinned scroll correctly with no change to the
+ * scroll architecture.
+ *
+ * Two independent flags decide whether a service reaches the page, and keeping
+ * them apart is the point: `built` records that the implementation exists,
+ * `public` records the editorial decision to show it. See the type below.
  */
 
 export type ServiceId =
@@ -20,8 +26,29 @@ export type Service = {
   title: readonly string[];
   description: string;
   capabilities: readonly string[];
-  /** False until that service's scene exists. Nothing renders for it. */
+  /**
+   * Whether the implementation exists — the homepage scene, and (mirrored in
+   * `config/service-pages.ts`) the dedicated route. **This is a fact about the
+   * code, never an editorial decision.** Do not set it `false` to hide
+   * something that is built; that is what `public` is for.
+   */
   built: boolean;
+  /**
+   * Whether the service appears in public discovery — the homepage `What We
+   * Do` sequence, the header and mobile services menus, the footer's services
+   * directory, service-page prev/next, and the `/about` capability index's
+   * link.
+   *
+   * **Separate from `built` on purpose.** A service can be finished and still
+   * be held back, and conflating the two would mean deleting working code to
+   * take something off the site. Everything derives from this flag, so hiding
+   * a service is one boolean here rather than an
+   * `if (service.id !== "shoots")` scattered through the components.
+   *
+   * A hidden service's route stays reachable by direct URL and carries
+   * `robots: noindex, nofollow` for as long as it is hidden.
+   */
+  public: boolean;
 };
 
 export const SERVICES: readonly Service[] = [
@@ -38,6 +65,7 @@ export const SERVICES: readonly Service[] = [
       "Creator Growth",
     ],
     built: true,
+    public: true,
   },
   {
     id: "influencer",
@@ -52,6 +80,7 @@ export const SERVICES: readonly Service[] = [
       "Distribution",
     ],
     built: true,
+    public: true,
   },
   {
     id: "performance",
@@ -66,6 +95,7 @@ export const SERVICES: readonly Service[] = [
       "Conversion",
     ],
     built: true,
+    public: true,
   },
   {
     id: "web",
@@ -85,6 +115,7 @@ export const SERVICES: readonly Service[] = [
       "CRM Systems",
     ],
     built: true,
+    public: true,
   },
   {
     id: "shoots",
@@ -99,10 +130,38 @@ export const SERVICES: readonly Service[] = [
       "Creative Production",
     ],
     built: true,
+    /**
+     * **HIDDEN AT THE CLIENT'S REQUEST — Revision 16. Not unfinished.**
+     *
+     * The homepage scene, the `/services/brand-shoots-content` route and every
+     * composition on it are complete and untouched (§10n). The client wants
+     * the discipline off public discovery while the site is used for a
+     * creator and brand outreach campaign, so it is hidden rather than
+     * removed: nothing was deleted, no scene was unregistered, and flipping
+     * this one boolean back puts the whole service — homepage chapter, menus,
+     * footer row, prev/next, `Explore service ↗` and search indexing —
+     * exactly where it was.
+     *
+     * **The index stays `05`.** Numbering belongs to the five-service system,
+     * not to what happens to be visible this month, so Web & Digital
+     * Experiences is still `04` and is not promoted to close the gap.
+     */
+    public: false,
   },
 ];
 
+/** Every service whose implementation exists, visible or not. */
 export const BUILT_SERVICES = SERVICES.filter((s) => s.built);
+
+/**
+ * The services the public site presents — what `02 / What We Do` runs through,
+ * and the set every discovery surface derives from.
+ *
+ * `built` is about the code, `public` is the editorial decision, and a service
+ * has to clear both. Today that is 01–04: Service 05 is finished and hidden
+ * (see its note above).
+ */
+export const PUBLIC_SERVICES = SERVICES.filter((s) => s.built && s.public);
 
 /** Scroll distance, in vh, that each built service is pinned for. */
 export const SERVICE_SCROLL_VH = 130;

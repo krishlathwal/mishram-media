@@ -44,12 +44,48 @@ export const ABOUT_COPY = {
   headline: ["Creative thinking,", "built for growth."],
   /** Rendered in the serif italic accent, matching the sections above. */
   accentWord: "growth.",
+  /**
+   * ONE PARAGRAPH, AND THAT IS THE WHOLE CHAPTER — Revision 16.
+   *
+   * This used to be two paragraphs, a verbatim emphasis line, the `INDIA`
+   * locator, the four-discipline system drawing and a three-moment history
+   * band: **1,468px, 1.63 viewports** of storytelling on a page that now has a
+   * dedicated `/about` telling the same story at proper length. The homepage
+   * chapter was answering a question the visitor had not asked yet, twice.
+   *
+   * What survives is a preview: the headline, one sentence of positioning, one
+   * sentence of provenance, and the route into the long form. **Nothing was
+   * lost from the site** — the second paragraph's argument is what the Mishram
+   * Difference interlude makes on this page (§10a), and the emphasis line, the
+   * locator, the disciplines and the full 2021 / 2023 / 2025 chronology are all
+   * on `/about` (§10r).
+   *
+   * The claim is unchanged, only shorter: same positioning, same capability
+   * list, same §1 wording.
+   */
   body: [
-    "Mishram Media is a creative growth and digital agency. We work with businesses, brands and established Indian creators — across social, influencer marketing, performance, brand shoots and the digital experiences that hold it all together.",
-    "We keep those disciplines together because growth doesn't happen in isolated channels. A campaign needs creative worth watching, creators with real audiences, media that reaches the right people, and a destination built to convert. Split across separate suppliers, the handoffs are where results get lost.",
+    "Mishram Media is a creative growth and digital agency working with brands, businesses and established Indian creators — social, influencer marketing, performance and digital experiences.",
   ],
-  /** Verbatim from Mishram's own schema.org description. */
+  /**
+   * The one concise historical sentence the preview keeps.
+   *
+   * Same evidence as `HISTORY` below — the 2021 founding name and the 2025
+   * rebrand, verbatim-traceable to Mishram's own about page. **The dated band
+   * itself belongs on `/about` now**, where the chronology has room to land in
+   * what it taught the practice rather than reading as trivia.
+   */
+  historyPreview:
+    "It began in 2021 as Starcrown Media, an influencer marketing practice, and became Mishram.Media in 2025 as the disciplines grew.",
+  /**
+   * Verbatim from Mishram's own schema.org description.
+   *
+   * **No longer rendered on the homepage** — it is `/about`'s opening claim
+   * (`config/about-page.ts`), and one verbatim positioning line on two surfaces
+   * is one too many. Kept here as the provenance record and because it is the
+   * strongest single sentence the project owns.
+   */
   emphasis: "Founded to help brands grow through ideas and measurable impact.",
+  /** The public locator. Now carried by the Footer and `/about` (§10f). */
   locator: "India",
   /** The closing conversion moment. */
   closing: ["Let's build something", "worth paying attention to."],
@@ -89,8 +125,16 @@ export const DISCIPLINES = [
 ] as const;
 
 /**
- * THREE DATED MOMENTS — a baseline under the chapter, not a timeline section.
+ * THREE DATED MOMENTS — the evidence ledger behind `historyPreview`.
  *
+ * **NOT RENDERED ON THE HOMEPAGE SINCE REVISION 16.** The band shipped in
+ * Revision 13, before `/about` existed; now that it does, the full chronology
+ * is that page's origin chapter and the homepage carries the one-sentence
+ * version above. This constant stays as the source of record for both — the
+ * verbatim sentence below is what either surface has to be checked against,
+ * and it is the only place that sentence is written down in this repo.
+ *
+
  * SOURCE, and it is a single sentence rather than four scattered claims. The
  * old site's `about.html` reads, word for word:
  *

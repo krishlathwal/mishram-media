@@ -35,11 +35,21 @@ const PRESELECTED_SERVICES = [PAGE.inquiryServiceId];
 /**
  * The layout's title template appends the brand, so `title` is the service
  * alone. Positioning only — **no ranking, no superlative, no guarantee** (§1).
+ *
+ * **`robots` is derived, not typed in.** While the service is off public
+ * discovery (`public: false` in `config/services.ts`) nothing on the site
+ * links here, so the page must not be indexed either — a route that is
+ * deliberately hidden should not arrive through search. `noindex, nofollow`
+ * lifts by itself the moment that flag goes back to `true`, which is what
+ * stops it being left behind on a page that is public again.
  */
 export const metadata: Metadata = {
   title: PAGE.metadata?.title,
   description: PAGE.metadata?.description,
   alternates: { canonical: PAGE.path },
+  robots: PAGE.service.public
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
   openGraph: {
     title: `${PAGE.metadata?.title} — ${BRAND.name}`,
     description: PAGE.metadata?.description,
@@ -52,6 +62,23 @@ export const metadata: Metadata = {
 
 /**
  * 05 / BRAND SHOOTS & CONTENT
+ *
+ * ─────────────────────────────────────────────────────────────────────────
+ * **HIDDEN FROM PUBLIC DISCOVERY — Revision 16. THE PAGE IS NOT DELETED AND
+ * NOT DEPRECATED.**
+ *
+ * Everything below this notice is untouched and still works. The client asked
+ * for the discipline to come off the public site during a creator and brand
+ * outreach campaign, so `public: false` in `config/services.ts` takes it out
+ * of the homepage `What We Do` sequence, both services menus, the footer's
+ * services directory, prev/next and the `/about` capability link — and adds
+ * the `noindex, nofollow` above. The route still resolves by direct URL, on
+ * purpose, so nothing here has to be re-verified before it comes back.
+ *
+ * **Restoring it is one boolean.** Do not "clean up" this page, do not remove
+ * its scene from the `SCENES` map in `whatwedo/ServiceStage.tsx`, and do not
+ * renumber Service 04 to close the gap.
+ * ─────────────────────────────────────────────────────────────────────────
  *
  * The fourth service page built, and it keeps its canonical index — **05, not
  * 04.** Service 04 / Web & Digital Experiences is deliberately deferred for a

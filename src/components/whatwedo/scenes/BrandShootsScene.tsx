@@ -211,7 +211,7 @@ export function BrandShootsScene({ m }: { m: StageMotion }) {
           alt={
             s.detail
               ? "Editorial still of creator Vishnu Priya from Mishram Media's content work"
-              : "Landscape frame of creator Lovkesh Kataria from Mishram Media's content work"
+              : "Landscape frame of creator Lovekesh Kataria from Mishram Media's content work"
           }
           sizes="(max-width: 1023px) 32vw, 18vw"
         />
@@ -244,7 +244,7 @@ export function BrandShootsScene({ m }: { m: StageMotion }) {
         <Surface m={m} spec={s.detail} className="svc-frame">
           <Photo
             src="/media/creators/lovkesh-kataria.webp"
-            alt="Landscape frame of creator Lovkesh Kataria from Mishram Media's content work"
+            alt="Landscape frame of creator Lovekesh Kataria from Mishram Media's content work"
             sizes="20vw"
           />
           <FrameTag>Detail / 16:9</FrameTag>

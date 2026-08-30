@@ -13,6 +13,7 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { CreatorIndex, MATRIX_MIN } from "./CreatorIndex";
 import { CreatorMeta } from "./CreatorMeta";
 import { CreatorStage } from "./CreatorStage";
+import { WorkedWithIndex } from "./WorkedWithIndex";
 import { useCreatorTransition } from "./useCreatorTransition";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -101,7 +102,12 @@ export function Creators() {
     >
       <Grid />
 
-      <div className="page-x relative pt-20 pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
+      {/* One step tighter than the chapter used to run. Revision 17 added the
+          scale facts and the worked-with index below the stage, and the
+          instruction was to absorb that inside this chapter rather than let
+          the page grow — so the approach and the run-out give up a step each
+          while the composition itself is untouched. */}
+      <div className="page-x relative pt-20 pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         <Intro />
 
         {/* The chapter rule the roster hangs from. */}
@@ -184,6 +190,11 @@ export function Creators() {
             </div>
           )}
         </motion.div>
+
+        {/* The second layer: the network's scale, and the confirmed
+            relationships the project has no approved photograph for. Type
+            rather than portraits — see the note at `WORKED_WITH`. */}
+        <WorkedWithIndex />
       </div>
     </section>
   );

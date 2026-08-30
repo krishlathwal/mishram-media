@@ -59,7 +59,7 @@ export type WorkItem = {
 /**
  * Three entries, not five: these are the sources that are natively 9:16
  * (620×1102), so the primary frame crops nothing. Vishnu Priya's 4:5 and
- * Lovkesh Kataria's 1:1 would both crop hard into a vertical frame, so they are
+ * Lovekesh Kataria's 1:1 would both crop hard into a vertical frame, so they are
  * held back rather than forced — an art-direction reason, not an oversight.
  *
  * `zoya` is the featured state: the strongest subject separation and the only

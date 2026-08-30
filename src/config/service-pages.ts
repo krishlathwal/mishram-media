@@ -113,10 +113,35 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
 ];
 
-/** Only the routes that exist. The only list anything may link from. */
+/**
+ * Only the routes that exist. Use it where the question is "does this page
+ * exist" — the route transition's marker, for instance, which has to name a
+ * destination a visitor reached by direct URL.
+ *
+ * **It is not the list to link from.** See `PUBLIC_SERVICE_PAGES`.
+ */
 export const BUILT_SERVICE_PAGES: readonly ServicePage[] = SERVICE_PAGES.filter(
   (p) => p.built,
 );
+
+/** True while the service behind a route is on public discovery. */
+function isPublicService(serviceId: ServiceId): boolean {
+  return SERVICES.find((s) => s.id === serviceId)?.public === true;
+}
+
+/**
+ * **The only list anything may link from.**
+ *
+ * A route has to exist *and* its service has to be public. Menus, the footer
+ * directory, `Explore service ↗` and prev/next all read this, so hiding a
+ * service takes its page off every discovery surface at once — with no
+ * component edit and no `if (id === …)` anywhere (`config/services.ts`).
+ *
+ * The route itself keeps working by direct URL, deliberately: nothing is
+ * deleted, and the page carries `noindex, nofollow` while it is hidden.
+ */
+export const PUBLIC_SERVICE_PAGES: readonly ServicePage[] =
+  BUILT_SERVICE_PAGES.filter((p) => isPublicService(p.serviceId));
 
 /** The one path segment every service route lives under. */
 export const SERVICES_PATH = "/services";
@@ -162,7 +187,7 @@ export const SERVICE_PARENT = {
  * navigation layer starts to drift.
  */
 export function servicePageHrefFor(serviceId: ServiceId): string | undefined {
-  const page = SERVICE_PAGES.find((p) => p.serviceId === serviceId && p.built);
+  const page = PUBLIC_SERVICE_PAGES.find((p) => p.serviceId === serviceId);
   return page ? servicePagePath(page.slug) : undefined;
 }
 
@@ -201,21 +226,24 @@ export function resolveServicePage(slug: string): ResolvedServicePage {
  * The built pages either side of this one, for an optional prev/next rail at
  * the foot of a service page.
  *
- * **Derived from `BUILT_SERVICE_PAGES`, so it returns `null` for a neighbour
- * whose route does not exist.** Today exactly one page is built and both are
- * `null`, which is why the rail renders nothing at all rather than a lonely
- * link or a disabled control.
+ * **Derived from `PUBLIC_SERVICE_PAGES`, so it returns `null` for a neighbour
+ * whose route does not exist or whose service is hidden**, and the rail
+ * renders nothing at all rather than a lonely link or a disabled control.
+ *
+ * A hidden page is not in that list, so it finds no index and gets no rail of
+ * its own either — which is correct: a page that is off public discovery
+ * should not offer a way further into the site's service sequence.
  */
 export function adjacentServicePages(slug: string): {
   previous: ResolvedServicePage | null;
   next: ResolvedServicePage | null;
 } {
-  const i = BUILT_SERVICE_PAGES.findIndex((p) => p.slug === slug);
+  const i = PUBLIC_SERVICE_PAGES.findIndex((p) => p.slug === slug);
   if (i === -1) return { previous: null, next: null };
 
   const at = (n: number) =>
-    n >= 0 && n < BUILT_SERVICE_PAGES.length
-      ? resolveServicePage(BUILT_SERVICE_PAGES[n].slug)
+    n >= 0 && n < PUBLIC_SERVICE_PAGES.length
+      ? resolveServicePage(PUBLIC_SERVICE_PAGES[n].slug)
       : null;
 
   return { previous: at(i - 1), next: at(i + 1) };

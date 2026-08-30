@@ -10,7 +10,7 @@ import { Wordmark } from "@/components/ui/Wordmark";
 import { FOOTER_COPY, FOOTER_EQUATION } from "@/config/footer";
 import { LEGAL_LINKS } from "@/config/legal";
 import {
-  BUILT_SERVICE_PAGES,
+  PUBLIC_SERVICE_PAGES,
   resolveServicePage,
   servicePagePath,
 } from "@/config/service-pages";
@@ -57,7 +57,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  */
 export function Footer() {
   const hrefFor = useSectionHref();
-  const services = BUILT_SERVICE_PAGES.map((page) => resolveServicePage(page.slug));
+  const services = PUBLIC_SERVICE_PAGES.map((page) => resolveServicePage(page.slug));
 
   // Resolves when the page is built. A static homepage has no request to read a
   // clock from, and a client-side year would trade that for a hydration

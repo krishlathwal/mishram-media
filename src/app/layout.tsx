@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import { MotionConfig } from "motion/react";
 
-import { BRAND } from "@/config/site";
+import { BRAND, SITE_URL } from "@/config/site";
 import { ContactPanel } from "@/components/contact/ContactPanel";
 import { ContactProvider } from "@/components/contact/ContactProvider";
 import { Footer } from "@/components/Footer";
@@ -36,6 +36,15 @@ const accent = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  /**
+   * THE PRODUCTION ORIGIN, and every page inherits it.
+   *
+   * Each route writes `alternates.canonical` and `openGraph.url` as a **path**
+   * (`/about`, `/services/…`); Next resolves them against this. Without it the
+   * fallback is the deployment's own hostname, so a Vercel preview would
+   * publish canonicals pointing at itself. One constant, in `config/site.ts`.
+   */
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${BRAND.name} — Creative growth & digital studio`,
     template: `%s — ${BRAND.name}`,
@@ -43,6 +52,12 @@ export const metadata: Metadata = {
   description:
     "Mishram Media builds creators, brands and digital experiences designed to scale — social, influencer marketing, performance, brand shoots and web.",
   applicationName: BRAND.name,
+  /**
+   * The homepage's own canonical. Every other route declares one in its own
+   * `metadata` (§10j); the root had none, so `/` was the one page on the site
+   * whose canonical was whatever origin served it. Relative, like the rest.
+   */
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${BRAND.name} — Creative growth & digital studio`,
     description:
@@ -50,6 +65,7 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     locale: "en_IN",
     type: "website",
+    url: "/",
   },
   robots: { index: true, follow: true },
 };
