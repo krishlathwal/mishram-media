@@ -5597,6 +5597,146 @@ specific docs live in `node_modules/next/dist/docs/`.
 
 ---
 
+## 17b. DEPLOYMENT — GitHub + Vercel, and the production origin
+
+The site is deployed. This section is the operational record: where it lives, what is wired to
+what, and the two things that are still the client's to do.
+
+### The production origin — one constant, and why it is not an env var
+
+`SITE_URL` in `config/site.ts` is `https://mishram.media`, and `app/layout.tsx` passes it to Next's
+`metadataBase`. **Every route's `alternates.canonical` and `openGraph.url` stays a relative path**
+and resolves against it — so the domain appears in exactly one place on the site.
+
+**It was missing entirely before deployment, and that is a production defect rather than a tidiness
+one.** With no `metadataBase`, Next falls back to the deployment's own hostname: on Vercel that is
+the per-deployment `*.vercel.app` URL, so **every preview build would have published canonicals and
+OpenGraph URLs pointing at itself**, and any preview that got indexed would compete with the real
+site. An environment variable would have the same failure mode the first time it was missing on one
+environment. The canonical origin is a fact about the business, not about the host.
+
+The homepage also gained its own `alternates.canonical: "/"`. Every other route already declared
+one (§10j); `/` was the single page whose canonical was whatever origin served it.
+
+Verified on the deployed site: `/` and `/about` carry `https://mishram.media` canonicals, and
+`/services/brand-shoots-content` still carries `noindex, nofollow` — the derived directive from
+§10s survives deployment.
+
+**`sitemap.ts` and `robots.ts` do not exist.** Neither did before; nothing was added, because
+building either means making route-policy decisions (the hidden Service 05, the deferred Service
+04) that belong to a scoped SEO task rather than to a deployment. Recorded as the obvious next
+improvement, not as a defect.
+
+### GitHub
+
+`github.com/krishlathwal/mishram-media` — **private**, production branch `main`. It is this
+project's own repository and always has been; the local `origin` already pointed at it and the
+remote HEAD matched the local commit before any work started, so **no repository was created and no
+history was rewritten.**
+
+**Secret audit, run before the first push.** Every file ever added in every commit was listed and
+matched against `.env`, `.pem`, credential and secret patterns: **the only match in the entire
+history is `.env.example`**, which is deliberately tracked as the documentation of what production
+needs. `.gitignore` already excluded `node_modules`, `.next`, `.vercel`, `.netlify` and `.env*`
+with a `!.env.example` negation.
+
+**One thing to know about `vercel link`:** it writes a `.env.local` containing a `VERCEL_OIDC_TOKEN`
+and then appends its own `.vercel` and `.env*` lines to `.gitignore`. The token file was already
+covered by the existing rule and never entered the index; **the appended `.gitignore` lines were
+reverted**, because a bare `.env*` after the file's own `!.env.example` negation is exactly how a
+deliberately-tracked template stops being tracked on the next clone.
+
+### Vercel
+
+| | |
+| --- | --- |
+| Team | `silksora` (`team_8EBVpOomRw1AwITgcDqlTQgZ`) |
+| Project | **`mishram-media`** — `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L` |
+| Git link | `github/krishlathwal/mishram-media`, production branch **`main`** |
+| Framework | **Next.js**, `npm run build`, Node 24.x |
+| Deployment URL | `https://mishram-media.vercel.app` |
+
+**It is a new project, deliberately.** The account already holds `mishramngo`
+(`krishlathwal/mishram.org` — **Mishram Foundation, a different legal entity**) and `souklane`.
+Neither was touched, and **nothing about this site is attached to the Foundation's project.**
+
+**`vercel.json` exists for the same reason `netlify.toml` does.** The project was created through
+the API rather than the dashboard's new-project flow, which is what performs framework detection,
+so it was created with no framework preset. Declaring `framework`, `buildCommand` and
+`installCommand` in the repository fixes it for every future deployment and keeps build
+configuration in version control rather than in dashboard state.
+
+**`next export` must never be introduced.** `/api/inquiry` is a real route handler and needs a
+server at runtime (§10h) — verified on the deployed site, which answers `503
+delivery_not_configured` and `400 invalid_request` correctly.
+
+> **`netlify.toml` AND `.netlify/state.json` ARE STILL IN THE TREE, AND THIS NEEDS A DECISION.**
+> The site was previously wired to Netlify (site `d41f4d3c-…`, and `.netlify/` is gitignored so it
+> never reached the remote). `netlify.toml` **is** committed. Vercel ignores it, so it breaks
+> nothing here — but **if that Netlify site is still connected to this GitHub repository, every
+> push to `main` now builds the site twice, on two hosts.** That is not dangerous today; it becomes
+> dangerous the moment somebody points DNS at the wrong one. Either disconnect the Netlify site or
+> keep it deliberately as a fallback — but decide, rather than leaving two live pipelines.
+
+### Environment variables — none configured, and every fallback verified
+
+No `.env`, `.env.local` or `.env.production` exists locally, so **there was nothing legitimate to
+configure and nothing was invented.** All four are absent on Vercel:
+
+| Variable | State | Behaviour without it |
+| --- | --- | --- |
+| `RESEND_API_KEY` | missing | `/api/inquiry` answers `delivery_not_configured` |
+| `INQUIRY_FROM_EMAIL` | missing | Same. It deliberately has no default (§10h) |
+| `INQUIRY_TO_EMAIL` | missing | Would default to `CONTACT.email` anyway |
+| `NEXT_PUBLIC_BOOKING_URL` | missing | Every booking CTA falls back to WhatsApp |
+
+**The form never fakes a success**, says plainly that delivery is not configured, and offers
+`Continue on WhatsApp ↗` carrying the whole brief — a link the visitor has to click. Verified on
+the deployed site: the WhatsApp fallback resolves to `https://wa.me/919548278558`.
+
+### Domains
+
+Both are attached to the project and **ownership is verified — no TXT challenge is required**
+(`domainOwnership: current-scope`, `acceptedChallenges: []`).
+
+- **`mishram.media` — the canonical production domain.** No redirect.
+- **`www.mishram.media` — a 308 permanent redirect to the apex**, set on the project's domain
+  record rather than in application code, so nothing in `next.config.ts` or middleware handles it.
+
+**The nameservers stay at GoDaddy.** Vercel offers `ns1/ns2.vercel-dns.com` as an alternative and
+it is **not** being taken: the domain carries `info@mishram.media`, and moving nameservers moves
+MX, SPF, DKIM and DMARC with them. The A/CNAME route achieves the same result and touches nothing
+else.
+
+**The records Vercel asked for**, read off `vercel domains verify` rather than assumed:
+
+| Type | Host | Value |
+| --- | --- | --- |
+| A | `@` | `216.198.79.1` |
+| A | `@` | `64.29.17.1` |
+| CNAME | `www` | `7bb1978068d42c76.vercel-dns-017.com.` |
+
+Vercel also reports lower-ranked fallbacks — a single `A @ 76.76.21.21`, and
+`CNAME www cname.vercel-dns.com.` — which are the older shared endpoints. The rank-1 values above
+are what it currently recommends.
+
+**The conflicting records at GoDaddy**, as Vercel observed them: the apex resolves to
+`76.223.105.230` and `13.248.243.5`, and `www` is a CNAME to `mishram.media.` Those are what the
+records above replace. **Nothing else at GoDaddy is touched** — MX, SPF, DKIM, DMARC and every
+unrelated TXT record stay exactly as they are.
+
+### What is still outstanding
+
+1. **The GoDaddy DNS change**, which is the client's to make.
+2. **The Netlify decision** above.
+3. **Deployment protection is off** and the deployment URL is public, which is correct for an
+   outreach campaign. Say so out loud if that ever changes.
+4. **No rate limiting on `/api/inquiry`** — §10h records this as deployment hardening, and it is
+   now genuinely deployment-time. Provider-level or edge middleware; a per-process counter is
+   meaningless on serverless.
+
+---
+
 ## 10o. SERVICE 04 / WEB & DIGITAL EXPERIENCES — DEFERRED BY THE CLIENT
 
 **This is a scheduled milestone, not an unfinished page.** Read this before
