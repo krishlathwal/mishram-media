@@ -32,6 +32,26 @@
 
   /* Held constant across themes; used sparingly. */
   --color-ember: #ff7048;
+
+  /* ── BRAND PLUM — declared, measured, and deliberately unused (Rev 28) ──
+     #4c3660, tested as a Mishram brand colour. It is registered here so a
+     later phase has one name to reach for, and it is applied to **nothing**.
+
+     IT IS A SURFACE COLOUR, NOT AN ACCENT, AND THAT IS MEASURED:
+
+       plum as text on the dark canvas ......  1.89:1   FAILS (needs 4.5)
+       teal as text on the dark canvas ...... 10.87:1
+       ivory text on a plum surface .........  9.14:1   passes comfortably
+
+     So it can carry a section, and it can never carry a line, a label or a
+     link on the dark theme. A global plum canvas was rendered and rejected on
+     sight: it flattens the obsidian, muddies the teal, fights the photography
+     and reads as a generic purple SaaS site.
+
+     It is not arbitrary — the first-party logo's own indigo is #5c37ff, and
+     this is that hue desaturated and darkened, which is why it belongs to the
+     brand rather than to a mood board. See `docs/FINAL-POLISH-ROADMAP.md`. */
+  --color-brand-plum: #4c3660;
   /* The one semantic state colour. Themed, because ember itself is far too
      light to read as text on parchment. Used for form validation only. */
   --color-error: var(--t-error);
@@ -78,6 +98,11 @@
 
   --t-image-shadow: none;
   --collab-logo-rest: 0.5;
+  /* THE RAIL'S OWN REST VALUE (Rev 29), separate from --collab-logo-rest on
+     purpose. That token is shared with /about's .abt-brand-mark, which is a
+     monochrome mask and is out of this phase's scope — moving it would have
+     silently restyled another page. */
+  --collab-color-rest: 0.88;
   --grain-opacity: 0.035;
   --grain-blend: overlay;
 }
@@ -113,6 +138,7 @@
   /* Photography sits above the paper rather than inside the dark. */
   --t-image-shadow: 0 20px 60px rgba(17, 17, 15, 0.09);
   --collab-logo-rest: 0.62;
+  --collab-color-rest: 0.9;
   --grain-opacity: 0.022;
   --grain-blend: multiply;
 }
@@ -4680,7 +4706,6 @@ html.theme-transition *::after {
     transition: transform 300ms var(--ease-out-expo);
   }
 
-  .collab-logo,
   .collab-logo-color {
     position: absolute;
     inset: 0;
@@ -4688,23 +4713,45 @@ html.theme-transition *::after {
     transition: opacity 300ms var(--ease-out-expo);
   }
 
-  .collab-logo {
-    background-color: currentColor;
-    color: var(--color-ink);
-    opacity: var(--collab-logo-rest);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-position: center;
-    mask-position: center;
-  }
+  /* ── COLOUR AT REST — the Revision 29 inversion ────────────────────────
+     The rail used to sit monochrome and reveal colour on hover. It now sits
+     in **real brand colour** and hover only takes it to full clarity, because
+     a visitor who never hovers is the one this section has to convince.
 
+     The mask layer is not deleted: it is the dark theme's fallback for the
+     seven brands whose official artwork is black or near-black and would
+     otherwise vanish into obsidian. Nothing else uses it. */
   .collab-logo-color {
-    opacity: 0;
+    opacity: var(--collab-color-rest);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+  }
+
+  /* THE PLATE, AND ONLY WHERE IT IS EARNED.
+     Seven of eighteen marks are drawn in black for light stationery. On
+     obsidian they need a ground, so they get one — a soft parchment card,
+     inset beyond the logo box so the mark keeps its own breathing room. The
+     other eleven sit directly on the canvas with no chrome at all, which is
+     the whole difference between an editorial rail and a sponsor wall.
+
+     `::before` precedes the two logo layers in paint order, so it lands
+     behind them without a z-index. */
+  [data-theme="dark"] .collab-item[data-dark-mono] .collab-mark::before {
+    content: "";
+    position: absolute;
+    /* Wider than it is tall, so a wordmark keeps its optical margin. Kapiva's
+       mark touched the edge at a tighter inset. */
+    inset: -10px -16px;
+    border-radius: 6px;
+    /* Not pure ivory. At full strength seven of these read as slabs against
+       obsidian and the rail becomes the white-box wall this redesign exists to
+       avoid; at 0.84 they settle into the canvas and the marks still clear
+       their contrast. */
+    background: rgba(243, 239, 231, 0.84);
+    transition:
+      background-color 300ms var(--ease-out-expo),
+      transform 300ms var(--ease-out-expo);
   }
 
   /* Hover states are gated to real pointers so touch never leaves a logo
@@ -4719,46 +4766,30 @@ html.theme-transition *::after {
       opacity: 1;
     }
 
-    .collab-item:hover .collab-logo {
-      opacity: 0;
-    }
-
+    /* Hover is now *clarity*, not colour — the colour was already there. */
     .collab-item:hover .collab-logo-color {
       opacity: 1;
     }
 
     .collab-item:hover .collab-mark {
-      transform: translateY(-3px) scale(1.05);
+      transform: translateY(-3px) scale(1.03);
     }
 
-    /* Black artwork would disappear on obsidian, so the ivory-tinted mask
-       stays as the dark-theme treatment and simply reaches full strength. */
-    [data-theme="dark"] .collab-item[data-dark-mono]:hover .collab-logo {
-      opacity: 1;
-    }
-
-    [data-theme="dark"] .collab-item[data-dark-mono]:hover .collab-logo-color {
-      opacity: 0;
+    /* The plate brightens with its mark rather than staying flat behind it. */
+    [data-theme="dark"] .collab-item[data-dark-mono]:hover .collab-mark::before {
+      background: rgba(243, 239, 231, 0.97);
     }
   }
 
   /* Keyboard parity, for when these become links. */
-  .collab-item:focus-within .collab-logo {
-    opacity: 0;
-  }
-
   .collab-item:focus-within .collab-logo-color {
-    opacity: 1;
-  }
-
-  [data-theme="dark"] .collab-item[data-dark-mono]:focus-within .collab-logo {
     opacity: 1;
   }
 
   [data-theme="dark"]
     .collab-item[data-dark-mono]:focus-within
-    .collab-logo-color {
-    opacity: 0;
+    .collab-mark::before {
+    background: rgba(243, 239, 231, 1);
   }
 
   .collab-underline {

@@ -8411,3 +8411,342 @@ in the client's Google Analytics screen and is theirs to press.
   one page view per navigation, real hits reaching Google.
 - **Email DNS untouched.** No MX, SPF, DKIM, DMARC or verification record was read, changed or
   removed, and the nameservers stay at GoDaddy by design.
+
+---
+
+## 10af. FINAL POLISH PHASE 01 — BRAND IDENTITY, HERO, MEDIA ALLOCATION (Revision 28)
+
+**Nothing was deployed.** The live site still serves Revision 27. This revision is local work behind
+a review gate, and it opens a fourteen-phase final-polish programme whose own document is
+**`docs/FINAL-POLISH-ROADMAP.md`** — the roadmap, the shortlist audit, the proof register and the
+media allocation ledger all live there so that no future session re-researches them. This section
+records the decisions; that file carries the tables.
+
+### 1 — THREE FIRST-PARTY SOURCES, AND ONE OF THEM WAS NEW
+
+| | Source | Result |
+| --- | --- | --- |
+| A | `F:\Drive data\WEBSITE SHORTLIST` | 15 files, every one audited |
+| B | `WEBSITE SHORTLIST/PROPOSAL - PDF (1).pdf` | 9 pages, Canva-produced, read |
+| C | `https://canva.link/2zuy2cde0ar0kfd` | **ACCESSIBLE** — read in full |
+
+**B and C are the same document**, so there is no contradiction to reconcile. The PDF's text layer
+uses subset-font encoding that does not decode to plain text; the Canva deck is the readable copy
+and is where the register's quotations come from. Worth knowing before anyone tries the PDF again.
+
+**Identity discipline held.** A filename is user-supplied identity metadata and nothing else was
+used — **no face was matched, compared or recognised at any point.** §18 rule 7 is untouched.
+
+### 2 — WHAT THE AUDIT FOUND THAT THE PLAN DID NOT EXPECT
+
+**PURAV JHA HAS NO PHOTOGRAPH.** Four folders named `Purav` exist on the drive and **every one of
+them contains only `.MOV` files** — no `.jpg`, `.jpeg`, `.png`, `.heic` or `.webp` under any `purav`
+path anywhere. He therefore could not join the Hero, and **no frame was pulled from the video**: a
+folder name does not establish which person in a frame is the named one, which is precisely the
+mistake §10u cost a revision to learn. The handle `@puravjha9` is registered from the deck; the
+photograph is an open request to the client.
+
+**Nine of the ten creator photographs contain two or more people.** Only `Prashant Mishra.jpeg` is a
+single figure. §10u's locked rule therefore governs all of them — **both figures stay in every
+crop** — and the Hero crops were chosen by testing which aspect could hold two heads rather than by
+assuming one could.
+
+**Three files carry EXIF orientation 6** (`Lovekesh Kataria`, `Prashant Mishra`, `Shadab Hasan`).
+They are stored `8064×6048` and are only upright after a rotate. **`sharp` does not auto-rotate
+unless `.rotate()` is called**, so a naive pipeline silently ships a sideways person. Same class of
+production gotcha as §10t's HEIC lesson, and now written down.
+
+### 3 — BRAND SAFETY: THREE FLAGS, ALL RAISED BY EXISTING RULES
+
+None of these is a new policy. All three are §9/§18 applied to new material, and all three are the
+client's decision.
+
+1. **`JJ Communication.jpeg` is shot inside an OPPO store** — OPPO branding, a handset poster and a
+   celebrity poster in frame. §18 names OPPO explicitly among the three brands whose material stays
+   unpublished. **Blocked by the existing rule.**
+2. **The proposal names `@zingbus` as a brand partner** — the same zingbus §18 already holds back.
+   **Hold.**
+3. **`Shadab Hasan.jpeg` is not assumed to be `@shadabjakati1`.** The deck promotes Jakati, against
+   whom §18 records an unresolved 2026 brand-safety finding; the shortlist file says **Hasan**.
+   Different surname, **treated as two different people** until the client says otherwise —
+   conflating them on a name fragment is the §10u error exactly. Neither is published.
+   **The Jakati question is now more urgent, because the deck is in active outreach.**
+
+### 4 — THE PROOF REGISTER, AND ITS ONE UNCOMFORTABLE FINDING
+
+Sixteen claims registered (`FINAL-POLISH-ROADMAP.md`), **none published.** The positioning copy and
+the collaboration-journey language are `READY`; the figures are not.
+
+**Every numeric claim in the proposal is class A — text only.** Not one of *130 million+ views on a
+single Reel*, *100+ brands*, *1,000+ creator videos* or *40M+ on a single branded video* is
+accompanied by a screenshot in the deck, and no local asset corroborates any of them. §1's rule
+against unverified metrics applies to a first-party proposal exactly as it applies to anything else.
+**Phase 06 is blocked until dated captures exist.**
+
+**And one claim cannot be published even in principle as it stands:** the network slide lists **six
+handles against five follower figures**. The deck does not say which figure belongs to which
+creator. Guessing would be the §10u failure again, so `P12` is **HOLD — unmappable**.
+
+### 5 — `#4c3660`: SELECTIVE PLUM, DECLARED AND UNUSED
+
+It is not an arbitrary swatch. The logo's own indigo, sampled from `blue logo mishram.png`, is
+**`#5c37ff`**; `#4c3660` is that hue desaturated and darkened, which is why it can belong to the
+brand at all.
+
+**The decision was measured before it was judged:**
+
+| Use | Contrast | |
+| --- | --- | --- |
+| Plum as text or line on the dark canvas | **1.89 : 1** | **fails** — needs 4.5 |
+| Teal, for scale | 10.87 : 1 | the bar |
+| Ivory on a plum **surface** | **9.14 : 1** | passes |
+
+**So it is a surface colour and can never be an accent here.** Option A dies on arithmetic, not
+taste. **Option C — a global plum canvas — was rendered and rejected on sight**: it flattens the
+obsidian, muddies the teal, fights the photography and lands in generic-purple-SaaS. Option B
+survives and **has nowhere legitimate to go this phase**, because every candidate surface is frozen
+by scope and the Hero is locked.
+
+So the token ships **declared and applied to nothing**: `--color-brand-plum` in `globals.css`, with
+the measurements and the permitted future surfaces in the comment beside it. **The user's own
+instruction — if it damages the design, do not force it — is why it is a token and not a repaint.**
+
+### 6 — THE LOGO ANSWER WAS "CHANGE NOTHING", AND IT IS EVIDENCE-BASED
+
+**The supplied logos and the site's existing wordmark are the same artwork.** `blue logo
+mishram.png`, `grey logo mishram.png` and `public/brand/mishram-wordmark.png` are the identical
+mark. The site renders it as a **CSS mask inheriting `currentColor`**, which is *better* than a
+fixed-blue PNG — a blue file would break one of the two themes. Header, footer, dark and light marks
+all stay.
+
+`grey logo mishram.png` has **no unique role**. The blue file is reserved for decks, print and
+third-party profiles where the site's theming does not apply; the circular lockup is reserved for
+social avatars, where a circle crop is enforced anyway.
+
+**Nothing was redesigned, redrawn or generated.**
+
+### 7 — THE FAVICON WAS TESTED AND DELIBERATELY LEFT ALONE
+
+The plan's hypothesis was to swap in the circular mark. **Rendered at real sizes it is a clear
+regression**, so it was not done:
+
+| | 16px | 32px |
+| --- | --- | --- |
+| Current `icon.png` — the `M` with the slash | **crisp, unmistakable** | crisp |
+| Circular lockup | **illegible smudge in a white disc** | `MISHRAM` is mush |
+
+The circle contains the **whole wordmark**, so it cannot survive a browser tab. The existing favicon
+is already the strongest compact first-party symbol — the `M` glyph from the same mark. `icon.png`,
+`apple-icon.png` and `favicon.ico` are unchanged. **§10y fixed the default-Next-triangle favicon and
+got it right the first time.**
+
+### 8 — THE HERO: COMPOSITION LOCKED, MEDIA MOVED
+
+Five surfaces, the same five aspects, the same `onMobile` pattern, the same `layout.ts` geometry.
+
+| Slot | Aspect | Was | Now | Caption |
+| --- | --- | --- | --- | --- |
+| 1 | 9:16 | Zoya Jaan | Zoya Jaan | Creator Network |
+| 2 | 9:16 | Mukul Sharma | **Ali Fazal** | **Worked With** |
+| 3 | 9:16 | Nikita Kumawat | Nikita Kumawat | Creator Network |
+| 4 | 4:5 | Vishnu Priya | **Akash Sagar** | **Current Management** |
+| 5 | 1:1 | Lovekesh Kataria | Lovekesh Kataria | Creator Network |
+
+Three existing creators stay, so the Hero keeps its breadth instead of becoming a wall of one kind
+of photograph. **Captions are relationships, never metrics** — `Worked With` for Ali (never
+*managed*, §18), `Current Management` for Akash, and no follower count anywhere.
+
+**THE ALLOCATION DECISION IS THE PART WORTH KEEPING.** Three Akash frames arrived. The Hero got
+`Akash sagar.jpeg` — the cleanest *portrait*. `Akash sagar 1st.jpeg`, the fuller *relational* frame,
+is **held back for Phase 03 / Current Management**, because that section has to argue the working
+relationship and the Hero only has to look like proof. **The best relationship photograph does not
+go in the Hero.** The third frame is out on quality — 1.1MP, with third-party signage in shot.
+
+**One structural detail that will trip up the next person.** `Scene.tsx` filters surfaces by
+`Boolean(layouts[s.id])`, so a surface with no `layout.ts` entry is silently dropped — the new
+creators loaded no texture at all until the slot keys were renamed. Slots `mukul` → `ali` and
+`vishnu` → `akash`: **ten lines, every one a key name, every numeric value byte-identical.**
+`config/creators.ts` keeps its own `mukul` / `vishnu` roster ids — a different namespace, used by six
+downstream sections this phase does not touch.
+
+### 9 — PERFORMANCE
+
+| | Before | After |
+| --- | --- | --- |
+| Hero textures | 5 | 5 |
+| Total texture weight | 190KB | **211KB** (+21KB) |
+| Eager images | 0 | 0 |
+| `<link rel=preload as=image>` | 0 | 0 |
+
+The Hero's photography is **WebGL texture loading, not DOM images** — lazy, DPR-capped and behind
+the scene's own load gate, exactly as §16 requires. No preload was added for any new creator.
+
+### 10 — WHAT WAS NOT TOUCHED
+
+Brands rail, Current Management, What We Do, all five service pages, Creators, Work Process,
+Selected Work, Recognition, About, Project Inquiry, Supabase, GA4, the legal documents and the
+Footer are **all unchanged**. The only shared asset touched is the Hero's own media directory.
+No dependency was added.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes, all still static.
+- **All five Hero textures load**, the two new ones at the sizes produced —
+  `ali-fazal.webp` 98KB, `akash-sagar.webp` 38KB — with no horizontal overflow at 1440×900.
+- **Both production crops inspected standalone**: both figures fully in frame, heads intact, no bad
+  cuts. §10u's two-figure rule is satisfied by measurement rather than assertion.
+- **The plum rejection is screenshot-backed**, not asserted.
+- **The favicon decision is render-backed at 16 and 32px**, not assumed.
+- **NOT VERIFIED, AND SAID PLAINLY: the two new cards were never seen composed inside the running
+  Hero.** The preview pane failed to composite the WebGL canvas throughout this session — the
+  typography, rails and CTAs screenshot correctly while the media plane comes back empty, including
+  on the previously-good production route. The network layer proves all five textures are requested
+  and delivered, and the crops are proven standalone, but **the in-situ visual check and the
+  six-viewport responsive sweep are outstanding and are the first thing Phase 02 should do**, via
+  §10q's headless-Chrome-over-CDP method rather than the pane.
+- **Nothing was deployed.** No `vercel deploy`, no push.
+
+---
+
+## 10ag. FINAL POLISH PHASE 02 — HERO SIGN-OFF + THE COLOUR RAIL (Revision 29)
+
+**Nothing was deployed.** Production still serves Revision 27. This revision closes the one item
+Revision 28 left genuinely open, and redesigns the collaborations rail. Details and registers live
+in `docs/FINAL-POLISH-ROADMAP.md`.
+
+### 1 — THE SCREENSHOT METHOD IS NOW A SCRIPT, NOT A MEMORY
+
+`scripts/shoot.mjs` — headless Chrome over CDP through Node's global `WebSocket`. **No dependency
+added** (§15). §10q described this method in prose and it has been rebuilt from that prose twice;
+it is now code, with both of its failure modes baked in:
+
+1. **The scroll sweep**, or `IntersectionObserver` never fires and every `whileInView` element
+   captures at `opacity: 0` — a page that looks broken and is not (§10q).
+2. **`--use-angle=swiftshader`**, or headless Chrome renders no WebGL at all. **This is precisely
+   the false negative the preview pane produced in Revision 28**, and it is worth naming: the pane
+   was not lying about a broken hero, it was failing to composite one that worked.
+
+### 2 — PHASE 01 HERO QA: **PASS**, WITH NO FIX REQUIRED
+
+Nine captures — 1440×900 light and dark, 1280×800, 1024×768, 768×1024, 430×932, 390×844 light and
+dark, and 1440×900 under `prefers-reduced-motion` — every one with a live GL canvas.
+
+**Ali Fazal and Akash Sagar both render correctly at every viewport**, both figures in frame in both
+photographs, no head cut at any size including 390. Headline, CTAs, orbital composition, caption
+rail and media overlap are correct in both themes. Five textures on desktop, three on the reduced
+mobile set, which is the `onMobile` design working.
+
+**The media replacement introduced no defect**, so the smallest-correction rule never fired and the
+Hero was not touched again.
+
+**One pre-existing defect was found and deliberately left.** `scrollWidth` exceeds the viewport at
+**1024×768 and 768×1024**. It is **not from Phase 01** — the same probe against the live production
+site, which still runs the *old* Hero, reproduces it at exactly those two viewports and nowhere
+else. Registered for Phase 12. Fixing it here would have meant editing a section this phase was told
+not to touch, on a defect this phase did not cause.
+
+### 3 — THE RAIL: COLOUR AT REST
+
+The rail sat monochrome and revealed colour on hover. **It now sits in real brand colour**, and
+hover supplies only the last of the clarity plus a 3px lift and `scale(1.03)`.
+
+The argument for the inversion is one sentence: **a visitor who never hovers is the one this section
+has to convince.** Hover-to-reveal is a reward for people already exploring; the rail's job is to be
+read in two seconds by someone who has just finished the hero.
+
+**A separate token, and the reason is the interesting part.** The rest opacity is
+`--collab-color-rest` (0.88 dark / 0.9 light), **not** the existing `--collab-logo-rest`. That token
+is shared with `/about`'s `.abt-brand-mark`, which is still a monochrome mask and is out of scope —
+raising the shared value would have silently restyled another page. Caught before it shipped.
+
+### 4 — SEVEN PLATES, AND THE LIST WAS MEASURED
+
+Seven marks are drawn in black for light stationery and disappear on obsidian. They get a soft
+parchment ground — `rgba(243,239,231,0.84)`, `inset -10px -16px`, 6px radius. **The other eleven get
+no chrome whatsoever**, which is the whole difference between an editorial ribbon and a sponsor
+wall. A first pass at full ivory produced exactly the white-slab wall the plan warned about and was
+softened after looking at it.
+
+The list came from measuring **the share of each mark's opaque ink whose contrast against `#0a0a0a`
+falls below 2:1**: 100% for AVVATAR, DermaTouch, Kapiva, Pilgrim and Wondershare; 99% Muuchstac;
+61% Navi. Excel Entertainment at 26.7% reads fine and was **left unplated** — an eighth box costs
+more than it buys. Everything else measured 0%.
+
+**That confirmed the seven `darkKeepsMono` flags already in the config exactly, so no flag changed.**
+
+**And the first metric was wrong, which is worth recording.** *Mean* luminance cleared Navi at
+4.15:1 and I nearly un-flagged it — but Navi is a two-part lockup, a bright green glyph beside a
+near-black wordmark, and a mean averages the invisible half away. **Mean luminance is the wrong
+measure for a lockup.** Share-of-invisible-ink is the right one, and it agreed with the human
+judgement that was already in the file.
+
+### 5 — ONE LAYER INSTEAD OF TWO
+
+With colour at rest, the mask layer is never painted in the rail — so it is no longer rendered, and
+no longer downloaded.
+
+| | Before | After |
+| --- | --- | --- |
+| Brand files the homepage requests | **36** | **18** |
+| Weight | **456KB** | **298KB** |
+
+**−18 requests, −158KB, and recognisability went up.** The 18 mask files stay on disk: `/about`
+renders the same roster as monochrome marks and still reads them.
+
+### 6 — ROSTER: EIGHTEEN PUBLIC, FOUR HELD
+
+Eighteen brands render, unchanged in membership. Four are recorded and not rendered:
+
+- **Duolingo — new in this revision.** The current first-party deck presents a Duolingo brand tile,
+  which satisfies the relationship test. It fails the *asset* test: the only file is a 480×360
+  raster with the wordmark locked onto Duolingo's green, and lifting a mark off its ground is
+  altering artwork, which the logo policy forbids. `visible: false`, same treatment as VYRL —
+  **supply an official transparent asset and flip one boolean.** A third provenance class, `DECK`,
+  was added to the config for it.
+- **Zingbus** appears in the deck and stays **blocked** by the standing §18 decision. The deck being
+  first-party does not reopen a brand-safety call.
+- **VYRL** unchanged — relationship confirmed, no official asset exists.
+- **Fun N Earn** unchanged — withheld under the permanent real-money-gaming rule.
+
+**YesMadam and Bajaj Finserv were looked for and are not in the deck** — not in its text, not in any
+of its 35 extracted images. They were not added.
+
+**DermaTouch: the supplied file lost the comparison.** `WEBSITE SHORTLIST/images.png` is 447×447 and
+**opaque**; the production asset is 337×128 **with alpha**, already tightly cropped. Using the
+supplied one would have meant cutting the mark off a white ground. **The existing asset is better
+and was kept** — the instruction was to use it *if cleaner*, and it is not.
+
+### 7 — MOTION AND THE OTHER SURFACES
+
+The derived-duration rule stands untouched: speed comes from actual track width, so adding a brand
+can never silently accelerate the marquee. Desktop is a continuous rail that pauses on hover or
+focus. **Reduced motion renders a static two-row grid of the twelve featured marks in full colour**
+— the compact multi-row treatment, not a hidden roster. Mobile holds a 22px logo height, legible at
+390 rather than eighteen specks.
+
+**The seam was captured deliberately**, hero foot and rail head in one frame: the hero's own
+capability rail hands into the section across a hairline with generous space, and the colour lands
+as the first proof after the fold. The transition reads as intentional.
+
+### 8 — PLUM
+
+**Not used.** No surface in this section earned it, and plum text on obsidian still fails contrast at
+1.89:1 (§10af). The token stays declared and unapplied.
+
+### 9 — WHAT WAS NOT TOUCHED
+
+Current Management, What We Do, all five service pages, Creators, Work Process, Selected Work,
+Recognition, About, Project Inquiry, Supabase, GA4, the legal documents and the Footer are
+unchanged. `/about`'s brand marks were specifically protected by the token split in §3.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all static.
+- **Hero: nine real composited captures, PASS**, both new creators correct at every viewport and in
+  both themes, reduced motion included.
+- **Rail: captured at 1440 light and dark, 1280, 1024, 768, 430, 390 dark and light, under reduced
+  motion, and as a hero-to-rail seam.** No clipping, no distorted aspect, no white-box wall, no
+  horizontal document overflow in the section.
+- **The plate list is measured**, and the measurement agreed with the config that already existed.
+- **−18 network requests and −158KB** on the homepage, verified from the rendered HTML.
+- **Nothing pushed, nothing deployed.** One local commit.

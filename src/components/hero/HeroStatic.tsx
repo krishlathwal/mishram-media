@@ -26,13 +26,13 @@ const FRAMES = [
     rotate: 1.1,
   },
   {
-    id: "mukul",
+    id: "ali",
     style: { right: "12%", top: "20%", height: "34%" },
     className: "z-10 opacity-[0.74]",
     rotate: 1.6,
   },
   {
-    id: "vishnu",
+    id: "akash",
     style: { left: "26%", top: "12%", height: "27%" },
     className: "z-0 opacity-[0.62]",
     rotate: -1.8,

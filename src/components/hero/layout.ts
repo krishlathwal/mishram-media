@@ -57,8 +57,8 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
     order: 7,
   },
   // Mid ground, upper right.
-  mukul: {
-    id: "mukul",
+  ali: {
+    id: "ali",
     center: [2.812, 0.631, -0.9],
     radius: [0.12, 0.14],
     phase: 0.72 * TAU,
@@ -87,8 +87,8 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
     order: 6,
   },
   // 4:5 frame set well back, high and close to the type edge.
-  vishnu: {
-    id: "vishnu",
+  akash: {
+    id: "akash",
     center: [0.133, 1.328, -2.0],
     radius: [0.16, 0.15],
     phase: 0.42 * TAU,
@@ -161,15 +161,15 @@ export const MOBILE_LAYOUT: Record<string, SurfaceLayout> = {
     radius: [0.08, 0.09],
     height: 1.974,
   },
-  mukul: {
-    ...DESKTOP_LAYOUT.mukul,
+  ali: {
+    ...DESKTOP_LAYOUT.ali,
     center: [0.781, 0.689, -0.8],
     radius: [0.07, 0.08],
     height: 1.607,
     base: 0.82,
   },
-  vishnu: {
-    ...DESKTOP_LAYOUT.vishnu,
+  akash: {
+    ...DESKTOP_LAYOUT.akash,
     center: [1.02, -0.967, -0.4],
     radius: [0.07, 0.07],
     height: 1.02,
@@ -200,9 +200,9 @@ export const RINGS = {
 export const ENTRY_DELAY: Record<string, number> = {
   zoya: 0.0,
   lovkesh: 0.1,
-  mukul: 0.18,
+  ali: 0.18,
   interface: 0.26,
-  vishnu: 0.34,
+  akash: 0.34,
   growth: 0.42,
   nikita: 0.5,
 };

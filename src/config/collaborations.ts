@@ -106,6 +106,13 @@ export type Collaboration = {
 
 const CONFIRMED = "user-confirmed: 2026-08 brand relationship";
 const LEGACY = "previous Mishram Media site client rail";
+/**
+ * The third provenance class, added in Revision 29: a brand the **current
+ * first-party Mishram collaboration deck** presents as a relationship.
+ * `canva.link/2zuy2cde0ar0kfd`, and its local export in
+ * `WEBSITE SHORTLIST/PROPOSAL - PDF (1).pdf`.
+ */
+const DECK = "first-party Mishram collaboration deck (2026)";
 
 /**
  * Render order is editorial, and `featured` entries lead deliberately.
@@ -363,6 +370,34 @@ export const COLLABORATIONS: readonly Collaboration[] = [
     visible: false,
     source: CONFIRMED,
     logoSource: "none — no official asset could be sourced",
+  },
+  {
+    name: "Duolingo",
+    logo: "",
+    logoColor: "",
+    size: { w: 1, h: 1 },
+    category: "education",
+    priority: "roster",
+    /**
+     * **NEW IN REVISION 29, AND HELD FOR THE SAME REASON AS VYRL.**
+     *
+     * The relationship is newly evidenced: the current first-party Mishram
+     * collaboration deck presents a Duolingo brand tile in its brand-video
+     * section. That satisfies the relationship test.
+     *
+     * **It does not satisfy the asset test.** The only file available is the
+     * deck's own 480×360 raster — a white wordmark locked onto Duolingo's
+     * green, with no transparency. Publishing it would mean either shipping a
+     * green rectangle among transparent marks or cutting the wordmark out of
+     * its ground, and lifting a mark off its background is altering the
+     * artwork, which the logo policy above forbids.
+     *
+     * `visible: false`, so the confirmed relationship is recorded and cannot
+     * be lost. **Supply an official transparent asset and flip one boolean.**
+     */
+    visible: false,
+    source: DECK,
+    logoSource: "none yet — deck tile is 480×360 raster on an opaque ground",
   },
 ];
 

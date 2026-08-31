@@ -42,8 +42,25 @@ export type HeroSurface = {
 };
 
 /**
- * Photographic surfaces in the hero composition. Every portrait is a creator
- * already associated with Mishram Media on the previous site.
+ * Photographic surfaces in the hero composition.
+ *
+ * **THE COMPOSITION IS LOCKED (§05); ONLY THE MEDIA MOVED (Revision 28.)**
+ * Five surfaces, the same five aspects — `9/16`, `9/16`, `9/16`, `4/5`, `1/1` —
+ * and the same `onMobile` pattern, because `layout.ts`, the exposure tiers and
+ * the entry sequence were all composed against those numbers. Two creators were
+ * swapped in; nothing about the scene changed.
+ *
+ * **Why these two.** `WEBSITE SHORTLIST` supplied first-party, client-labelled
+ * photographs of Ali Fazal and Akash Sagar — stronger provenance than anything
+ * the Hero carried, and the two relationships Mishram actually leads with.
+ * Mukul Sharma and Vishnu Priya came out; **Zoya Jaan, Nikita Kumawat and
+ * Lovekesh Kataria stay**, so the composition keeps its breadth rather than
+ * becoming a wall of one kind of photograph.
+ *
+ * **Every caption is a relationship, not a metric.** `Worked With`,
+ * `Current Management`, `Creator Network` — no follower count, and none of the
+ * proposal's figures (§10ad-adjacent: the proof register holds those until a
+ * phase publishes them properly).
  */
 export const HERO_SURFACES: readonly HeroSurface[] = [
   {
@@ -56,11 +73,27 @@ export const HERO_SURFACES: readonly HeroSurface[] = [
     onMobile: true,
   },
   {
-    id: "mukul",
-    src: "/media/creators/mukul-sharma.webp",
-    alt: "Portrait of creator Mukul Sharma from the Mishram Media network",
-    label: "Mukul Sharma",
-    caption: "Creator Network",
+    /**
+     * **ALI FAZAL — Revision 28, and the strongest proof the Hero carries.**
+     *
+     * Source: `WEBSITE SHORTLIST/ali fazal.jpeg`, user-labelled. **The filename
+     * is the identity evidence** — no face was matched, and §18's rule 7 is
+     * untouched.
+     *
+     * **TWO FIGURES, AND BOTH STAY IN EVERY CROP.** §10u: the client's label
+     * establishes that Ali Fazal is *in* the frame, not which figure he is, so
+     * isolating one man would assert something unverified. The 9:16 crop was
+     * chosen because it is the tightest aspect that still holds both heads
+     * comfortably — measured, not assumed.
+     *
+     * **`Worked With`, never *managed*.** §18: exactly one person on this site
+     * is described as managed, and it is not him.
+     */
+    id: "ali",
+    src: "/media/hero/creators/ali-fazal.webp",
+    alt: "Ali Fazal, photographed on a Mishram Media collaboration",
+    label: "Ali Fazal",
+    caption: "Worked With",
     aspect: 9 / 16,
     onMobile: true,
   },
@@ -74,11 +107,30 @@ export const HERO_SURFACES: readonly HeroSurface[] = [
     onMobile: false,
   },
   {
-    id: "vishnu",
-    src: "/media/creators/vishnu-priya.webp",
-    alt: "Portrait of creator Vishnu Priya from the Mishram Media network",
-    label: "Vishnu Priya",
-    caption: "Creator Network",
+    /**
+     * **AKASH SAGAR — and the allocation decision behind it is the point.**
+     *
+     * Three user-labelled Akash frames arrived in the shortlist. This one —
+     * `Akash sagar.jpeg`, the bright corridor frame — is the **cleanest as a
+     * portrait card**, which is what the Hero needs.
+     *
+     * `Akash sagar 1st.jpeg` is deliberately **held back for Phase 03 / Current
+     * Management**, because it is the fuller, more relational frame and that
+     * section has to demonstrate the working relationship rather than decorate
+     * a hero. **The best relationship photograph does not go in the Hero** —
+     * see the media ledger in `docs/FINAL-POLISH-ROADMAP.md`. The third frame
+     * is out on quality (1.1MP, and third-party signage in shot).
+     *
+     * Two figures, both kept, for the same §10u reason as Ali above.
+     *
+     * `Current Management` is the one relationship label this site uses in the
+     * strong sense, and §10t reserves it for exactly one person (§10u §2).
+     */
+    id: "akash",
+    src: "/media/hero/creators/akash-sagar.webp",
+    alt: "Akash Sagar, photographed during Mishram Media's management work",
+    label: "Akash Sagar",
+    caption: "Current Management",
     aspect: 4 / 5,
     onMobile: true,
   },

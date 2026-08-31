@@ -184,19 +184,19 @@ function LogoItem({ item, silent }: { item: Collaboration; silent: boolean }) {
           aspectRatio: `${item.size.w} / ${item.size.h}`,
         }}
       >
-        {/* Resting layer: silhouette tinted with the theme's ink. */}
+        {/* THE BRAND'S OWN ARTWORK, AT REST — Revision 29.
+            One layer, not two. The rail used to stack an ink-tinted silhouette
+            under the colour file and cross-fade between them on hover; now the
+            colour is simply what the rail *is*, and hover only takes it to full
+            clarity. **That removed eighteen mask downloads from the homepage**
+            for images that are no longer painted.
+
+            `item.logo` still exists and the mask files stay on disk — `/about`
+            renders the same roster as monochrome marks and reads them. This
+            change is scoped to the rail. */}
         <span
           role={silent ? undefined : "img"}
           aria-label={silent ? undefined : item.name}
-          className="collab-logo"
-          style={{
-            WebkitMaskImage: `url(${item.logo})`,
-            maskImage: `url(${item.logo})`,
-          }}
-        />
-        {/* Hover layer: the brand's genuine artwork, cross-faded in. */}
-        <span
-          aria-hidden
           className="collab-logo-color"
           style={{ backgroundImage: `url(${item.logoColor})` }}
         />
