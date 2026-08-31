@@ -8220,3 +8220,194 @@ conversion would be declared. **This revision is GA4 only.**
   a `NEXT_PUBLIC_` variable is inlined at build time, so **the tag will not exist in production
   until a new deployment is made.** Nothing about this revision has been verified against the live
   domain, and nothing here claims it has.
+
+---
+
+## 10ae. PRODUCTION LAUNCH (Revision 27)
+
+**The site is live at `https://mishram.media`**, serving the build that contains the Supabase lead
+backend (§10ac) and Google Analytics 4 (§10ad). Everything below was measured against the live
+domain, not against a preview.
+
+### 1 — THE COMMIT
+
+`cbbf998` — *Production launch — leads, analytics and creator proof* — on `main`, pushed to
+`github.com/krishlathwal/mishram-media` (private). 32 files: three revisions' worth of work in one
+launch commit.
+
+Working tree clean afterwards, `main` tracking `origin/main`.
+
+**Nothing unwanted went in.** The staged set was reviewed file by file before committing: no
+`.env.local`, no `supabase/.temp`, no `.next`, no `node_modules`, no screenshots, no QA scratch
+files, no raw Drive media. `supabase/` contributed exactly three files — `.gitignore`,
+`config.toml` and the migration.
+
+**Secret scan before push, and it is worth recording how it was done**, because grepping for the
+*word* `secret` proves nothing. Every tracked and untracked file (245 of them) was searched for the
+**literal values** of the live Supabase secret key, the Supabase URL, the Vercel OIDC token and the
+database password: **zero hits.** A pattern scan for `sb_secret_`, `service_role`, Resend keys and
+JWT prefixes returned only documentation — `.env.example` describing the two env names, this brief
+describing the scan itself, and a comment in `lib/supabase/server.ts`. No key material anywhere.
+
+### 2 — THE DEPLOYMENT
+
+| | |
+| --- | --- |
+| Project | `mishram-media` — `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L`, team `silksora` |
+| Deployment | `dpl_DducrK4UcWdennMTvkJedX295v1m`, `readyState: READY`, `target: production` |
+| Build URL | `https://mishram-media-r2fe70pph-silksora.vercel.app` |
+| Stable alias | `https://mishram-media.vercel.app` |
+| Command | `npx vercel deploy --prod` |
+
+`.vercel/project.json` was read **before** anything was deployed and matched the expected id
+exactly. **`mishramngo` — the Foundation's project — was not touched**, and neither was any other.
+
+The CLI remains the deployment path for the reason §17b records: `silksora` is on Hobby and the
+repository is private, so Git-triggered production builds are refused. That decision is still the
+client's and is still open; it does not block anything, because the CLI upload builds fine.
+
+**Production environment, verified before deploying:** `SUPABASE_URL`, `SUPABASE_SECRET_KEY` and
+`NEXT_PUBLIC_GA_MEASUREMENT_ID` all present. Preview carries the two Supabase variables; GA4 stays
+Production-only (§10ad §9). `RESEND_API_KEY`, `INQUIRY_FROM_EMAIL`, `INQUIRY_TO_EMAIL` and
+`NEXT_PUBLIC_BOOKING_URL` remain unset — deliberately, and none of them blocks a launch.
+
+### 3 — THE DOMAIN WAS ALREADY CUT OVER
+
+**§17b's first outstanding item — the GoDaddy DNS change — has been done by the client since that
+section was written.** This revision did not need to change a single DNS record, and did not.
+
+Observed live:
+
+| Host | Resolves to | Result |
+| --- | --- | --- |
+| `mishram.media` | `216.198.79.1`, `64.29.17.1` | `200`, `Server: Vercel` |
+| `www.mishram.media` | same pair | `308` → `https://mishram.media/` |
+| `http://mishram.media` | — | `308` → `https://mishram.media/` |
+
+Those two A records are **exactly the rank-1 values §17b read off `vercel domains verify`**, so the
+zone matches what the project asked for. Both hostnames are attached to `mishram-media` in Vercel,
+and the apex is the canonical host.
+
+**THE NAMESERVERS ARE STILL GODADDY'S — `ns59` / `ns60.domaincontrol.com` — AND THAT IS CORRECT.**
+Vercel's domain inspector marks them with ✗ because they are not `ns1/ns2.vercel-dns.com`. **Do not
+"fix" that.** §17b's reasoning stands and is now load-bearing: the domain carries
+`info@mishram.media`, and moving nameservers to Vercel would move MX, SPF, DKIM and DMARC with them.
+The A/CNAME route achieves the same web routing and touches no mail record. **No MX, SPF, DKIM,
+DMARC or verification record was read, altered or deleted in this revision.**
+
+**SSL is live and valid**: Let's Encrypt, `CN=mishram.media`, `notBefore` 30 Aug 2026, `notAfter`
+28 Nov 2026, chain verified by `curl` on both apex and `www` with no warning.
+
+### 4 — WHAT WAS VERIFIED ON THE LIVE DOMAIN
+
+**Twelve routes, all `200`:** `/`, `/about`, `/privacy`, `/terms`, `/cookies`, all five service
+routes, `/sitemap.xml`, `/robots.txt`.
+
+**SEO, read off the live HTML rather than the source:**
+
+- Every canonical resolves against `https://mishram.media` — the `metadataBase` architecture holds
+  in production, and the domain still appears in exactly one place in the codebase (`config/site.ts`).
+- `sitemap.xml` carries **nine** `https://mishram.media` URLs, once each, with no API route and no
+  hidden service.
+- `robots.txt` allows `/`, disallows `/api/`, declares the host and the sitemap.
+
+**Homepage integrity:** all eleven sections present in the DOM — `hero`, `collaborations`,
+`current-management`, `what-we-do`, `difference`, `creators`, `process`, `work`, `recognition`,
+`about`, `project-inquiry`. **17 images, zero broken.** Exactly one `h1`. **No console errors.**
+Verified visually at desktop and at a phone width, including the new consent notice.
+
+**Contact details, read out of the live DOM:** `mailto:info@mishram.media`, `tel:+919548278558`,
+`https://wa.me/919548278558`, `https://instagram.com/filmybande`,
+`https://www.linkedin.com/in/prashant-mishra-mishram-media`, and the Facebook page. **No `href="#"`,
+no empty href, and every one of the `target="_blank"` links carries `rel="noopener"`.** Links only —
+nothing was sent, dialled or messaged.
+
+**Visibility is unchanged, and was only checked, not touched:**
+
+- **Brand Shoots & Content** — `noindex, nofollow` on the route, absent from the sitemap, and **zero
+  occurrences of `brand-shoots-content` in the HTML of `/`, `/about` or a service page.** §10s's
+  derived hiding survives deployment.
+- **Web & Digital Experiences is public, and that is the recorded state, not a leak.** §10y
+  published it in Revision 21; it is indexable, in the sitemap and linked from discovery. Anyone
+  reading a launch checklist that still describes it as unfinished should read §10y first.
+
+### 5 — THE LIVE LEAD TEST
+
+One synthetic inquiry submitted **from `https://mishram.media`**, landing on
+`/?utm_source=production_test&utm_medium=qa&utm_campaign=domain_launch` and submitting from
+`/services/performance-marketing` **two internal navigations later**.
+
+Stored row: name, email, phone, business and message correct; `services` `{performance}` as a
+`text[]`; `budget` `1l-3l`; `timeline` `30-days`; `source` `website`; `page_path`
+`/services/performance-marketing`; `status` `new`; `email_notification_status` `not_configured`
+with a `null` error.
+
+**All three UTMs survived** — first-touch attribution held across two client-side navigations on the
+real domain, which is the behaviour §10ac §6 designed and this is its first production proof.
+
+`generate_lead` fired **once**, after the row existed, carrying only option ids, a count and a page.
+
+**The synthetic row was then deleted by exact match on the test name and the test email. The `leads`
+table is empty. No real lead has ever existed in it.**
+
+### 6 — THE LIVE GA4 TEST
+
+Run against `https://mishram.media` with cleared storage and cookies.
+
+- `gtag.js` loaded with `id=G-QKQK14BSFG` — **read off the live `<script>` element, not inferred
+  from the env var.** A `NEXT_PUBLIC_` variable is inlined at build time, so this is the only proof
+  that counts.
+- `consent default` with all four signals `denied`, first in `dataLayer`.
+- **Zero `_ga` cookies before answering.**
+- After `Allow analytics`: `_ga` and `_ga_QKQK14BSFG`, and a `consent update` carrying
+  `analytics_storage: granted` **only** — the three advertising signals were never granted.
+- `/` → `/about` → `/services/performance-marketing` produced **exactly three page views, one per
+  navigation**, with the campaign parameters in `page_location` of the first.
+- **Real hits reached Google**: seven requests to `googletagmanager.com` and
+  `google-analytics.com/g/collect` recorded in the page's resource timing.
+
+**Google's own "Test installation" has NOT been run**, and this document does not claim it passed.
+The tag is verifiably live and collecting, which is the precondition for it — the button itself is
+in the client's Google Analytics screen and is theirs to press.
+
+### 7 — WHAT IS STILL OPEN, AND NONE OF IT BLOCKED THE LAUNCH
+
+1. **No notification email.** `RESEND_API_KEY` and `INQUIRY_FROM_EMAIL` are unset, so every lead
+   lands with `email_notification_status: not_configured` and **nobody is told about it.** The lead
+   is safe — that is the whole point of §10ac's ordering — but **until Resend is configured,
+   somebody has to watch the Supabase Table Editor.** This is the single most operationally
+   important item on this list.
+2. **No rate limiting on `/api/inquiry`** — recorded as post-launch hardening since §10h, and still
+   correct as one. **Deliberately not invented during a launch**: a per-process counter is
+   meaningless on serverless, and the honest fixes are provider-level or edge middleware. The
+   honeypot short-circuits before the insert, so bots do not reach the table, and the table is now
+   observable — revisit if junk appears.
+3. **The Netlify remnant.** `netlify.toml` is committed and `.netlify/state.json` (git-ignored) still
+   names site `d41f4d3c-f07e-462d-9e1d-c45c560b4a13`. **There is no live conflict**: the domain
+   resolves to Vercel and is served by Vercel, so nothing about the Netlify site can take
+   `mishram.media` down. What may still be true is that a push to `main` builds the site twice, on
+   two hosts. **Disconnect it as a separate cleanup step, now that Vercel is confirmed live** — not
+   before, and not blindly.
+4. **Git-connected deployments are still blocked** (Hobby plan + private repository, §17b). The
+   plan-vs-visibility decision is unchanged and unmade. `npx vercel deploy --prod` remains the
+   deployment command.
+5. **The consent notice's two buttons are 40px tall on a phone.** That clears WCAG 2.2 AA's 24px
+   minimum comfortably, but it is under the **48px** this project holds itself to for the inquiry
+   form's option rows (§10h). Left alone during a launch rather than changing production for it;
+   worth a one-token fix in the next content pass.
+
+### Verified
+
+- **Types, lint and the production build clean** before the commit and again after it. Twenty
+  routes, all static; `/api/inquiry` still dynamic — `next export` remains forbidden.
+- **`git status` clean, `main` tracking `origin/main`, no secret tracked.** 245 files scanned for
+  four literal secret values: zero hits. Only `.env.example` is tracked, and it holds names.
+- **Live, on `https://mishram.media`:** twelve routes `200`; nine correct canonicals and a nine-URL
+  sitemap; Brand Shoots `noindex` and undiscoverable; SSL valid; `www` and `http` both `308` to the
+  apex; seventeen images, no broken assets, one `h1`, no console errors.
+- **Lead capture proven end to end on the final domain**, UTMs intact across two navigations, then
+  the synthetic row deleted.
+- **GA4 proven live** — real measurement id in the served HTML, consent honoured in both directions,
+  one page view per navigation, real hits reaching Google.
+- **Email DNS untouched.** No MX, SPF, DKIM, DMARC or verification record was read, changed or
+  removed, and the nameservers stay at GoDaddy by design.
