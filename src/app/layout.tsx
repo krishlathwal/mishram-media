@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import { MotionConfig } from "motion/react";
+import { Analytics } from "@vercel/analytics/next";
 
 import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/config/schema";
 import { BRAND, SITE_URL } from "@/config/site";
@@ -165,6 +166,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </ContactProvider>
           </ThemeProvider>
         </MotionConfig>
+        <Analytics />
       </body>
     </html>
   );
