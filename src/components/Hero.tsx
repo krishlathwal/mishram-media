@@ -145,6 +145,7 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="primary"
+                track={{ name: "book_consultation", context: "hero" }}
               >
                 {HERO_COPY.primaryCta}
               </CtaButton>

@@ -4,6 +4,11 @@ import { MotionConfig } from "motion/react";
 
 import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from "@/config/schema";
 import { BRAND, SITE_URL } from "@/config/site";
+import { AnalyticsConsent } from "@/components/analytics/AnalyticsConsent";
+import {
+  AnalyticsBoot,
+  GoogleAnalytics,
+} from "@/components/analytics/GoogleAnalytics";
 import { ContactPanel } from "@/components/contact/ContactPanel";
 import { ContactProvider } from "@/components/contact/ContactProvider";
 import { Footer } from "@/components/Footer";
@@ -104,6 +109,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: themeBootScript }}
           suppressHydrationWarning
         />
+        {/* Denies every Google consent signal and configures the tag with
+            `send_page_view: false`, at parse time — before `gtag.js` is even
+            requested. Sitting beside the theme boot script is the point: both
+            are things that must be true before the first paint, and both are
+            plain inline scripts for that reason. Renders nothing when
+            NEXT_PUBLIC_GA_MEASUREMENT_ID is absent. */}
+        <AnalyticsBoot />
         {/* Organisation and site identity, stated once for the whole site.
             Every property is drawn from `config/site.ts` — see the note in
             `config/schema.ts` for what is deliberately absent and why. */}
@@ -115,6 +127,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full">
+        {/* GOOGLE ANALYTICS 4 — ONE MOUNT FOR THE WHOLE SITE.
+            Every public route renders inside this layout, so the tag covers all
+            of them and a route added later is covered on the day it exists. The
+            Google snippet is deliberately not pasted into any page file.
+            It renders nothing at all without NEXT_PUBLIC_GA_MEASUREMENT_ID,
+            which is configured on Vercel Production only — so Preview, `next
+            dev` and local builds never reach the property. */}
+        <GoogleAnalytics />
+
         {/* reducedMotion="user" strips transform animation for visitors who ask
             for it, leaving the compositions intact with plain fades. */}
         <MotionConfig reducedMotion="user">
@@ -136,6 +157,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 footer belonging to the last section in it. */}
             <Footer />
             <ContactPanel />
+            {/* Last in the tree and last in the tab order: it is a notice, not
+                a gate. Renders nothing once the visitor has answered, and
+                nothing at all where analytics is switched off. */}
+            <AnalyticsConsent />
             </RouteTransition>
             </ContactProvider>
           </ThemeProvider>

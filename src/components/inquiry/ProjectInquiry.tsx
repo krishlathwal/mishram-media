@@ -9,9 +9,15 @@ import {
   whatsappHref,
 } from "@/config/site";
 
+import type { AnalyticsEvent } from "@/config/analytics";
+import { onTrackedClick } from "@/lib/analytics";
+
 import { InquiryForm } from "./InquiryForm";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Where the two direct routes out of the inquiry section were clicked. */
+const INQUIRY_DIRECT = "inquiry_direct";
 
 /**
  * PROJECT INQUIRY — the homepage's last conversion moment.
@@ -83,16 +89,31 @@ export function ProjectInquiry({
             {/* The real published routes, from the shared config. No booking
                 CTA here — the Hero owns that ask. */}
             <ul className="mt-5 border-t border-line">
+              {/* `value` prints the real address and the real number; the
+                  events carry neither — only the method and where it was
+                  clicked. Mishram's own contact details are not visitor PII,
+                  but there is no measurement value in shipping them to Google
+                  either, so they stay here. */}
               <DirectRow
                 label="Email"
                 value={CONTACT.email}
                 href={`mailto:${CONTACT.email}`}
+                track={{
+                  name: "contact_click",
+                  method: "email",
+                  context: INQUIRY_DIRECT,
+                }}
               />
               <DirectRow
                 label="WhatsApp"
                 value={INQUIRY_COPY.whatsappValue}
                 href={whatsappHref(GENERAL_WHATSAPP_MESSAGE)}
                 external
+                track={{
+                  name: "contact_click",
+                  method: "whatsapp",
+                  context: INQUIRY_DIRECT,
+                }}
               />
             </ul>
           </motion.div>
@@ -117,11 +138,13 @@ function DirectRow({
   value,
   href,
   external,
+  track,
 }: {
   label: string;
   value: string;
   href: string;
   external?: boolean;
+  track?: AnalyticsEvent;
 }) {
   return (
     <li className="border-b border-line">
@@ -130,6 +153,7 @@ function DirectRow({
         {...(external
           ? { target: "_blank", rel: "noopener noreferrer" }
           : undefined)}
+        {...(track ? { onClick: onTrackedClick(track) } : undefined)}
         className="group flex items-baseline justify-between gap-4 py-4"
       >
         <span className="caps shrink-0 text-ink-muted transition-colors duration-300 group-hover:text-accent">

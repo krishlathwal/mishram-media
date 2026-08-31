@@ -8,6 +8,7 @@ import { PageLink } from "@/components/ui/PageLink";
 import { ABOUT_COPY } from "@/config/about";
 import { ABOUT_PATH } from "@/config/site";
 import { ABOUT_CHAPTER } from "@/config/sections";
+import { onTrackedClick } from "@/lib/analytics";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -184,6 +185,14 @@ export function About() {
             <div className="flex flex-col items-start gap-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8 lg:justify-end">
               <a
                 href={ABOUT_COPY.primaryCtaHref}
+                /* The homepage's one route into the form. Measured as intent to
+                   start a project, which is exactly what the bridge is for —
+                   and it is a hash link, so it produces no page view of its
+                   own (see `RouteObserver`). */
+                onClick={onTrackedClick({
+                  name: "start_project",
+                  context: "about_bridge",
+                })}
                 className="group inline-flex items-center gap-2.5 text-[0.9375rem] font-medium text-ink"
               >
                 <span className="relative">

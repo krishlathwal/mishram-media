@@ -211,16 +211,28 @@ export function ServiceHero({
               className="mt-9 sm:mt-10"
             >
               <div className="flex flex-wrap items-center gap-3">
+                {/* MEASUREMENT IS DERIVED HERE, NOT PASSED BY FIVE PAGES.
+                    These two slots have fixed meanings on every service route —
+                    the primary is always the booking ask, the secondary always
+                    goes to the inquiry form — so the events belong to the
+                    component that guarantees that, not repeated in five page
+                    files that could drift. **Which** service is not lost:
+                    `page_location` rides on every GA4 event. */}
                 <CtaButton
                   href={primary.href}
                   variant="primary"
+                  track={{ name: "book_consultation", context: "service_hero" }}
                   {...(primary.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : undefined)}
                 >
                   {primary.label}
                 </CtaButton>
-                <CtaButton href={secondary.href} variant="secondary">
+                <CtaButton
+                  href={secondary.href}
+                  variant="secondary"
+                  track={{ name: "start_project", context: "service_hero" }}
+                >
                   {secondary.label}
                 </CtaButton>
               </div>

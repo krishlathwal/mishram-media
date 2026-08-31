@@ -3,6 +3,9 @@
 import { useState } from "react";
 import clsx from "clsx";
 
+import type { AnalyticsEvent } from "@/config/analytics";
+import { track } from "@/lib/analytics";
+
 import { Arrow } from "./Arrow";
 import { Magnetic } from "./Magnetic";
 
@@ -12,6 +15,19 @@ type BaseProps = {
   children: string;
   variant?: Variant;
   className?: string;
+  /**
+   * The measurement this button is worth, if any.
+   *
+   * **Declared as data, not wired by hand.** A caller passes one typed event
+   * from `config/analytics.ts` and the click reporting happens here — which is
+   * why there is no `window.gtag` call in a page file anywhere, and why the
+   * booking CTA reports identically from the hero and from five service routes
+   * without any of them repeating a line of analytics code.
+   *
+   * It never delays or intercepts the click: the event is queued on the way
+   * past and the anchor does what an anchor does.
+   */
+  track?: AnalyticsEvent;
 };
 
 type CtaProps = BaseProps &
@@ -28,7 +44,14 @@ type CtaProps = BaseProps &
  * The whole button also drifts toward the pointer (see Magnetic).
  */
 export function CtaButton(props: CtaProps) {
-  const { children, variant = "primary", className, as = "a", ...rest } = props;
+  const {
+    children,
+    variant = "primary",
+    className,
+    as = "a",
+    track: event,
+    ...rest
+  } = props;
   // Which edge the travelling fill grows from.
   const [origin, setOrigin] = useState<"left" | "right">("left");
 
@@ -37,6 +60,18 @@ export function CtaButton(props: CtaProps) {
   function handleEnter(e: React.PointerEvent<HTMLElement>) {
     const r = e.currentTarget.getBoundingClientRect();
     setOrigin(e.clientX < r.left + r.width / 2 ? "left" : "right");
+  }
+
+  /**
+   * Reports, then hands the click straight back to whatever the caller passed.
+   * The caller's own `onClick` still runs, and still runs even if measurement
+   * is off, missing or blocked.
+   */
+  function handleClick(e: React.MouseEvent<HTMLElement>) {
+    if (event) track(event);
+    (rest as { onClick?: (e: React.MouseEvent<HTMLElement>) => void }).onClick?.(
+      e,
+    );
   }
 
   const shell = clsx(
@@ -118,6 +153,7 @@ export function CtaButton(props: CtaProps) {
           {...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
           className={shell}
           onPointerEnter={handleEnter}
+          onClick={handleClick}
         >
           {content}
         </button>
@@ -126,6 +162,7 @@ export function CtaButton(props: CtaProps) {
           {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
           className={shell}
           onPointerEnter={handleEnter}
+          onClick={handleClick}
         >
           {content}
         </a>

@@ -18,6 +18,8 @@ import {
   type InquiryPayload,
 } from "@/config/inquiry";
 import { whatsappHref } from "@/config/site";
+import { onTrackedClick, track } from "@/lib/analytics";
+import { useInquiryAttribution } from "@/hooks/useInquiryAttribution";
 
 import { Honeypot, OptionGroup, TextAreaField, TextField } from "./fields";
 
@@ -29,15 +31,20 @@ import { Honeypot, OptionGroup, TextAreaField, TextField } from "./fields";
  * is the shared validator from `config/inquiry.ts`, and submission is one
  * `fetch` to `/api/inquiry`.
  *
- * SUBMISSION IS HONEST. The button attempts a real delivery and the success
- * state appears **only** after the server confirms one. WhatsApp is offered as
- * a fallback the visitor chooses — it never opens by itself, and nothing is
- * ever sent behind their back.
+ * SUBMISSION IS HONEST, AND IT NOW MEANS SOMETHING SLIGHTLY DIFFERENT. The
+ * success state appears **only** after the server confirms the inquiry was
+ * *captured* — written to the lead database. Whether the notification email
+ * then went out is Mishram's operational problem, not the visitor's, so a
+ * failed send is invisible here and correctly so: their brief is safe.
  *
- * Errors never clear what was typed. The delivery-not-configured case in
- * particular hands the same details straight to WhatsApp, so a visitor who
- * writes a long brief on a site whose email is not switched on yet does not
- * lose it.
+ * What is still never faked is the other direction. If the brief could not be
+ * stored, no success is shown. WhatsApp is offered as a fallback the visitor
+ * chooses — it never opens by itself, and nothing is ever sent behind their
+ * back.
+ *
+ * Errors never clear what was typed. The not-configured case in particular
+ * hands the same details straight to WhatsApp, so a visitor who writes a long
+ * brief on a site whose backend is not switched on yet does not lose it.
  */
 
 type Status = "idle" | "sending" | "success" | "error" | "unconfigured";
@@ -50,6 +57,26 @@ const FIELD_ORDER: InquiryField[] = [
   "business",
   "message",
 ];
+
+/** GA4's `form_name`, and the site's only form. */
+const FORM_NAME = "project_inquiry";
+
+/**
+ * Which page the form was filled in on, as a **label rather than a URL**.
+ *
+ * Derived from the pathname so no prop has to be threaded through
+ * `ProjectInquiry` from seven different routes, and so a route added later
+ * needs no change here. It is not the page path — `page_path` is sent
+ * separately and `page_location` rides on every GA4 event anyway — it is the
+ * shape of the context, which is what a report is actually read by.
+ */
+function formContext(): string {
+  if (typeof window === "undefined") return "unknown";
+  const path = window.location.pathname;
+  if (path === "/") return "homepage";
+  const service = path.match(/^\/services\/([a-z0-9-]+)/);
+  return service ? `service:${service[1]}` : path.replace(/^\//, "") || "unknown";
+}
 
 export function InquiryForm({
   /**
@@ -70,9 +97,38 @@ export function InquiryForm({
   const [errors, setErrors] = useState<InquiryErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const formRef = useRef<HTMLFormElement>(null);
+  /**
+   * Campaign attribution, read at submit rather than held in state — it is not
+   * something the visitor edits, so it has no business causing a render. It
+   * travels beside the brief and never appears in it: nothing here is shown
+   * back, included in the notification email, or written into the WhatsApp
+   * fallback.
+   */
+  const attribution = useInquiryAttribution();
+  /**
+   * `form_start`, once per mounted form.
+   *
+   * A ref rather than state, because starting the form is not something the
+   * form looks different for — and a ref is what makes "once" true across
+   * every keystroke after the first without a render in between. **Never fires
+   * on page load**: it takes a real edit, which is the whole distinction
+   * between "saw the form" and "began filling it in".
+   */
+  const started = useRef(false);
+
+  const begin = useCallback(() => {
+    if (started.current) return;
+    started.current = true;
+    track({
+      name: "form_start",
+      form_name: FORM_NAME,
+      form_context: formContext(),
+    });
+  }, []);
 
   const set = useCallback(
     <K extends keyof InquiryPayload>(key: K, next: InquiryPayload[K]) => {
+      begin();
       setValue((prev) => ({ ...prev, [key]: next }));
       // Clear a field's error the moment it is being corrected, rather than
       // leaving it shouting until the next submit.
@@ -83,17 +139,21 @@ export function InquiryForm({
         return next;
       });
     },
-    [],
+    [begin],
   );
 
-  const toggleService = useCallback((id: string) => {
-    setValue((prev) => ({
-      ...prev,
-      services: prev.services.includes(id)
-        ? prev.services.filter((s) => s !== id)
-        : [...prev.services, id],
-    }));
-  }, []);
+  const toggleService = useCallback(
+    (id: string) => {
+      begin();
+      setValue((prev) => ({
+        ...prev,
+        services: prev.services.includes(id)
+          ? prev.services.filter((s) => s !== id)
+          : [...prev.services, id],
+      }));
+    },
+    [begin],
+  );
 
   const onSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -122,10 +182,39 @@ export function InquiryForm({
         const response = await fetch("/api/inquiry", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(value),
+          body: JSON.stringify({ ...value, attribution: attribution() }),
         });
 
         if (response.ok) {
+          /**
+           * THE CONVERSION, AND IT IS TIED TO THE DATABASE.
+           *
+           * A `200` from `/api/inquiry` means one thing and only one thing:
+           * **the row was written to Supabase** (§10ac). So this fires exactly
+           * where the visitor is told "Brief received." and nowhere else — not
+           * on a validation error, not on a honeypot (which never reaches this
+           * branch from a real form), not on a failed insert, not when the
+           * WhatsApp fallback is clicked, and not when somebody merely looks at
+           * the form.
+           *
+           * **Nothing the visitor typed is in the payload.** No name, email,
+           * phone, business or message — only option ids, a count, and where
+           * the form was. Everything here is drawn from the allow-lists in
+           * `config/inquiry.ts`, so a free-text field cannot reach GA even by
+           * accident.
+           *
+           * `track` no-ops when analytics is off or blocked, and cannot throw,
+           * so the success state below is never conditional on Google.
+           */
+          track({
+            name: "generate_lead",
+            services: value.services.join(","),
+            service_count: value.services.length,
+            budget_range: value.budget,
+            timeline: value.timeline,
+            page_path: window.location.pathname,
+            form_context: formContext(),
+          });
           setStatus("success");
           return;
         }
@@ -141,14 +230,18 @@ export function InquiryForm({
           return;
         }
 
+        // `storage_not_configured` is the one failure worth naming differently:
+        // nothing is wrong with what the visitor wrote, and retrying will not
+        // help, so the copy says so and points at WhatsApp instead of a button
+        // that would fail again. A `storage_failed` is worth retrying.
         setStatus(
-          data?.error === "delivery_not_configured" ? "unconfigured" : "error",
+          data?.error === "storage_not_configured" ? "unconfigured" : "error",
         );
       } catch {
         setStatus("error");
       }
     },
-    [status, value],
+    [attribution, status, value],
   );
 
   // Sending another inquiry returns the form to the state the route opened in,
@@ -305,6 +398,18 @@ export function InquiryForm({
             href={whatsappHref(inquiryWhatsappMessage(value))}
             target="_blank"
             rel="noopener noreferrer"
+            /* `contact_click`, and deliberately **not** `generate_lead`.
+               This link only exists because the insert failed, so there is no
+               lead — and following it is not proof the visitor ever pressed
+               send inside WhatsApp. Counting it as a conversion would inflate
+               the one number this site is measured on with leads Mishram never
+               received. The prefilled brief is in the href and none of it goes
+               to Google. */
+            onClick={onTrackedClick({
+              name: "contact_click",
+              method: "whatsapp",
+              context: "inquiry_fallback",
+            })}
             className="group inline-flex items-center gap-2.5 text-[0.8125rem] font-medium text-ink"
           >
             <span className="relative">
@@ -334,8 +439,8 @@ export function InquiryForm({
 }
 
 /**
- * Shown only after the server has confirmed a delivery. No response-time
- * promise — that is Mishram's commitment to make, not the site's.
+ * Shown only after the server has confirmed the brief was stored. No
+ * response-time promise — that is Mishram's commitment to make, not the site's.
  */
 function Success({ onAgain }: { onAgain: () => void }) {
   return (

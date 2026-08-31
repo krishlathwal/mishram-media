@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 
 import { Arrow } from "@/components/ui/Arrow";
+import { onTrackedClick } from "@/lib/analytics";
 import {
   CREATORS_COPY,
   CREATOR_SCALE,
@@ -72,6 +73,13 @@ function ProfileLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${person.name} on Instagram`}
+      /* Platform and section only. The handle identifies a person and never
+         leaves this site as analytics data. */
+      onClick={onTrackedClick({
+        name: "creator_profile_click",
+        platform: "instagram",
+        context: "worked_with_index",
+      })}
       className={`wwi-link group/ig ${large ? "wwi-link--lead" : ""}`}
     >
       <span>@{person.instagram}</span>

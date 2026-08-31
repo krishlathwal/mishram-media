@@ -6,6 +6,8 @@ import { motion } from "motion/react";
 import { Arrow } from "@/components/ui/Arrow";
 import { PageLink } from "@/components/ui/PageLink";
 import { SocialIcon } from "@/components/ui/SocialIcon";
+import type { AnalyticsEvent } from "@/config/analytics";
+import { onTrackedClick } from "@/lib/analytics";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { FOOTER_COPY, FOOTER_EQUATION } from "@/config/footer";
 import { LEGAL_LINKS } from "@/config/legal";
@@ -55,6 +57,8 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * `NAV_ITEMS`, contact from `CONTACT`, socials from `SOCIAL_URLS`. Shipping the
  * next service route makes it appear here with no edit to this file.
  */
+const FOOTER = "footer";
+
 export function Footer() {
   const hrefFor = useSectionHref();
   const services = PUBLIC_SERVICE_PAGES.map((page) => resolveServicePage(page.slug));
@@ -87,7 +91,15 @@ export function Footer() {
             <Label>{FOOTER_COPY.contactLabel}</Label>
 
             {/* The most useful thing in the footer, so it is sized like it. */}
-            <a href={`mailto:${CONTACT.email}`} className="group mt-6 inline-block max-w-full">
+            <a
+              href={`mailto:${CONTACT.email}`}
+              onClick={onTrackedClick({
+                name: "contact_click",
+                method: "email",
+                context: FOOTER,
+              })}
+              className="group mt-6 inline-block max-w-full"
+            >
               <span className="relative block truncate font-display text-[clamp(1.0625rem,1.9vw,1.375rem)] leading-[1.2] font-medium tracking-[-0.025em] text-ink">
                 {CONTACT.email}
                 <span
@@ -98,8 +110,17 @@ export function Footer() {
             </a>
 
             <div className="mt-7 flex flex-col items-start gap-3">
-              <TextLink href={`tel:${CONTACT.phone}`}>{CONTACT.phoneDisplay}</TextLink>
-              <TextLink href={whatsappHref(GENERAL_WHATSAPP_MESSAGE)} external>
+              <TextLink
+                href={`tel:${CONTACT.phone}`}
+                track={{ name: "contact_click", method: "phone", context: FOOTER }}
+              >
+                {CONTACT.phoneDisplay}
+              </TextLink>
+              <TextLink
+                href={whatsappHref(GENERAL_WHATSAPP_MESSAGE)}
+                external
+                track={{ name: "contact_click", method: "whatsapp", context: FOOTER }}
+              >
                 {FOOTER_COPY.whatsappLabel}
               </TextLink>
             </div>
@@ -266,6 +287,11 @@ function Socials() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${BRAND.name} on ${social.label}`}
+                onClick={onTrackedClick({
+                  name: "social_outbound",
+                  platform: social.id,
+                  context: FOOTER,
+                })}
                 className="ftr-social group"
               >
                 {inner}
@@ -337,15 +363,19 @@ function TextLink({
   href,
   children,
   external,
+  track,
 }: {
   href: string;
   children: string;
   external?: boolean;
+  /** Declared as data, like every other tracked link on the site. */
+  track?: AnalyticsEvent;
 }) {
   return (
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : undefined)}
+      {...(track ? { onClick: onTrackedClick(track) } : undefined)}
       className={clsx(
         "group inline-flex items-center gap-2 text-[0.9375rem] text-ink/80 transition-colors duration-300 hover:text-ink",
       )}

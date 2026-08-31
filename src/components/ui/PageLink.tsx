@@ -3,6 +3,8 @@
 import Link from "next/link";
 
 import { useRouteTransition } from "@/components/transition/RouteTransition";
+import type { AnalyticsEvent } from "@/config/analytics";
+import { track } from "@/lib/analytics";
 
 /**
  * An internal route link that plays the Mishram signal wipe.
@@ -26,11 +28,18 @@ export function PageLink({
   href,
   children,
   className,
+  track: analyticsEvent,
   ...rest
 }: {
   href: string;
   children: React.ReactNode;
   className?: string;
+  /**
+   * Optional measurement, declared as data — see `CtaButton`. Reported before
+   * the wipe starts and before any modifier-click falls through, so
+   * open-in-new-tab counts exactly like a normal click, which it is.
+   */
+  track?: AnalyticsEvent;
 } & Omit<React.ComponentPropsWithoutRef<typeof Link>, "href" | "children" | "className">) {
   const transition = useRouteTransition();
 
@@ -39,6 +48,7 @@ export function PageLink({
       href={href}
       className={className}
       onClick={(event) => {
+        if (analyticsEvent) track(analyticsEvent);
         if (!transition) return;
         if (event.defaultPrevented) return;
         if (

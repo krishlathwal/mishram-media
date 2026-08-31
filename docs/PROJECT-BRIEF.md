@@ -7522,3 +7522,701 @@ Worth recording so the next pass does not re-derive it:
   and `/about` measures **identically** at 1440×900 before and after, and the computed
   `grid-template-columns` for every rule this pass touched is byte-identical at 1440 and 768. Every
   change is scoped below 640 except the one intended copy fix.
+
+---
+
+## 10ac. LEAD CAPTURE BACKEND — SUPABASE (Revision 25, live in Revision 25B)
+
+**This is a backend task and it changed no design.** Not one component's layout, spacing,
+typography or motion moved. What changed is what happens after the visitor presses
+`Send project brief`, plus the two legal documents that describe it — because §18's standing rule
+is that the policies change in the same commit as the behaviour, never after.
+
+### 1 — THE ONE SENTENCE THIS IS ALL DERIVED FROM
+
+> **The database is the source of truth. The email is a notification.**
+
+Until now `/api/inquiry` wrote nothing anywhere (§10h): it validated, called Resend, and every
+inquiry lived or died on one email send. A missing API key, an unverified sender domain, a provider
+outage or a full mailbox each lost the lead outright — and the site correctly refused to claim
+otherwise, which meant a real prospect who wrote a long brief was told to go and retype it into
+WhatsApp.
+
+The order is now:
+
+```
+validate → honeypot → INSERT → notify → mark the notification → respond
+```
+
+and every branch below falls out of it:
+
+| Case | Response | Why |
+| --- | --- | --- |
+| Insert OK, email sent | **200** | Captured and announced |
+| Insert OK, email failed | **200** | **Captured.** The email is Mishram's problem, not the visitor's — telling them it failed is how you lose a lead you already have |
+| Insert OK, email not configured | **200** | Same. The row records `not_configured` |
+| Insert failed | **502** `storage_failed` | Nothing was captured, so **no success is faked** |
+| No Supabase configured | **503** `storage_not_configured` | Nowhere to put it. Same discipline, applied earlier |
+| Honeypot filled | **200**, nothing written | Answers exactly as success does. **It short-circuits before the store check**, so a bot cannot probe whether the database is configured |
+
+`delivery_not_configured` and `delivery_failed` are **gone**. They named the wrong failure: email
+delivery is no longer something the visitor can be affected by.
+
+### 2 — THE TABLE
+
+`public.leads`, created by `supabase/migrations/20260831202514_create_leads.sql` — one migration,
+version-controlled, no dashboard-only state.
+
+| | |
+| --- | --- |
+| Identity | `id` uuid pk `gen_random_uuid()`, `created_at` timestamptz `now()` |
+| The brief | `name`, `email`, `message` **not null** — the three fields the form requires; `phone`, `business`, `budget`, `timeline` nullable; `services text[]` not null, default empty array |
+| Attribution | `source` not null default `website`, `page_path`, `referrer`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` |
+| Operational | `status` not null default `new`, `email_notification_status` not null default `pending`, `email_notification_error` |
+
+Two CHECK constraints, so a bad value is a database error rather than a silently wrong dashboard:
+`status in (new, contacted, qualified, won, lost, spam)` and
+`email_notification_status in (pending, sent, failed, not_configured)`.
+
+**`services` is a real `text[]`**, not a joined string, so a containment filter works without
+parsing. **Three indexes and no more** — `created_at desc`, `status`, `email`. This is a small
+operational table read by a person in a dashboard; indexing it like an analytics store would be
+cargo cult.
+
+Every column that needs one carries a `comment on`, so the Table Editor explains itself to whoever
+works the leads without them opening this file.
+
+### 3 — WHAT IS DELIBERATELY NOT STORED, AND IT IS A LIST
+
+**No IP address. No user agent. No device or browser fingerprint. No cookie. No session id. No
+generated visitor identifier of any kind.** This is a sales record, not a tracking record, and the
+privacy policy now says so in those words. The temptation is real — every one of those is one line
+in a route handler — and the answer is that none of them helps anybody reply to an inquiry.
+
+`utm_*` and `referrer` are about **the campaign**, not the person. They answer "did the Meta ad
+work", which is a question about Mishram's own spending.
+
+### 4 — RLS: ON, WITH ZERO POLICIES, AND THAT IS THE DESIGN
+
+A table with RLS enabled and **no policies denies every read and every write** to `anon` and
+`authenticated`. That is exactly right, because **the browser must never touch this table**. There
+is no client Supabase provider, no publishable key in the bundle, no `useSupabase` hook and no
+direct insert from the form. The form posts to `/api/inquiry`; that route validates; only that route
+writes.
+
+The single exception is the server's secret key, whose role bypasses RLS by design — which is why
+adding a policy would only widen the surface without enabling anything. `revoke all … from anon,
+authenticated` is belt-and-braces: RLS alone is sufficient today, but a policy added later without
+thinking would then have no table privileges sitting behind it to accidentally open.
+
+**Verified in the build output**: `.next/static` contains **zero** occurrences of
+`SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `service_role`, `sb_secret`, `RESEND_API_KEY`
+or even the string `supabase.co`. `@supabase/supabase-js` is not in the client graph at all.
+
+### 5 — `src/lib/supabase/server.ts`, AND WHY IT STARTS WITH `import "server-only"`
+
+`server-only` is the **one** dependency added beyond the client itself, and it earns its place: it
+turns "a client component imported the secret-key module" from a silent production leak into a
+**build error**. Next already strips non-`NEXT_PUBLIC_` env vars from client bundles, so the leak is
+unlikely — but "unlikely" is not the standard for the file holding the key that bypasses RLS. It is
+one file with zero transitive dependencies. The §15 rule stands otherwise: no ORM, no Prisma, no
+Drizzle, no query builder, no second client.
+
+**Two env names, because Supabase is mid-migration.** Projects now issue `sb_secret_…` keys
+alongside the legacy `service_role` JWT and both authenticate identically. `SUPABASE_SECRET_KEY`
+wins when set; `SUPABASE_SERVICE_ROLE_KEY` is the fallback. Neither is ever `NEXT_PUBLIC_`, logged,
+or returned in a response.
+
+`leadStore()` returns `null` rather than throwing when unconfigured, so
+"not configured" stays a normal branch the route already handles instead of an exception that would
+read like something the visitor did wrong.
+
+### 6 — ATTRIBUTION, AND WHY IT IS NOT ANALYTICS
+
+`useInquiryAttribution` (`src/hooks/`) reads the five standard `utm_*` parameters and the external
+referrer, and hands them to the form at submit. **No library was added and none will be** — §15's
+"no analytics or consent SDK" is what lets the cookie policy say what it says.
+
+- **`sessionStorage`, not a cookie.** A cookie travels on every request and would need a consent
+  banner. This does not travel at all until the visitor presses submit.
+- **`sessionStorage`, not `localStorage`.** A campaign parameter is about *this visit*. One still
+  sitting in `localStorage` in November would attribute a February lead to the wrong ad.
+- **First touch wins.** The entry is written once and never overwritten, so a visitor who arrives
+  from an ad, reads three service pages and then fills the form is still credited to the ad.
+  Internal navigation cannot launder the source. **Verified**: landing on
+  `/?utm_source=meta&utm_medium=paid_social&…`, then navigating to
+  `/services/performance-marketing` with no query string, and the five values are still there.
+- **The referrer is kept only when it is external.** A same-origin referrer is just the previous
+  page of this site and would be noise in the table.
+- **Nothing is written for a direct visit.** No UTMs and no external referrer means no entry at all
+  — writing an empty object would let a later page's referrer masquerade as the source.
+- Every storage call is wrapped. Private windows, disabled site data and embedded webviews all
+  throw here, and the getter falls back to reading the live URL. **Attribution is metadata about a
+  lead and must never be able to cost you the lead.**
+
+`page_path` is read at submit rather than stored — it is a fact about the submission, not the visit.
+`source` stays `website` for a form submission; which ad sent them is `utm_source`'s question, and
+the two are kept apart so neither overwrites the other. `meta_ads` / `google_ads` / `linkedin` /
+`outreach` are **not** invented now.
+
+Attribution travels beside the brief and never appears in it: it is not shown back to the visitor,
+not included in the notification email, and not written into the WhatsApp fallback.
+
+### 7 — DUPLICATES ARE ALLOWED, ON PURPOSE
+
+**No unique constraint on `email`, and no dedupe.** The same person may legitimately inquire twice —
+about a different project, or because the first conversation stalled. Every genuine submission
+creates a row. Deduplication is an operational judgement made by a human looking at the table, not a
+constraint that silently drops a real lead.
+
+### 8 — SPAM: THE HONEYPOT, AND NOTHING ELSE YET
+
+The existing hidden field is preserved exactly, and now short-circuits **before** the insert, so
+bots never reach the table. No CAPTCHA, no bot-detection service, no fingerprinting — the site is
+not experiencing abuse, and the first thing a CAPTCHA costs is real inquiries. Rate limiting remains
+what §17b already recorded: deployment hardening at the provider or edge, not a per-process counter
+that means nothing on serverless. **Revisit if the table starts filling with junk** — which is now
+observable, and was not before.
+
+### 9 — COPY THAT HAD TO CHANGE, AND WHY THAT IS NOT A REDESIGN
+
+Two error strings in `INQUIRY_COPY`. Both used to talk about email, because email was the only thing
+that could fail. Neither mentions it now, because neither case is about email any more:
+
+| | Was | Now |
+| --- | --- | --- |
+| `failed` | "We couldn't **send** this right now…" | "We couldn't **save** this right now. You can try again, or continue on WhatsApp." |
+| `unconfigured` | "**Email delivery** isn't switched on for this site yet…" | "This site isn't set up to receive inquiries yet. Your details are still here — you can send them straight to us on WhatsApp." |
+
+Everything else in §10h stands: no response-time promise, errors never clear what was typed, the
+success state appears only after a confirmed capture, and **WhatsApp never opens by itself.**
+
+### 10 — THE LEGAL DOCUMENTS, REWRITTEN IN THE SAME COMMIT
+
+§18: *"If the site gains an analytics tool, a cookie, an embed or a new processor, the policy changes
+in the same commit — never after."* It gained a processor and a second piece of browser storage.
+
+**`/privacy`:**
+
+- **"The route does not write your inquiry to a database, a file or a log" is deleted.** It was true
+  and is now false, and leaving it would have been the single worst line on the site.
+- *How an inquiry actually travels* now says the inquiry is **saved to our database first**, that
+  **Supabase** hosts it, that the email is a **notification** sent afterwards, and — in plain words —
+  that a failed email does not mean a lost inquiry, because that is the whole point of the order.
+- *What we collect* gains the page it was sent from and the campaign that sent them, with the reason
+  ("so we know which of our own efforts actually reach people") and the exception ("if you came here
+  directly there is nothing to record").
+- *What we do not collect* now states explicitly: **no IP address, no user agent, no device details,
+  no identifier**, and that reading the site records nothing.
+- *Who else is involved* gains **Supabase**; Resend is relabelled as delivering the **notification**.
+  The list ends "We do not sell, rent or trade inquiry information to anyone."
+- *How long we keep things* now names **both** places — database and inbox — and a deletion request
+  removes it from both.
+
+**`/cookies`:** *The one thing that is stored* became **the two things**. The new entry is named
+(`mishram-attribution`), explained, and its lifetime stated: session storage, scoped to the tab,
+gone when it closes, never used to recognise anybody. The no-cookie claim is untouched and still
+true. The consent-banner paragraph was rewritten to justify itself on what the storage *does* rather
+than on there being none of it.
+
+**Not written:** anything alarming, anything technical for its own sake, and any claim about
+hosting, encryption or compliance that this project cannot verify.
+
+### 11 — NOT BUILT, DELIBERATELY
+
+No admin login, no lead dashboard, no pipeline UI, no automated follow-up, no email sequence, no
+lead scoring, no CRM integration and no Slack alert. **The Supabase Table Editor is the CRM for
+launch** — `created_at`, `name`, `email`, `phone`, `business`, `services` and `status` are all
+plainly inspectable, and `status` is a hand-edited CHECK-constrained column precisely so a person
+can work the pipeline in the dashboard.
+
+§10h's "the natural attachment point for a CRM" is still the plan, and is still not this task.
+
+### 12 — DEPENDENCIES
+
+`@supabase/supabase-js@^2.112` and `server-only@^0.0.1`. **That is the entire addition.** Resend is
+still one server-side `fetch` with no npm package (§15). No ORM, no Prisma, no Drizzle, no
+validation library, no analytics SDK.
+
+### 13 — FILES
+
+```
+supabase/migrations/20260831202514_create_leads.sql   new — the table, indexes, RLS, comments
+src/lib/supabase/server.ts                            new — server-only client, leadStore()
+src/hooks/useInquiryAttribution.ts                    new — utm_* + external referrer, first touch
+src/app/api/inquiry/route.ts                          rewritten — insert, then notify, then mark
+src/config/inquiry.ts                                 + attribution vocabulary; two error strings
+src/components/inquiry/InquiryForm.tsx                sends attribution; new error mapping
+src/config/legal.ts                                   privacy + cookies rewritten (§10 above)
+.env.example                                          + SUPABASE_URL and the secret-key names
+.gitignore                                            + supabase/.temp, supabase/.branches
+```
+
+### 14 — PRODUCTION ENVIRONMENT VARIABLE NAMES
+
+Names only. **No value belongs in this document.**
+
+| Variable | Required | Without it |
+| --- | --- | --- |
+| `SUPABASE_URL` | **yes** | `/api/inquiry` answers `storage_not_configured`; the form says so and offers WhatsApp |
+| `SUPABASE_SECRET_KEY` **or** `SUPABASE_SERVICE_ROLE_KEY` | **yes** | Same. Secret wins if both are set |
+| `RESEND_API_KEY` | no | Lead still captured; row records `not_configured` |
+| `INQUIRY_FROM_EMAIL` | no | Same. Still deliberately has no default (§10h) |
+| `INQUIRY_TO_EMAIL` | no | Defaults to `CONTACT.email` |
+| `NEXT_PUBLIC_BOOKING_URL` | no | Booking CTAs fall back to WhatsApp |
+
+**The first two are what changed the deployment checklist.** §17b recorded a site whose missing env
+vars were all optional; two are now required for the form to work at all.
+
+### 15 — THE SUPABASE ACCOUNT, AND IT IS NOW LIVE (Revision 25B)
+
+Revision 25 left this section as the one outstanding block: the CLI could not authenticate without a
+TTY, and the MCP connection exposes no organization-creation call. **The client authenticated, and
+everything behind it is now done.**
+
+**One correction worth recording**, because it changes what "the account" means: the MCP connection
+sees **one** organization, but the authenticated CLI sees **three**. `krishlathwal's Org`
+(`krishlathwal's Project`, `ap-southeast-2`, paused) was invisible to the MCP token. Do not treat
+the MCP's organization list as the account's inventory.
+
+| | |
+| --- | --- |
+| Organization | **`Mishram Media`** — `qgubicgcimfosaqwxeov`. **Created**, not reused |
+| Plan | **Free.** `supabase orgs create` completed with no card, no plan selection and no charge |
+| Project | **`mishram-media-leads`** — ref `cfequtbkoqyfvfzwxesc` |
+| Region | **`ap-south-1` (Mumbai)** — the audience is India |
+| Postgres | 17.6, `ACTIVE_HEALTHY`, verified with a live query before the migration ran |
+| Dashboard | `https://supabase.com/dashboard/project/cfequtbkoqyfvfzwxesc` |
+
+**`Mishram Foundation` was not used and was not touched.** Neither was its `mishram.org` project.
+The linked ref was read back off `supabase/.temp/project-ref` and checked against the new project
+before `db push` was allowed to run — the one command in this task that could have written to the
+wrong database.
+
+**The database password** was generated locally at 40 characters from a hardened alphabet, passed to
+`projects create` through a shell variable so it never appeared in a command line, and written only
+to `supabase/.temp/db-password` — ignored by both `.gitignore:42` and the `supabase/.gitignore`
+that `supabase init` created. It is not in this document, the repository, the source, the migration
+or any report.
+
+**`supabase init` was run**, adding `supabase/config.toml` and `supabase/.gitignore`. The config is
+the stock template — scanned, and every `secret` / `password` / `token` line in it is a commented
+placeholder. Both are safe to commit; `supabase/.temp/` is not, and is excluded twice over.
+
+**The migration was applied by `supabase db push`, not by hand.** No table was created in the
+dashboard, and there is no second leads table. `migration list` showed
+`local 20260831202514 / remote (empty)` before, and the push applied exactly that one file.
+
+### 16 — THE SCHEMA, VERIFIED AGAINST THE LIVE DATABASE (Revision 25B)
+
+Read back from `information_schema` and `pg_catalog` rather than assumed:
+
+- **All 21 columns present, in the specified order**, with the right types and nullability. `id` uuid
+  pk `gen_random_uuid()`; `created_at` timestamptz `now()`; `services` is `_text` — a real `text[]` —
+  not null, default `'{}'::text[]`; `source` default `'website'`; `status` default `'new'`;
+  `email_notification_status` default `'pending'`.
+- **Both CHECK constraints exist with the exact value sets** — `leads_status_check` over
+  `new, contacted, qualified, won, lost, spam`, and `leads_email_notification_status_check` over
+  `pending, sent, failed, not_configured`.
+- **Exactly three indexes plus the primary key** — `leads_created_at_idx (created_at DESC)`,
+  `leads_status_idx`, `leads_email_idx`. Nothing was added.
+
+**RLS is `ENABLED` with zero policies and zero grants**, which is the design §4 above describes.
+`has_table_privilege` returns **false for `anon` and `authenticated` on SELECT, INSERT, UPDATE and
+DELETE**, and true for `service_role` on all four.
+
+**Proved at runtime, not just in the catalog.** The live REST API was called with the project's
+publishable key:
+
+```
+GET  /rest/v1/leads   → 401  permission denied for table leads
+POST /rest/v1/leads   → 401  permission denied for table leads
+```
+
+**The one Supabase security advisory on this project is `rls_enabled_no_policy` at `INFO`**, which
+is this design being described back to us, not a defect. There is no `WARN` and no `ERROR`. Do not
+"fix" it by adding a policy.
+
+### 17 — THE LIVE TESTS (Revision 25B)
+
+All four paths were exercised against the real project. **Every synthetic row was deleted
+afterwards, and the table is empty.**
+
+| Test | Result |
+| --- | --- |
+| **Capture, through the real form in a browser** | `200`. Row written with every field correct |
+| **Email not configured** | `200`, `email_notification_status = not_configured`, error `null` |
+| **Email failure** | `200`, `email_notification_status = failed`, error `provider 401: API key is invalid` — **32 characters**, no key echoed, no stack trace |
+| **Database failure** | `502 storage_failed`, **no row written, no fake success** |
+
+**Normalisation verified on the real row.** `TEST+Supabase@Mishram.Media` typed into the form was
+stored as `test+supabase@mishram.media`; leading and trailing whitespace was trimmed from the name;
+and **`+91 99999 99999` was stored exactly as typed** — the phone rule holds, no country code was
+invented, nothing was reformatted.
+
+**Attribution verified end to end.** Landing on
+`/services/performance-marketing?utm_source=integration_test&utm_medium=qa&utm_campaign=supabase_launch&utm_content=form_test&utm_term=lead_capture`
+and submitting stored all five parameters, `page_path = /services/performance-marketing`,
+`source = website` and `referrer = null` — **nothing invented for a direct visit**. The route's
+preselected `performance` arrived as a `text[]` of one element.
+
+**`services` stores option ids, not labels** — `{performance}`, not `{Performance Marketing}`. That
+is deliberate: ids are the allow-list and are stable, labels are editorial copy that has already
+changed once on this site. The column comment records the mapping for whoever reads the table.
+
+**The email-failure test used an obviously invalid key** (`re_invalid_key_for_failure_path_test`)
+in a temporary `.env.local`, restored from a backup immediately afterwards. **No real credential was
+created, used or exposed to exercise a failure path.** The database-failure test replaced the
+Supabase secret with an invalid string for one submission — **the project itself was never deleted,
+paused or reconfigured**, and the table was untouched throughout.
+
+**The database-failure UI was driven in the browser**, not inferred: the honest notice
+*"We couldn't save this right now. You can try again, or continue on WhatsApp."*, **no success
+state**, the retry button still present, and `Continue on WhatsApp` →
+`https://wa.me/919548278558` carrying the full brief with every typed value preserved.
+
+**One thing the tests exposed about `sessionStorage`, and it is the feature working.** The second
+campaign test initially recorded the *first* test's UTMs, because the browser tab had never been
+closed and first-touch attribution refuses to overwrite itself. That is exactly the behaviour §6
+specifies. A real campaign visitor arrives on a fresh page load; an agent re-running tests in one
+tab has to clear the entry, which is what was done.
+
+### 18 — THE TABLE EDITOR (Revision 25B)
+
+`public.leads` is listed through the same Management API the dashboard's Table Editor reads —
+RLS enabled, and carrying its table comment. `created_at`, `name`, `email`, `phone`, `business`,
+`services` and `status` are all plain columns, and `status` is the hand-edited CHECK-constrained
+one. **No custom admin UI was built and none is planned for launch.**
+
+### 19 — VERCEL (Revision 25B)
+
+`.vercel/project.json` was read before anything was written: `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L` /
+`mishram-media` under `team_8EBVpOomRw1AwITgcDqlTQgZ` — **the correct project, and not the
+Foundation's `mishramngo`.** The project had **no environment variables at all** (§17b said so, and
+it was still true).
+
+**`SUPABASE_URL` and `SUPABASE_SECRET_KEY` are now set for Production and Preview**, both stored as
+Vercel Secret type. **Development is deliberately not configured** — local development reads
+`.env.local`, and a second copy of a secret is a second place to leak it from.
+
+`RESEND_API_KEY`, `INQUIRY_FROM_EMAIL` and `INQUIRY_TO_EMAIL` remain unset everywhere. That is a
+choice, not an oversight: the form works without them and the row records `not_configured`.
+
+### 20 — THE CREDENTIAL, AND WHICH ONE
+
+The project issues **both** key models. It exposes a modern `sb_secret_…` key, so **that is the one
+in use** and `SUPABASE_SECRET_KEY` is the only name configured — locally and on Vercel.
+`SUPABASE_SERVICE_ROLE_KEY` stays supported in `server.ts` and documented in `.env.example` for a
+project on the legacy scheme, but **it is not set anywhere**, because two names holding the same
+credential is two things to rotate.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes; `/api/inquiry` still dynamic,
+  which it must be — `next export` remains forbidden (§17b).
+- **Every route branch exercised against the live dev server**: valid payload → `200` with a real
+  row; honeypot → `200` with nothing written; bad name, bad email and short message → `400
+  validation` carrying all three field errors; non-JSON body → `400 invalid_request`; unconfigured
+  storage → `503 storage_not_configured`; broken credential → `502 storage_failed`.
+- **No secret reaches the browser.** A clean `npm run build`, then `.next/static` scanned two ways:
+  by name (`SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_SECRET_KEY`, `service_role`, `sb_secret`,
+  `RESEND_API_KEY`, `supabase.co`) → **0 files**; and by **literal value**, searching all 47 client
+  files for the actual configured secret, URL and OIDC token → **0 occurrences**, without the values
+  being printed.
+- **`git status` carries no credential.** `.env.local` is ignored by `.gitignore:34`;
+  `supabase/.temp/db-password` by `supabase/.gitignore:3`; the only env file tracked is
+  `.env.example`, which holds names and no values. A dry-run `git add supabase/` stages exactly
+  three files: `.gitignore`, `config.toml` and the migration.
+- **The leads table is empty.** Three synthetic rows from the first pass and one from the final
+  proof were deleted by an exact match on the test name *and* the test email. No real lead has ever
+  existed in it.
+
+---
+
+## 10ad. GOOGLE ANALYTICS 4 (Revision 26)
+
+**Measurement, not a redesign.** No composition, spacing, typography or motion moved. One new piece
+of UI exists — a small consent notice — and it exists because the alternative was measuring people
+without asking them.
+
+The property is **`G-QKQK14BSFG`**, and **that string appears in exactly one place in this
+repository: nowhere.** It lives in `NEXT_PUBLIC_GA_MEASUREMENT_ID` on Vercel Production, is read
+once by `config/analytics.ts`, and no component contains it.
+
+### 1 — ONE MOUNT, AND THAT IS THE WHOLE INSTALLATION
+
+Google's snippet is **not pasted into a single page file.** `app/layout.tsx` renders two things:
+
+| Piece | Where | Strategy |
+| --- | --- | --- |
+| `<AnalyticsBoot />` | inside `<head>`, beside `themeBootScript` | plain inline `<script>`, parse time |
+| `<GoogleAnalytics />` | top of `<body>` | `next/script`, `afterInteractive` |
+
+Every public route renders inside that layout, so all of them are covered and **a route added
+tomorrow is covered on the day it exists** — the same argument §10j makes for the service-page
+registry. Verified against the running server: `/`, `/about`, `/privacy`, `/terms`, `/cookies` and
+all five service routes each carry `id="ga-boot"` **exactly once**.
+
+**No Google Tag Manager.** GA4 through `gtag.js` directly: one script, no container, no second
+configuration surface that can disagree with this file. **No npm package either** — §15's rule
+holds, and this revision added **zero dependencies**.
+
+### 2 — THE ORDER IN `dataLayer` IS THE ARCHITECTURE
+
+The inline boot script is a plain `<script>` rather than `next/script`'s `beforeInteractive` for
+the same reason `themeBootScript` is one: it must execute at parse time, and being written first in
+`<head>` is sufficient — no framework mechanism required, and no lint rule to suppress. It runs:
+
+```
+consent default  — all four signals denied
+  → consent update — analytics_storage: granted, ONLY if this visitor already allowed it
+    → js
+      → config G-…, send_page_view: false
+```
+
+`gtag()` only pushes into `dataLayer`, so all of that is queued before Google's library is even
+requested and replayed in order when it arrives. **That closes the race the plan named** — *page
+tracked → visitor rejects → too late*. Verified in the browser: a returning visitor who chose
+`Only necessary` produces `consent default` and nothing else; one who chose `Allow analytics`
+produces `default` then `update granted`, both ahead of `config`.
+
+### 3 — `send_page_view: false`, AND THE DUPLICATE IT PREVENTS
+
+`gtag('config', …)` sends a page view on load and then never again — right for a
+document-per-navigation site, wrong for this one, where the header, the route wipe and every
+internal link navigate on the client. Leaving it on *and* tracking route changes is how a site ends
+up with **two** page views for its landing page and one for every page after it.
+
+So it is off, and `components/analytics/RouteObserver.tsx` sends every view **including the first**.
+
+**What counts as a navigation is `pathname` and `searchParams`, and nothing else:**
+
+- **A hash does not.** `#about`, `#creators`, `#project-inquiry` are how this homepage is read —
+  §10g made the whole navigation native anchors — and a visitor scrolling six chapters would
+  otherwise look like six page views. This is the single biggest source of inflated page views on a
+  one-page site, and it is designed out rather than filtered later.
+- **Query changes do**, so `/?utm_source=meta` is a distinct arrival. GA4 reads the standard `utm_*`
+  parameters out of `page_location` itself; **no second attribution system was built**, and the
+  Supabase session attribution from §10ac is untouched and still answers a different question.
+- **Back and forward do.**
+
+A ref holds the last URL actually reported, which stops React's development Strict Mode double
+effect, a parent re-render, and a `searchParams` object that changes identity without changing
+value — none of which are navigations.
+
+`useSearchParams` makes its subtree dynamic, so it sits behind a `<Suspense>` boundary. **Without
+it, adding analytics would have quietly opted the entire site out of static generation.** All twenty
+routes still prerender.
+
+**Measured, not asserted** — `/ → /about → /services/performance-marketing → /` produced exactly
+four page views, one per navigation; two hash changes in between produced **none**; back and forward
+produced one each.
+
+### 4 — CONSENT: DENIED BY DEFAULT, AND THE TAG STILL LOADS
+
+Consent Mode v2, **advanced**: `gtag.js` loads on every page and all four signals start `denied`.
+With `analytics_storage: denied` the tag sets no cookie and stores no identifier.
+
+**This was a real decision and it is worth recording the alternative.** *Basic* consent mode — not
+loading Google's script at all until someone allows it — is marginally more private and was
+seriously considered. It was rejected for one concrete reason: **Google's own "Test installation"
+check loads the site as a fresh visitor with no consent, so under basic mode it would find no tag
+and report the installation as failed.** Advanced mode is Google's documented architecture, gives
+the same guarantee that matters (nothing is stored before consent), and is what the plan asked for —
+its test 10 says consent rejection prevents *storage*, which is exactly this.
+
+**Proved in the browser, on a cleared profile:**
+
+| State | `_ga` cookies |
+| --- | --- |
+| Loaded, not yet answered | **none** |
+| After `Only necessary` | **none** |
+| After `Allow analytics` | `_ga`, `_ga_<property>` |
+
+`ad_storage`, `ad_user_data` and `ad_personalization` are **never granted, by any path.** There is
+no advertising tag on this site, so asking for permission it cannot use would be theatre — and
+`setConsent` only ever writes `analytics_storage`.
+
+**The notice.** A hairline card bottom-left in the site's own type: a `.caps` label, one sentence,
+`Allow analytics` / `Only necessary`, and a quiet `Privacy` link. **Not a modal, no scrim, no focus
+trap, no dismiss-without-answering X** — closing a consent prompt is not an answer, and treating it
+as one is the dark pattern the plan said not to build. Neither button is styled as the wrong one.
+Real `<button>`s in the tab order, `aria-live="polite"`, visible focus rings, and an entrance of
+opacity plus 8px that `MotionConfig reducedMotion="user"` strips to a plain fade.
+
+The answer is `localStorage["mishram-analytics-consent"]` — **its own key**, never the theme's — and
+is read through `useSyncExternalStore` with a server snapshot of "answered", the same idiom
+`ThemeProvider` uses. So the notice is absent from the prerendered HTML, appears after hydration only
+for someone who has not replied, and **there is no copy of the choice in React state.**
+
+### 5 — `generate_lead`, AND WHAT IT IS TIED TO
+
+Fired at exactly one line: the `response.ok` branch of `InquiryForm`'s submit. A `200` from
+`/api/inquiry` means one thing — **the row was written to Supabase** (§10ac) — so the conversion and
+the words *"Brief received."* are the same event.
+
+**It does not fire** on a validation error, on the honeypot, on a failed insert, when the WhatsApp
+fallback is clicked, or when somebody merely opens the form. Verified: a submission with the
+database credential broken produced `page_view`, `form_start`, and **zero** `generate_lead`.
+
+The payload, read out of `dataLayer` on a real submission:
+
+```
+generate_lead {
+  services: "performance", service_count: 1,
+  budget_range: "1l-3l", timeline: "30-days",
+  page_path: "/services/performance-marketing",
+  form_context: "service:performance-marketing"
+}
+```
+
+**Every value is an option id from `config/inquiry.ts`'s allow-lists, a count, or a place.** No name,
+email, phone, business or message — and not by discipline alone: `AnalyticsEvent` is a discriminated
+union whose every field is a fixed semantic string or number, so a free-text field **cannot** reach
+Google even by typo.
+
+### 6 — THE EVENT VOCABULARY, AND WHY IT IS SHORT
+
+| Event | Parameters | Where |
+| --- | --- | --- |
+| `page_view` | `page_title`, `page_location`, `page_path` | every navigation |
+| `generate_lead` | services, service_count, budget_range, timeline, page_path, form_context | confirmed capture only |
+| `form_start` | `form_name`, `form_context` | first real edit, once per form instance |
+| `book_consultation` | `context` | hero, five service heroes, contact panel |
+| `start_project` | `context` | service heroes, About bridge |
+| `contact_click` | `method` (whatsapp/email/phone), `context` | contact panel, footer, inquiry direct rows, inquiry fallback |
+| `social_outbound` | `platform`, `context` | footer rail, contact panel |
+| `creator_profile_click` | `platform`, `context` | roster, worked-with index |
+| `service_explore` | `service_slug`, `context` | `Explore service ↗` |
+
+**Deliberately not tracked:** mouse movement, scroll depth, hover, theme switches, menu opens, FAQ
+expands, and the footer/menu service links — those are ordinary navigation and are already page
+views. **Useful analytics, not event noise.**
+
+`service_explore` sends the **slug**, never the label: the slug is what the route is built from, the
+label is editorial copy that has already been rewritten once (§10).
+
+### 7 — WIRED AS DATA, NOT AS CALLS
+
+**`window.gtag` is called in exactly one file**, `lib/analytics.ts`. There is no `(window as any)`
+anywhere; `Window` is properly augmented with a typed `gtag`.
+
+Components declare measurement rather than performing it. `CtaButton` and `PageLink` — the site's two
+shared link abstractions — take an optional typed `track` prop; `Footer`'s `TextLink` and
+`ProjectInquiry`'s `DirectRow` take the same; the contact panel's four rows carry `track` as a field
+**in the channel table, next to the href**, so one `onClick` in one loop covers all of them.
+
+The best example is `ServiceHero`: its primary is always the booking ask and its secondary always
+goes to the inquiry form, so **the events live in the component that guarantees that** rather than
+being repeated across five page files that could drift. Which service is not lost — `page_location`
+rides on every GA4 event.
+
+Tracking never delays or intercepts a click. `onTrackedClick` queues the event and returns; the
+anchor does what an anchor does.
+
+### 8 — ANALYTICS CANNOT BREAK THE SITE
+
+Every helper no-ops when the tag is off, when the script has not loaded, when an ad blocker removed
+it, or when anything throws. `track()` is wrapped; `pageView()` is wrapped; `setConsent()` still
+writes the visitor's choice even if Google is unreachable.
+
+**Supabase remains the source of truth and GA is measurement.** Nothing about lead capture depends on
+`gtag`: the success state is set from the HTTP response, not from a successful event, and no GA data
+is written into `leads`.
+
+**With `NEXT_PUBLIC_GA_MEASUREMENT_ID` absent, the site is byte-identical to before this revision** —
+verified: `/`, `/about`, `/privacy` and a service route each served `200` with **zero** analytics
+references in the HTML, and a real inquiry still stored successfully.
+
+### 9 — PRODUCTION ONLY, AND HOW THAT IS ENFORCED
+
+| Environment | Tag |
+| --- | --- |
+| Production (`mishram.media`) | on |
+| Vercel Preview | **off** — variable not set |
+| `next dev` / local `npm run build` | **off** — variable not set |
+
+One condition — `analyticsEnabled = GA_MEASUREMENT_ID.length > 0` — rather than a hostname
+allow-list that would break the first time a domain changed. A developer who *does* set it locally
+gets `debug_mode: true` (from `NODE_ENV`), so their hits land in GA4's **DebugView** instead of the
+reports. **That is Google's own mechanism for this, not an invented one**, and it means nobody has to
+dismiss a consent notice to work on the site.
+
+**All local verification for this revision used a deliberately fake property, `G-LOCALTEST00`**, so
+not one test hit could reach `G-QKQK14BSFG`.
+
+### 10 — THE LEGAL DOCUMENTS, REWRITTEN IN THE SAME COMMIT
+
+§18 again: *the policy changes in the same commit as the behaviour, never after.* The site gained a
+processor, a third piece of browser storage and — conditionally — its first cookie.
+
+**`/privacy`:** *"This site runs no analytics"* is **gone.** A new chapter, *Google Analytics, and
+what we ask you first*, explains in plain words what it is for, that it runs in a no-storage mode
+until you answer, what Google processes if you allow it, that advertising is switched off entirely
+whichever you choose, and — as a list — that **your name, email, phone, business name and message
+are never sent to Google.** *What we do not collect* keeps its exactness but no longer over-claims.
+Google Analytics joins the processor list.
+
+**`/cookies`:** the lead and the whole opening are rewritten. It now says the site sets **no cookies
+of its own**, that **one** cookie is possible and only after `Allow analytics`, and names them —
+`_ga` and a second beginning `_ga_`. **No expiry is quoted**, because that is Google's setting to
+change and a number here would be wrong the moment it did. Two new sections cover each answer.
+*The one thing that is stored* became **the three things**, adding `mishram-analytics-consent`.
+*Third-party cookies* became *Third-party scripts* and names GA as the only one — while still saying
+plainly that marketing cookies, the Facebook Pixel, Google Ads and the LinkedIn Insight Tag **do not
+exist here**, which is the point: the document tracks the site in both directions.
+
+The audit table at the head of `config/legal.ts` was updated too, so the record of what the old site
+claimed and what this one does stays honest.
+
+### 11 — PERFORMANCE
+
+`gtag.js` is `afterInteractive` — requested after hydration, so it never competes with the WebGL
+hero for the main thread and is not in front of LCP. §16 stands: the hero remains the only heavy
+runtime cost.
+
+**First-party JavaScript is essentially unchanged**: no dependency was added, and the whole
+implementation is one config file, one lib file, three small components and a handful of props. The
+inline boot script is a few hundred bytes in `<head>`. All twenty routes still prerender statically —
+the `Suspense` boundary is what protects that.
+
+### 12 — GOOGLE ADS: READY, AND DELIBERATELY ABSENT
+
+**No `AW-` conversion id and no conversion label**, because none was supplied and inventing one
+would be a fabrication of exactly the kind §9 and the legal audit exist to prevent. The three `ad_*`
+consent signals already exist and are already denied; the event union is the place a future Ads
+conversion would be declared. **This revision is GA4 only.**
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes, all still static;
+  `/api/inquiry` still dynamic.
+- **Global coverage measured, not assumed** — nine public routes each serve `id="ga-boot"` exactly
+  once, with `consent default` all-denied and `send_page_view: false` in the served HTML.
+- **Page views:** one on load, one per client navigation, one per back/forward, **none** for a hash
+  change. The `/ → /about → /services/performance-marketing → /` walk produced exactly four.
+- **Consent:** default denied; `Only necessary` → no `_ga` cookie ever, notice never returns;
+  `Allow analytics` → `_ga` + `_ga_<property>`, and on the next load `update granted` is queued
+  ahead of `config`. Advertising signals never granted.
+- **`generate_lead` fires once on a confirmed capture and zero times on a database failure.** The
+  WhatsApp fallback fires `contact_click` with `context: inquiry_fallback` — **never**
+  `generate_lead`, because a failed insert is not a lead and following a link is not proof a message
+  was sent.
+- **Every CTA event exercised in the browser** — `book_consultation` (hero, panel), `contact_click`
+  (footer ×3, panel ×3, inquiry fallback), `social_outbound`, `service_explore` ×3 with correct
+  slugs, `start_project`, `creator_profile_click` from both indexes, `form_start` once across
+  seventeen keystrokes.
+- **No PII in any payload**, read out of `dataLayer` rather than reasoned about, and structurally
+  impossible: every parameter in the union is a fixed semantic string or number.
+- **Missing id does not break the site** — four routes `200` with zero analytics references, and an
+  inquiry still stored.
+- **No secret in the client bundle or in git.** `.next/static` scanned by name and by literal value
+  (0 of each); 245 tracked and untracked files scanned for the live Supabase secret, the OIDC token
+  and the database password — **0 leaks**.
+- **Synthetic rows deleted.** The `leads` table is empty.
+- **Vercel:** `NEXT_PUBLIC_GA_MEASUREMENT_ID` set on **Production only**, value read back and
+  confirmed as `G-QKQK14BSFG`. Preview and Development deliberately unset.
+- **Google's "Test installation" is PENDING.** It cannot pass until `mishram.media` is redeployed —
+  a `NEXT_PUBLIC_` variable is inlined at build time, so **the tag will not exist in production
+  until a new deployment is made.** Nothing about this revision has been verified against the live
+  domain, and nothing here claims it has.

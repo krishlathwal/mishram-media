@@ -1,41 +1,73 @@
+import { leadStore } from "@/lib/supabase/server";
 import { CONTACT } from "@/config/site";
 import {
   INQUIRY_BUDGETS,
   INQUIRY_SERVICES,
   INQUIRY_TIMELINES,
+  coerceAttribution,
   coerceInquiry,
   labelsFor,
   validateInquiry,
+  type InquiryAttribution,
   type InquiryPayload,
 } from "@/config/inquiry";
 
 /**
- * POST /api/inquiry — delivers a project inquiry.
+ * POST /api/inquiry — captures a project inquiry.
  *
- * **Server-side on purpose.** The browser never holds a provider credential and
- * never talks to an email API directly; it posts here, and this route is the
- * only thing that knows the key.
+ * **Server-side on purpose.** The browser never holds a provider credential,
+ * never talks to an email API and — since the lead database arrived — never
+ * talks to Supabase either. It posts here; this route is the only thing that
+ * holds either key.
  *
- * **It delivers, and that is all it does.** No database, no file, no log of the
- * message. There is nowhere for an inquiry to sit on this server — which is
- * also why the microcopy under the form can honestly say the details are only
- * used to reply.
+ * ── THE ORDER IS THE WHOLE DESIGN ──────────────────────────────────────────
  *
- * Delivery is a plain `fetch` against Resend's REST API rather than their npm
- * package: one less runtime dependency for one HTTP call (§15, §16).
+ * ```
+ * validate → honeypot → INSERT → notify → mark the notification → respond
+ * ```
+ *
+ * **The database is the source of truth and the email is a notification.**
+ * That sentence decides every branch below:
+ *
+ * - The insert happens **before** the email, so a delivery failure cannot lose
+ *   an inquiry. It only writes `failed` into a column.
+ * - A failed email therefore returns **200**. The visitor's brief was captured;
+ *   telling them otherwise would be a lie that costs Mishram the lead when they
+ *   give up rather than resend.
+ * - A failed *insert* returns an error and **no success is faked**, because
+ *   there is then genuinely nothing on the server. The form says so and offers
+ *   WhatsApp — a link the visitor chooses to follow, which never opens itself.
+ *
+ * The previous version of this route wrote nothing anywhere (§10h): every
+ * inquiry lived or died on one email send. That is what changed.
+ *
+ * Both outbound calls stay plain `fetch`/one client. Resend has no npm package
+ * here for one HTTP call (§15); Supabase has `@supabase/supabase-js` because
+ * hand-rolling PostgREST auth would be the worse trade.
  *
  * RESPONSES
  *
  * | Status | `error` | Meaning |
  * | --- | --- | --- |
- * | 200 | — | Delivered (or silently swallowed as spam) |
+ * | 200 | — | **Lead captured.** The email may have gone out, failed, or not been configured — none of that changes this. Also the honeypot's answer |
  * | 400 | `invalid_request` | Body was not JSON |
  * | 400 | `validation` | Field errors, returned in `fields` |
- * | 503 | `delivery_not_configured` | No key/sender/recipient — the client offers WhatsApp |
- * | 502 | `delivery_failed` | The provider rejected it |
+ * | 503 | `storage_not_configured` | No Supabase URL/key — nowhere to put it |
+ * | 502 | `storage_failed` | The database rejected the insert |
  */
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
+const LEADS_TABLE = "leads";
+
+/** How much of a provider's complaint is worth keeping. */
+const ERROR_MAX = 200;
+
+type EmailOutcome = {
+  status: "sent" | "failed" | "not_configured";
+  /** Short, sanitised, and only ever set alongside `failed`. */
+  error?: string;
+};
 
 function json(body: unknown, status: number) {
   return Response.json(body, { status });
@@ -50,6 +82,9 @@ export async function POST(request: Request) {
   }
 
   const value = coerceInquiry(raw);
+  const attribution = coerceAttribution(
+    (raw as { attribution?: unknown } | null)?.attribution,
+  );
 
   const errors = validateInquiry(value);
   if (Object.keys(errors).length > 0) {
@@ -58,11 +93,110 @@ export async function POST(request: Request) {
 
   // Honeypot. A field no real visitor can see or tab to, so anything in it came
   // from something filling the form blind. Answer exactly as a success would,
-  // and deliver nothing — telling a bot why it failed only helps it.
+  // and store nothing — telling a bot why it failed only helps it, and a row
+  // per bot would make the leads table useless within a week.
   if (value.companyWebsite) {
     return json({ ok: true }, 200);
   }
 
+  const store = leadStore();
+  if (!store) {
+    // Nowhere to put it, so there is no honest success to report.
+    return json({ ok: false, error: "storage_not_configured" }, 503);
+  }
+
+  // ── 1. CAPTURE ───────────────────────────────────────────────────────────
+  // Everything after this point is best-effort. The lead is already safe.
+  const { data, error } = await store
+    .from(LEADS_TABLE)
+    .insert(rowFor(value, attribution))
+    .select("id")
+    .single();
+
+  if (error || !data) {
+    // The failure is worth knowing about; the inquiry's contents are not ours
+    // to log, so only the database's own message is recorded.
+    console.error(`[inquiry] lead insert failed: ${error?.message ?? "no row"}`);
+    return json({ ok: false, error: "storage_failed" }, 502);
+  }
+
+  const id = data.id as string;
+
+  // ── 2. NOTIFY ────────────────────────────────────────────────────────────
+  const outcome = await notify(value);
+
+  // ── 3. RECORD WHAT THE NOTIFICATION DID ──────────────────────────────────
+  // Awaited rather than fired and forgotten: a promise left dangling on a
+  // serverless instance is not guaranteed to run after the response is sent.
+  const marked = await store
+    .from(LEADS_TABLE)
+    .update({
+      email_notification_status: outcome.status,
+      email_notification_error: outcome.error ?? null,
+    })
+    .eq("id", id);
+
+  if (marked.error) {
+    // The column is now stale, and that is all. The lead itself is stored, so
+    // this is a note to whoever reads the logs — never a failure for the
+    // visitor, who did nothing wrong and whose brief arrived.
+    console.error(
+      `[inquiry] notification status not recorded: ${marked.error.message}`,
+    );
+  }
+
+  // Captured. The only thing that could have made this a failure was the
+  // insert, and the insert succeeded.
+  return json({ ok: true }, 200);
+}
+
+/**
+ * The row, built from the two coerced halves.
+ *
+ * **Normalisation happens here, once.** `coerceInquiry` has already trimmed
+ * every string; this lowercases the address so `Info@X.com` and `info@x.com`
+ * are one person in the Table Editor, and leaves the phone number exactly as
+ * it was typed — a visitor writing `+44` or `+971` means it, and silently
+ * prefixing `+91` would corrupt the one field that has to dial correctly.
+ *
+ * Optional text goes in as `null` rather than `""`, so "not supplied" reads as
+ * empty in the dashboard instead of as a blank the eye has to check twice.
+ */
+function rowFor(value: InquiryPayload, attribution: InquiryAttribution) {
+  const orNull = (v: string) => (v.length > 0 ? v : null);
+
+  return {
+    name: value.name,
+    email: value.email.toLowerCase(),
+    phone: orNull(value.phone),
+    business: orNull(value.business),
+    services: value.services,
+    budget: orNull(value.budget),
+    timeline: orNull(value.timeline),
+    message: value.message,
+
+    // The channel, not the campaign. A form submission is always 'website';
+    // which ad sent them is `utm_source`'s question and is kept separate so
+    // neither answer overwrites the other.
+    source: "website",
+    page_path: orNull(attribution.pagePath),
+    referrer: orNull(attribution.referrer),
+    utm_source: orNull(attribution.utm_source),
+    utm_medium: orNull(attribution.utm_medium),
+    utm_campaign: orNull(attribution.utm_campaign),
+    utm_content: orNull(attribution.utm_content),
+    utm_term: orNull(attribution.utm_term),
+  };
+}
+
+/**
+ * Sends the notification email, and **cannot throw**.
+ *
+ * Every path returns an outcome to write into the row instead, because by the
+ * time this runs the lead is already captured and nothing here is allowed to
+ * turn that into a failure.
+ */
+async function notify(value: InquiryPayload): Promise<EmailOutcome> {
   const apiKey = process.env.RESEND_API_KEY;
   // The published address is the sensible default recipient; the sender has no
   // default, because it needs a domain verified with the provider and pretending
@@ -70,9 +204,7 @@ export async function POST(request: Request) {
   const to = process.env.INQUIRY_TO_EMAIL || CONTACT.email;
   const from = process.env.INQUIRY_FROM_EMAIL;
 
-  if (!apiKey || !from || !to) {
-    return json({ ok: false, error: "delivery_not_configured" }, 503);
-  }
+  if (!apiKey || !from || !to) return { status: "not_configured" };
 
   try {
     const response = await fetch(RESEND_ENDPOINT, {
@@ -91,17 +223,42 @@ export async function POST(request: Request) {
       }),
     });
 
-    if (!response.ok) {
-      // The status is worth knowing; the inquiry's contents are not ours to log.
-      console.error(`[inquiry] provider responded ${response.status}`);
-      return json({ ok: false, error: "delivery_failed" }, 502);
-    }
+    if (response.ok) return { status: "sent" };
+
+    console.error(`[inquiry] provider responded ${response.status}`);
+    return {
+      status: "failed",
+      error: shortError(`provider ${response.status}`, await reason(response)),
+    };
   } catch {
     console.error("[inquiry] provider request failed");
-    return json({ ok: false, error: "delivery_failed" }, 502);
+    return { status: "failed", error: "request failed" };
   }
+}
 
-  return json({ ok: true }, 200);
+/**
+ * The provider's own explanation, when it gives one — "domain is not verified"
+ * is the difference between a five-minute fix and an afternoon.
+ */
+async function reason(response: Response): Promise<string> {
+  try {
+    const body = (await response.json()) as { message?: unknown };
+    return typeof body.message === "string" ? body.message : "";
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * A short, safe string for `email_notification_error`.
+ *
+ * **Never a stack trace and never a credential.** Resend does not echo the key
+ * back, but the redaction is here anyway: a column that will be read in a
+ * dashboard is the wrong place to find out that assumption was wrong.
+ */
+function shortError(prefix: string, detail: string): string {
+  const safe = detail.replace(/re_[A-Za-z0-9_-]+/g, "[redacted]").trim();
+  return (safe ? `${prefix}: ${safe}` : prefix).slice(0, ERROR_MAX);
 }
 
 function subjectFor(value: InquiryPayload): string {

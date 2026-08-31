@@ -3,7 +3,7 @@
 import { motion, useTransform, type MotionValue } from "motion/react";
 
 import { PageLink } from "@/components/ui/PageLink";
-import { servicePageHrefFor } from "@/config/service-pages";
+import { SERVICES_PATH, servicePageHrefFor } from "@/config/service-pages";
 import { WHAT_WE_DO_COPY, type Service } from "@/config/services";
 import { useContact } from "@/components/contact/ContactProvider";
 import { Arrow } from "@/components/ui/Arrow";
@@ -100,7 +100,18 @@ export function ServiceCopy({
             §10i gave it, unchanged. */}
         <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
           {pageHref ? (
-            <PageLink href={pageHref} className="svc-action group text-ink">
+            <PageLink
+              href={pageHref}
+              className="svc-action group text-ink"
+              /* `service_slug`, never the label. The slug is the stable
+                 identifier the route is built from; the label is editorial
+                 copy that has already been rewritten once (§10). */
+              track={{
+                name: "service_explore",
+                service_slug: pageHref.replace(`${SERVICES_PATH}/`, ""),
+                context: "what_we_do",
+              }}
+            >
               <span className="relative">
                 {WHAT_WE_DO_COPY.pageCta}
                 <Sweep />

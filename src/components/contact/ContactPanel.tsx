@@ -10,6 +10,8 @@ import {
   hasBooking,
   whatsappHref,
 } from "@/config/site";
+import type { AnalyticsEvent } from "@/config/analytics";
+import { onTrackedClick, track } from "@/lib/analytics";
 import { useDialogBehaviour } from "@/hooks/useDialogBehaviour";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -31,7 +33,18 @@ type Channel = {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   external?: boolean;
+  /**
+   * What this row is worth measuring as.
+   *
+   * **The event is a property of the channel, next to its href** — one row in
+   * this table, one `onClick` in the loop below, and no analytics code
+   * scattered through the markup. `detail` carries the real address and the
+   * real number; the event carries neither, only the semantic method (§10).
+   */
+  track: AnalyticsEvent;
 };
+
+const PANEL = "contact_panel";
 
 const CHANNELS: Channel[] = [
   {
@@ -41,6 +54,7 @@ const CHANNELS: Channel[] = [
     href: whatsappHref(GENERAL_WHATSAPP_MESSAGE),
     icon: WhatsAppIcon,
     external: true,
+    track: { name: "contact_click", method: "whatsapp", context: PANEL },
   },
   {
     index: "02",
@@ -48,6 +62,7 @@ const CHANNELS: Channel[] = [
     detail: CONTACT.email,
     href: `mailto:${CONTACT.email}`,
     icon: MailIcon,
+    track: { name: "contact_click", method: "email", context: PANEL },
   },
   {
     index: "03",
@@ -55,6 +70,7 @@ const CHANNELS: Channel[] = [
     detail: CONTACT.phoneDisplay,
     href: `tel:${CONTACT.phone}`,
     icon: PhoneIcon,
+    track: { name: "contact_click", method: "phone", context: PANEL },
   },
   {
     index: "04",
@@ -66,6 +82,7 @@ const CHANNELS: Channel[] = [
     href: bookingHref,
     icon: CalendarIcon,
     external: true,
+    track: { name: "book_consultation", context: PANEL },
   },
 ];
 
@@ -156,7 +173,10 @@ export function ContactPanel() {
                     {...(c.external
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    onClick={closeContact}
+                    onClick={() => {
+                      track(c.track);
+                      closeContact();
+                    }}
                     className="group/row relative flex items-center gap-4 px-6 py-5 md:px-8"
                   >
                     <span
@@ -201,6 +221,11 @@ export function ContactPanel() {
                 href={CONTACT.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={onTrackedClick({
+                  name: "social_outbound",
+                  platform: "instagram",
+                  context: PANEL,
+                })}
                 className="group mt-4 inline-flex items-center gap-2 text-[0.75rem] text-ink-soft transition-colors duration-300 hover:text-ink"
               >
                 <span className="relative">

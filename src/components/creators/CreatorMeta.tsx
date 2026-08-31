@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 
 import { Arrow } from "@/components/ui/Arrow";
 import { ROSTER, type Creator } from "@/config/creators";
+import { onTrackedClick } from "@/lib/analytics";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
@@ -109,6 +110,15 @@ function Line({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${creator.name} on Instagram`}
+            /* The platform, never the handle. A creator's handle identifies a
+               person, and §10u's rule — a handle is a destination, not data —
+               applies to what leaves this site as much as to what is printed
+               on it. */
+            onClick={onTrackedClick({
+              name: "creator_profile_click",
+              platform: "instagram",
+              context: "creator_roster",
+            })}
             className="wwi-link group/ig"
           >
             @{creator.instagram}

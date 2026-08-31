@@ -129,6 +129,83 @@ export function coerceInquiry(input: unknown): InquiryPayload {
   };
 }
 
+/* ============================================================
+   ATTRIBUTION
+
+   Where the inquiry came from, kept **separate from the brief on purpose**.
+   `InquiryPayload` is what a person typed; this is what the campaign did. They
+   travel in the same request and land in the same row, but nothing here is
+   ever shown back to the visitor, put in the WhatsApp fallback or included in
+   the notification email — it is sales context, not part of the message.
+
+   **It is not tracking.** No identifier is generated, nothing is written that
+   could follow somebody to another site, and the two fields that describe the
+   visitor rather than the campaign — IP address and user agent — are
+   deliberately not collected at all. See `/privacy`.
+   ============================================================ */
+
+/** The five standard campaign parameters, in the order they are read. */
+export const UTM_PARAMS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+] as const;
+
+export type UtmParam = (typeof UTM_PARAMS)[number];
+
+export type InquiryAttribution = {
+  /** The route the form was submitted from, e.g. `/services/performance-marketing`. */
+  pagePath: string;
+  /** The external page the visit arrived from, when the browser supplies one. */
+  referrer: string;
+} & Record<UtmParam, string>;
+
+/**
+ * Bounds, because these arrive from a URL and a URL is untrusted input. A real
+ * campaign parameter is a word or two; anything longer is either a mistake or
+ * somebody probing, and it gets cut rather than rejected — an over-long UTM is
+ * no reason to lose a genuine lead.
+ */
+export const ATTRIBUTION_LIMITS = {
+  pagePath: 512,
+  referrer: 512,
+  utm: 200,
+} as const;
+
+export const EMPTY_ATTRIBUTION: InquiryAttribution = {
+  pagePath: "",
+  referrer: "",
+  utm_source: "",
+  utm_medium: "",
+  utm_campaign: "",
+  utm_content: "",
+  utm_term: "",
+};
+
+const clamp = (v: unknown, max: number) => str(v).slice(0, max);
+
+/**
+ * Normalises attribution off untrusted JSON, exactly as `coerceInquiry` does
+ * for the brief. **Never throws and never fails a submission** — a field it
+ * cannot make sense of becomes an empty string, because attribution is
+ * metadata about a lead and must not be able to cost you the lead.
+ */
+export function coerceAttribution(input: unknown): InquiryAttribution {
+  const raw = (input ?? {}) as Record<string, unknown>;
+
+  const utms = Object.fromEntries(
+    UTM_PARAMS.map((k) => [k, clamp(raw[k], ATTRIBUTION_LIMITS.utm)]),
+  ) as Record<UtmParam, string>;
+
+  return {
+    pagePath: clamp(raw.pagePath, ATTRIBUTION_LIMITS.pagePath),
+    referrer: clamp(raw.referrer, ATTRIBUTION_LIMITS.referrer),
+    ...utms,
+  };
+}
+
 /**
  * The same rules the form applies, so the visitor never meets a server error
  * for something the browser could have told them. **Required: name, email and
@@ -240,11 +317,20 @@ export const INQUIRY_COPY = {
    * No response-time promise anywhere. "Within 24 hours" is a commitment only
    * Mishram can make, and the site must not make it for them.
    */
+  /**
+   * **These two describe capture, not delivery, and that is the change.**
+   * Until the lead database existed the only thing that could fail was the
+   * email, so the copy talked about email. Now the inquiry is recorded first
+   * and the notification is sent afterwards: a failed email is invisible to
+   * the visitor because their brief is safely stored, and the only thing worth
+   * telling them about is the case where it is *not*. Neither string mentions
+   * email any more, because neither case is about email.
+   */
   errors: {
     failed:
-      "We couldn't send this right now. You can try again, or continue on WhatsApp.",
+      "We couldn't save this right now. You can try again, or continue on WhatsApp.",
     unconfigured:
-      "Email delivery isn't switched on for this site yet. Your details are still here — you can send them straight to us on WhatsApp.",
+      "This site isn't set up to receive inquiries yet. Your details are still here — you can send them straight to us on WhatsApp.",
     summary: "Please check the highlighted fields.",
   },
   whatsapp: "Continue on WhatsApp",

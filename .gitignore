@@ -36,6 +36,12 @@ yarn-error.log*
 # documentation for what production needs configured (§10h).
 !.env.example
 
+# supabase — the CLI's local working state. `supabase/migrations/` IS tracked
+# and is the point of the directory; everything below holds link state, local
+# stack credentials and temporary files, none of which belongs in the remote.
+supabase/.temp/
+supabase/.branches/
+
 # vercel
 .vercel
 
