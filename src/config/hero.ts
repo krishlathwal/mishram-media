@@ -17,7 +17,15 @@ export const HERO_COPY = {
   secondaryCta: "Contact Us",
   scrollCue: "Scroll to explore",
   /** Capabilities, stated plainly. No metrics, no rankings. */
-  capabilities: ["Social", "Influencer", "Performance", "Brand Shoots", "Web"],
+  /**
+   * **Revision 21.** Was `Social · Influencer · Performance · Brand Shoots ·
+   * Web`. Brand Shoots came off the rail when it came off public discovery,
+   * and `Software` took the slot — the rail states what Mishram leads with,
+   * and after Service 04 shipped the custom-software half was the one
+   * capability the homepage never said out loud. Five items either way, so
+   * §11's measured two-column rail is unchanged.
+   */
+  capabilities: ["Social", "Influencer", "Performance", "Web", "Software"],
 } as const;
 
 export type HeroSurface = {

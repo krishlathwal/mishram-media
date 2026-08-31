@@ -47,7 +47,7 @@ export function Recognition() {
       <Grid />
       <LeadIn />
 
-      <div className="page-x relative pt-20 pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
+      <div className="page-x relative pt-14 pb-16 sm:pt-20 sm:pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
         <Intro />
 
         <motion.span

@@ -9,7 +9,7 @@ import { AboutPractice } from "@/components/about-page/AboutPractice";
 import { AboutPrinciples } from "@/components/about-page/AboutPrinciples";
 import { ProjectInquiry } from "@/components/inquiry/ProjectInquiry";
 import { ABOUT_PAGE_COPY } from "@/config/about-page";
-import { BRAND, ABOUT_PATH } from "@/config/site";
+import { BRAND, OG_IMAGE, ABOUT_PATH } from "@/config/site";
 
 /**
  * The layout's title template appends the brand, so `title` is the page alone
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: ABOUT_PATH,
+    images: [OG_IMAGE],
   },
 };
 

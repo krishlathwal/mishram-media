@@ -26,7 +26,7 @@ import {
   PERFORMANCE_SCOPE,
   PERFORMANCE_SCOPE_COPY,
 } from "@/config/service-performance";
-import { BRAND, bookingHref } from "@/config/site";
+import { BRAND, OG_IMAGE, bookingHref } from "@/config/site";
 
 const PAGE = resolveServicePage("performance-marketing");
 
@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: PAGE.path,
+    images: [OG_IMAGE],
   },
 };
 

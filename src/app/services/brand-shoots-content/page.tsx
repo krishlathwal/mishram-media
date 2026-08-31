@@ -25,7 +25,7 @@ import {
   SHOOTS_SCOPE,
   SHOOTS_SCOPE_COPY,
 } from "@/config/service-shoots";
-import { BRAND, bookingHref } from "@/config/site";
+import { BRAND, OG_IMAGE, bookingHref } from "@/config/site";
 
 const PAGE = resolveServicePage("brand-shoots-content");
 
@@ -57,6 +57,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: PAGE.path,
+    images: [OG_IMAGE],
   },
 };
 

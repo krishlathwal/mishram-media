@@ -66,7 +66,7 @@ export function Difference() {
       {/* Top padding is the transition out of §02 — the axis runs through all
           of it. Bottom padding is the handoff into §03 and is deliberately
           shorter than a normal chapter's: the line is what carries it. */}
-      <div className="page-x relative pt-24 pb-20 md:pt-28 md:pb-24 lg:pt-28 lg:pb-24">
+      <div className="page-x relative pt-16 pb-14 sm:pt-24 sm:pb-20 md:pt-28 md:pb-24 lg:pt-28 lg:pb-24">
         <div className="dif-split grid gap-y-8">
           <div>
             <motion.p

@@ -29,7 +29,7 @@ export function WhatWeDoClosing() {
   const rest = line2.slice(accent.length);
 
   return (
-    <div className="page-x relative border-t border-line pt-16 pb-16 md:pt-20 md:pb-20 lg:pt-24 lg:pb-16">
+    <div className="page-x relative border-t border-line pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-24 lg:pb-16">
       <div className="lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-8">
           {/* The trigger sits on the block, not on the clipped lines: a line

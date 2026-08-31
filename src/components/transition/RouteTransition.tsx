@@ -87,11 +87,46 @@ export function RouteTransition({ children }: { children: React.ReactNode }) {
 
   const start = useCallback(
     (href: string) => {
-      const [path] = href.split("#");
+      const [path, hash] = href.split("#");
+      const samePath = !path || path === pathname;
+
+      /**
+       * THE WORDMARK, CLICKED FROM THE PAGE IT POINTS AT.
+       *
+       * `router.push` to the URL you are already on is a no-op: the App Router
+       * has nothing to navigate to, so it does not re-render and it does not
+       * scroll. The visitor clicked "home" nine thousand pixels down the
+       * homepage and stayed exactly where they were — the reported bug, and it
+       * lived in this branch, which lumped "same path" in with "reduced
+       * motion" and pushed regardless.
+       *
+       * The fix is to treat it as what it is: a request to return to the top
+       * of the current page. It plays **the site's own wipe** rather than a
+       * long smooth scroll, because a 15,000px homepage unwinding under a
+       * `behavior: "smooth"` takes seconds and reads as a bug of its own — and
+       * because the wipe is already this site's language for "you are going
+       * somewhere". No push, since the URL is correct; `target` is set to the
+       * current path so the cover resolves immediately and the existing
+       * `window.scrollTo(0, 0)` at the end of it does the work.
+       *
+       * A same-path link that carries a fragment is left alone: those are
+       * plain `<a>` anchors handled natively, and intercepting them here would
+       * break in-page navigation.
+       */
+      if (samePath && !hash) {
+        if (reduced) {
+          window.scrollTo(0, 0);
+          return;
+        }
+        coverStart.current = performance.now();
+        setTarget(pathname);
+        setPhase("cover");
+        return;
+      }
 
       // Reduced motion gets the navigation and nothing else — never a delay,
       // and never a sweeping overlay somebody asked not to see.
-      if (reduced || !path || path === pathname) {
+      if (reduced || samePath) {
         router.push(href);
         return;
       }

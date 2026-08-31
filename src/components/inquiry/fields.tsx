@@ -186,10 +186,15 @@ export function OptionGroup({
         {optional ? <Optional /> : null}
       </legend>
 
+      {/* `auto-fit` rather than a breakpoint for `wide`: seven service rows in
+          one column cost 396px of a phone, and the options pair up perfectly
+          well from about 375px. The browser decides where they stop fitting;
+          at 640 and above both layouts resolve to exactly two columns, so
+          nothing above a phone moves. */}
       <div
         className={clsx(
-          "grid gap-2.5",
-          layout === "wide" ? "sm:grid-cols-2" : "grid-cols-2",
+          "inq-optgrid",
+          layout === "compact" && "inq-optgrid--compact",
         )}
       >
         {options.map((option) => {

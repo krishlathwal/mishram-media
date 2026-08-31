@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { PageLink } from "@/components/ui/PageLink";
 import { ABOUT_PAGE_COPY } from "@/config/about-page";
 import { servicePageHrefFor } from "@/config/service-pages";
-import { SERVICES } from "@/config/services";
+import { PUBLIC_SERVICES } from "@/config/services";
 
 import { AboutSection, AboutSectionHead, EASE } from "./AboutSection";
 
@@ -45,8 +45,14 @@ export function AboutPractice() {
         lead={copy.lead}
       />
 
+      {/* `PUBLIC_SERVICES`, not `SERVICES` — this rendered all five and so
+          listed Brand Shoots & Content as a flagship discipline, unlinked,
+          long after it came off public discovery everywhere else on the site.
+          The homepage, the header menu and the footer directory all read the
+          public list; About was the one surface that did not, which is how it
+          drifted. */}
       <ul className="mt-14 border-t border-line md:mt-16">
-        {SERVICES.map((service, i) => {
+        {PUBLIC_SERVICES.map((service, i) => {
           const href = servicePageHrefFor(service.id);
           const title = service.title.join(" ");
 

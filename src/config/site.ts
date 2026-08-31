@@ -308,3 +308,25 @@ export const SECTION_ORDER = [
   "work",
   "about",
 ] as const;
+
+/**
+ * THE SOCIAL PREVIEW EVERY ROUTE SHARES.
+ *
+ * **Why this has to be written down at all.** `src/app/opengraph-image.png` is
+ * Next's file convention and it covers the root segment — but a route that
+ * declares its own `openGraph` object *replaces* the parent's rather than
+ * merging into it, so every page that set a per-route OG title silently lost
+ * the image with it. The symptom was invisible in the app and only showed on
+ * a share card: `/about` and all five service routes published `twitter:image`
+ * (no route overrides `twitter`) and **no `og:image` at all**.
+ *
+ * So every route that writes an `openGraph` block spreads this in. The file
+ * convention still generates and serves the asset; this only makes sure the
+ * tag survives the override.
+ */
+export const OG_IMAGE = {
+  url: "/opengraph-image.png",
+  width: 1200,
+  height: 630,
+  alt: `${BRAND.name} — Creative growth & digital studio`,
+} as const;

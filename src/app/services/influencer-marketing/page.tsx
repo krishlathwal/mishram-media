@@ -27,7 +27,7 @@ import {
   INFLUENCER_SCOPE,
   INFLUENCER_SCOPE_COPY,
 } from "@/config/service-influencer";
-import { BRAND, bookingHref } from "@/config/site";
+import { BRAND, OG_IMAGE, bookingHref } from "@/config/site";
 
 const PAGE = resolveServicePage("influencer-marketing");
 
@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: PAGE.path,
+    images: [OG_IMAGE],
   },
 };
 

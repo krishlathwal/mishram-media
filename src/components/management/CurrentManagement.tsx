@@ -53,7 +53,7 @@ export function CurrentManagement() {
     >
       <Grid />
 
-      <div className="page-x relative pt-20 pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      <div className="page-x relative pt-14 pb-14 sm:pt-20 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8">
           {/* ── The claim ───────────────────────────────────────────── */}
           <div className="lg:col-span-5">

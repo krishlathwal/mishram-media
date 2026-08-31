@@ -1264,6 +1264,28 @@ html.theme-transition *::after {
   /* Project tags, not filter pills: a hairline row with a small square that
      fills teal when chosen. The native control stays in the layout and stays
      focusable — visually hidden, never display:none. */
+  /* The option grid. `wide` (service names) pairs up as soon as two columns
+     fit; `compact` (budget, timeline) always pairs. From 640 both are exactly
+     two columns, which is what every viewport above a phone had before. */
+  /* Column counts are stated rather than left to `auto-fit`, which fits three
+     186px columns at 639px — narrower than any option label reads well in,
+     and inconsistent with the two that 640 resolves to. */
+  .inq-optgrid {
+    display: grid;
+    gap: 0.625rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inq-optgrid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 360px) {
+    .inq-optgrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
   .inq-option {
     position: relative;
     display: flex;
@@ -5289,6 +5311,1756 @@ html.theme-transition *::after {
     .abt-frag-inner:hover .abt-photo,
     .abt-strip-item:hover .abt-photo {
       filter: saturate(1);
+    }
+  }
+
+  /* ── 04 / WEB & DIGITAL EXPERIENCES ─────────────────────────────
+     `web-` prefix. Two systems live here: the hero's spatial build stage, and
+     the project viewport the portfolio runs in.
+
+     The stage borrows §02's grammar rather than inventing a second one — a
+     perspective container, absolutely placed planes as percentages of it, and
+     the shared `.svc-drift--a…d` idle animations. What it does *not* borrow is
+     `.svc-stage-box`: that box exists to letterbox a composition inside a
+     pinned 100svh panel, and this composition sits in a hero column whose
+     aspect the component sets directly.
+
+     **No browser chrome anywhere.** §10's Service 04 note settled it for the
+     homepage scene — a site, not a screenshot of one — and the two
+     compositions have to read as the same object for the route to feel like a
+     continuation of the chapter it came from. */
+
+  .web-stage {
+    position: relative;
+    width: 100%;
+    /* Depth is deliberately shallow. The surfaces should separate, not
+       foreshorten — a strong perspective on rectangular UI reads as a 3D
+       gimmick, which §12 rules out. */
+    perspective: 1600px;
+    perspective-origin: 54% 44%;
+    transform-style: preserve-3d;
+  }
+
+  /* One placed layer. The component owns left/top/width as percentages and the
+     transforms; this only establishes the stacking context. */
+  .web-plane {
+    position: absolute;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* The architecture layer. `overflow: visible` so a connector may run to the
+     edge of a surface that sits outside the viewBox's own bounds. */
+  .web-lines {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* Connectors are drawn with an animated `pathLength`, so `vector-effect` is
+     deliberately absent — §10's gotcha: the two together measure dashes in
+     screen pixels against normalised user units and shatter long paths. */
+  .web-link {
+    fill: none;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+
+  .web-node {
+    fill: var(--color-canvas);
+    stroke: var(--color-accent);
+  }
+
+  /* ── Surfaces ───────────────────────────────────────────────────
+     Three registers of the same object: a finished interface, the same
+     interface as structure, and a component in isolation. */
+
+  .web-surface {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-image-line);
+    border-radius: 3px;
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  .web-surface--plan {
+    background-color: color-mix(in srgb, var(--color-canvas-raise) 92%, transparent);
+    border-color: var(--color-line);
+    box-shadow: none;
+  }
+
+  /* Structure before interface. No fill at all, so it reads as the drawing the
+     finished surface in front of it was made from — but at `line-strong`
+     rather than `line`: at 10% ivory on obsidian the whole structure layer was
+     invisible in the dark theme, which is the state the site opens in. */
+  .web-surface--wire {
+    background-color: transparent;
+    border-color: var(--color-line-strong);
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  /* A surface that sits in *front* of another one.
+     The canvas-coloured ring is what separates it, and it is deliberately not
+     a drop shadow: `--t-image-shadow` is `none` in the dark theme, so a
+     shadow-only treatment would separate these surfaces on parchment and not
+     at all on obsidian — the state the site opens in. */
+  .web-surface--lift {
+    box-shadow:
+      0 0 0 4px var(--color-canvas),
+      var(--t-image-shadow);
+  }
+
+  /* A media region inside an abstract interface. Tonal, so it reads as a
+     composition rather than as a grey box waiting for a photograph — and
+     deliberately not a photograph, because a real image inside a drawn
+     interface implies a project that does not exist. */
+  .web-media {
+    border: 1px solid var(--color-line);
+    border-radius: 2px;
+    background-image: linear-gradient(
+      160deg,
+      var(--color-surface-hover) 0%,
+      var(--color-surface) 62%
+    );
+  }
+
+  /* The measurement system. Corner registration marks and column ticks — the
+     quietest thing in the composition, and the first to leave on scroll. */
+  .web-measure {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .web-tick {
+    position: absolute;
+    background-color: var(--color-grid);
+  }
+
+  .web-reg {
+    position: absolute;
+    height: 9px;
+    width: 9px;
+    border-color: var(--color-line-strong);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  /* ── Labels ─────────────────────────────────────────────────────
+     The §10q halo, unchanged: these name marks that sit on surfaces and
+     connectors, and a label struck through by the line it names reads as a
+     defect rather than as density. */
+
+  .web-anno {
+    position: absolute;
+    z-index: 20;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    color: var(--color-ink-muted);
+    text-shadow:
+      0 0 3px rgb(var(--t-canvas-rgb) / 0.95),
+      0 0 8px rgb(var(--t-canvas-rgb) / 0.8);
+  }
+
+  .web-anno--above {
+    transform: translate(-50%, -1.4rem);
+  }
+
+  .web-anno--below {
+    transform: translate(-50%, 0.7rem);
+  }
+
+  /* Left-aligned against a surface's own edge — and dropped clear of it.
+     Without the offset the label sits *on* the bottom border of the surface it
+     names: the narrow viewport's `RESPONSIVE` was struck through by both the
+     frame and its separating ring, which is §10q's defect 7 all over again. */
+  .web-anno--corner {
+    transform: translateY(0.6rem);
+  }
+
+  .web-anno--accent {
+    color: var(--color-accent);
+  }
+
+  /* ── The project viewport ───────────────────────────────────────
+     A window onto a real site, not a device mockup. A hairline frame at the
+     page's own 3px radius, and nothing else: no traffic lights, no address
+     bar, no tab strip, no bezel. The URL is set beside the frame as editorial
+     type, where it can be read and clicked, rather than drawn inside it as
+     fake browser chrome. */
+
+  .web-view {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border: 1px solid var(--color-image-line);
+    border-radius: 3px;
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+  }
+
+  /* The capture is taller than the window and translates inside it, so the
+     site is seen scrolling rather than sitting as a static thumbnail. */
+  .web-shot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    will-change: transform;
+  }
+
+  /* Responsiveness, demonstrated rather than asserted. The canvas-coloured
+     ring is what separates it from the capture behind it — it works in both
+     themes, where a drop shadow only works in one. */
+  .web-phone {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid var(--color-image-line);
+    border-radius: 7px;
+    background-color: var(--color-canvas-raise);
+    box-shadow:
+      0 0 0 5px var(--color-canvas),
+      var(--t-image-shadow);
+  }
+
+  .web-phone-shot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    will-change: transform;
+  }
+
+  /* The meta column beside a project. A rule that resolves under the name on
+     hover, in the same grammar as the header's breadcrumb link. */
+  .web-visit {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    color: var(--color-ink);
+  }
+
+  .web-visit::after {
+    content: "";
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: right;
+    background-color: var(--color-accent);
+    transition: transform 420ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .web-visit:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  .web-visit:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* ── 03 / What We Build — the capability explorer ────────────────
+     Flatter than the hero on purpose. The build stage has perspective, pointer
+     parallax and idle drift; this has none of them — it is a plan being
+     re-drawn, not an object floating in space. The only motion is the
+     transformation itself.
+
+     **Everything transitions in CSS, nothing is scroll-linked.** Scroll picks
+     the active state; these rules move between them. That is what keeps the
+     transformation at a fixed 700ms, keeps twelve boxes off the per-frame
+     layout path, and means `prefers-reduced-motion` neutralises the whole
+     section through the global block at the end of this file with no
+     component-level branch. */
+
+  .web-cap-stage {
+    position: relative;
+    width: 100%;
+    /* The 16/10 of the project viewport in `DigitalWork`, so both compositions
+       on this page sit in the same frame. */
+    aspect-ratio: 16 / 10;
+  }
+
+  /* One region of the product architecture. The geometry is the animation:
+     these four properties are what turn a masthead into a sidebar. */
+  .web-region {
+    position: absolute;
+    overflow: hidden;
+    /* `line-strong` and the full raised fill, not the `--plan` register the
+       hero's receding surfaces use. Six regions of equal weight at 12% ink on
+       parchment read as a smudge rather than as an architecture — this is the
+       same correction the build stage's primary viewport needed. */
+    border: 1px solid var(--color-line-strong);
+    border-radius: 2px;
+    background-color: var(--color-canvas-raise);
+    transition:
+      left 700ms var(--ease-out-expo),
+      top 700ms var(--ease-out-expo),
+      width 700ms var(--ease-out-expo),
+      height 700ms var(--ease-out-expo),
+      border-color 520ms var(--ease-out-expo);
+  }
+
+  /* The ask carries its own fill edge to edge, so the frame would only draw a
+     hairline around a solid block. */
+  .web-region--action {
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  .web-region-fill {
+    position: absolute;
+    inset: 0;
+    display: block;
+    opacity: 0;
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .web-region-fill[data-on="true"] {
+    opacity: 1;
+  }
+
+  .web-cap-lines {
+    z-index: 1;
+  }
+
+  .web-cap-wiring {
+    opacity: 0;
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  .web-cap-wiring[data-on="true"] {
+    opacity: 1;
+  }
+
+  .web-cap-anno {
+    opacity: 0;
+    transition: opacity 520ms var(--ease-out-expo);
+    /* A smaller drop than the build stage's 0.6rem. The gaps between regions
+       here are 3-4 units of a 62.5-unit field — roughly 25px — and at the
+       shared offset `STRUCTURE` printed across the top border of the region it
+       names, which is §10q's defect 7 again. */
+    transform: translateY(0.3rem);
+  }
+
+  .web-cap-anno[data-on="true"] {
+    opacity: 1;
+  }
+
+  /* ── The category index ─────────────────────────────────────────
+     An editorial index, not tabs: no chip, no pill, no filled button. The
+     selected row is the one that is simply larger and darker. */
+
+  .web-cap-row {
+    display: block;
+    width: 100%;
+    border-top: 1px solid var(--color-line);
+    /* The pinned panel has to hold an index, a description and a twelve-row
+       matrix inside one 100svh column, and 800px viewports are the binding
+       constraint — hence the tighter top of the clamp. */
+    padding-block: clamp(0.7rem, 1.2vw, 1.1rem);
+    text-align: left;
+    transition: opacity 420ms var(--ease-out-expo);
+  }
+
+  .web-cap-row:last-child {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* The rule that resolves under a selected row — the same grammar as
+     `.svp-scope-mark`, so the two indexes on this site agree. */
+  .web-cap-mark {
+    display: block;
+    height: 1px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: var(--color-accent);
+    transition: transform 620ms var(--ease-out-expo);
+  }
+
+  .web-cap-row[data-on="true"] .web-cap-mark {
+    transform: scaleX(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a.web-cap-name:hover {
+      color: var(--color-ink);
+    }
+  }
+
+  .web-cap-name {
+    transition: color 420ms var(--ease-out-expo);
+  }
+
+  /* ── The capability matrix ──────────────────────────────────────
+     Names on hairlines. No icon, no container, no pill — the §10j discipline
+     the scope index already follows, at two columns. */
+
+  /* **One column on a phone, two from `sm`.** At 360–430 a two-column matrix
+     leaves ~155px of text width, and the longest names (`MEMBERSHIP
+     PLATFORMS`, `PERSONAL BRAND SITES`) land within a few pixels of it — close
+     enough that a font fallback or a longer future name breaks the row. A
+     single column gives every name the full measure and keeps the list
+     scannable; the two-column matrix returns the moment there is width for it. */
+  /* **Two columns from 360, not one, and never three.** The note above was
+     written when this was one column below 640 — and thirty-three capabilities
+     in one column is 1,059px of a phone against 550 in two.
+
+     `auto-fit` was the first attempt and it was wrong: at 639px it fits
+     *three* 186px columns, which is narrower than the design allows and
+     inconsistent with the two columns 640 resolves to. Grid has no
+     max-column-count, so the count is stated. 360 is measured, not guessed —
+     the longest name is `Personal Brand Sites`, which needs 154px at this size
+     and tracking, and two columns at 360 give exactly 154. Below that it is
+     one column, which is the honest answer at 330. */
+  .web-matrix {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--color-line);
+  }
+
+  @media (min-width: 360px) {
+    .web-matrix {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 0.75rem;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .web-matrix {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    }
+  }
+
+  .web-matrix-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 32px;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 0.4rem;
+    /* 0.16em rather than `.caps`'s 0.26em — §11's own remedy for a dense rail,
+       and the same correction §10q applied to the service heroes. At the
+       default, `CORPORATE WEBSITES` and five of its neighbours wrapped to two
+       lines inside a four-column matrix, which pushed the whole left column
+       past the pinned panel at 1280x800. */
+    letter-spacing: 0.14em;
+    color: var(--color-ink-soft);
+    transition:
+      color 320ms var(--ease-out-expo),
+      transform 320ms var(--ease-out-expo);
+  }
+
+  /* The directional marker, and it is the only thing hover adds. */
+  .web-matrix-mark {
+    display: block;
+    height: 1px;
+    width: 0.45rem;
+    flex: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: var(--color-accent);
+    transition: transform 320ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .web-matrix-item:hover {
+      color: var(--color-ink);
+      transform: translateX(2px);
+    }
+
+    .web-matrix-item:hover .web-matrix-mark {
+      transform: scaleX(1);
+    }
+  }
+
+  .web-matrix-item:focus-visible {
+    color: var(--color-ink);
+  }
+
+  .web-matrix-item:focus-visible .web-matrix-mark {
+    transform: scaleX(1);
+  }
+
+  /* ── The flow rail under the composition ────────────────────────
+     Always populated by the active family; a hovered capability may replace
+     the three words, never remove them. */
+
+  .web-flow-step {
+    display: inline-block;
+    transition: opacity 260ms var(--ease-out-expo);
+  }
+
+  /* ── The sticky track's slot markers ────────────────────────────
+     Zero-size anchors down the track, so a category in the index can be a real
+     link to the scroll position its state begins at. Native anchor navigation
+     and nothing else — no scripted scrolling (§10). */
+
+  .web-slot {
+    position: absolute;
+    left: 0;
+    height: 1px;
+    width: 1px;
+  }
+
+  /* ── The handoff ────────────────────────────────────────────────
+     Where the last state's escaping connectors go. Four terms on a descending
+     rail, and deliberately no heading and no copy: the chapter that answers
+     them has not been built. */
+
+  .web-handoff-rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.85rem, 1.6vw, 1.3rem);
+  }
+
+  .web-handoff-rail::before {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    bottom: 0;
+    left: 3px;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      var(--color-line-strong) 0%,
+      var(--color-line) 62%,
+      transparent 100%
+    );
+  }
+
+  .web-handoff-term {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .web-handoff-dot {
+    display: block;
+    height: 7px;
+    width: 7px;
+    flex: none;
+    border-radius: 1px;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-canvas);
+  }
+
+  .web-handoff-term:first-child .web-handoff-dot {
+    border-color: var(--color-accent);
+  }
+
+  /* ── 04 / Beyond Websites — the ink environment ──────────────────
+     **A SCOPED THEME, NOT A NEW ONE.** This re-declares the same `--t-*`
+     semantic tokens §3 defines, at the **obsidian column's values**, on one
+     section. Everything inside then resolves through the normal semantic
+     names — `bg-canvas`, `text-ink`, `border-line`, `bg-accent` — so not one
+     component in this section references a raw palette value, the grid and
+     hairlines invert with it, and both themes are served by one rule:
+
+     - **Light theme** → the section flips to ink. The contrast move the
+       chapter is built on.
+     - **Dark theme** → these are the ambient values, so it is a no-op and the
+       chapter reads as continuous. Its separation there comes from the
+       structure instead — the chapter rule, the denser architectural field and
+       a composition more technical than anything above it.
+
+     Declaring token values is the one legitimate place raw hex belongs (§3
+     does exactly this twice). **Keep this block in step with `:root`'s dark
+     column**; it is a mirror of it, deliberately, because aliasing the palette
+     would mean editing the locked token block to serve one section. */
+
+  .web-ink {
+    color-scheme: dark;
+
+    --t-canvas: #0a0a0a;
+    --t-canvas-raise: #121212;
+    --t-canvas-rgb: 10 10 10;
+
+    --t-ink: #f3efe7;
+    --t-ink-soft: #9a938a;
+    --t-ink-muted: #6b655d;
+
+    --t-line: rgba(243, 239, 231, 0.1);
+    --t-line-strong: rgba(243, 239, 231, 0.22);
+    --t-grid: rgba(243, 239, 231, 0.055);
+
+    --t-accent: #35d6c0;
+    --t-accent-soft: rgba(53, 214, 192, 0.16);
+
+    --t-surface: rgba(243, 239, 231, 0.035);
+    --t-surface-hover: rgba(243, 239, 231, 0.07);
+    --t-image-line: rgba(243, 239, 231, 0.22);
+    --t-overlay: rgba(10, 10, 10, 0.7);
+    --t-image-shadow: none;
+
+    /* ── AND THE RE-ALIAS, WITHOUT WHICH THE BLOCK ABOVE DOES NOTHING ──
+       `@theme` declares `--color-canvas: var(--t-canvas)` on `:root`, and a
+       custom property's value is substituted at computed-value time **on the
+       element it is declared on**. So `--color-canvas` resolves against
+       `:root`'s `--t-canvas` once, and every `bg-canvas` below simply inherits
+       that already-resolved colour — overriding `--t-canvas` further down the
+       tree reaches nothing.
+
+       The global theme toggle never hits this because `[data-theme="light"]`
+       sits on `:root` itself, so the alias re-resolves in place. A *scoped*
+       inversion is the first thing on this site to need the aliases restated,
+       and without these lines the section rendered on the light canvas with
+       every token silently ignored. */
+    --color-canvas: var(--t-canvas);
+    --color-canvas-raise: var(--t-canvas-raise);
+    --color-ink: var(--t-ink);
+    --color-ink-soft: var(--t-ink-soft);
+    --color-ink-muted: var(--t-ink-muted);
+    --color-line: var(--t-line);
+    --color-line-strong: var(--t-line-strong);
+    --color-grid: var(--t-grid);
+    --color-accent: var(--t-accent);
+    --color-accent-soft: var(--t-accent-soft);
+    --color-surface: var(--t-surface);
+    --color-surface-hover: var(--t-surface-hover);
+    --color-image-line: var(--t-image-line);
+    --color-overlay: var(--t-overlay);
+  }
+
+  /* **THE ROUTE'S CHAPTER BRIDGE**, and it is used at both boundaries where
+     one section's closing rail has to survive the next section's chapter rule.
+
+     §03's handoff ends on `Workflow`; §04 opens with this line starting where
+     that one stopped, in the same grid column, so the two read as one descent
+     rather than two adjacent chapters. §05 then reuses it unchanged to pick up
+     §04's own `Traffic → … → Growth` rail — same column, same mark, and the
+     only difference is that it crosses out of the ink environment onto the
+     page's canvas. Everything here resolves through semantic tokens, so that
+     costs nothing.
+
+     Kept as one class rather than copied: two bridges that are meant to read
+     as the same device must not be able to drift apart. */
+  .web-sys-entry {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .web-sys-entry::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 3px;
+    height: clamp(2.5rem, 5vw, 4rem);
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      var(--color-line) 30%,
+      var(--color-accent) 100%
+    );
+  }
+
+  .web-sys-entry-dot {
+    display: block;
+    height: 7px;
+    width: 7px;
+    flex: none;
+    border-radius: 1px;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-canvas);
+  }
+
+  /* ── The system stage ───────────────────────────────────────────
+     Node positions are **constant within a layout**; only presence, tone and
+     the routes change between states. That is a deliberate constraint: the
+     architecture reads as one plan being progressively built and switched on,
+     and the section costs four opacity/stroke transitions rather than a
+     per-frame layout pass on fourteen boxes.
+
+     The one exception is the customer record, which contracts and moves left
+     as the system grows around it — the shared element, and the only geometry
+     that animates. */
+
+  .web-sys-stage {
+    position: relative;
+    width: 100%;
+  }
+
+  .web-sys-node {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 2px;
+    background-color: var(--color-canvas-raise);
+    opacity: 0;
+    transition:
+      opacity 620ms var(--ease-out-expo),
+      transform 620ms var(--ease-out-expo),
+      border-color 420ms var(--ease-out-expo),
+      left 700ms var(--ease-out-expo),
+      top 700ms var(--ease-out-expo),
+      width 700ms var(--ease-out-expo),
+      height 700ms var(--ease-out-expo);
+    transform: scale(0.965);
+  }
+
+  .web-sys-node[data-on="true"] {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Present, but no longer the subject. Earlier tiers stay on screen so the
+     visitor can see the system accumulating rather than being replaced. */
+  .web-sys-node[data-tone="dim"] {
+    opacity: 0.42;
+    border-color: var(--color-line);
+  }
+
+  .web-sys-node[data-lit="true"] {
+    border-color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .web-sys-label {
+    display: block;
+    color: var(--color-ink-soft);
+    transition: color 420ms var(--ease-out-expo);
+  }
+
+  .web-sys-node[data-lit="true"] .web-sys-label,
+  .web-sys-node[data-key="true"] .web-sys-label {
+    color: var(--color-ink);
+  }
+
+  /* ── Routes ─────────────────────────────────────────────────────
+     Drawn with a normalised `pathLength="1"` and a dash-offset transition, so
+     a route draws itself in pure CSS with no per-frame JavaScript and no
+     `pathLength` *animation* — §10's shatter gotcha needs `vector-effect`,
+     which is deliberately absent here. */
+
+  .web-sys-route {
+    fill: none;
+    stroke: var(--color-line-strong);
+    stroke-width: 0.32;
+    stroke-linecap: square;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    transition:
+      stroke-dashoffset 900ms var(--ease-out-expo),
+      opacity 520ms var(--ease-out-expo),
+      stroke 420ms var(--ease-out-expo);
+  }
+
+  .web-sys-route[data-on="true"] {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  .web-sys-route[data-tone="dim"] {
+    opacity: 0.38;
+  }
+
+  .web-sys-route[data-lit="true"] {
+    stroke: var(--color-accent);
+    opacity: 1;
+  }
+
+  /* The routes that leave the frame. No draw — they are already going
+     somewhere this page has not shown. */
+  .web-sys-route--escape {
+    stroke: var(--color-accent);
+    stroke-dasharray: 1.4 1.8;
+    stroke-dashoffset: 0;
+    stroke-opacity: 0.55;
+  }
+
+  /* The "original website frame". Registration marks that bound the first
+     three states — so when the product surfaces arrive in state four, they are
+     visibly **outside** it. That is the section's argument in one detail. */
+  .web-sys-frame {
+    position: absolute;
+    pointer-events: none;
+    transition: opacity 620ms var(--ease-out-expo);
+  }
+
+  .web-sys-corner {
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    border-color: var(--color-line-strong);
+    border-style: solid;
+    border-width: 0;
+  }
+
+  /* The status mark inside the CRM module. It moves between rows when the
+     state changes — a status change, not a loop. */
+  .web-sys-status {
+    display: block;
+    height: 6px;
+    width: 6px;
+    flex: none;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    transition: opacity 520ms var(--ease-out-expo);
+  }
+
+  /* ── The narrow system map ──────────────────────────────────────
+     Below 640 the four architecture fragments are replaced by one continuous
+     spine with four checkpoints, and each state's nodes are drawn as chips.
+
+     **This is not a compression of the drawing, it is the drawing.** Every
+     box the fragments would have shown is one of these chips, in the same
+     order, carrying the same word — so nothing is lost and 924px is. */
+
+  .web-sys-map {
+    position: relative;
+    /* Mirrors the `gap-9` on the same element, so the spine reaches exactly
+       the next checkpoint without measuring the DOM. Keep the two in step. */
+    --sys-map-gap: 2.25rem;
+  }
+
+  .web-sys-stop {
+    position: relative;
+    padding-left: 1.6rem;
+  }
+
+  /* The spine, in segments: each checkpoint draws down to the next one, so the
+     last draws nothing and the system ends on `Extend` rather than trailing
+     into the margin. */
+  .web-sys-stop:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 0.85rem;
+    bottom: calc(-1 * var(--sys-map-gap, 2.25rem) - 0.85rem);
+    width: 1px;
+    background-color: var(--color-line-strong);
+  }
+
+  .web-sys-stop-node {
+    position: absolute;
+    left: 0;
+    top: 0.85rem;
+    transform: translateY(-50%);
+    display: block;
+    height: 7px;
+    width: 7px;
+    border-radius: 1px;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-canvas);
+  }
+
+  .web-sys-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  /* The same register the architecture's own nodes use — a bordered box with a
+     tracked caps label — so the chips read as the plan, not as tags. */
+  .web-sys-chip {
+    display: flex;
+    align-items: center;
+    min-height: 1.65rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1px;
+    background-color: var(--color-canvas);
+    letter-spacing: 0.14em;
+    color: var(--color-ink-soft);
+  }
+
+  /* ── The system directory ───────────────────────────────────────
+     An appendix to the architecture, not a second services section: four
+     groups of names on hairlines. No pill, no card, no icon. */
+
+  .web-dir-group {
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.1rem;
+  }
+
+  /* **On a phone the directory reads as a set, not as twenty-five rows.**
+     One name per row costs 1,054px here — a fifth of the whole section — for
+     a list nobody reads line by line; it is an appendix, and an appendix is
+     scanned. Below 640 the rows become an inline index behind hairlines,
+     which is the grammar §05 and §06 already use for their term rails, and
+     the same twenty-five names cost about 300px. The row treatment and its
+     hover mark return the moment there is width for two columns. */
+  @media (max-width: 639px) {
+    .web-dir-group ul {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.1rem 0.55rem;
+    }
+
+    .web-dir-item {
+      min-height: 0;
+      padding-block: 0.15rem;
+    }
+
+    /* The mark is a hover affordance, and there is no hover here. */
+    .web-dir-item .web-dir-mark {
+      display: none;
+    }
+
+    /* The divider trails its term rather than leading the next one, so a
+       wrapped line never opens on a stray hairline. */
+    .web-dir-item:not(:last-child)::after {
+      content: "";
+      display: block;
+      height: 0.55rem;
+      width: 1px;
+      flex: none;
+      background-color: var(--color-line);
+    }
+  }
+
+  .web-dir-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 30px;
+    padding-block: 0.35rem;
+    letter-spacing: 0.14em;
+    color: var(--color-ink-soft);
+    transition:
+      color 320ms var(--ease-out-expo),
+      transform 320ms var(--ease-out-expo);
+  }
+
+  .web-dir-mark {
+    display: block;
+    height: 1px;
+    width: 0.4rem;
+    flex: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-color: var(--color-accent);
+    transition: transform 320ms var(--ease-out-expo);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .web-dir-item:hover {
+      color: var(--color-ink);
+      transform: translateX(2px);
+    }
+
+    .web-dir-item:hover .web-dir-mark {
+      transform: scaleX(1);
+    }
+  }
+
+  /* ── 05 / Why Mishram — the connected route ──────────────────────
+     The lightest composition on the route, and deliberately so: §03 and §04
+     are both pinned multi-state chapters, and a third would have made the
+     page unreadable on a phone. One drawing, drawn once, and then nothing.
+
+     **Two layouts, one document.** Below `md` the route is a vertical rail
+     down the left of a stacked list; from `md` it is a rising horizontal path
+     above a five-column row. Every word appears exactly once and is shared by
+     both — the only things that swap are decoration (two node marks, one of
+     which is always `display: none`) and the bracket, which is one element
+     repositioned from a vertical span beside two rows to a horizontal one
+     hanging under two columns. */
+
+  .web-why {
+    --why-gap: clamp(0.75rem, 1.6vw, 1.75rem);
+    --why-row-gap: 1rem;
+  }
+
+  /* The span label. Above the drawing at every width, which is what keeps a
+     line of type out of a box whose height is a `clamp()` — and why the
+     narrow layout needs no second copy of the string. */
+  .web-why-span {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .web-why-span-rule {
+    display: block;
+    height: 1px;
+    width: 1.5rem;
+    flex: none;
+    background-color: color-mix(
+      in srgb,
+      var(--color-accent) 70%,
+      transparent
+    );
+  }
+
+  /* ── The wide band ──────────────────────────────────────────────
+     Not rendered below `md`. Its height is a `clamp()` rather than an aspect
+     ratio, so a wide desktop gets a route rather than a wall — which is the
+     whole reason the axis-aligned hairlines below are HTML borders and only
+     the diagonal route is SVG. */
+
+  .web-why-band {
+    display: none;
+  }
+
+  .web-why-lines {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* Drawn with a static `pathLength="1"` and a dash-offset transition — pure
+     CSS, no per-frame work, and no `pathLength` *animation*, which is what
+     §10's shatter gotcha needs alongside the `vector-effect` this omits. */
+  .web-why-route {
+    fill: none;
+    stroke: var(--color-line-strong);
+    stroke-width: 0.8;
+    stroke-linecap: square;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition:
+      stroke-dashoffset 1000ms var(--ease-out-expo) var(--why-d, 0ms),
+      stroke 360ms var(--ease-out-expo),
+      opacity 360ms var(--ease-out-expo);
+  }
+
+  /* The one stagger in the section: the route arrives stage by stage, which
+     is the only motion here that carries meaning. */
+  .web-why-route:nth-child(1) {
+    --why-d: 0ms;
+  }
+  .web-why-route:nth-child(2) {
+    --why-d: 110ms;
+  }
+  .web-why-route:nth-child(3) {
+    --why-d: 220ms;
+  }
+  .web-why-route:nth-child(4) {
+    --why-d: 330ms;
+  }
+  .web-why-route:nth-child(5) {
+    --why-d: 440ms;
+  }
+
+  .web-why[data-drawn="true"] .web-why-route {
+    stroke-dashoffset: 0;
+  }
+
+  .web-why-route[data-lit="true"] {
+    stroke: var(--color-accent);
+  }
+
+  /* Past `Growth`, and quieter. Not §04's dashed escape stroke: that one
+     means "goes somewhere this page has not shown", this means "keeps
+     going". */
+  .web-why-route--tail {
+    opacity: 0.4;
+  }
+
+  /* The measured field. Different lengths by design — the stages are not at
+     one altitude, and the drawing says so rather than tidying it away. */
+  .web-why-tick {
+    position: absolute;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--color-line);
+    opacity: 0;
+    transition:
+      opacity 620ms var(--ease-out-expo) 260ms,
+      background-color 360ms var(--ease-out-expo);
+  }
+
+  .web-why[data-drawn="true"] .web-why-tick {
+    opacity: 1;
+  }
+
+  .web-why-tick[data-lit="true"] {
+    background-color: var(--color-accent);
+  }
+
+  /* The span itself: a rule with two ticks closing it downward. Teal, and the
+     one place on this page where the accent is carrying an argument rather
+     than an interaction — the width of this bracket against the width of the
+     one below the row is the section. */
+  .web-why-span-mark {
+    position: absolute;
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+    border-color: color-mix(in srgb, var(--color-accent) 70%, transparent);
+    opacity: 0;
+    transition: opacity 700ms var(--ease-out-expo) 180ms;
+  }
+
+  .web-why[data-drawn="true"] .web-why-span-mark {
+    opacity: 1;
+  }
+
+  /* ── Node marks ─────────────────────────────────────────────────
+     One square vocabulary for both layouts, and the same one `.web-handoff-dot`
+     and `.web-sys-entry-dot` already use on this route. */
+
+  .web-why-node {
+    display: block;
+    height: 7px;
+    width: 7px;
+    flex: none;
+    border-radius: 1px;
+    border: 1px solid var(--color-line-strong);
+    background-color: var(--color-canvas);
+    transition: border-color 340ms var(--ease-out-expo);
+  }
+
+  .web-why-node--rail {
+    position: absolute;
+    left: 0;
+    top: 0.55rem;
+    transform: translateY(-50%);
+  }
+
+  /* The wide layout's marks sit on the route itself, so they are centred on
+     the node coordinate rather than hung from it — the first one overhangs
+     the content box by three pixels, which is what a registration mark on a
+     baseline does. */
+  .web-why-band .web-why-node {
+    position: absolute;
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+    transition:
+      opacity 520ms var(--ease-out-expo) 300ms,
+      transform 620ms var(--ease-out-expo) 300ms,
+      border-color 340ms var(--ease-out-expo);
+  }
+
+  .web-why[data-drawn="true"] .web-why-band .web-why-node {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* ── The stages ─────────────────────────────────────────────────
+     Narrow: a rail down the left, one stage per row, terms inline behind
+     hairline dividers so a stage costs about 60px rather than a screen. */
+
+  .web-why-stages {
+    display: flex;
+    flex-direction: column;
+    gap: var(--why-row-gap);
+    margin-top: 1.35rem;
+  }
+
+  .web-why-stage {
+    position: relative;
+    padding-left: 1.45rem;
+  }
+
+  /* The rail, in segments: each row draws the line down to the next row's
+     node, so the last row draws nothing and the route ends on `Growth`
+     rather than trailing into the margin. */
+  .web-why-stage:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 0.55rem;
+    bottom: calc(-1 * var(--why-row-gap) - 0.55rem);
+    width: 1px;
+    background-color: var(--color-line-strong);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 620ms var(--ease-out-expo) var(--why-d, 0ms);
+  }
+
+  .web-why-stage:nth-child(1)::before {
+    --why-d: 0ms;
+  }
+  .web-why-stage:nth-child(2)::before {
+    --why-d: 110ms;
+  }
+  .web-why-stage:nth-child(3)::before {
+    --why-d: 220ms;
+  }
+  .web-why-stage:nth-child(4)::before {
+    --why-d: 330ms;
+  }
+
+  .web-why[data-drawn="true"] .web-why-stage:not(:last-child)::before {
+    transform: scaleY(1);
+  }
+
+  .web-why-stage-name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.028em;
+    color: color-mix(in srgb, var(--color-ink) 88%, transparent);
+    transition: color 320ms var(--ease-out-expo);
+  }
+
+  .web-why-terms {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.75rem;
+    margin-top: 0.55rem;
+  }
+
+  .web-why-terms li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* 0.14em rather than `.caps`'s 0.26em — the same remedy §03's dense rail
+       uses, and without it `Campaigns` and its divider wrap at 330px. */
+    letter-spacing: 0.14em;
+    color: var(--color-ink-muted);
+    transition: color 320ms var(--ease-out-expo);
+  }
+
+  /* The divider trails its term rather than leading the next one, so a
+     wrapped second line never opens on a stray hairline. */
+  .web-why-terms li:not(:last-child)::after {
+    content: "";
+    display: block;
+    height: 0.6rem;
+    width: 1px;
+    flex: none;
+    background-color: var(--color-line);
+  }
+
+  /* ── The differentiation bracket ────────────────────────────────
+     One element, two geometries. Narrow: a vertical span pinned to the right
+     edge, reaching exactly to the next row's node — `100% + the row gap` from
+     the first node, which needs no measurement of the second row at all.
+     Wide: the same span turned through ninety degrees, hanging under two
+     columns at `200% + the column gap`.
+
+     **The label sits at the bracket's top, level with the stage name**, not
+     centred on the span. Centred, it lands on the terms row and collides with
+     `Product` at 390px; level with the name it shares a line with one word
+     and clears both term rows entirely. */
+
+  .web-why-typical {
+    position: absolute;
+    right: 0;
+    top: 0.55rem;
+    height: calc(100% + var(--why-row-gap));
+    display: flex;
+    /* DOM order is mark then label; reversing puts the rule on the outside
+       and the label inboard of it, where the reading eye arrives first. */
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    gap: 0.45rem;
+    color: var(--color-ink-muted);
+  }
+
+  .web-why-typical-mark {
+    display: block;
+    flex: none;
+    align-self: stretch;
+    width: 8px;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    border-color: var(--color-line-strong);
+  }
+
+  /* **Sized against the line it has to share, not against the type scale.**
+     On the narrow layout this label sits beside `Experience` on the stage's
+     name row — the only row in the block with any free width, because both
+     term rows run nearly to the gutter. `Experience` ends at 126px and the
+     bracket starts at the gutter, which leaves ~170px at 330 and ~160 at 320
+     — so the label is a step smaller than `.caps` and tracked at 0.08em
+     rather than 0.26em, measuring ~145px with clearance either side at both.
+     `md:` hangs it under two columns with a line to itself and puts the
+     `.caps` size and tracking back. */
+  .web-why-typical-label {
+    font-size: 0.5625rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    line-height: 1.4;
+    /* The bracket starts at the node, half a line below the stage name's own
+       centre. This lifts the label back onto the name's line. */
+    margin-top: -0.25rem;
+  }
+
+  /* ── The cross-links ────────────────────────────────────────────
+     The site's own quiet row grammar, not three call-to-action cards: this
+     page already has one ask, and these are a cross-reference. */
+
+  .web-why-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding-block: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.45;
+    color: color-mix(in srgb, var(--color-ink) 78%, transparent);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .web-why-link:hover {
+    color: var(--color-ink);
+  }
+
+  .web-why-link-index {
+    flex: none;
+    width: 1.4rem;
+    font-size: 0.5625rem;
+    color: var(--color-ink-muted);
+    transition: color 300ms var(--ease-out-expo);
+  }
+
+  .web-why-link:hover .web-why-link-index {
+    color: var(--color-accent);
+  }
+
+  .web-why-link-mark {
+    font-size: 0.8125rem;
+    line-height: 1;
+    color: var(--color-ink-muted);
+    transition:
+      transform 380ms var(--ease-out-expo),
+      color 300ms var(--ease-out-expo);
+  }
+
+  .web-why-link:hover .web-why-link-mark {
+    color: var(--color-accent);
+    transform: translate(2px, -2px);
+  }
+
+  /* ── The wide layout ────────────────────────────────────────────
+     From `md`, because 768px still leaves a 700px content box and five
+     140px columns — enough for `Conversion` and `Automation` on one line
+     each, which is the measurement this breakpoint was chosen on rather
+     than a device guess. */
+
+  @media (min-width: 768px) {
+    .web-why {
+      /* Room for the bracket hanging below the row. */
+      padding-bottom: clamp(2rem, 2.6vw, 2.75rem);
+    }
+
+    .web-why-band {
+      position: relative;
+      display: block;
+      height: clamp(118px, 9.5vw, 158px);
+      margin-top: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    .web-why-stages {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      column-gap: var(--why-gap);
+      row-gap: 0;
+      /* The rule the drop ticks land on. The band sits directly above it, so
+         the measured field and the row it measures share one line. */
+      border-top: 1px solid var(--color-line);
+      margin-top: 0;
+      padding-top: clamp(0.9rem, 1.4vw, 1.35rem);
+    }
+
+    .web-why-stage {
+      padding-left: 0;
+    }
+
+    .web-why-stage::before,
+    .web-why-node--rail {
+      display: none;
+    }
+
+    .web-why-terms {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.45rem;
+      margin-top: 0.9rem;
+    }
+
+    /* `:not(:last-child)` outweighs a bare `li::after`, so the override has to
+       carry the same selector rather than the shorter one. */
+    .web-why-terms li:not(:last-child)::after {
+      content: none;
+    }
+
+    .web-why-typical {
+      right: auto;
+      left: 0;
+      top: 100%;
+      height: auto;
+      width: calc(200% + var(--why-gap));
+      /* Plain `column` here: written first, the mark renders directly under
+         the row it brackets, with the label beneath it. The narrow layout's
+         `row-reverse` is what puts the same mark on the outside there. */
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.55rem;
+      margin-top: clamp(0.9rem, 1.4vw, 1.4rem);
+    }
+
+    .web-why-typical-mark {
+      align-self: auto;
+      width: 100%;
+      height: 8px;
+      border-width: 0 1px 1px 1px;
+    }
+
+    .web-why-typical-label {
+      /* Hanging under two columns here, with no line to share. */
+      font-size: 0.6875rem;
+      letter-spacing: 0.16em;
+      margin-top: 0;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .web-why-stage[data-lit="true"] .web-why-stage-name {
+      color: var(--color-ink);
+    }
+
+    .web-why-stage[data-lit="true"] .web-why-terms li {
+      color: var(--color-ink-soft);
+    }
+
+    .web-why-node[data-lit="true"] {
+      border-color: var(--color-accent);
+    }
+  }
+
+  /* ── 06 / How We Build — one process, one stack argument ─────────
+     The last informational chapter, and the cheapest: no scroll listener, no
+     MotionValue, no state, no imagery. Six rows, six 46×30px drawings built
+     from absolutely positioned spans, and one capability index.
+
+     **It must not read as §05 again.** That section is a rising line with
+     spans over it and tracked capability terms under each stage; this one is
+     flat, numbered `01`–`06`, carries prose rather than index type, and its
+     registration marks pass *through* the line instead of sitting on it.
+
+     Narrow: a rail down the left with the index outside it and the mark
+     crossing it horizontally. Wide: the same rail turned into the row's top
+     rule, with the marks crossing it vertically and the artifacts hung above
+     it. One document, one set of words, two geometries. */
+
+  .web-how-steps {
+    /* The narrow rail's own metrics, so the rail, the index, the crossing mark
+       and the text column cannot drift apart — every one of them resolves
+       against these two values. */
+    --how-rail: 1.5rem;
+    --how-pad: 2.3rem;
+    --how-row-gap: 0.7rem;
+    /* The artifact, and the only place its size is written down. */
+    --how-art-w: 38px;
+    --how-art-h: 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--how-row-gap);
+  }
+
+  .web-how-step {
+    position: relative;
+    padding-left: var(--how-pad);
+    display: grid;
+    /* The name shares its row with the artifact; the sentence spans both
+       columns underneath, so it keeps the full measure and every detail on
+       this route fits one line at 390px. */
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 0.85rem;
+    row-gap: 0.2rem;
+    align-items: center;
+  }
+
+  /* The rail, in segments: each row draws down to the next row's mark, so the
+     last row draws nothing and the process ends on `Launch` rather than
+     trailing into the margin. */
+  .web-how-step:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: var(--how-rail);
+    top: 0.62rem;
+    bottom: calc(-1 * var(--how-row-gap) - 0.62rem);
+    width: 1px;
+    background-color: var(--color-line-strong);
+  }
+
+  .web-how-index {
+    position: absolute;
+    left: 0;
+    top: 0.62rem;
+    transform: translateY(-50%);
+    font-size: 0.5625rem;
+    color: var(--color-accent);
+  }
+
+  /* The registration mark: horizontal here, crossing the rail. */
+  .web-how-tick {
+    position: absolute;
+    left: calc(var(--how-rail) - 0.22rem);
+    top: 0.62rem;
+    width: 0.55rem;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+  .web-how-name {
+    grid-column: 1;
+    grid-row: 1;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.028em;
+    color: var(--color-ink);
+  }
+
+  .web-how-detail {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: 46ch;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+  }
+
+  /* ── The artifact ───────────────────────────────────────────────
+     One frame per stage. Everything inside is a percentage, so the same six
+     part tables serve both frame sizes. */
+
+  .web-how-art {
+    position: relative;
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    width: var(--how-art-w);
+    height: var(--how-art-h);
+    flex: none;
+    border: 1px solid var(--color-line);
+    background-color: var(--color-canvas);
+  }
+
+  /* Resolved. The one frame that closes in teal. */
+  .web-how-art[data-stage="launch"] {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+
+  .web-how-part {
+    position: absolute;
+    background-color: var(--color-line-strong);
+  }
+
+  .web-how-part[data-tone="ink"] {
+    background-color: color-mix(in srgb, var(--color-ink) 42%, transparent);
+  }
+
+  .web-how-part[data-tone="accent"] {
+    background-color: var(--color-accent);
+  }
+
+  /* The three widths inside `Test` — outlines, not bars, because the point is
+     the shape of the viewport rather than the content in it. */
+  .web-how-part[data-tone="frame"] {
+    background-color: transparent;
+    border: 1px solid var(--color-line-strong);
+  }
+
+  /* ── The stack statement ────────────────────────────────────────── */
+
+  .web-how-statement {
+    max-width: 22ch;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.6rem);
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.032em;
+    color: var(--color-ink);
+  }
+
+  /* ── The capability index ───────────────────────────────────────
+     Three groups of names on hairlines. No pill, no card, no icon, and no
+     framework — §10's rule that a capability index is a promise. */
+
+  .web-how-caps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .web-how-capgroup {
+    border-top: 1px solid var(--color-line);
+    padding-top: 0.5rem;
+  }
+
+  .web-how-capitems {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.2rem 0.5rem;
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--color-ink) 74%, transparent);
+  }
+
+  /* The divider trails its term rather than leading the next one, so a wrapped
+     second line never opens on a stray hairline — the same correction §04 and
+     §05 both carry. */
+  .web-how-capitems li:not(:last-child)::after {
+    content: "";
+    display: inline-block;
+    height: 0.55rem;
+    width: 1px;
+    margin-left: 0.5rem;
+    vertical-align: -0.05em;
+    background-color: var(--color-line);
+  }
+
+  /* ── The wide layout ────────────────────────────────────────────
+     **Three columns from `md`, six from `lg`, and the middle step is not
+     decoration.** Six columns need to hold a *sentence*, not a label: at 768
+     the content box is 700px, a column is 107px, and every detail broke to
+     four lines of two or three words. Three columns give 226px and two clean
+     lines; six give 144px at 1024 and 202px at 1440.
+
+     Falling back to the rail at 768 instead would have been readable too —
+     and 193px taller on the viewport that can least afford it. §05's own
+     tablet note is the precedent: a path may become `2 + 3` rather than being
+     forced to stay on one row. */
+
+  @media (min-width: 768px) {
+    .web-how-steps {
+      --how-art-w: 44px;
+      --how-art-h: 28px;
+      /* The gap the drop mark spans, between the artifact and the line. */
+      --how-lift: 1rem;
+
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: clamp(1rem, 2.2vw, 2rem);
+      /* Room under each row for the next row's artifacts to hang into. */
+      row-gap: calc(var(--how-art-h) + var(--how-lift) + 1.6rem);
+      /* Room above the first row for its own. */
+      margin-top: calc(var(--how-art-h) + var(--how-lift) + 1.75rem);
+    }
+
+    .web-how-step {
+      display: block;
+      padding-left: 0;
+      padding-top: 0.95rem;
+      /* Two rows means two rules, so the line is carried per cell here. At
+         `lg` it moves to the list and becomes one continuous rule again. */
+      border-top: 1px solid var(--color-line);
+    }
+
+    .web-how-step:not(:last-child)::before {
+      display: none;
+    }
+
+    .web-how-index {
+      position: static;
+      display: block;
+      transform: none;
+    }
+
+    /* Vertical now, and crossing the rule the row sits under. */
+    .web-how-tick {
+      left: 0;
+      top: 0;
+      width: 1px;
+      height: 0.55rem;
+    }
+
+    .web-how-name {
+      margin-top: 0.7rem;
+    }
+
+    /* No `max-width` here — the column is the measure, and capping it again
+       would leave a ragged edge inside an already narrow cell. */
+    .web-how-detail {
+      margin-top: 0.55rem;
+    }
+
+    /* Hung above the rule, with a hairline dropping to it — so the frames read
+       as registration points on the line rather than as six small pictures. */
+    .web-how-art {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      margin-bottom: var(--how-lift);
+    }
+
+    .web-how-art::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 100%;
+      width: 1px;
+      height: var(--how-lift);
+      background-color: var(--color-line);
+    }
+
+    .web-how-caps {
+      flex-direction: row;
+      gap: clamp(1rem, 2vw, 2rem);
+    }
+
+    .web-how-capgroup {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    /* Stacked in their own column here, where there is height to spend and the
+       column is too narrow to read them as a sentence. */
+    .web-how-capitems {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+
+    .web-how-capitems li:not(:last-child)::after {
+      content: none;
+    }
+  }
+
+  /* ── Six columns, and one line ──────────────────────────────────
+     From `lg` the whole process fits on a single rule, which is what the
+     chapter is actually about. The border moves from the cells back to the
+     list so the line is continuous rather than segmented, and the row gap
+     goes to zero because there is only one row left. */
+
+  @media (min-width: 1024px) {
+    .web-how-steps {
+      --how-art-w: 46px;
+      --how-art-h: 30px;
+      --how-lift: 1.15rem;
+
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      column-gap: clamp(0.75rem, 1.5vw, 1.75rem);
+      row-gap: 0;
+      border-top: 1px solid var(--color-line);
+    }
+
+    .web-how-step {
+      border-top: 0;
     }
   }
 }

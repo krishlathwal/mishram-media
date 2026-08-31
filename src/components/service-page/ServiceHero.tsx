@@ -38,7 +38,9 @@ export function ServiceHero({
   primary,
   primaryNote,
   secondary,
+  tertiary,
   visual,
+  wideVisual,
   caption,
   signalPath,
 }: {
@@ -57,8 +59,28 @@ export function ServiceHero({
   primary: Action;
   primaryNote: string;
   secondary: Action;
+  /**
+   * An optional **third** route out, rendered as a quiet text link rather than
+   * a button — never a third weight competing with the two above it.
+   *
+   * Services 01–03 leave it unset and are byte-identical without it. Service 04
+   * uses it because a build engagement starts with a brief rather than a call,
+   * so `Start a Project` leads and the consultation moves here — the CTA
+   * hierarchy inverts on that page without the component forking (§10l's own
+   * remedy: art-direct through a slot).
+   */
+  tertiary?: Action;
   /** The page's own composition. */
   visual: React.ReactNode;
+  /**
+   * Lets a composition run to 38rem instead of 34rem.
+   *
+   * Services 01–03 are art-directed at 34rem and stay there. Service 04's
+   * build stage carries four surfaces at four depths rather than one anchored
+   * object, and at 34rem the interfaces inside them were reading as texture
+   * rather than as structure. Optional, so nothing else moves.
+   */
+  wideVisual?: boolean;
   /** Factual attribution for any photography inside the composition. */
   caption?: string;
   /** The concept the composition draws, stated in words beneath it. */
@@ -202,7 +224,31 @@ export function ServiceHero({
                   {secondary.label}
                 </CtaButton>
               </div>
-              <p className="caps mt-4 pl-1 text-ink-muted">{primaryNote}</p>
+
+              {tertiary ? (
+                <a
+                  href={tertiary.href}
+                  {...(tertiary.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : undefined)}
+                  className="caps group mt-5 inline-flex min-h-11 items-center gap-2.5 pl-1 text-ink/70 transition-colors duration-300 hover:text-ink"
+                >
+                  <span
+                    aria-hidden
+                    className="block h-px w-4 shrink-0 origin-left bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:scale-x-150"
+                  />
+                  {tertiary.label}
+                  <span aria-hidden className="text-[0.6875rem] leading-none">
+                    &#8599;
+                  </span>
+                </a>
+              ) : null}
+
+              <p
+                className={`caps pl-1 text-ink-muted ${tertiary ? "mt-3" : "mt-4"}`}
+              >
+                {primaryNote}
+              </p>
             </motion.div>
           </div>
 
@@ -211,7 +257,18 @@ export function ServiceHero({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.3, ease: EASE }}
-            className="mt-14 w-full max-w-[30rem] lg:col-span-6 lg:col-start-7 lg:mt-0 lg:ml-auto lg:max-w-[34rem]"
+            // `mt-10` below `sm`: 56px between the CTA block and the
+            // composition reads as a gap rather than a join on a phone. From
+            // 640 up the approved 56 is unchanged.
+            className={`mt-10 w-full max-w-[30rem] sm:mt-14 lg:col-span-6 lg:col-start-7 lg:mt-0 lg:ml-auto ${
+              wideVisual
+                ? // The tablet band matters as much as the desktop one here:
+                  // between 640 and 1024 this composition switches to its wide
+                  // table but the 30rem cap held it to 480px, leaving a third
+                  // of a 768px viewport empty beside it.
+                  "sm:max-w-[36rem] lg:max-w-[38rem]"
+                : "lg:max-w-[34rem]"
+            }`}
           >
             {visual}
 

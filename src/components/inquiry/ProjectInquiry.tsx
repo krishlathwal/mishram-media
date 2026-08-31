@@ -58,7 +58,7 @@ export function ProjectInquiry({
     >
       <Grid />
 
-      <div className="page-x relative pt-24 pb-24 md:pt-28 md:pb-28 lg:pt-24 lg:pb-24">
+      <div className="page-x relative pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-28 md:pb-28 lg:pt-24 lg:pb-24">
         <Intro note={note} />
 
         <div className="mt-12 md:mt-14 lg:grid lg:grid-cols-12 lg:gap-x-8">

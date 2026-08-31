@@ -28,7 +28,7 @@ import {
   SOCIAL_SYSTEM_COPY,
   SOCIAL_SYSTEM_LOOP,
 } from "@/config/service-social";
-import { BRAND, bookingHref } from "@/config/site";
+import { BRAND, OG_IMAGE, bookingHref } from "@/config/site";
 
 const PAGE = resolveServicePage("social-personal-brand-growth");
 
@@ -50,6 +50,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: PAGE.path,
+    images: [OG_IMAGE],
   },
 };
 

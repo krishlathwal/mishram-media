@@ -79,9 +79,9 @@ footer belonging to About.
 **The homepage shell is complete.** What remains is content (reels, creator handles, the creator
 roster expansion) and routes that do not exist yet: case studies and work detail pages.
 
-**Four service routes are built and three are public** — Services 01, 02 and 03 each carry
-`Explore service ↗` in `02 / What We Do`. Service 04's route does not exist (§10o) and Service
-05's is built but **hidden from public discovery** (§10s), so neither renders the action. Both the
+**All five service routes are built and four are public** — Services 01, 02, 03 and 04 each carry
+`Explore service ↗` in `02 / What We Do`. Service 04 published in Revision 21 (§10y); Service 05's
+route is built but **hidden from public discovery** (§10s), so it alone renders no action. Both the
 link and every menu, footer row and prev/next entry derive from `PUBLIC_SERVICE_PAGES`
 (`built && public`), so a dead link is not possible and neither is an accidental one.
 
@@ -2305,7 +2305,7 @@ the landing after the homepage's hydration changes its height.
 | `/services/social-personal-brand-growth` | 01 Social & Personal Brand Growth | **Built** |
 | `/services/influencer-marketing` | 02 Influencer Marketing | **Built** — §10l |
 | `/services/performance-marketing` | 03 Performance Marketing | **Built** — §10m |
-| `/services/web-digital-experiences` | 04 Web & Digital Experiences | **DEFERRED** — a deliberate milestone, not an oversight. Required scope in §10; see §10o |
+| `/services/web-digital-experiences` | 04 Web & Digital Experiences | **Built and public** — deferred by §10o, built section by section across §10v / §10w / §10x, published in §10y, positioning chapter added in §10z |
 | `/services/brand-shoots-content` | 05 Brand Shoots & Content | **Built** — §10n |
 
 `SERVICE_PAGES` carries all five with a `built` flag, mirroring `config/services.ts`. It is
@@ -5317,6 +5317,374 @@ scale facts, the contact set, and every service page's composition (only the pho
 
 ---
 
+## 10v. 04 / WEB & DIGITAL EXPERIENCES — the deferred page, first pass (Revision 18)
+
+**§10o's milestone is open.** The client supplied the discovery that section was waiting on — the
+projects actually built, the software and CRM scope, the conversion offer — so
+`/services/web-digital-experiences` now exists. It is being approved **section by section**, and
+this revision covers the hero, the portfolio and the shared inquiry only.
+
+### The route question, and why there is no design-lab
+
+The request named a `/design-lab/web-development/` route. **There is none, deliberately** — §10j,
+§10k and §19 all state that this project has no internal, debug, design-lab or preview routes, and
+adding one would have been a second route inventory to keep honest. The registry already held the
+canonical entry, so the page was built at `/services/web-digital-experiences` against the existing
+`ServicePage` record rather than beside it.
+
+**`built` stays `false` while the page is unapproved**, which is the §10l discipline verbatim, and
+it is what gives the review the safety a design-lab route was being asked for:
+
+| | State |
+| --- | --- |
+| Linked from menus, footer, `Explore service ↗`, prev/next | **No** — all read `PUBLIC_SERVICE_PAGES`. Crawled all five public routes: **zero** occurrences of `web-digital-experiences` |
+| Reachable by direct URL | Yes |
+| Indexed | No — `robots: noindex, nofollow`, derived from `PAGE.built` so it lifts itself when the flag flips |
+| Homepage numbering gap | Unchanged, still honest |
+
+### Section rhythm — and proof arrives second
+
+```
+01  hero → positioning → system → interaction → scope → proof → audience → process → FAQ
+02  hero → relevance → interaction → system → proof → scope → fit → audience → process → FAQ
+03  hero → hypothesis → creative + interaction → path → destination → scope → audience → process → FAQ
+04  hero → PROOF → …
+```
+
+**Earlier than anywhere else on the site, and the reason is structural.** On Services 01–03 the
+evidence is a method, which has to be explained before it can be shown. Here it is two live URLs a
+visitor can open and judge. Sections 3–8 of the approved flow are designed but **absent rather than
+stubbed** — `config/service-web.ts` carries no speculative copy for a section that has not been
+built, the same rule the registry applies to an unbuilt route.
+
+### The CTA hierarchy inverts, through a slot rather than a fork
+
+Services 01–03 open with the booking ask because a call is the first step into a retainer. A build
+starts with a brief, so `Start a Project` leads, `Explore Our Work` sits beside it, and the
+consultation becomes a **quiet third text link** — never a third button. `ServiceHero` grew two
+optional props for this (`tertiary`, `wideVisual`); the other four pages pass neither and are
+byte-identical.
+
+### Hero — THE DIGITAL BUILD STAGE
+
+Four surfaces at four depths over a measurement field, joined by an orthogonal architecture layer:
+**structure → interface → responsive → system.** Unlike the other three heroes nothing radiates,
+converges or travels — it is the same object at four stages of being built, seen at once. Each
+surface is placed so the part no later surface covers is the part that identifies it.
+
+`SiteSurface` and `MobileSurface` are deliberately the **same drawing** the homepage's
+`WebDigitalScene` makes, down to the masthead weights and the 40/40 editorial split, so a visitor
+arriving from `02 / What We Do` recognises the object. **No browser chrome**, per §10's own ruling
+for that scene. No photography, no code, no dashboard, no WebGL.
+
+**The assembly runs on entry, not on scroll — and that is a deviation from the request.** Gating the
+build sequence on scroll leaves a visitor who does not scroll looking at a half-drawn hero, which
+§12 rules out. So the entry choreography completes it (~2.4s) and **scroll performs a second
+movement**: the field, the structure and the connectors converge into the primary viewport and
+clear, the narrow viewport docks, and the group recedes — the same handoff the Growth Orbit makes.
+
+### Selected Digital Work — a window, not a device
+
+Two live projects, and **the viewport is a window**: a hairline frame at the page's own 3px radius
+with the site inside it. No traffic lights, address bar, tab strip or laptop bezel. The URL is set
+beside the frame as editorial type where it can be read and clicked. The capture is taller than the
+window and **translates inside it on scroll**, so the site is seen moving under its own header
+rather than sitting as a thumbnail — transform only.
+
+Two compositions, not one scaled: **pinned** at `(min-width: 1024px) and (min-height: 700px) and
+(min-aspect-ratio: 5 / 4)`, where one viewport holds the section while the projects reframe through
+it; **stacked** everywhere else, and under `prefers-reduced-motion`, which takes the stacked path
+with its travel disabled.
+
+**CONTENT BOUNDARY — name, category, capture, URL, and nothing else.** No metric, revenue, traffic,
+conversion, launch date, build duration, team size, technology stack, scope breakdown, description
+of Mishram's role, or testimonial. None of it is recorded anywhere in this project. Ruchita's own
+site publishes figures inside its hero; they appear only *within a screenshot of that site* and are
+never repeated in Mishram's voice.
+
+### The captures — §10q's method, reused
+
+Headless Chrome over CDP, no Playwright, no Puppeteer, no dependency added; optimised with the
+`sharp` already in devDependencies. **Four assets, 460KB total**, all lazy.
+
+| Asset | Output | Size |
+| --- | --- | --- |
+| `ekly-desktop.webp` | 1440×1600 | 85KB |
+| `ekly-mobile.webp` | 720×2400 | 74KB |
+| `ruchita-desktop.webp` | 1440×2600 | 207KB |
+| `ruchita-mobile.webp` | 720×2400 | 94KB |
+
+**The crop is the part worth reusing.** A full-page capture of a site with lazy media leaves
+unrendered bands mid-page — Ekly's had one at ~1620–2160 CSS px, which inside our frame would have
+read as a defect rather than as a scroll position. Each capture was trimmed to the region that
+actually rendered, **decided by looking at it**. §10q's lesson again: geometry cannot clear a
+composition.
+
+### THE THIRD METHODOLOGICAL LESSON — `useTransform` is sometimes not JavaScript
+
+§10p's was *a text search cannot clear an image*. §10q's was *geometry cannot clear a composition*.
+This one is about a fast path nobody asked for:
+
+> **`useTransform(scrollProgress, inputRange, outputRange)` can compile to a WAAPI animation on a
+> ScrollTimeline.** When the input comes from `useScroll` and the range is a literal array, Motion
+> attaches an `accelerate` descriptor and `VisualElement.bindToMotionValue` turns it into
+> `element.animate(...)` — but **only for the five properties in `acceleratedValues`**, of which
+> `opacity` is one and `scale`, `x` and `y` are not.
+
+It cost two separate defects, and each looked like something else:
+
+1. **A blank page.** WAAPI keyframe offsets must sit inside [0, 1]. The natural cross-fade band
+   around a slot boundary (`start - band` … `end + band`) produces `-0.07` and `1.07`; Chrome
+   rejects the whole animation during `commitLayoutEffect` with *"Offsets must be monotonically
+   non-decreasing"* and the route renders nothing. The stack trace names React internals and no
+   line of this project.
+2. **Two projects rendered on top of each other.** Measured at progress 0.994: `scale`, always on
+   the JS path, read `0.985` — correct. `opacity`, on the accelerated path, driven from the same
+   MotionValue with the same range, read `1` where it should have read `0`.
+
+The remedy is `components/service-page/web/scroll-range.ts` — `useScrollRange`, which passes a
+**transformer function** so `useTransform` skips `accelerate` entirely. Every scroll-driven opacity
+on this route uses it. **Ranges are still clamped to [0, 1] regardless**, because a band running
+past the end of its own track is wrong on its own terms.
+
+### What visual review found, and it was not measurement
+
+Four defects, all inside correctly measured layouts:
+
+| # | Defect | Fix |
+| --- | --- | --- |
+| 1 | **The hero's scroll handoff had already fired at rest.** `offset: ["start center", …]` measures from the moment the stage's top passes the viewport middle — which, for a composition centred in a 100svh hero, has already happened. Measured **0.304 before a single pixel of scroll**, so the measurement field and all four labels were at `opacity: 0` in the first frame | `["start start", "end start"]` |
+| 2 | **The convergence then finished too early** — everything but the interface had cleared by 420px while the lead, detail and both CTAs were still on screen | Windows stretched; the composition now holds through the chapter it belongs to |
+| 3 | **`RESPONSIVE` was struck through** by the narrow viewport's frame and its separating ring — §10q's defect 7 exactly | `translateY(0.6rem)` on `.web-anno--corner` |
+| 4 | **`STRUCTURE` ran under the interface at 390px**, and at 360 the clearance was 1px | Stacked table re-derived: the interface moves to `x: 22`, the box to `100 / 126` |
+
+Plus three of register rather than geometry: the structure layer was invisible on obsidian at
+`--color-line` (now `line-strong`), the primary viewport read as one more faint rectangle in the
+`--plan` fill (now the full surface register), and the two front surfaces had no separation in dark
+mode, where `--t-image-shadow` is `none` (now `.web-surface--lift`, a canvas-coloured ring that
+works in both themes).
+
+### Verified
+
+- **Types, lint and the production build are clean.** All twelve routes prerender.
+- **Eight viewports** — 1440×900, 1440×768, 1280×800, 1024×768, 768×1024, 430×932, 390×844,
+  360×800 — in **both themes** and under **reduced motion**. No console errors, **no horizontal
+  overflow at any size**, exactly one `h1`, one `#hero`, and `h1 → h2 → h3` with no skipped level.
+- **Accessibility.** Both project links carry `target="_blank"` + `rel="noopener noreferrer"` and
+  distinguishable accessible names (`Visit live site — Ekly, opens in a new tab`). The off-screen
+  project in the pinned stage sits inside `[inert]`, so it is out of the tab order and the
+  accessibility tree — the one piece of React state in that stage exists for this, and changes once
+  per project boundary rather than per frame. Desktop captures carry meaningful `alt`; the
+  decorative mobile ones carry `alt=""`.
+- **Performance.** Four lazy captures, 460KB total; transforms and opacity only; no new dependency.
+
+### Still to build, in order
+
+Sections 5–8 of the approved flow: the Design + Development + Growth argument, the responsive
+demonstration, the development process, and the capability / technology philosophy. **Then**
+`built: true`, and the `noindex` lifts with it.
+
+> **SUPERSEDED — see §10y and §10z.** `built: true` shipped in Revision 21, and Revision 22 built
+> the Design + Development + Growth argument as `05 / Why Mishram`. The four-section tail above is
+> **no longer the plan**: the remaining three chapters collapse into one compact `How We Build`,
+> because the route already measures ~14,000px on a phone. Build against §10z's table.
+
+---
+
+## 10x. 04 / BEYOND WEBSITES — the business system (Revision 20)
+
+The chapter that has to move the visitor from *"Mishram builds premium websites"* to *"Mishram can
+build the digital infrastructure my business runs on"* — and the one place on the route where that
+claim is made rather than listed.
+
+### The ink environment, and the CSS gotcha it exposed
+
+The section carries `.web-ink`, a **scoped re-declaration of the same `--t-*` tokens §3 defines**,
+at the obsidian column's values. Everything inside then resolves through the ordinary semantic
+names, so **no component in the section references a raw palette value**, and one rule serves both
+themes: in light it is a full inversion, in dark it is a no-op and the chapter reads as continuous —
+its separation there coming from the chapter rule, the frame marks and a denser composition.
+
+> **`@theme` aliases resolve at `:root`, not where they are used.** `--color-canvas: var(--t-canvas)`
+> is declared on `:root`, and a custom property's value is substituted at computed-value time **on
+> the element it is declared on**. So overriding `--t-canvas` further down the tree reaches nothing —
+> every `bg-canvas` below simply inherits the colour already resolved at the root. The section
+> rendered on the light canvas with all sixteen tokens silently ignored.
+>
+> The global theme toggle never hits this because `[data-theme="light"]` sits on `:root` itself. A
+> **scoped** inversion is the first thing on this site to need it, and the fix is to restate the
+> `--color-*` aliases inside the scope alongside the `--t-*` values.
+
+### The architecture: accumulation, not transformation
+
+§03's stage transforms one frame between three products. **This one deliberately does the
+opposite — nothing is replaced.** Four entry points converge on one record; the record grows a CRM
+around it; an automation rail appears beneath the whole thing; and the product surfaces then arrive
+**outside the original frame**. Earlier tiers stay on screen, subdued, because the argument *is*
+accumulation: the website has to still be visible when the larger system exists.
+
+**The one piece of geometry that moves is the customer record** — large and central while it is
+alone, contracted and shifted left as the system builds around it. Everything else holds position
+and changes only presence, tone and routes, which is what keeps a fourteen-node diagram to four
+transitions rather than a per-frame layout pass.
+
+**The frame marks are the payoff.** Registration corners bound `x 0–72` — the "original website
+frame" — and states one to three fit inside them. State four's admin panel, client portal, web app
+and mobile surface sit outside. The automation rail was pulled back to end exactly on `x 72` so that
+state four is the *first* thing to cross it.
+
+### Motion, and why this section costs nothing at rest
+
+Scroll picks the state — three React updates across the whole track — and every visual change is a
+CSS transition. Routes draw with a normalised `pathLength="1"` and a `stroke-dashoffset`
+transition: **pure CSS, no per-frame work, and no animated `pathLength`**, so §10's `vector-effect`
+shatter gotcha cannot apply. No scroll MotionValue reaches a style property, so §10v's
+`accelerate` / ScrollTimeline defect cannot recur either.
+
+**There is no looping animation anywhere in the section**, which is the complete answer to "do not
+keep expensive effects running offscreen" — once a state settles there is nothing left running, so
+nothing needs pausing. The status mark inside the CRM moves between rows on a state change; it does
+not pulse.
+
+### What review found
+
+| # | Defect | Fix |
+| --- | --- | --- |
+| 1 | **The ink scope did nothing** — see the gotcha above | `--color-*` aliases restated inside `.web-ink` |
+| 2 | **The mobile surface overlapped the client portal** by one unit in the shared right-hand column | Phone dropped to `y 29`. Verified by a probe that intersects **every node against every other node in all four states** — zero overlaps, and nothing outside its stage |
+| 3 | **Five terms wrap at every width used**, and the divider led each item, so wrapped lines opened on a stray hairline | The divider trails its term instead |
+| 4 | **The headline fragmented into three ragged lines**, stranding `problem` — 26 characters against §03's 18 at the shared `34rem` measure | Widened to `44rem` through a scoped `[&_h2]` variant, not in the component the other four pages are art-directed against |
+| 5 | **The bridge line resumed a section-padding below the boundary** | Pulled up through `ServiceSection`'s own padding so it starts at the chapter rule |
+| 6 | **The CRM strip was illegible in the mobile fragments** — a three-row module body does not survive 28px | A `compact` body: name, status mark, rule |
+| 7 | The automation rail overran the frame marks by two units, weakening the one detail the section's argument rests on | Rail re-spaced to end on `x 72` |
+
+### The bridge, and the handoff
+
+§03's rail ends on `Workflow`; this section opens with a line that resumes **in the same grid
+column**, labelled `Form submission`, so the two chapters descend as one. At the other end the last
+routes leave the frame and the section closes on `Traffic → Experience → Conversion → System →
+Growth` — **no heading, no copy, no CTA**, because §05 does not exist yet.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twelve routes prerender.
+- **Eight viewports** — 1440×900, 1440×768, 1280×800, 1024×768, 768×1024, 430×932, 390×844,
+  360×800 — in **both themes** and under **reduced motion**. No console or hydration errors, **no
+  horizontal overflow anywhere**, one `h1`, one `#hero`, `h1 → h2 → h3` with no skipped level, and
+  the ink scope resolving to `rgb(10,10,10)` at every width in both themes.
+- **Sticky at 1200+, stacked at 1024 and below** — and the stacked path is what ships in the HTML,
+  what a client without JavaScript keeps, and what reduced motion gets. Mobile draws **one tier per
+  state** rather than the accumulated whole, which at 360px would be fourteen illegible boxes.
+- **Accessibility.** The architecture is `aria-hidden` at every size and **every node it draws is
+  named in the copy beside it** — nineteen state terms plus a twenty-five-item directory, all real
+  DOM text. Four `h3` state headings in both layouts. The three inactive state copies are `inert`.
+  The section has **no interactive controls at all**, so there is nothing to trap a keyboard user
+  and nothing behind hover: the node highlight is a pointer-only enhancement over a decorative
+  drawing.
+- **Sections 01–03 are untouched.** Proved by capturing all three under `prefers-reduced-motion`
+  with Section 04 present and again with it removed: **0.0000% of subpixels differ** on each.
+- **`built: false` and `robots: noindex, nofollow` unchanged**, and all eight public surfaces still
+  contain **zero** occurrences of `web-digital-experiences`.
+
+---
+
+## 10w. 04 / WHAT WE BUILD — the capability explorer (Revision 19)
+
+Section 03 of the Web & Digital Experiences route. It has to answer *"what can Mishram actually
+build for us?"* across **thirty-three categories of work** without becoming a directory — and the
+obvious solution, a card per capability, would have been thirty-three boxes saying "we do this too".
+
+### The idea: three families of one capability
+
+The categories are grouped into **Websites / Commerce + Service / Digital Products**, and the
+section argues they are the *same* capability pointed at different problems. Beside the index sits
+**one procedural product architecture that transforms** — six regions that never leave and change
+purpose instead of being replaced. The masthead of a website becomes the masthead of a store and
+then, without ever unmounting, the navigation rail of an application: an 88×5 horizontal bar
+becoming a 12×52 vertical one. That single rectangle *is* the argument.
+
+The list stays typographic — a two-column matrix of names on hairlines. No icon, no container, no
+pill, no bento grid, no accordion.
+
+### THE ARCHITECTURE DECISION: scroll-driven progression, discrete state
+
+Sticky scroll-driven on desktop, because the brief's thesis is *transformation, not replacement*
+and a tab component gives a before and an after with nothing in between. Three slots down a pinned
+track hand one object from state to state.
+
+**But the state itself is discrete, and that is the half that matters.** Scroll sets an index once
+per boundary — two React updates across the whole track — and the transformation is a **CSS
+transition on the regions' geometry**. Four reasons, and the fourth is specific to this page:
+
+1. It is the only way to hit the specified 500–800ms transition; scroll-linked geometry has
+   whatever duration the visitor's wheel gives it.
+2. Per-frame `left/top/width/height` on twelve boxes is layout work on every scroll frame. This is
+   three transitions for the entire section.
+3. `prefers-reduced-motion` neutralises it for free through the global block — same three states,
+   switching instantly, no component-level branch.
+4. **Nothing in this section reads a scroll MotionValue for a visual property**, so the
+   `accelerate` / ScrollTimeline defect §10v documents *cannot* recur here.
+
+### The threshold is higher than the section above it, deliberately
+
+`DigitalWork` pins from **1024**; this pins from **1200**. That section pins one image beside a
+short meta column; this one needs an index, a twelve-row matrix *and* a composition in the same
+100svh panel. **1024×768 therefore gets the stacked sequence**, which is the better composition
+there rather than a degraded one — measured, the pinned left column is 605–638px against a 642–782px
+panel at 1200–1440, and would not have fitted at 1024.
+
+Mobile abandons the sticky experience entirely: all three families render in sequence — label,
+title, description, composition, flow, matrix — so **every capability is reachable by scrolling and
+by a screen reader, with nothing behind a tap.** That is also what ships in the HTML
+(`useMediaQuery` is `false` on the server) and what a client with no JavaScript keeps.
+
+### What measurement found, and none of it was visible in a layout that "worked"
+
+| # | Defect | Fix |
+| --- | --- | --- |
+| 1 | **The pinned index exposed no headings.** The stacked sequence used `h3` per family; the sticky index used links in a list, so the same page had two different document outlines depending on viewport | The family name is an `h3` wrapping the link in both layouts. `h3` count 2 → 5 |
+| 2 | **Four matrix rows wrapped to two lines at 1280** — `MEMBERSHIP PLATFORMS`, `PERSONAL BRAND SITES`, `E-COMMERCE WEBSITES`, `APPOINTMENT SYSTEMS`. At `col-span-4` the matrix got 174px per column | Split rebalanced to **5 / 6** (column six is the gutter). 224px per column — 45px of slack on the longest name, so it survives a font fallback and a longer future entry |
+| 3 | **One row still wrapped at 360–430**, where two columns leave ~155px | **One column below `sm`**, two from 640 |
+| 4 | **`STRUCTURE`, `COMMERCE` and `WORKFLOW` printed across the top border of the region they name** at 360–768. Root cause: label geometry is absolute px while the gaps between regions are percentages of a stage that shrinks — a 4-unit gap is 14px at 390 and cannot hold an 8px label plus its offset | Corner offset 0.6rem → **0.3rem** for this stage only, and the three gaps widened to 5+ units. Verified by a probe that intersects **every label against every region in all three states**: zero collisions at 360 / 390 / 430 / 768 / 1024, and in all three states at 1200 / 1280 / 1440 |
+| 5 | Capability rows carried `tabIndex={0}` in the stacked sequence, where focusing them updates nothing | Focusable only where focus does something |
+
+**A methodological note on defect 2 and 3.** The first wrap probe counted `getClientRects().length`,
+which reports **one** rect for a flex item however many lines it holds — so it returned "0 wrapped"
+while a screenshot plainly showed two lines. Measuring rendered *height* found four. §10q's lesson
+inverted: geometry cannot clear a composition, and a bad geometry probe cannot clear it either.
+
+### The handoff into Beyond Websites
+
+The last state's architecture is drawn with **two connectors that leave the bottom of its own
+frame** and are clipped by it, and the section closes on a descending rail — `Customer → Data → CRM
+→ Workflow` — with **no heading, no copy and no CTA**, because the chapter that answers them has not
+been built. §10o's rule against placeholders holds.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twelve routes prerender.
+- **Eight viewports** — 1440×900, 1280×800, 1200×760, 1024×768, 768×1024, 430×932, 390×844,
+  360×800 — in **both themes** and under **reduced motion**. No console errors, **no horizontal
+  overflow anywhere**, one `h1`, one `#hero`, `h1 → h2 → h3` with no skipped level, and all three
+  states reached at every sticky width.
+- **Accessibility.** `aria-current="true"` on exactly the active family; the index rows are real
+  anchors to slot markers, so category navigation is native and needs no scripted scrolling (§10);
+  the two inactive matrices are `inert`; and **all thirty-three capability names are real text in
+  the DOM in both layouts**, not a property of the drawing.
+- **Hero and Selected Digital Work are untouched.** Proved rather than asserted: captured under
+  `prefers-reduced-motion` (which stills the idle drift) before and after this section existed —
+  **0.0000% of subpixels differ** on both. Without reduced motion the same comparison shows 1.33%,
+  which is entirely `svc-drift` phase: the longer page makes the capture harness's scroll sweep
+  ~1.4s slower, landing the shot at a different point in a 13–19s loop. Worth knowing before
+  treating a pixel diff on this page as a regression.
+- **`built: false` and `robots: noindex, nofollow` are unchanged**, and all five public routes
+  still contain zero occurrences of `web-digital-experiences`.
+- **Performance.** No continuous animation, no scroll-linked visual property, no canvas, no new
+  dependency, and no MotionValue fan-out — the section's entire animation budget is three CSS
+  transitions.
+
+---
+
 ## 11. Responsive strategy
 
 | Breakpoint | Behaviour |
@@ -5765,15 +6133,21 @@ unrelated TXT record stay exactly as they are.
 
 ---
 
-## 10o. SERVICE 04 / WEB & DIGITAL EXPERIENCES — DEFERRED BY THE CLIENT
+## 10o. SERVICE 04 / WEB & DIGITAL EXPERIENCES — WHY IT WAS DEFERRED
 
-**This is a scheduled milestone, not an unfinished page.** Read this before
+> **SUPERSEDED IN PART BY §10v (Revision 18).** The client supplied the
+> discovery this section was waiting on, and the route now **exists**: hero,
+> Selected Digital Work and the shared inquiry are built. `built` is still
+> `false` and nothing links to it while the page is approved section by
+> section. The reasoning below is why it got its own pass, and it still stands.
+
+**This was a scheduled milestone, not an unfinished page.** Read this before
 concluding the service pages are "nearly done bar one" or offering to fill the
 gap quickly.
 
-`/services/web-digital-experiences` **does not exist**, `built` stays `false`,
-and nothing on the site links to it — verified after Revision 12 by crawling
-every internal `href` on all eight public routes. It returns 404.
+Until Revision 18 `/services/web-digital-experiences` **did not exist**, `built`
+stayed `false`, and nothing on the site linked to it — verified after Revision
+12 by crawling every internal `href` on all eight public routes.
 
 ### Why it is held back
 
@@ -5811,8 +6185,8 @@ already waiting for it: §10m's landing-experience section is the natural home
 for a contextual link to it, and §10n's `ShootFrame` shows the pattern its own
 media primitive should follow rather than one it should share.
 
-**Do not build it as part of another task, and do not propose building it
-immediately after one.** It follows the About page in the current plan.
+**It was not built as part of another task.** It got the dedicated pass this
+section asked for — see §10v.
 
 ---
 
@@ -6515,7 +6889,21 @@ and Revision 17's visual review is done at six viewports in both themes and unde
 
 **After that:**
 
-## **DEEP WEB & DIGITAL EXPERIENCES DISCOVERY — before any code.**
+## **SERVICE 04 — IN PROGRESS, SECTION BY SECTION (§10v, §10w, §10x).**
+
+**The discovery below has been supplied and the route now exists.** Revision 18 built the hero
+(the Digital Build Stage), Selected Digital Work with real captures of both live projects, and the
+shared inquiry; Revision 19 added `03 / What We Build` (§10w) and Revision 20 `04 / Beyond Websites` (§10x). `built` stays `false` and the page carries `noindex` until the remaining sections
+are approved: **the Design +
+Development + Growth argument, the responsive demonstration, the development process, and the
+capability / technology philosophy.** Then one `built: true` publishes it.
+
+> **SUPERSEDED — see §10y and §10z.** The page is published (Revision 21) and the Design +
+> Development + Growth argument is built as `05 / Why Mishram` (Revision 22). One chapter remains,
+> not three: `06 / How We Build` folds process, approach and technology philosophy together. §10z
+> carries the current table.
+
+*The original instruction, kept because it is why the page reads the way it does:*
 
 `/services/web-digital-experiences` is the last unbuilt service route and **the
 second-most-important conversion page on the site** (§10o). It must **NOT** be generated from the
@@ -6530,7 +6918,8 @@ current generic service summary, and it should not be started until the client h
 - the preferred conversion offer
 
 Only then design and build it, at the depth §10o describes. **Do not build it inside another task,
-do not create a placeholder, and do not renumber Service 05 to close the gap.**
+do not create a placeholder, and do not renumber Service 05 to close the gap.** All three still
+hold for the sections that remain: no placeholder has reached the route, and Service 05 keeps `05`.
 
 **After that:** final production QA, then GitHub + Netlify deployment.
 
@@ -6596,3 +6985,540 @@ deferred deliberately, it is not next, and it should not be built inside another
 **Decisions waiting on the client, all evidenced but none shipped** (§10p): the five B-class
 historical creators, the four team members, the influencer geography, the non-profit arm,
 WOW Skin Science, and whether negotiation joins the Influencer Marketing scope index.
+
+---
+
+## 10y. SITE-WIDE INTEGRATION, SEO AND MOBILE MILESTONE (Revision 21)
+
+Feature work stopped so the Web & Digital Experiences route could stop being a hidden prototype and
+become part of the site. Four chapters existed behind a direct URL; nothing linked to them, nothing
+indexed them, and the surfaces around them had drifted while they were built.
+
+### 1 — PUBLISHED, AND THE FLIP WAS THE WHOLE INTEGRATION
+
+`built: false → true` on one registry entry. **No component was edited to publish it**, which is the
+§10j architecture paying for itself: the header services menu, the mobile services group, the footer
+directory, the homepage's `Explore service ↗` on Service 04, the prev/next rail and the new sitemap
+all read `PUBLIC_SERVICE_PAGES`. The page's own `robots` was written as
+`PAGE.built ? undefined : { index: false, follow: false }`, so the `noindex` lifted itself rather
+than leaving a stale override behind.
+
+Verified after the flip: every service now carries **exactly two** homepage hrefs (its `Explore
+service ↗` and its footer row) — four services, eight links, perfectly symmetric. The numbering gap
+closed to 01 → 02 → 03 → 04.
+
+### 2 — THE LOGO BUG, AND ITS ROOT CAUSE
+
+> `RouteTransition.start()` opened with
+> `if (reduced || !path || path === pathname) { router.push(href); return; }`.
+>
+> Clicking the wordmark **on the page it points at** took that branch. `router.push` to the URL you
+> are already on is a no-op — the App Router has nothing to navigate to, so it neither re-renders
+> nor scrolls. The visitor asked for "home" nine thousand pixels down the homepage and stayed
+> exactly where they were.
+
+Same-path-no-fragment is now its own branch: it plays **the site's own wipe** and lets the existing
+`window.scrollTo(0, 0)` at the end of the cover do the work. Not a long smooth scroll — a 16,000px
+homepage unwinding takes seconds and reads as a second bug. Same-path links carrying a fragment are
+untouched, because those are native anchors. Verified from `/`, from `/about` and from the web route
+on mobile: all three land on `/` at `scrollY 0`.
+
+### 3 — BRAND SHOOTS, REPOSITIONED
+
+It was already off public discovery (§10s) but four surfaces still presented it as a flagship:
+
+| Surface | Was | Now |
+| --- | --- | --- |
+| Site meta description | "…performance, **brand shoots** and web" | "…performance marketing, web development and custom software" |
+| Hero capability rail (§5) | `Social · Influencer · Performance · Brand Shoots · Web` | `Social · Influencer · Performance · Web · Software` |
+| Homepage + About disciplines | Creative — "Content, reels and **brand shoots**" | "Content, reels and campaign production" |
+| About service index | **Rendered all five `SERVICES`** | `PUBLIC_SERVICES` |
+
+**The About index was a genuine bug, not just wording.** Every other discovery surface reads the
+public list; About read the raw one, so it listed a hidden service as a flagship discipline with no
+link. The technology caption also grew to carry the half Service 04 made real —
+"Websites, platforms and custom systems".
+
+The only surviving mention site-wide is the inquiry form's `Brand Shoots & Content` checkbox, which
+is correct: content production is still something a client may ask for.
+
+### 4 — SEO, FROM NOTHING TO A BASELINE
+
+The site had **no `sitemap.xml`, no `robots.txt`, no structured data and no social image.**
+
+- **`app/sitemap.ts`** — derived, nine URLs. It lists what is *indexable*, not what exists:
+  `PUBLIC_SERVICE_PAGES` excludes the built-but-hidden Brand Shoots route, which answers `noindex`.
+  A sitemap entry pointing at it would be the site contradicting itself.
+- **`app/robots.ts`** — permissive, `/api/` excluded, sitemap declared. Deliberately no `Disallow`
+  for the hidden route: a disallowed page is never crawled, so its `noindex` is never read.
+- **`config/schema.ts`** — `Organization` + `WebSite` JSON-LD. Every property comes from
+  `config/site.ts`. **`Organization`, not `ProfessionalService`**, because the richer types expect
+  `priceRange` and `openingHours` and this project has verified values for neither. No rating, no
+  review, no founder, no headcount, no `foundingDate`.
+- **Twitter card** plus `opengraph-image` / `twitter-image` (1200×630).
+
+Titles and descriptions were already unique per route — that part of the audit came back clean.
+
+### 5 — THE FAVICON WAS THE DEFAULT NEXT.JS TRIANGLE
+
+Never replaced since `create-next-app`. Every browser tab on the site showed a black circle with a
+white triangle.
+
+There is **no vector brand asset in this project** — `mishram-wordmark.png` (420×199, raster) is the
+canonical mark, used as a CSS mask. So nothing was traced or redrawn: the **M** was cropped from
+that approved artwork (`left 4, top 104, 74×78`), centred on the brand's obsidian, and emitted as
+`favicon.ico` (16/32/48, PNG-in-ICO), `icon.png` (512) and `apple-icon.png` (180). Proofed at 16,
+32 and 48px before shipping. The ink tile means it reads on light and dark browser chrome alike.
+
+### 6 — MOBILE, MEASURED BEFORE AND AFTER
+
+The complaint was that the site "feels long" on a phone. Measurement found something sharper: **the
+web route was *longer* on mobile than on desktop** — 15,176px against 14,983px, on a screen 56px
+shorter.
+
+| Page | Mobile 390×844 | Desktop |
+| --- | --- | --- |
+| `/services/web-digital-experiences` | 15,176 → **14,268** (−6.0%) | 14,983 → **14,983** (0.0%) |
+| `/` | 16,975 → **16,455** (−3.1%) | 16,828 → **16,828** (0.0%) |
+| `/about` | 13,935 → **13,583** (−2.5%) | — |
+
+**Every change is a base or `sm:` step; `md:` and up are byte-identical.** That is why desktop
+measures *exactly* zero difference, and it is the rule this pass was run under — §11's protection of
+the approved desktop compositions is absolute.
+
+What moved: the chapter padding on nine homepage sections, `ServiceSection`, `AboutSection` and
+`ProjectInquiry` (all authored with one desktop value and no mobile value), plus the internal rhythm
+of the three web-route chapters.
+
+**The honest finding is that padding is not what makes it long.** After the pass the remaining
+mobile weight is content: `beyond-websites` 4,642px, `what-we-build` 3,194px, `project-inquiry`
+2,232px on every page. Those are four architecture states, three capability families and a
+fourteen-field form — cutting them would be cutting meaning, which the brief for this pass ruled
+out.
+
+### 7 — WHAT THE MOBILE MENU DID NOT NEED
+
+Audited and left alone. It already carries `role="dialog"`, `aria-modal`, a labelled close control
+at 40×40, `env(safe-area-inset-bottom)`, editorial nav type at the same scale as the desktop
+header, a services disclosure and a full-width contact CTA. Redesigning it would have been change
+for its own sake.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes prerender, now including
+  `sitemap.xml`, `robots.txt`, `icon.png`, `apple-icon.png`, `opengraph-image.png` and
+  `twitter-image.png`.
+- **27 configurations** — `/`, `/about` and the web route at 1440×900, 1280×800, 1024×768,
+  768×1024, 430×932, 390×844, 375×812, 360×800 and **330×760**, alternating themes. No horizontal
+  overflow, no console errors, exactly one `h1` on every one.
+- **Desktop regression, proved not asserted.** The three approved web-route chapters captured under
+  `prefers-reduced-motion` before and after this pass: **0.0000% of subpixels differ** on each.
+- **Public state.** `built: true` · no robots override · canonical
+  `https://mishram.media/services/web-digital-experiences` · present in `sitemap.xml` · allowed by
+  `robots.txt` · linked from the homepage sequence, the footer directory, the header services menu,
+  the About index and the prev/next rail.
+
+---
+
+## 10z. 04 / WHY MISHRAM — the connected route (Revision 22)
+
+Section 05 of the Web & Digital Experiences route: the positioning chapter, and the only one on the
+page that is not about what Mishram builds. §01–§04 prove the capability; this answers the question
+they leave open — **why take a build to Mishram rather than to a development studio.**
+
+### 1 — THE PAGE PLAN WAS SHORTENED, AND THIS IS THE IMPORTANT PART
+
+The approved flow (§10v) carried nine to ten chapters. **It no longer does.** §10y measured the
+route at 14,268px on a phone with only four of them built — `beyond-websites` 4,642px,
+`what-we-build` 3,194px and the shared form 2,232px — and found the remaining weight was content,
+not padding. Five more cinematic sections on top of that would have produced a page nobody finishes.
+
+The remaining plan is **two** sections, not five:
+
+| # | Section | Status |
+| - | ------- | ------ |
+| 5 | Why Mishram — the whole route | **built (this revision)** |
+| 6 | How We Build — process, approach and technology philosophy, as one compact chapter | **built — §10aa** |
+| 7 | Project inquiry (shared) | already built |
+
+> **The route is now complete.** §10aa built section 6 and closed the information architecture of
+> this page. Nothing further is planned for it: the next pass is QA, copy and production, not
+> another section.
+
+A responsive demonstration, a development process and a technology philosophy were three separate
+approved chapters. They collapse into one. **That is fewer sections saying the same things, not
+less to say** — and the next session should build §06 against this table, not against §10v's.
+
+### 2 — THE ARGUMENT, AND HOW IT IS DRAWN
+
+The differentiation is not technology and the copy never claims it is. It is that Mishram already
+works on the four stages either side of the website.
+
+```
+├─ where mishram works ────────────────────────────────┤
+                                                   ●  Growth
+                                           ●  System
+                                   ●  Conversion
+                           ●  Experience
+                   ●  Traffic
+───┴───────────────┴───────────────┴───────────────┴──────
+    Traffic         Experience      Conversion      System      Growth
+    Content         Website         Enquiry         CRM         Measure
+    Creators        Commerce        Booking         Automation  Learn
+    Campaigns       Product         Purchase        Workflow    Improve
+                    └──── typical web project ────┘
+```
+
+**The whole case is the difference between the two span widths.** Nothing is asserted about anybody
+else: `Typical web project` describes a *brief*, which is a neutral and true statement about scope,
+and no competitor is named, implied or diminished anywhere in the section.
+
+**No fabricated proof.** No conversion rate, traffic figure, client count, project count, revenue,
+years, award, ranking or testimonial — §1, and a positioning chapter is exactly where those normally
+arrive. The five practice terms in the closing strip are `config/services.ts` restated, and the
+three cross-links are derived from `PUBLIC_SERVICE_PAGES` rather than written down a second time.
+
+### 3 — `Traffic`, NOT `Attention`
+
+§04 closes on `Traffic → Experience → Conversion → System → Growth` under `And what it is all for`,
+in display type, and then stops without explaining it. §05 opens on the same five words, in the same
+order, and gives them a route — so the chapter break is a **reprise**, not a restart. The words have
+to match exactly for that to work, so `WEB_WHY_STAGES` is pinned to `WEB_SYSTEM_HANDOFF.terms` and
+both carry a comment saying so.
+
+The transition itself reuses `.web-sys-entry` — the bridge device §03 → §04 already established —
+in the same grid column, pulled up through the section's own top padding. Its gradient hairline is
+transparent at the top and teal at the dot, so on the narrow layout, where it overhangs the chapter
+rule by 32px, only the teal end crosses onto §04's ink. One class, two boundaries, deliberately: two
+bridges meant to read as the same device must not be able to drift apart.
+
+### 4 — PACING IS THE FEATURE
+
+§03 pins a three-state capability stage; §04 pins a four-state, fourteen-node architecture. **This
+section has no sticky track, no scroll MotionValue, no state machine, no pinned viewport and no
+accumulated diagram.** One drawing, drawn once, then nothing — after the route settles the section
+costs zero, so there is no offscreen work to pause. The page needed to exhale before the form.
+
+Motion is one `useInView` boolean driving a CSS `stroke-dashoffset` transition off a static
+`pathLength="1"` (§04's pattern, and the reason `vectorEffect` is absent here too), plus one React
+state for hover. Hover changes emphasis only — every word is in the document at all times, nothing
+is revealed and nothing hidden — so there is no keyboard equivalent to provide.
+
+### 5 — TWO LAYOUTS, ONE DOCUMENT
+
+| | `< md` | `>= md` |
+| --- | --- | --- |
+| Head | headline, then copy | headline left (6 cols), copy right (5 cols), baselines aligned |
+| Route | vertical rail down the left, one stage per row, terms inline behind hairlines | rising horizontal path in a band above a five-column row |
+| Span | a caps label above the journey | a teal bracket across the band, ticked at both ends |
+| Bracket | vertical, pinned to the right edge, label level with `Experience` | horizontal, hanging under two columns, label beneath |
+
+Every word is rendered **once**. What swaps is decoration — two node marks, one of which is always
+`display: none` — and `.web-why-typical`, which is a single element repositioned entirely in CSS.
+Its narrow height is `calc(100% + var(--why-row-gap))` from the first node, which reaches the second
+row's node exactly and needs no measurement of the second row at all.
+
+**The band's hairlines are HTML, not SVG**, and that is not fussiness: the band keeps a `clamp()`
+height rather than an aspect ratio (a route whose height tracked its width would be 500px tall on a
+wide desktop), so under `preserveAspectRatio="none"` one `stroke-width` renders the vertical drop
+ticks several times thicker than the horizontal span rule. Borders are exactly 1px everywhere; the
+SVG carries only the near-horizontal diagonal, which lands between 1.0 and 1.5px across the range.
+
+### 6 — TWO DEFECTS FOUND WHILE BUILDING
+
+**`.caps` on a child silently beat the label's own sizing.** The bracket label was written as
+`<span class="web-why-typical-label"><span class="caps">…</span></span>`. Specificity never entered
+into it — `font-size` and `letter-spacing` on the *child* win whatever the parent's rule says — so
+the narrow-layout fit, measured to the pixel against `Experience`, was not applying at all and the
+label collided with the stage name at 330px. `caps` now sits on the same element.
+
+**Never run `next build` while `next dev` is running in this project.** Turbopack's shared cache
+corrupted twice, and the failure is disguised: every route returns 500 with a *CSS parse error in
+generated output* — `var(--header-h)` arriving as `var(--<garbage>-h)` — which reads exactly like a
+syntax error in `globals.css` and is not one. The fix is a real content change to `globals.css`
+(append a comment, save, delete it), which forces a re-transform. Builds during this pass were run
+with `NEXT_DIST_DIR` set against a temporary `distDir` in `next.config.ts`, reverted afterwards.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes prerender, including
+  `/services/web-digital-experiences`, `sitemap.xml` and `robots.txt`.
+- **Nine viewports, alternating themes, one under reduced motion** — 1440×900, 1280×800, 1024×768,
+  768×1024, 430×932, 390×844, 375×812, 360×800, 330×760. No horizontal overflow on the document or
+  on any element inside the section, exactly one `h1`, heading order `h2` then five `h3`, no console
+  errors and no hydration warnings.
+- **Desktop regression, proved not asserted.** §01–§04 captured under `prefers-reduced-motion` at
+  1440×900 with the section and its stylesheet present, then with both removed: `hero`,
+  `digital-work` and `what-we-build` differ by **0 pixels**. `beyond-websites` differs by 11 pixels
+  on a single 1px column — and **two captures of the same unchanged state differ by the same 11
+  pixels in the same place**, so it is gradient dither on §04's own bridge line, not a change.
+- **Page height.** 390×844: **14,268 → 15,353 (+1,085)**. 1440×900: **14,983 → 16,070 (+1,087)**.
+  Every other section measures identical at both. The section itself is 1,088px on desktop and
+  1,085px on a phone — 1,209px at 768×1024, where the head stacks, and 1,157px at 330×760.
+- **Public state unchanged.** `built: true` · no robots override · canonical
+  `https://mishram.media/services/web-digital-experiences` · present in `sitemap.xml` · allowed by
+  `robots.txt` · linked from the homepage sequence, the footer, the header services menu, About and
+  the prev/next rail.
+
+---
+
+## 10aa. 04 / HOW WE BUILD — the build itself (Revision 23)
+
+Section 06 of the Web & Digital Experiences route, and **the last one it gets.** §01–§03 answer what
+Mishram can build, §04 widens it to the system behind the interface, §05 answers why here. This
+answers the only question left — *what it is actually like to build something with Mishram* — and
+then the page stops arguing and hands over to the form.
+
+**The information architecture of this route is now complete.** The next pass on it is QA, copy and
+production. A seventh chapter would have to argue something the six above it do not, and there is
+nothing left: process was the last open question.
+
+### 1 — FOUR APPROVED CHAPTERS, BUILT AS ONE
+
+The approved flow carried a development process, a responsive demonstration, a technology philosophy
+and a capability index as four separate sections. §10z collapsed them; this built the result:
+
+| Was going to be | Is |
+| --- | --- |
+| Development process | Six stages on one line |
+| Technology philosophy | One sentence — *The stack follows the product* |
+| Capability / stack index | Twelve terms in three groups, beside that sentence |
+| Responsive demonstration | **Three descending outlines inside the `Test` artifact** |
+
+That last row is the one to notice. An entire chapter was going to demonstrate desktop → tablet →
+mobile; it is now three rectangles inside a 46×30px drawing, and that is all it was ever going to
+prove. **No FAQ, no pricing, no stack chapter and no second call to action** — `ProjectInquiry`
+immediately below already is one.
+
+### 2 — THE COMPOSITION, AND WHY IT IS NOT §05 AGAIN
+
+Two adjacent sections both drawing a labelled sequence on a line is the obvious failure mode here,
+so the differences are structural rather than cosmetic:
+
+| | §05 Why Mishram | §06 How We Build |
+| --- | --- | --- |
+| Line | rises | flat |
+| Marks | squares sitting **on** the line | ticks passing **through** it |
+| Under each stage | tracked capability terms | a sentence |
+| Numbering | none, deliberately (§10j) | `01`–`06`, because a process has an order |
+| Annotation | two spans bracketing the route | one artifact per stage, resolving |
+
+Prose against index type is the strongest texture difference two adjacent sections can have, and it
+is the one doing most of the work.
+
+### 3 — THE ARTIFACT
+
+One tiny frame per stage, and the product inside it resolves as the process runs:
+
+```
+01 Discover   ▫ loose marks, nothing aligned to anything
+02 Architect  ▤ the field divides — structure before appearance
+03 Design     ▥ hierarchy: one element outranks the others
+04 Build      ▦ a working surface, something live in it
+05 Test       ▢▢▫ the same surface at three widths
+06 Launch     ▩ resolved, and the frame closes in teal
+```
+
+**Secondary by construction.** 46×30px wide, 38×22 narrow, `aria-hidden`, and built from absolutely
+positioned `<span>`s at percentage coordinates — one part table serves both frame sizes. The whole
+sequence costs six boxes and twenty-two bars of pure CSS: no SVG, no imagery, no illustration files.
+
+### 4 — THREE LAYOUTS, ONE DOCUMENT
+
+| | `< md` | `md → lg` | `≥ lg` |
+| --- | --- | --- | --- |
+| Steps | rail down the left, index outside it | 3 columns × 2 rows | 6 columns × 1 row |
+| The line | vertical, per-row segments | per-cell rules, two rows | one continuous rule on the list |
+| Marks | horizontal, crossing the rail | vertical, crossing the rule | vertical, crossing the rule |
+| Artifact | inline, right of the stage name | hung above its cell | hung above its cell |
+| Capabilities | label above terms, wrapped inline | three columns, stacked | three columns, stacked |
+
+**The middle breakpoint is not decoration.** Six columns need to hold a sentence, not a label: at
+768 the content box is 700px, a column is 107px, and every detail broke to four lines of two or
+three words. Three columns give 226px and two clean lines. Falling back to the rail there would have
+been readable too — and 193px taller on the viewport that can least afford it.
+
+### 5 — CONTENT INTEGRITY
+
+**No framework is named anywhere**, and that is positioning rather than omission: §10 settled that a
+capability index is a promise, so it lists what the business sells — frontend, backend, CMS,
+database, authentication, APIs, automation, payments, e-commerce, analytics, cloud deployment,
+mobile — and never a vendor, a version or a logo. The visitor is buying a product, not a dependency
+list.
+
+**No quality claim that cannot be stood behind.** No uptime figure, no Lighthouse score, no
+"enterprise-grade", no "military-grade", no "infinitely scalable", no guaranteed ranking, no
+promised conversion lift. `Test` says what is *checked*, not what is achieved.
+
+**No accent word on the headline, deliberately.** Five sections on this page already carry one —
+`rely`, `different`, `entire`, `another`, `one roof` — and §10i's finding was that consecutive
+accented headlines stop reading as emphasis and start reading as a template. The last chapter
+settling into plain display type is the right end to that sequence.
+
+### 6 — THE INQUIRY HANDOFF NEEDED NO CODE
+
+The section ends on the stack statement and the capability index — **not** on a call to action —
+because the next section is one. `ProjectInquiry`'s headline is already *Tell us what you're
+building.*, which is exactly the question §06 leaves the visitor holding, and `WEB_INQUIRY.context`
+already reads *"Tell us what you are trying to launch, improve or automate…"*. Nothing in the global
+inquiry system was touched, no second form exists, and `inquiryServiceId: "web"` still arrives
+preselected — verified in the rendered DOM, not assumed.
+
+### 7 — A CAPTURE METHOD THAT LIED, AND THE ONE THAT DID NOT
+
+The first regression pass reported 503 changed pixels in the hero and 2,088 in Selected Digital
+Work — reproducibly, in both directions. Neither was real.
+
+> `Page.captureScreenshot` with `clip` + `captureBeyondViewport` renders a region as though scrolled
+> to it, while `useScroll`-linked values keep reading the *actual* scroll position and the document
+> height. §01 and §02 are both scroll-linked compositions, and the document is 783px taller with
+> §06 in it — so the two states settled at different progress values and the "diff" was the capture
+> method, not the page.
+
+**Capture full viewport frames at fixed absolute offsets instead.** §01–§05 sit above §06, so their
+offsets are identical in both states. Nineteen 1440×900 frames from `scrollY` 0 to 16,200:
+**eighteen are byte-identical**, and the only one that differs is the frame containing §06's own
+first pixels. That is the regression proof; the clipped one was noise.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes prerender. The build was run the
+  way §10z documents — `NEXT_DIST_DIR` against a temporary `distDir` — and Turbopack's shared cache
+  corrupted the dev server exactly as described, healed by the documented `globals.css` cache-bust.
+- **Nine viewports, alternating themes, one under reduced motion** — 1440×900, 1280×800, 1024×768,
+  768×1024, 430×932, 390×844, 375×812, 360×800, 330×760. No horizontal overflow on the document or
+  on any element inside the section, exactly one `h1`, heading order `h2` then six `h3`, no console
+  errors, no hydration warnings. The section holds no focusable element at all, so there is no tab
+  order to get wrong and no focus trap to test.
+- **Page height.** 390×844: **15,353 → 16,347 (+994)**. 1440×900: **16,070 → 16,854 (+784)**.
+  Every other section measures identical at both.
+- **Mobile section budget at 390×844** — hero 1,524 · Selected Work 1,336 · What We Build 3,194 ·
+  Beyond Websites 4,642 · Why Mishram 1,085 · How We Build 994 · Inquiry 2,232. The remaining
+  ~1,340px is the prev/next rail and the footer. **Beyond Websites and What We Build are 7,836px
+  between them — 48% of the route.** Any future length work starts there, not here.
+- **Public state unchanged.** `built: true` · no robots override · canonical
+  `https://mishram.media/services/web-digital-experiences` · in `sitemap.xml` · allowed by
+  `robots.txt` · linked from the homepage sequence, the footer, the header services menu, About and
+  the prev/next rail · `inquiryServiceId: "web"` still preselects.
+
+---
+
+## 10ab. FINAL QA — MOBILE COMPRESSION, COPY, SEO AND PRODUCTION READINESS (Revision 24)
+
+No new sections. The Web Development information architecture closed in §10aa; this pass made the
+route **readable on a phone**, fixed two real production bugs and took the repository to a
+commit-ready state.
+
+### 1 — THE MOBILE PROBLEM WAS REPETITION, NOT PADDING
+
+§10y already swept padding and correctly concluded the remaining weight was content. It was — but
+not *information*. It was the same information drawn twice.
+
+| At 390×844 | Before | After | Δ |
+| --- | ---: | ---: | ---: |
+| **Web Development** | 16,347 | **14,343** | **−2,004 (−12.3%)** |
+| Homepage | 16,455 | 16,296 | −159 |
+| About | 13,583 | 13,424 | −159 |
+
+| Web section @390 | Before | After | Δ |
+| --- | ---: | ---: | ---: |
+| Hero | 1,524 | 1,508 | −16 |
+| Selected Work | 1,336 | 1,336 | 0 |
+| **What We Build** | 3,194 | **2,684** | **−510** |
+| **Beyond Websites** | 4,642 | **3,322** | **−1,320** |
+| Why Mishram | 1,085 | 1,085 | 0 |
+| How We Build | 994 | 994 | 0 |
+| **Project Inquiry** | 2,232 | **2,073** | **−159** |
+
+**Not one word was deleted.** Every capability, term, node name and form field that existed before
+exists now.
+
+### 2 — FOUR ARCHITECTURE DRAWINGS BECAME ONE SYSTEM MAP
+
+`Beyond Websites` rendered `SystemArchitecture` four times on a phone, once per state, each at
+`100 / 66` — 924px of diagram whose every box was **already named in the copy beside it**, at a
+width where a fourteen-node plan is fourteen boxes nobody can read.
+
+Below 640 the section now draws **one continuous spine with four checkpoints**, and each state's
+`terms` render as the boxes the diagram would have drawn:
+
+```
+● 01 / CAPTURE
+│   lead + body
+│   [WEBSITE] [FORM] [BOOKING] [CAMPAIGN] [CUSTOMER RECORD]
+│
+● 02 / ORGANISE …
+```
+
+The chips *are* the architecture, so nothing is lost. `COMPACT_QUERY` switches it client-side
+alongside the existing `STICKY_QUERY`, so **only one layout is ever mounted** — verified: 4
+`.web-sys-stage` components at 768, **0 at 390**.
+
+### 3 — TWO ONE-COLUMN LISTS THAT SHOULD HAVE BEEN TWO
+
+- **The capability matrix.** Thirty-three names, one per row below 640: 1,059px against 550 in two
+  columns. Now two from 360.
+- **The system directory.** Twenty-five names, one per row: 1,054px for an *appendix*, which is
+  scanned rather than read. Below 640 it becomes an inline index behind hairlines — the grammar §05
+  and §06 already use — for about 300px.
+- **The inquiry services.** Seven options stacked at 48px each. Two columns from 360, tap targets
+  unchanged, and preselection still verified in the rendered DOM.
+
+> **`auto-fit` was the wrong tool and the breakpoint audit caught it.** `repeat(auto-fit,
+> minmax(9.5rem, 1fr))` reads elegantly and fits **three** 186px columns at 639px — narrower than
+> the design allows and inconsistent with the two that 640 resolves to. Grid has no
+> max-column-count, so the count is now stated at a measured threshold: 360, where two columns give
+> exactly the 154px `Personal Brand Sites` needs.
+
+### 4 — TWO REAL BUGS, NEITHER OF THEM ASKED ABOUT
+
+**The Open Graph image was missing on every route except the homepage.** `src/app/opengraph-image.png`
+is Next's file convention and covers the root segment — but a route that declares its own
+`openGraph` object *replaces* the parent's rather than merging into it. Nine routes set a per-route
+OG title and silently lost the image with it. The symptom was invisible in the app and only showed
+on a share card: `/about` and all five service routes published `twitter:image` (no route overrides
+`twitter`) and **no `og:image` at all**. Fixed with one `OG_IMAGE` constant in `config/site.ts`,
+spread into all nine.
+
+**One CTA under two nouns.** The Web hero's third link read `Book a free 15-min consultation` while
+every other hero on the site says `Book a 15-Min Call` — one destination, and the only place the
+word "consultation" appeared in a label. Now `Book a 15-min call`; `free` moved into the note, where
+the same promise costs no headline weight. The quieter sentence-case register is kept deliberately:
+it is a third link, not a button.
+
+### 5 — WHAT WAS AUDITED AND FOUND ALREADY CORRECT
+
+Worth recording so the next pass does not re-derive it:
+
+- **The hero's WebGL scene is not a mobile cost.** `frameloop={reduced ? "demand" : active ? "always"
+  : "never"}` — the render loop stops entirely offscreen, driven by an IntersectionObserver that also
+  watches `document.hidden`. Dynamic import, `ssr: false`, WebGL feature detection, static fallback.
+  The only console output is `THREE.Clock` deprecation noise from inside `@react-three/fiber`.
+- **The 3,516px overflow inside `#collaborations` is the marquee**, and its parent is
+  `overflow: hidden`. `documentElement.scrollWidth === clientWidth` at all nine widths.
+- **No dead links anywhere** — no `href="#"`, no empty href, no `javascript:`, no placeholder URL,
+  and every on-page hash target resolves. All nine `target="_blank"` links carry
+  `rel="noopener noreferrer"`.
+- **The logo fix from §10y holds**: `/about` at `scrollY 3000` → `/` at `scrollY 0`; `/` at
+  `scrollY 6000` → `/` at `scrollY 0`.
+- **No secrets.** `.env.local` is git-ignored; `.env.example` carries variable names and no values;
+  no credential literal anywhere in `src`.
+- **Copy is clean of AI register.** A scan for twenty banned constructions returned three hits, all
+  of them inside code comments describing the rule.
+
+### Verified
+
+- **Types, lint and the production build are clean.** Twenty routes prerender. Build run the way
+  §10z documents — `NEXT_DIST_DIR` against a temporary `distDir` — and the documented Turbopack
+  cache corruption occurred and was healed the documented way.
+- **From the build output, not the dev server**: the sitemap carries nine `https://mishram.media`
+  URLs, once each, with no API route, no hidden service and no trailing-slash variant; `robots.txt`
+  allows `/`, disallows `/api/` and declares the sitemap; the prerendered service HTML carries
+  `og:image`.
+- **Nine viewports × three routes, alternating themes, two under reduced motion.** No horizontal
+  overflow, exactly one `h1` everywhere, no heading-level skips, no console errors, no hydration
+  warnings, every `img` has `alt`.
+- **Desktop is untouched, measured not asserted.** Every section on `/services/web-digital-experiences`
+  and `/about` measures **identically** at 1440×900 before and after, and the computed
+  `grid-template-columns` for every rule this pass touched is byte-identical at 1440 and 768. Every
+  change is scoped below 640 except the one intended copy fix.

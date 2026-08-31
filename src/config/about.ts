@@ -118,10 +118,10 @@ export const ABOUT_COPY = {
  * this is invented positioning.
  */
 export const DISCIPLINES = [
-  { name: "Creative", note: "Content, reels and brand shoots" },
+  { name: "Creative", note: "Content, reels and campaign production" },
   { name: "Performance", note: "Meta and Google Ads" },
   { name: "Creators", note: "Discovery, collaboration and campaigns" },
-  { name: "Technology", note: "Websites, stores and product platforms" },
+  { name: "Technology", note: "Websites, platforms and custom systems" },
 ] as const;
 
 /**

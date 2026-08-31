@@ -107,7 +107,7 @@ export function Creators() {
           instruction was to absorb that inside this chapter rather than let
           the page grow — so the approach and the run-out give up a step each
           while the composition itself is untouched. */}
-      <div className="page-x relative pt-20 pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      <div className="page-x relative pt-14 pb-14 sm:pt-20 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         <Intro />
 
         {/* The chapter rule the roster hangs from. */}

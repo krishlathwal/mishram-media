@@ -85,7 +85,9 @@ export function ServiceSection({
           are. Slightly tighter than the homepage's `lg:py-32`: this page has
           ten sections rather than a pinned sequence, and 32px per boundary is
           most of a viewport across the route. */}
-      <div className="page-x relative py-24 md:py-28 lg:py-28">{children}</div>
+      <div className="page-x relative py-16 sm:py-20 md:py-28 lg:py-28">
+        {children}
+      </div>
     </section>
   );
 }

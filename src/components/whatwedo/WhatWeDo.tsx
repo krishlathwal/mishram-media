@@ -83,7 +83,7 @@ function Intro() {
   const leadIn = line2.slice(0, line2.length - accent.length);
 
   return (
-    <div className="page-x relative pt-20 pb-14 md:pt-28 md:pb-20 lg:pt-32">
+    <div className="page-x relative pt-14 pb-10 sm:pt-20 sm:pb-14 md:pt-28 md:pb-20 lg:pt-32">
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -268,7 +268,7 @@ function StackedSequence() {
   });
 
   return (
-    <div ref={wrap} className="page-x relative pb-20 md:pb-24">
+    <div ref={wrap} className="page-x relative pb-14 sm:pb-20 md:pb-24">
       <SectionLabel />
       <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 

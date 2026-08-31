@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { LegalArticle } from "@/components/legal/LegalArticle";
 import { getLegalDoc, legalPath } from "@/config/legal";
-import { BRAND } from "@/config/site";
+import { BRAND, OG_IMAGE } from "@/config/site";
 
 const DOC = getLegalDoc("terms");
 
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
     url: legalPath(DOC.slug),
+    images: [OG_IMAGE],
   },
 };
 

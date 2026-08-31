@@ -62,7 +62,7 @@ export function About() {
           preview does not need the approach a five-block chapter did, and the
           §10i boundary rhythm still reads because the sections either side are
           untouched. */}
-      <div className="page-x relative pt-16 pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      <div className="page-x relative pt-12 pb-14 sm:pt-16 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         {/* ── Chapter label ─────────────────────────────────────────── */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}

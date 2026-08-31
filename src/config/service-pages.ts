@@ -83,20 +83,54 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
     },
   },
   /**
-   * **DEFERRED BY THE CLIENT, not unfinished.** Service 04 is held back for a
-   * dedicated deep design and build pass, because its page has to demonstrate
-   * websites, landing experiences, custom software, CRM systems, internal
-   * business tools and automation — a materially wider scope than any other
-   * service page carries. A shallow version now would set the wrong ceiling for
-   * it. See §10o of the brief.
+   * **THE DEFERRED SERVICE 04 — now under construction.** §10o held this page
+   * back for a dedicated deep design and build pass, because it has to
+   * demonstrate websites, landing experiences, commerce, digital products,
+   * custom software, CRM systems, internal business tools and automation — a
+   * materially wider scope than any other service page carries, and a shallow
+   * version would have set the wrong ceiling for it.
    *
-   * The consequence is a **temporary numbering gap**: the built sequence runs
-   * 01 → 02 → 03 → 05, and Service 05 keeps its canonical `05`. That is honest
-   * and it is derived, not hand-written — `resolveServicePage` reads the index
-   * off `config/services.ts` and prev/next reads `BUILT_SERVICE_PAGES`, so
-   * nothing renumbers itself and no dead link is possible.
+   * The client supplied that discovery, four chapters were built section by
+   * section, and **the page is now published** (Revision 21).
+   *
+   * The **numbering gap is closed**: the linked sequence runs 01 → 02 → 03 →
+   * 04, and Service 05 keeps its canonical `05` for whenever it returns to
+   * public discovery. That is derived rather than hand-written —
+   * `resolveServicePage` reads the index off `config/services.ts` and prev/next
+   * reads `PUBLIC_SERVICE_PAGES` — so nothing renumbers itself and no dead
+   * link is possible.
    */
-  { slug: "web-digital-experiences", serviceId: "web", inquiryServiceId: "web", built: false },
+  {
+    slug: "web-digital-experiences",
+    serviceId: "web",
+    inquiryServiceId: "web",
+    /**
+     * **PUBLISHED — Revision 21.** Flipped after the §10l checklist was met:
+     * the route exists, four chapters are complete, the responsive sweep
+     * passes at eight viewports in both themes and under reduced motion,
+     * inquiry preselection works, accessibility passes and the production
+     * build succeeds.
+     *
+     * **This one boolean was the entire integration.** Everything discovers
+     * itself from `PUBLIC_SERVICE_PAGES`, so the flip simultaneously put the
+     * route into the header services menu, the mobile services group, the
+     * footer directory, the homepage's `Explore service ↗` on Service 04, the
+     * prev/next rail and the sitemap — with **no component edited**. It also
+     * lifts the page's own `noindex`, which was written as
+     * `PAGE.built ? undefined : …` precisely so publishing could not leave a
+     * stale robots override behind.
+     *
+     * The numbering gap repairs itself too: the linked sequence is now
+     * 01 → 02 → 03 → 04, and Service 05 keeps its canonical index for
+     * whenever it returns to public discovery.
+     */
+    built: true,
+    metadata: {
+      title: "Web Development & Custom Software",
+      description:
+        "Mishram Media designs and develops websites, e-commerce experiences, SaaS products, web applications, custom CRM systems, internal business tools and mobile apps.",
+    },
+  },
   {
     slug: "brand-shoots-content",
     serviceId: "shoots",

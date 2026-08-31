@@ -42,7 +42,9 @@ export function AboutSection({
       )}
     >
       {grid !== "none" ? <Grid mode={grid} /> : null}
-      <div className="page-x relative py-20 md:py-24 lg:py-24">{children}</div>
+      <div className="page-x relative py-14 sm:py-16 md:py-24 lg:py-24">
+        {children}
+      </div>
     </section>
   );
 }

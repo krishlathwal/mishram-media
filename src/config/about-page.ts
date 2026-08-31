@@ -169,7 +169,7 @@ export const ABOUT_PAGE_COPY = {
     items: [
       {
         name: "Creative",
-        note: "Content, reels and brand shoots",
+        note: "Content, reels and campaign production",
         shapes:
           "Everything starts as something someone has to want to watch. That standard sets the bar for the rest.",
       },
@@ -187,9 +187,9 @@ export const ABOUT_PAGE_COPY = {
       },
       {
         name: "Technology",
-        note: "Websites, stores and product platforms",
+        note: "Websites, platforms and custom systems",
         shapes:
-          "Interest has to arrive somewhere. Building that means the campaign and the destination can be designed as one thing.",
+          "Interest has to arrive somewhere, and then somebody has to act on it. Building both means the campaign, the destination and the system behind it can be designed as one thing.",
       },
     ],
     convergence: "Mishram",
@@ -199,13 +199,14 @@ export const ABOUT_PAGE_COPY = {
     label: "The practice",
     headline: ["What we do", "today."],
     accentWord: "today.",
-    lead: "Five disciplines, described in full on their own pages as they are built.",
+    lead: "Four practices, each described in full on its own page.",
     /**
-     * **Registry-driven.** The index renders all five services from
+     * **Registry-driven.** The index renders `PUBLIC_SERVICES` from
      * `config/services.ts`, and the action comes from `servicePageHrefFor`,
-     * which returns a path only for a `built` route. Service 04 is deferred
-     * (§10o), so it renders as a row with **no link, no `Coming Soon`, no
-     * disabled control** — the same rule the homepage follows.
+     * which returns a path only for a route that is built *and* public. All
+     * four public services now resolve to a page; a service that is hidden or
+     * unbuilt renders no row rather than a dead one — the same rule the
+     * homepage and the footer follow.
      */
     action: "Explore service",
   },
