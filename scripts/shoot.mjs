@@ -230,6 +230,42 @@ const SHOTS = [
 
   { name: "seam-process-wrk", w: 1440, h: 900, scheme: "dark", selector: "#work", pad: 380 },
   { name: "seam-wrk-next", w: 1440, h: 900, scheme: "dark", selector: "#recognition", pad: 380 },
+
+  /* ── Phase 09 — 06 / Recognition, the NUFEW award proof ─────────────────
+     The chapter at every viewport, the evidence frame on its own, and both
+     seams. Section order read off `app/page.tsx`: 05 / Selected Work sits
+     above and 07 / About below.
+
+     `rcg-frame-*` scrolls to the chapter's own top edge rather than a fixed
+     pixel offset, for the reason `sectionScroll` exists at all — Recognition
+     sits ~14,000px down a document whose height changes in almost every
+     phase. */
+  { name: "rcg-1440-light", w: 1440, h: 900, scheme: "light", selector: "#recognition" },
+  { name: "rcg-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#recognition" },
+  { name: "rcg-1280", w: 1280, h: 800, scheme: "dark", selector: "#recognition" },
+  { name: "rcg-1024", w: 1024, h: 768, scheme: "dark", selector: "#recognition" },
+  { name: "rcg-768", w: 768, h: 1024, scheme: "dark", selector: "#recognition" },
+  { name: "rcg-430", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#recognition" },
+  { name: "rcg-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#recognition" },
+  { name: "rcg-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#recognition" },
+  { name: "rcg-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#recognition" },
+
+  /* The evidence frame at reading distance, so the award moment can be judged
+     without scrolling a full-chapter capture. */
+  { name: "rcg-frame-1440", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#recognition", 260) },
+  { name: "rcg-frame-1440-light", w: 1440, h: 900, scheme: "light", scrollExpr: sectionScroll("#recognition", 260) },
+  { name: "rcg-frame-390", w: 390, h: 844, scheme: "dark", mobile: true, scrollExpr: sectionScroll("#recognition", 260) },
+
+  { name: "seam-wrk-rcg", w: 1440, h: 900, scheme: "dark", selector: "#recognition", pad: 380 },
+  { name: "seam-rcg-about", w: 1440, h: 900, scheme: "dark", selector: "#about", pad: 380 },
+  { name: "seam-wrk-rcg-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#recognition", pad: 300 },
+
+  /* `/about` reads `RECOGNITION_ITEMS[0]` in two places — the archive board's
+     recognition fragment and the on-the-record chapter. Changing the award
+     asset changes that route too, so it is captured rather than assumed. */
+  { name: "abt-board-1440", w: 1440, h: 900, scheme: "dark", path: "/about" },
+  { name: "abt-record-1440", w: 1440, h: 900, scheme: "dark", path: "/about", selector: "#on-the-record" },
+  { name: "abt-board-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about" },
 ];
 
 const only = process.argv.slice(3);

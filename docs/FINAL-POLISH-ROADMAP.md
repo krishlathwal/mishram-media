@@ -22,7 +22,7 @@
 | **06** | **Quick-scan proof layer** | **Done — Revision 33** |
 | **07** | **Creator / viral network refinement** | **Done — Revision 34** |
 | **08** | **Selected Work / real campaign proof** | **Done — Revision 35** |
-| 09 | Recognition / NUFEW award upgrade | Not started — **asset reserved** |
+| **09** | **Recognition / NUFEW award proof** | **Done — Revision 36** |
 | 10 | About / Prashant Mishra / agency credibility | Not started — **asset reserved** |
 | 11 | Homepage length + information hierarchy | Not started |
 | 12 | Global responsive / performance / accessibility polish | Not started |
@@ -74,7 +74,7 @@ compared or recognised at any point** — §18 rule 7 stands untouched.
 | `Shadab Hasan.jpeg` | 6048×8064¹ | JPEG | 10.1MB | Shadab Hasan | **3** | Good, busy street | Moderate | **HOLD — see brand safety** |
 | `JJ Communication.jpeg` | 2160×3840 | JPEG | 1.38MB | JJ Communication | 2 | Good | Flexible | **BLOCKED — OPPO in frame** |
 | `Immortal Kaka Ji.jpeg` | 2160×3840 | JPEG | 1.92MB | Immortal Kaka Ji | 2 | Good, café interior | Flexible | **HELD — identity yes, RELATIONSHIP NOT VERIFIED (Rev 34). See Revision 34** |
-| `award.jpg.jpeg` | 3920×2160 | JPEG | 2.41MB | — (award) | 2 | **Composite marketing graphic, not a photo** | Poor — baked-in type | **RESERVED — Phase 09, with caveat** |
+| `award.jpg.jpeg` | 3920×2160 | JPEG | 2.41MB | — (award) | 2 | **Composite marketing graphic, not a photo** | Poor — baked-in type | **NOT USED (Rev 36). The caveat was right — see the audit below** |
 | `blue logo mishram.png` | 15625×15625 | PNG α | 1.48MB | Mishram mark, indigo | — | Vector-grade, 69.6% empty padding | Trim to 12499×5946 | **Logo — light surfaces** |
 | `grey logo mishram.png` | 15625×15625 | PNG α | 1.46MB | Mishram mark, grey | — | Same mark, desaturated | Same | **No unique role** |
 | `circle logo mishram.jpg.jpeg` | 10000×10000 | JPEG | 4.97MB | Mishram circular lockup | — | Good, black canvas baked in | Trim to 9020×9020 | **Social/profile only — not favicon** |
@@ -132,7 +132,9 @@ without passing the phase that owns it.
 
 | # | Claim | Source | Where | Visual evidence? | Recommended location | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| P1 | "An award-winning creative influencer & digital marketing agency" | B+C | Cover | Award graphic exists | About / Recognition | **READY** — §06 already carries the NUFEW award |
+| P1 | "An award-winning creative influencer & digital marketing agency" | B+C | Cover | Award graphic exists | About / Recognition | **READY, still unpublished as a phrase (re-checked Rev 36).** §06 carries the award itself — a title, a body, a year and now a photograph — which is stronger and checkable. *"Award-winning"* as a standalone adjective adds nothing the evidence does not already say |
+| P28 | **`NUFEW` vs `NUFW`** — the awarding body's own mark | A | The five award photographs | **YES, and it disagrees with the published string** | — | **FLAGGED, NOT ACTED ON (Rev 36).** The promotional banner's rendered badge reads `NUFEW`; the event's step-and-repeat, the engraved plaque and the trophy plate all read **`NUFW`**, and the step-and-repeat prints the expansion beside it — **`NEXUS UNIVERSE FASHION WEEK`**. The site keeps publishing `NUFEW`, unexpanded. A designer's badge and an engraver's die can disagree without either being the body's legal name, and resolving a one-character difference unilaterally is the §10u error. **One-word client decision** |
+| P29 | A **`Digital Partner`** recognition, addressed to an individual | A | `CE81BFA5-…`, `135279F4-…` | **YES — legible on the engraved plaque** | — | **HELD.** A second, differently-scoped recognition from the same evening. It is inscribed to a person rather than to the agency, so it cannot be published under §06's agency award, and §18 rule 7 governs the name on it. Recorded so it is not rediscovered as "the same award" |
 | P2 | "Scaling influencers · Creating content · Building iconic digital careers" | B+C | Cover | — | About positioning | **READY** — editorial copy, no metric |
 | P3 | About paragraph — "creator focused talent and marketing agency… India's most influential, viral, and emerging creators" | C | About Us | — | About / Influencer Marketing | **READY** — rewrite in site voice, do not paste |
 | P4 | "premium influencers and trending creators" — two-tier network | B+C | p9 | — | 03 / Creators intro | **PUBLIC (Rev 34)** — renders as **Established** / **Trending**. *Premium* was rejected: on a website it reads as a pricing tier. **The two halves describe the network and never label a person** |
@@ -186,16 +188,26 @@ relationship, and the *portrait* frame goes to the Hero — never the other way 
 | `Immortal Kaka Ji.jpeg` | Immortal Kaka Ji | Good | — | — | everywhere, pending | — | **HELD — no relationship record exists (Rev 34). Unblock is one client sentence** |
 | `Shadab Hasan.jpeg` | Shadab Hasan | Good | — | — | everywhere, pending | — | **HOLD — brand safety** |
 | `JJ Communication.jpeg` | JJ Communication | Good | — | — | everywhere | — | **BLOCKED — OPPO** |
-| `award.jpg.jpeg` | Award | Graphic | **Recognition (09)** | — | Hero, Favicon | — | **RESERVED, with caveat²** |
+| `award.jpg.jpeg` | Award | Graphic | — | — | **everywhere** | — | **REJECTED (Rev 36). Caveat ² proved correct** |
+| `186F38BE-….HEIC` | Award evening | Excellent | **Recognition (06)** | — | About¹, Hero, Selected Work | `public/media/recognition/nufew-award-presentation-2024-25.webp` 1600×1200, 304KB | **LIVE (local)** |
+| `03EBDAA5-…` / `Award.HEIC`, `4FCFF00A-…` | Award evening | Excellent | — | — | everywhere | — | **NOT USED — same pose, seconds apart** |
+| `135279F4-…`, `CE81BFA5-…` | Award evening, step-and-repeat | Excellent | — | — | everywhere, pending | — | **HELD — 20+ brand sponsor wall, and a differently-scoped award** |
 | `images.png` | Dermatouch (3rd party) | OK | **Brands rail (02)** | — | anywhere implying a creator | — | **RESERVED** |
 | `circle logo mishram.jpg.jpeg` | Mishram mark | Good | **Social / profile avatar** | — | **Favicon** | — | **RESERVED** |
 | `blue logo mishram.png` | Mishram mark | Vector-grade | **Light-surface brand mark** | Print / deck | Header³ | — | **RESERVED** |
 
 ¹ The Hero keeps its **original** square Lovekesh photograph — §18 locks that specific file because
-the exposure tiers and `layout.ts` were composed against it.
+the exposure tiers and `layout.ts` were composed against it. The Recognition photograph's
+"do not repeat in About" is **advisory rather than absolute**: `/about` has read
+`RECOGNITION_ITEMS[0]` since Revision 15, deliberately and at a different scale (a record inside the
+company's story, not a chapter's subject). That reuse is architecture, not drift.
 ² It is a composite marketing graphic with baked-in typography and a URL, not a photograph. It will
 fight the site's own type. Phase 09 should either crop to the trophy moment or ask for the original
 photograph behind the graphic.
+> **RESOLVED IN REVISION 36, and the third option was the right one.** Neither crop was needed:
+> **the original photographs behind the graphic were already on the drive.** The cut-out figures in
+> `award.jpg.jpeg` are lifted from `03EBDAA5-…`, one of five 3024×4032 first-party frames of the
+> same evening. See Revision 36.
 ³ The header mark needs no change — see below.
 
 **Uniqueness proved.** Akash is the only creator with enough source photography to appear twice, and
@@ -1759,3 +1771,318 @@ Creators, The Mishram Difference, 04 / Work Process, Client Notes, Recognition, 
 page), Project Inquiry, the Footer, Supabase, GA4, the legal documents and every service page.
 `globals.css` is purely additive — one new rule, no existing selector modified. No dependency, no
 new analytics event.
+
+---
+
+## Revision 36 — Phase 09, Recognition and the real award photographs
+
+### The phase's decisive finding: the supplied "award banner" is not an award banner
+
+The plan reserved `WEBSITE SHORTLIST/award.jpg.jpeg` as the chapter's new banner. **It was opened
+before anything was built with it**, and it is not what the plan assumed:
+
+| | |
+| --- | --- |
+| What it is | **The proposal deck's cover artwork** — a Canva composite, 3920×2160, orientation 1 |
+| Type it carries | `MISHRAM MEDIA` at poster scale · *"AN AWARD-WINNING / CREATIVE INFLUENCER & / DIGITAL MARKETING AGENCY"* · *"SCALING INFLUENCERS / CREATING CONTENT / BUILDING ICONIC DIGITAL CAREERS"* · **`www.mishram.media`** |
+| Decoration | A vinyl disc, a saxophone, a guitar, a microphone, a squiggle, a striped circle — clipart belonging to no part of this site's design system |
+| The figures | **A cut-out with the background removed.** Not a photograph of the moment |
+| Award content | **None.** No award title, no `NUFEW` badge, no year, no organisation |
+
+**So as evidence it is weaker than the asset it was meant to replace**, which at least carried the
+badge. And as a banner it is the §10q defect in a new costume: a promotional graphic with its own
+typography pasted onto an editorial page. §7 of the plan asked that the crop preserve "award title,
+NUFEW branding, presentation language" — **there is none in the file to preserve**, and the only
+thing left to crop to is a cut-out on a synthetic ground, which §7 also forbids.
+
+**It is rejected, not re-cropped.** The plan's own §2 made this conditional — *"if it passes real
+visual QA"* — and it does not.
+
+### What was used instead, and it was already in the audit
+
+The Revision 17 media audit called five root HEICs **"the single highest-value finding in this
+audit"** and declined to act on them inside a creator-media revision, recommending a scoped
+Recognition revision. This is that revision. They are genuine first-party **3024×4032** photographs
+of the award evening — four times the resolution of the banner crop, and actually photographs.
+
+**One correction to the audit's inventory.** `03EBDAA5-….HEIC` is no longer at the drive root; in
+its place sits **`Award.HEIC` at exactly 3,265,980 bytes**, which is byte-for-byte the size the
+conversion manifest records for `03EBDAA5`. The client has renamed the file. Same asset, and the new
+name is first-party metadata confirming what it is.
+
+### The five frames, audited
+
+| File | Dimensions | Orientation | Group | Figures | In frame | Verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| `186F38BE-…` | 3024×4032 | 1 (upright) | Stage | 2 | Gold trophy held between them, ceremony LED backdrop, crowd, stage truss above | **PUBLISHED** |
+| `03EBDAA5-…` (= `Award.HEIC`) | 3024×4032 | 1 | Stage | 2 | Same moment, seconds apart | Not used — duplicate pose |
+| `4FCFF00A-…` | 3024×4032 | 1 | Stage | 2 | Same moment, seconds apart | Not used — duplicate pose |
+| `135279F4-…` | 3024×4032 | 1 | Step-and-repeat | 1 | Engraved plaque, **20+ brand sponsor wall** | **HELD** |
+| `CE81BFA5-…` | 3024×4032 | 1 | Step-and-repeat | 1 | Same, brighter and to camera | **HELD** |
+
+**EXIF handled properly**: these were decoded by the Revision 17 Windows-Imaging-Component pass,
+which resolves orientation at decode and strips metadata, so all five report orientation 1 and are
+natively upright. **No `.rotate()` was needed and none was guessed at** — the stored pixel
+orientation was measured, not assumed. `award.jpg.jpeg` is also orientation 1.
+
+### Why the two step-and-repeat frames are held — two independent reasons
+
+Either one would have made a genuinely different second frame, which is exactly what the archive's
+unused fragment slot wants. Both are held anyway.
+
+**1 — The backdrop is a sponsor wall, and it was read rather than glanced at.** Legible marks: NUFW,
+VLCC Institute, Prima, Peplos Jeans, Stylox, Satmola, Inkz, Aagaaz Events, 360 Advertising
+Production, Gopal's 56, HB Klyde Premier, D'Vomore, All India News, Samar Salon Academy, Ever Pure,
+Mopwna Cling, MCF, Mr & Ms Next Super Models, SS Creation, hc, AC, PSM, and more.
+
+**§9 was checked against every legible mark and none is a betting, gambling, casino, fantasy-gaming
+or offshore-CFD brand.** That is a clean result and worth recording — but §18's *"a third-party
+brand in frame is a brand claim"* does not survive twenty of them rendered at 946px. A step-and-
+repeat is understood as an event's sponsor board rather than a client list; that is an argument for
+publishing it, not a rule, and the rule is conservative.
+
+Worth keeping: the wall also carries **Star Crown Media**, the agency's own 2021 name (§10f's
+history band). Good corroboration that this is Mishram's own event presence — and not a reason to
+publish the other twenty marks.
+
+**2 — The plaque is a different award.** Read at full resolution it is inscribed to a **digital
+partner** and addressed to an individual by name — not *Best Digital Marketing Agency*, and not to
+the agency. Publishing it under §06's title would attach the wrong artifact to the claim. Registered
+as **P29**.
+
+### `NUFEW` vs `NUFW` — the finding this phase could not have made before
+
+Reading the photographs at high zoom turned up a conflict invisible while the only evidence was a
+rendered badge:
+
+| Source | Reads |
+| --- | --- |
+| The promotional banner's gold badge (a designed graphic) | **`NUFEW`** |
+| The event's step-and-repeat, repeated across the wall | **`NUFW`** |
+| The engraved plaque in `CE81BFA5-…` | **`NUFW`** |
+| The trophy's own plate in `186F38BE-…` | **`NUFW`** |
+
+And the step-and-repeat prints the expansion legibly beside the mark:
+**`NUFW — NEXUS UNIVERSE FASHION WEEK`.**
+
+**The site keeps publishing `NUFEW` and it is still never expanded.** Three reasons in order:
+
+1. It is the string the client's own material carries, and the one this phase was told to use.
+2. A designer's badge and an engraver's die can disagree without either being the awarding body's
+   legal name.
+3. `NUFEW` → `NUFW` is a **one-character difference**, and resolving one of those unilaterally is
+   precisely the §10u error — Shadab *Hasan* is still not Shadab *Jakati*.
+
+**The expansion is not published either, and that is the subtle part.** `NEXUS UNIVERSE FASHION
+WEEK` expands `NUFW`; the site prints `NUFEW`. Writing the expansion beside it would assert the two
+are the same body, which is the open question. §18's rule survives Revision 36 intact.
+
+**This is a one-word decision for the client**, raised in the same shape as the Shadab Jakati flag.
+Registered as **P28**.
+
+### Nothing new is claimed, and the illegibility was re-checked rather than inherited
+
+The audit predicted the plaque inscription would still be illegible at full resolution. It is — and
+so is the trophy's plate, whose usable area is roughly **117×125 source pixels**. Both were extracted
+at native resolution and upscaled before the conclusion was drawn. **No award wording was read off
+any photograph**, and the published title still comes from the banner's own display type via
+Revision 13.
+
+### People — nobody is identified, and one filename was refused again
+
+Two figures are in the published frame and **neither is named**. §18 rule 7 bars a face, and the one
+file in the library that names a presenter —
+`…[ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴛʜᴇ ᴀᴡᴀʀᴅ ᴍʀ. ᴛᴜꜱʜᴀʀ ᴋᴀᴘᴏᴏʀ ᴅɪɢɪᴛᴀʟ ᴍᴀʀᴋᴇᴛɪɴɢ ᴍᴀɴᴀɢᴇʀ].webp` — is the exact case
+§10p already ruled on twice. **A filename that names a person is not evidence of a person.** No
+presenter, no recipient, no celebrity endorsement, nothing in the alt text.
+
+### The composition — one photograph, and the label finally finishes
+
+**One item, not three.** The three stage frames are the same pose seconds apart; two of them on one
+page would be a scrapbook of a single moment, which §8 of the plan rules out. So the archive stays
+in its count-adaptive **single-item** state and the chapter argues on one photograph.
+
+Two changes, both driven by a capture rather than a preference:
+
+1. **The split went 7 / 4 → 8 / 3.** With one photograph carrying the whole chapter, 824px did not
+   read as proof and **946px does**. Both were rendered before the choice was made. `sizes` moved
+   with it — `58vw → 66vw` — because a stale `sizes` is §10q's defect 4, and it is now commented as a
+   pair that must be re-measured together.
+2. **The chapter's action moved into the foot of the museum label.** Beside a 618px photograph the
+   label bottomed out around 180px and left half a column of empty canvas. Anchoring the action to
+   the column's foot finishes the label *and* removes the action's own band from the section — which
+   is what paid for the wider frame. Implemented as a **slot on the shared primitive, not a fork**
+   (§18): `RecognitionMedia.action`, passed only in the single-item state.
+
+**`globals.css` was not touched at all.** The `.rcg-*` treatment §10e wrote — full colour,
+`saturate(0.94)` at rest, hairline frame, canvas veil, hover strengthens rather than reveals — was
+already correct for a real photograph, and needed a better photograph rather than a change.
+
+### No gold, and this time none arrives through the image either
+
+§10e's *"no gold: an awards section is not a licence to leave the palette"* has always been true of
+the CSS. **It was not true of the picture.** The retired banner brought a rendered gold badge, a gold
+rosette, gold hanging stars and a flat lilac field onto an obsidian page — the palette left via the
+asset. The published photograph's only gold is **the trophy itself**, in shot, where §18 says any
+gold tone should come from. Nothing was recoloured and nothing gold was added.
+
+### Plum — tested on the surface it was being saved for, and rejected
+
+§10af listed *"a Recognition surface (§09)"* as one of three places the token might legitimately go,
+and it is the strongest of the three: an award chapter is the one genuine event surface on the page.
+Option B — the whole section as a plum field with ivory content, the only usable form — was rendered
+in both themes and at the Selected Work seam.
+
+**Rejected, and the seam capture is the argument.** Three reasons:
+
+1. **The seam is a hard flat slab with no transition**, exactly as §10ah found on Current Management,
+   and gradients are off the table so there is nothing to soften it with.
+2. **It fights the photograph.** The frame's tones are cool stage grey, skin, and one warm gold
+   point; a plum field pulls a purple cast across all of it and turns the trophy's gold into a clash
+   rather than the composition's single warm note.
+3. **It re-creates the exact defect this phase just removed.** The retired banner failed because a
+   flat lilac panel dominated an obsidian page. A full-bleed plum field reinstates that at section
+   scale — with the real photograph sitting inside it, which is worse, because the *page* becomes the
+   advertisement instead of the image.
+
+**Four phases have now tested plum on real surfaces and none has found one**, and this is the
+strongest refusal of the four because it is the surface the token was being held for. The test CSS
+was removed; the diff carries no `!important` and no test rule. The token stays declared and unused.
+
+### Measurements
+
+| | Before | After | Δ |
+| --- | --- | --- | --- |
+| `#recognition`, 1440×900 | 1,232px | **1,239px** | **+7** |
+| `#recognition`, 1280×800 | 1,152 | **1,150** | −2 |
+| `#recognition`, 1024×768 | 1,021 | **1,003** | −18 |
+| `#recognition`, 768×1024 | 1,255 | **1,235** | −20 |
+| `#recognition`, 430×932 | 888 | **876** | −12 |
+| `#recognition`, 390×844 | 858 | **846** | −12 |
+| **Homepage, 1440×900** | 17,779px | **17,787px** | **+8 (+0.05%)** |
+| Homepage, 1280 / 1024 / 768 / 430 / 390 | 16,742 / 13,987 / 17,457 / 18,413 / 18,082 | **16,739 / 13,969 / 17,437 / 18,401 / 18,070** | −3 / −18 / −20 / −12 / −12 |
+| `/about` | 10,731px | **10,731px** | **0 — byte-identical** |
+
+**The chapter gained a 15% wider frame and a real photograph and got *shorter at five of six
+viewports***, because the action's own band came out of the section. 1,239px is **1.38 viewports**,
+inside the plan's 0.9–1.4 band.
+
+### Performance
+
+| | Before | After |
+| --- | --- | --- |
+| Production asset | `mishram-…-nufew-2024-25.webp` 775×581, **86.9KB** | `nufew-award-presentation-2024-25.webp` 1600×1200, **303.6KB** |
+| Assets in `public/media/recognition/` | 1 | **1 — replaced, not added** |
+| Homepage image nodes | 23 | **23 — unchanged** |
+| Image nodes in `#recognition` | 1 | **1** |
+| Lazy / eager / preload | 23 / 0 / 0 | **23 / 0 / 0 — unchanged** |
+| Delivered at 1440 @1x | 750×600, **20.9KB** | 1080×810, **126KB** |
+| Delivered at 1440 @2x | capped at 775 | 1600×1200, **283KB** |
+| Delivered at 390 @2x | — | 750×563, **72KB** |
+| `<video>` / new dependency | 0 / none | **0 / none** |
+
+**The homepage still has no eager image and no image preload** — the state §16 wants, and the
+Recognition image still carries neither `priority` nor `loading="eager"`; the prop does not exist on
+`RecognitionMedia` to reinstate.
+
+**The delivered increase is real and it is the honest cost of the swap.** A flat three-colour
+promotional graphic compresses to 21KB; a high-ISO night photograph of a stage and a crowd does not.
+What the extra bytes buy: the old asset was a **775px source rendering into an 824px box — the
+browser was upscaling it**, which is §10q's defect 4 in its original form and why the award "came
+back soft". The new one renders 1080px into a 944px box and is downscaled at every viewport. It is
+below the fold, lazy, unpreloaded, and it is the only image in the chapter.
+
+### Mobile — 390px
+
+**Pass.** The chapter reads `06 / RECOGNITION` → *Work that gets noticed.* → lead → hairline →
+**full-width 4:3 photograph at ~348px** → `Best Digital Marketing Agency` → `NUFEW · 2024–25` →
+caption → action. Both figures and the trophy are clear, no head cut, no thumbnail, no photo mosaic,
+and **zero overflowing elements inside `#recognition`** at 1440, 1280, 1024, 768, 430 or 390.
+
+**No responsive art direction was needed, and that was measured rather than assumed.** §20 warned
+against holding an ultra-wide desktop ratio on a phone — but the frame is 4:3, not ultra-wide, and
+the two figures fill it at every width, so a second mobile crop would have added an asset and a
+second crop decision for no gain. The single frame is correct at every viewport.
+
+### Visual QA — 30 real composited captures
+
+**After state, 16:** the chapter at 1440×900 light and dark, 1280×800, 1024×768, 768×1024, 430×932,
+390×844 light and dark, and 1440×900 under `prefers-reduced-motion`; the evidence frame at reading
+distance at 1440; both seams — **05 / Selected Work → Recognition** and **Recognition → 07 / About** —
+at 1440 plus the Work → Recognition seam at 390; and `/about` at 1440 and 390 plus its
+`#on-the-record` chapter, because that route reads `RECOGNITION_ITEMS[0]` and a change here reaches
+it.
+
+**Baseline, 7**, captured before anything was edited, which is what the before/after measurements are
+read off. **Plum A/B, 3** — both themes and the seam. **Intermediate, 4**, one per composition
+decision: the asset swap alone, the action moved into the label, and the 8 / 3 split.
+
+**Every viewport in the after set was looked at, not just probed.**
+
+- **Selected Work → Recognition** reads as the narrative the plan wanted: a real branded still and
+  `Create with us ↗` close §05, one hairline, generous space, then the award moment. **No filler
+  paragraph was inserted between them.**
+- **Recognition → About** steps from a photograph-dominant chapter to a purely typographic one, which
+  is the contrast §16 of the plan asked for. **About was not touched**, and Phase 10 is not
+  pre-empted.
+- **Reduced motion**: every element renders at full opacity — label, headline, lead, hairline,
+  photograph, caption and action were each checked rather than inferred from a page count.
+- The document-level overflow at 1024 and 768 is the **pre-existing brands marquee** registered for
+  Phase 12 (§10ag, re-proved against production in §10ak). Zero overflowing elements inside
+  `#recognition` at any viewport.
+
+A hairline that looked truncated in the first capture was **measured rather than fixed**: the rule
+is 1313px, `transform: none`, `opacity: 1` — full content width. `bg-line` is 10% ivory on obsidian
+and simply falls below the eye against the grid behind it. No defect, and no change was made to
+chase one.
+
+`scripts/shoot.mjs` gained the Phase 09 shot list — the chapter, its evidence frame, both seams, and
+the two `/about` consumers. **No dependency was added.**
+
+### Media ledger — Phase 09
+
+| | |
+| --- | --- |
+| **Source file** | `F:\Drive data\186F38BE-342B-4E0F-8847-9645F42AEFE0.HEIC` — 3024×4032, orientation 1, first-party, one of five frames of the same evening |
+| **Staging** | `_website-converted-jpg/186F38BE-….jpg` (Revision 17 WIC pass — orientation resolved at decode, all EXIF stripped) |
+| **Identity / context** | **An award presentation at the NUFEW 2024–25 ceremony.** Nobody in the frame is identified; no face was compared, matched or recognised |
+| **Role** | The chapter's single piece of evidence — the dominant frame of the archive's one-item state |
+| **Production output** | `public/media/recognition/nufew-award-presentation-2024-25.webp` — **1600×1200, 303.6KB**, 4:3, `extract{left 560, top 1360, 2000×1500}` then downscaled. **Pure crop and downscale** — nothing recoloured, retouched, sharpened, denoised, generated, added or removed |
+| **Crop reasoning** | The top edge sits below the stage truss, which carries an unrelated event-production vendor's banner. Nothing else legible in frame is a brand — the backdrop is the ceremony's own LED graphic — so **no §18 decision was cropped around**; an irrelevant vendor banner was framed out, which is art direction |
+| **Chosen by looking** | Over the two near-identical frames of the same pose: this one holds the trophy highest and most centrally with both faces to camera |
+| **Used in** | `06 / Recognition` (homepage) **and** `/about` — the archive board's recognition fragment and the `#on-the-record` chapter, both of which have read `RECOGNITION_ITEMS[0]` since Revision 15 |
+| **Do NOT repeat in** | Hero, Selected Work, Creators, Current Management, the Quick Proof band, any service page |
+| **Provenance** | First-party, client-supplied. Original untouched and never moved out of `F:\Drive data` |
+| **Status** | **LIVE (local)** |
+
+| Retired | |
+| --- | --- |
+| **File** | `public/media/recognition/mishram-best-digital-marketing-agency-nufew-2024-25.webp`, 775×581, 86.9KB |
+| **What it was** | A crop of the old deployment's Cloudinary promotional banner — a cut-out composite on a flat lilac field with a rendered gold badge, gold rosette and clipart stars |
+| **Action** | **Deleted from the repo.** It is a generated derivative, it was referenced only through `RECOGNITION_ITEMS[0].image`, and nothing else on the site pointed at it. The Cloudinary original is not ours and was not kept |
+| **Source originals** | **Untouched.** Nothing in `F:\Drive data` was modified, moved or deleted |
+
+**The aspect stayed 4:3 deliberately.** `/about`'s `ArchiveBoard` hardcodes a `4 / 3` recognition
+fragment and `AboutCredibility` follows `item.aspect`; holding the ratio is what let this phase
+upgrade the photograph on two routes **without editing About**, which was out of scope. Anyone
+changing the dominant item's aspect must re-check both.
+
+### What is still held after this phase
+
+| | |
+| --- | --- |
+| `award.jpg.jpeg` | **Rejected** — a marketing composite with baked-in type and a URL, and no award content |
+| `135279F4-…`, `CE81BFA5-…` | **Held** — 20+ brand sponsor wall, and a differently-scoped award (P29) |
+| `03EBDAA5-…` / `Award.HEIC`, `4FCFF00A-…` | **Not used** — the same pose as the published frame |
+| `…[ᴛʜᴀɴᴋꜱ ꜰᴏʀ ᴛʜᴇ ᴀᴡᴀʀᴅ…].webp` | **Held** — 846×1057, and its filename names a person, which is not evidence (§10p) |
+| A second award, press feature, ranking or nomination | **NONE EXISTS.** Nothing was invented, and no "award-winning since" phrasing was added anywhere |
+| The `NUFEW` expansion | **HELD** — see P28 |
+| Every name in the photograph | **HELD** — §18 rule 7 |
+
+### Untouched
+
+Hero, the brands rail, Current Management, the Quick Proof band, all five What We Do scenes, 03 /
+Creators, The Mishram Difference, 04 / Work Process, 05 / Selected Work, Client Notes, About (the
+chapter and the route), Project Inquiry, the Footer, Supabase, GA4, the legal documents and every
+service page. **`globals.css` was not modified at all** — no rule added, none changed. No dependency,
+no new analytics event, no copy change to any other section.

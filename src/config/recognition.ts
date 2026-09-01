@@ -53,6 +53,92 @@
  * body, year or category.**
  *
  * ───────────────────────────────────────────────────────────────────────────
+ * REVISION 36 — THE ARTWORK BECAME A PHOTOGRAPH
+ * ───────────────────────────────────────────────────────────────────────────
+ *
+ * Until this revision the item rendered a **775×581 crop of the old site's
+ * promotional Cloudinary banner** — two cut-out figures on a flat lilac field
+ * with clipart hanging stars, a gold rosette and a rendered gold `NUFEW
+ * 2024-25` badge. §10q re-cropped it once because it read as an advertisement
+ * pasted onto an editorial page, and cropping could not fix what it was.
+ *
+ * **The real photographs were on the drive the whole time.** The Revision 17
+ * media audit flagged five first-party 3024×4032 photographs of the award
+ * evening as *"the single highest-value finding in this audit"* and correctly
+ * declined to act on them inside a creator-media revision. This is the scoped
+ * Recognition revision it asked for.
+ *
+ * The banner is **retired, not re-cropped**: it is a marketing composite, and
+ * a genuine photograph of the same moment at four times the resolution exists.
+ * The derivative was deleted; the Cloudinary original is not ours to keep.
+ *
+ * ───────────────────────────────────────────────────────────────────────────
+ * ⚠ `NUFEW` vs `NUFW` — AN UNRESOLVED DISCREPANCY, REPORTED NOT ACTED ON
+ * ───────────────────────────────────────────────────────────────────────────
+ *
+ * Reading the photographs at high zoom turned up a conflict the project could
+ * not see while the only evidence was a rendered badge:
+ *
+ * | Source                                        | Reads    |
+ * | --------------------------------------------- | -------- |
+ * | The promotional banner's rendered gold badge   | `NUFEW`  |
+ * | The event's own step-and-repeat, many times    | `NUFW`   |
+ * | The engraved plaque held in `CE81BFA5`         | `NUFW`   |
+ * | The trophy's own plate in `186F38BE`           | `NUFW`   |
+ *
+ * The step-and-repeat prints the expansion legibly beside the mark:
+ * **`NUFW — NEXUS UNIVERSE FASHION WEEK`.**
+ *
+ * **The site keeps publishing `NUFEW` and nothing here changes that.** Three
+ * reasons, in order: it is the string the client's own material carries and
+ * the one this project was told to use; a designer's badge and an engraver's
+ * die can disagree without either being the awarding body's legal name; and
+ * `NUFEW` → `NUFW` is a one-character difference of exactly the kind §10u
+ * spent a revision learning not to resolve on a name fragment (Shadab *Hasan*
+ * is still not Shadab *Jakati*).
+ *
+ * **So the expansion is NOT published either.** `NEXUS UNIVERSE FASHION WEEK`
+ * expands `NUFW`, and the site does not print `NUFW`. Writing it beside
+ * `NUFEW` would assert the two are the same body, which is the whole question.
+ * §18's rule stands unchanged: **`NUFEW` is never expanded.**
+ *
+ * **This is a one-word decision for the client**, in the same class as the
+ * Shadab Jakati flag — raised here rather than settled unilaterally.
+ *
+ * ───────────────────────────────────────────────────────────────────────────
+ * THE TWO STEP-AND-REPEAT FRAMES ARE HELD, ON TWO INDEPENDENT GROUNDS
+ * ───────────────────────────────────────────────────────────────────────────
+ *
+ * `135279F4-…` and `CE81BFA5-…` show one figure against the event's
+ * step-and-repeat holding the engraved plaque. Either would have made a
+ * genuinely different second frame. Both are held:
+ *
+ * 1. **The backdrop is a sponsor wall carrying twenty-plus third-party marks**
+ *    — NUFW, VLCC Institute, Prima, Peplos Jeans, Stylox, Satmola, Inkz,
+ *    Aagaaz Events, 360 Advertising Production, Gopal's 56, HB Klyde Premier,
+ *    D'Vomore, All India News, Samar Salon Academy, Ever Pure, MCF, Mr & Ms
+ *    Next Super Models and more. §9 was checked against every legible mark and
+ *    **none is a betting, gambling, casino or real-money-gaming brand** — but
+ *    §18's *"a third-party brand in frame is a brand claim"* does not survive
+ *    twenty of them at editorial scale. (Worth recording: the wall also
+ *    carries **Star Crown Media**, the agency's own 2021 name — good
+ *    provenance, and not a reason to publish the other nineteen.)
+ * 2. **The plaque is a different award from the one this item publishes.** Read
+ *    at full resolution it is inscribed to a *digital partner* and addressed to
+ *    an individual by name — not `Best Digital Marketing Agency`, and not to
+ *    the agency. Rendering it under this item's title would attach the wrong
+ *    artifact to the claim.
+ *
+ * The other two stage frames (`03EBDAA5-…`, now supplied as `Award.HEIC`, and
+ * `4FCFF00A-…`) are the **same pose seconds apart** from the one published.
+ * Publishing two would be a scrapbook of one moment, so the archive stays at
+ * one item and the count-adaptive composition stays in its single-item state.
+ *
+ * **Nothing new is claimed from any of them.** The trophy's plate and the
+ * plaque's inscription are both illegible at full resolution — the media
+ * audit predicted this and re-checking confirmed it.
+ *
+ * ───────────────────────────────────────────────────────────────────────────
  * WHAT THE CONFIGURED ITEM DELIBERATELY DOES NOT SAY
  * ───────────────────────────────────────────────────────────────────────────
  *
@@ -116,26 +202,41 @@ export const RECOGNITION_ITEMS: readonly RecognitionItem[] = [
     organisation: "NUFEW",
     year: "2024–25",
     type: "Award",
-    image:
-      "/media/recognition/mishram-best-digital-marketing-agency-nufew-2024-25.webp",
-    // Describes the photograph, never an achievement, and names nobody in it.
-    alt: "The NUFEW 2024–25 award plaque being presented to Mishram Media, photographed against the event backdrop.",
+    image: "/media/recognition/nufew-award-presentation-2024-25.webp",
+    /**
+     * Describes the photograph, never an achievement, and **names nobody**.
+     * Two figures are in frame and neither is identified: §18 rule 7 bars a
+     * face, and the one filename in the library that names a presenter is the
+     * exact case §10p already ruled is not evidence.
+     */
+    alt: "Mishram Media's NUFEW 2024–25 award held on stage at the awards ceremony.",
     caption: "Recognition for Mishram Media's work in digital marketing.",
-    // Source is 775×581 — exactly 4:3, so `object-cover` crops nothing.
+    // The crop is authored at exactly 4:3, so `object-cover` crops nothing —
+    // and `/about`'s archive board, which hardcodes a 4/3 recognition
+    // fragment, keeps its composition with no edit on that route.
     aspect: "4 / 3",
     source:
-      "OLD_REPO/public_html/index.html:1592-1602 (banner-container) → " +
-      "res.cloudinary.com/dlnux9dga/image/upload/v1751801863/DESKTOP_-_AWARD_bq7qju.gif, " +
-      "2048×731. Downloaded and cropped to the presentation and the NUFEW " +
-      "badge — CROP REVISED Rev 14 after seeing it composed on the page: " +
-      "now left 1236, top 150, 775×581 (was left 1198, top 45, 850×680). " +
-      "Raising the top edge drops the decorative sunburst arc and a band of " +
-      "flat lilac, so the two figures and the plaque fill the frame instead " +
-      "of floating in promotional artwork; the badge is retained. " +
-      "PURE CROP — nothing recoloured, retouched, generated or removed from " +
-      "within the image. The banner's headline typography and clipart " +
-      "trophies fall outside it; the lilac that remains is the event's own " +
-      "backdrop. See docs/CONTENT-MIGRATION-AUDIT.md §2 and §18.",
+      "F:/Drive data/186F38BE-342B-4E0F-8847-9645F42AEFE0.HEIC — first-party, " +
+      "3024×4032, one of five photographs of the same award evening at the " +
+      "root of the client's own drive. Decoded to JPEG by the Revision 17 " +
+      "Windows-Imaging-Component pass (orientation resolved by the decoder, " +
+      "all metadata stripped), staged at " +
+      "_website-converted-jpg/186F38BE-….jpg. " +
+      "PRODUCTION: extract{left 560, top 1360, 2000×1500} → 4:3 → 1600×1200 " +
+      "WebP q76. **PURE CROP AND DOWNSCALE** — nothing recoloured, retouched, " +
+      "sharpened, denoised, generated, added or removed. " +
+      "CHOSEN BY LOOKING, over the two near-identical frames of the same pose " +
+      "(03EBDAA5-… — resupplied by the client as `Award.HEIC`, same bytes — " +
+      "and 4FCFF00A-…): this one holds the trophy highest and most centrally " +
+      "with both faces to camera. " +
+      "THE CROP'S TOP EDGE IS DELIBERATE: it sits below the stage truss, which " +
+      "carries a third-party event-production banner. Nothing else legible in " +
+      "frame is a brand — the backdrop is the ceremony's own LED graphic — so " +
+      "no §18 decision was cropped around; an unrelated vendor's banner was " +
+      "simply framed out. " +
+      "Sized for the box it renders into: 824px at 1440 (58vw), so 1600 covers " +
+      "2× DPR. The retired banner was 775px and went soft on retina — §10q " +
+      "defect 4 in a different form. See docs/MEDIA-ASSET-AUDIT.md §3B.",
   },
 ];
 

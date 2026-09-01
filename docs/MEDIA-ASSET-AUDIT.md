@@ -183,6 +183,26 @@ good the photograph is.
 | `03EBDAA5-…`, `186F38BE-…`, `4FCFF00A-…` | root | Same evening — two figures on stage with the trophy | 3024×4032 | Recognition fragment | Same |
 | ~~`IMG_2188.jpg`~~ | `…\AKASH COVER PHOTO\` | ~~Akash Sagar~~ **NOT AKASH SAGAR — user-revoked, 17B** | 2268×4032 | **None. Never as Akash Sagar** | Superseded. The original note read: *weakest of the three — a red "SALE 50%" retail banner sits prominently behind the subject* |
 
+> **✅ ACTED ON IN REVISION 36 (Final Polish Phase 09).** `186F38BE-…` is now the §06 Recognition
+> photograph — `public/media/recognition/nufew-award-presentation-2024-25.webp`, 1600×1200, a pure
+> 4:3 crop and downscale. The promotional-banner crop this section calls out was **retired and
+> deleted**. The other two stage frames are the same pose seconds apart and were not used;
+> `135279F4-…` and `CE81BFA5-…` are **held** — a 20+ mark sponsor wall (§9 clean, §18 not), and their
+> plaque is a *differently-scoped* award inscribed to an individual.
+>
+> **Every constraint this note predicted held.** The plaque inscription and the trophy plate are
+> both still illegible at full resolution, re-checked rather than inherited, so **no new claim was
+> made**; nobody in the frame is named; and no gold entered the palette. One thing the note could not
+> have known: the photographs read **`NUFW — NEXUS UNIVERSE FASHION WEEK`** where the banner's badge
+> reads `NUFEW`. The site still publishes `NUFEW`, still unexpanded — see `docs/PROJECT-BRIEF.md`
+> §10an.
+>
+> **One inventory correction.** `03EBDAA5-….HEIC` is no longer at the drive root; **`Award.HEIC`
+> sits there at exactly 3,265,980 bytes**, byte-for-byte the size §1's manifest records for it. The
+> client renamed the file.
+>
+> ---
+>
 > **THE SINGLE HIGHEST-VALUE FINDING IN THIS AUDIT, and it is deliberately not acted on here.**
 >
 > Five root HEICs are **first-party 3024×4032 photographs of the NUFEW award presentation** — the

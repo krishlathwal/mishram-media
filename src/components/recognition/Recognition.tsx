@@ -37,6 +37,11 @@ export function Recognition() {
   const [dominant, ...rest] = items;
   // Three fragments would start competing with the dominant moment.
   const fragments = rest.slice(0, 2);
+  // Single item → the museum-label column exists and has room, so the action
+  // finishes it. With fragments that column is spoken for and the action keeps
+  // its own row under the archive. One node either way, never two.
+  const inLabel = fragments.length === 0;
+  const action = <RecognitionAction onClick={openContact} />;
 
   return (
     <section
@@ -78,7 +83,8 @@ export function Recognition() {
               item={dominant}
               position={1}
               dominant
-              aside={fragments.length === 0}
+              aside={inLabel}
+              action={inLabel ? action : undefined}
             />
           </motion.div>
 
@@ -109,33 +115,48 @@ export function Recognition() {
           ) : null}
         </div>
 
-        {/* Restrained: §02 owns the page's conversion moment and §05 already
-            carries a text action. This is one line, or nothing. */}
-        <motion.button
-          type="button"
-          onClick={openContact}
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
-          className="group mt-14 inline-flex items-center gap-2.5 text-[0.8125rem] font-medium text-ink md:mt-16"
-        >
-          <span className="relative">
-            {RECOGNITION_COPY.cta}
-            <span
-              aria-hidden
-              className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
-            />
-          </span>
-          <span aria-hidden className="block h-3 w-3 overflow-hidden">
-            <Arrow
-              size={12}
-              className="-rotate-45 transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-4 group-hover:-translate-y-4"
-            />
-          </span>
-        </motion.button>
+        {/* With fragments in the archive the label column is occupied, so the
+            action keeps its own row here. In the single-item state it has
+            already been rendered at the foot of the museum label. */}
+        {inLabel ? null : <div className="mt-14 md:mt-16">{action}</div>}
       </div>
     </section>
+  );
+}
+
+/**
+ * The chapter's one text action.
+ *
+ * Restrained on purpose: §02 owns the page's conversion moment and §05 already
+ * carries a text action, so this is one line or nothing. Extracted so the same
+ * node can sit in the museum label or under the archive without either
+ * position owning a second copy of it.
+ */
+function RecognitionAction({ onClick }: { onClick: () => void }) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.7, delay: 0.25, ease: EASE }}
+      className="group inline-flex items-center gap-2.5 text-[0.8125rem] font-medium text-ink"
+    >
+      <span className="relative">
+        {RECOGNITION_COPY.cta}
+        <span
+          aria-hidden
+          className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+        />
+      </span>
+      <span aria-hidden className="block h-3 w-3 overflow-hidden">
+        <Arrow
+          size={12}
+          className="-rotate-45 transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-4 group-hover:-translate-y-4"
+        />
+      </span>
+    </motion.button>
   );
 }
 
@@ -148,11 +169,13 @@ function RecognitionItemView({
   position,
   dominant = false,
   aside = false,
+  action,
 }: {
   item: RecognitionItem;
   position: number;
   dominant?: boolean;
   aside?: boolean;
+  action?: React.ReactNode;
 }) {
   return (
     // NO `priority`, and no eager loading. §10i removed the same flag from
@@ -165,14 +188,17 @@ function RecognitionItemView({
       position={position}
       dominant={dominant}
       aside={aside}
+      action={action}
       sizes={
         dominant
-          ? // Measured, not guessed. Beside its caption the frame is seven of
-            // twelve columns of the content width — 824px at 1440, i.e. 58vw.
-            // Left at the old 52vw the browser picked the 750w candidate for
-            // an 824px box and the award text came back soft.
+          ? // Measured, not guessed, and re-measured whenever the split moves.
+            // Beside its museum label the frame is eight of eleven inner
+            // columns — **946px at 1440, i.e. 66vw** (it was 824px / 58vw at
+            // the old seven-column split). §10q's defect 4 was exactly this
+            // going stale: left under-declared, the browser picks a candidate
+            // narrower than the box and the photograph comes back soft.
             aside
-            ? "(max-width: 1023px) 92vw, 58vw"
+            ? "(max-width: 1023px) 92vw, 66vw"
             : "(max-width: 1023px) 92vw, 52vw"
           : "(max-width: 639px) 92vw, (max-width: 1023px) 44vw, 28vw"
       }
