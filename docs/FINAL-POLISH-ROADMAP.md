@@ -26,19 +26,25 @@
 | **10** | **About / Prashant Mishra / agency credibility** | **Done — Revision 37** |
 | **11** | **Homepage length + information hierarchy** | **Done — Revision 38** |
 | **12** | **Global responsive / performance / accessibility polish** | **Done — Revision 39** |
-| 13 | Operational hardening | Not started |
+| **13** | **Operational hardening + production release** | **Done — Revision 41** |
 | **14** | **Web & Digital Experiences final deep polish** | **Done — Revision 40** |
 
-**Phase 13 — operational hardening — is the one with a live consequence and is worth naming
-explicitly**, because it is currently the site's only real gap:
+**Phase 13 closed in Revision 41 and the site was released.** Its five items, and where each
+landed — the detail is in the Revision 41 section at the foot of this document:
 
-1. **Resend notifications.** `RESEND_API_KEY` / `INQUIRY_FROM_EMAIL` are unset, so every lead is
-   captured correctly and **silently**. Someone has to watch the Supabase Table Editor until this
-   is done. Highest operational priority in the whole programme.
-2. `/api/inquiry` rate limiting — provider-level or edge, never a per-process counter (§10h).
-3. Disconnect the old Netlify site — safe now that Vercel serves the domain (§10ae).
-4. Run Google's **Test installation** against the live domain (§10ad).
-5. Google Ads conversion — **only** when a real `AW-` id and label exist. Never invented.
+1. **Resend notifications — DEFERRED, and it is the one item that could not be closed by work.**
+   No API key and no verified sender exist on this account, and inventing either would look
+   configured and fail at send time. Every lead is still captured correctly and **silently**, so
+   **somebody has to watch the Supabase Table Editor.** Highest operational priority still open.
+2. **`/api/inquiry` rate limiting — DONE.** A native Vercel Firewall rule, 10 POSTs per IP per
+   10-minute window, scoped to that one endpoint. No application code, no dependency, no
+   per-process counter (§10h holds).
+3. **Netlify — DISCONNECTED, not destroyed.** The legacy site never held the domain; it now
+   cancels its own build from the repository.
+4. **Google's Test installation — STILL THE USER'S.** The tag is verifiably live and collecting on
+   the production domain; the button itself needs an authenticated Google Analytics screen and
+   there is none available here.
+5. **Google Ads conversion — DEFERRED.** No real `AW-` id or label exists. Nothing was invented.
 
 ---
 
@@ -3112,3 +3118,282 @@ canonicals to `https://mishram.media/services/web-digital-experiences` and is in
   `RESEND_API_KEY`, `VERCEL_OIDC_TOKEN` or `service_role` in the built static output. **No value was
   printed at any point.**
 - **Nothing pushed, nothing deployed.**
+
+---
+
+## Revision 41 — Phase 13, operational hardening and the production release
+
+**The site is live at `https://mishram.media` serving every final-polish revision, 28 through 40.**
+Production had been running Revision 27 since the launch; thirteen commits went out in one release.
+
+### The release, in facts
+
+| | |
+| --- | --- |
+| Pushed commit | **`f9f85a3`** — *Operational hardening — production release* |
+| Push | `8705614..f9f85a3`, fast-forward, **13 commits, no squash, no force, no rewrite** |
+| Deployment | **`dpl_Fc4oWcwpbpSATCNbjmT4raBu4Ghg`**, `target: production`, `readyState: READY` |
+| Build URL | `https://mishram-media-m5fsobpt2-silksora.vercel.app` |
+| Aliases | `mishram.media` · `www.mishram.media` · `mishram-media.vercel.app` · `mishram-media-silksora.vercel.app` |
+| Rollback point | **`dpl_HXknMvn7eZsLNmprbFUoGz6vpAYd`** (`mishram-media-6j9v525sk-…`), the deployment production was serving before this one |
+| Command | `npx vercel deploy --prod` — still the path, for §17b's reason |
+
+**The project binding was verified rather than trusted.** `.vercel/project.json` and the Vercel API
+agree: `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L`, `mishram-media`, team `silksora`, framework `nextjs`,
+Node 24.x, git repo `krishlathwal/mishram-media`, production branch `main`, no deployment
+protection. **No project was created and none of the other two on the account was touched.**
+
+> **A note for whoever reads this next.** The Vercel and Supabase MCP tokens available in this
+> session are scoped to a *different* view of the account: `list_projects` returns only
+> `mishramngo` and only the `mishram.org` Supabase project. **The Vercel CLI and the project's own
+> `SUPABASE_URL` see the real thing.** Do not conclude from an MCP listing that `mishram-media`
+> has been deleted.
+
+### Rate limiting — native, endpoint-scoped, and one real defect caught in testing
+
+**`/api/inquiry` now has a durable rate limit and it is not application code.** §10h's rule against
+an in-memory serverless counter is untouched: nothing was added to the route, no dependency, no
+Redis, no third-party SaaS, and **no IP address is stored anywhere.**
+
+| | |
+| --- | --- |
+| Mechanism | **Vercel Firewall custom rule** — platform level, at the edge |
+| Config | `waf_RD1XjpLPquJ0`, version 3, `firewallEnabled: true` |
+| Rule | `rule_inquiry_rate_limit_cP7vdS`, active, valid |
+| Condition | `path == /api/inquiry` **and** `method == POST` — nothing else on the site is rate-limited |
+| Action | `rate_limit` · `fixed_window` · **10 requests per IP per 600s** · `deny` |
+
+**`token_bucket` was tried first and refused**: *"Token bucket rate limiting is only available on
+the enterprise plan."* `silksora` is on Hobby. `fixed_window` is what the plan accepts, and for a
+form endpoint it is the right shape anyway — a human sends one POST.
+
+> ### ⚠ THE FIRST RULE CARRIED `actionDuration: "10m"` AND THAT WAS A REAL DEFECT
+>
+> A persistent action does not deny *the matching request*. It bans **the client**, and the ban is
+> project-wide: with the rule tripped, `GET /`, `GET /about` and every other route returned **403
+> `X-Vercel-Mitigated: deny`** from that IP for ten minutes. A visitor who somehow tripped an
+> inquiry rate limit would have lost the entire website.
+>
+> **Caught in testing, not by reading the docs.** The rule was removed immediately, then
+> re-inserted **without `actionDuration`**, which is the whole fix: the deny then applies only to
+> further requests that match the rule's own conditions.
+>
+> **The site was never down for anybody else.** The ban is keyed on `ip`, and while it was in
+> effect `https://mishram.media/` was fetched from an independent vantage point and returned **200
+> with the correct page**. The residual ban on the testing machine expired on its own schedule.
+>
+> **Never put `actionDuration` on this rule.** It is the difference between rate-limiting an
+> endpoint and banning a visitor from the site.
+
+**Verified after the fix, on production, with requests that never touch the database** — malformed
+JSON answers `400 invalid_request` before the insert, so a burst creates no rows:
+
+```
+   1..10   POST /api/inquiry → 400      GET / → 200
+  11..13   POST /api/inquiry → 403      GET / → 200
+```
+
+Ten through, eleven denied, and **the rest of the site unaffected at every step.** Normal use never
+meets it: one form submission is one POST.
+
+### Resend — DEFERRED, and the exact remaining requirement
+
+**No Resend credential exists on this account.** Checked, not assumed: Vercel Production, Preview
+and Development environments; `.env.local`; the shell environment; the repository (no `re_…`
+literal anywhere); and there is no Resend CLI and no authenticated Resend session. **Nothing was
+invented, no key was committed, no unverified sender was configured and no second email provider
+was installed.**
+
+So `email_notification_status: not_configured` remains the honest answer, and it was confirmed on
+a real production lead below. **The database is still the source of truth and no lead is at risk —
+but nobody is told about one, so somebody has to watch the Supabase Table Editor.**
+
+**To switch it on, in full:**
+
+1. A Resend account with **`mishram.media` verified as a sending domain** (SPF/DKIM records that
+   Resend issues — note these are *additions*, and the existing GoDaddy MX/SPF must be merged, not
+   replaced).
+2. `RESEND_API_KEY` — set on **Vercel Production only**. Preview deliberately stays unset so a
+   preview deployment cannot email the business.
+3. `INQUIRY_FROM_EMAIL` — an address **on that verified domain**. It has no default on purpose.
+4. `INQUIRY_TO_EMAIL` — optional; without it the route uses `CONTACT.email`, which is
+   `info@mishram.media`.
+5. Redeploy. Then one synthetic lead should land with `email_notification_status: sent`.
+
+**The notification's content was completed while it is off**, so step 5 is the only work left. The
+row already stored `page_path`, `referrer` and five UTMs and the email carried none of them —
+anyone replying from the inbox could not tell a cold visit from a campaign click. It now closes on
+a `Where it came from:` block, rendered only when there is something in it. **Still absent, and
+deliberately: no IP address, user agent, cookie, session id, GA client id, request header or
+database id.** None of those is collected; a notification is not the place to start.
+
+### Netlify — disconnected, not destroyed
+
+| | |
+| --- | --- |
+| Legacy site | `magical-naiad-871d41` — `d41f4d3c-f07e-462d-9e1d-c45c560b4a13` |
+| **Custom domain** | **`null`** |
+| **Domain aliases** | **`[]`** |
+| Repo binding | `github.com/krishlathwal/mishram-media`, branch `main` |
+
+**Read off the Netlify API, and it settles §10ae item 3: the legacy site never held this domain and
+never could have taken it down.** What it could still do is rebuild on every push — two pipelines
+for one site, which is the state §17b asked somebody to decide about.
+
+**`netlify.toml` now cancels the build**: `ignore = "exit 0"`, which Netlify runs before a build and
+which cancels it on exit `0`. The file is **kept rather than deleted on purpose** — deleting it
+would not stop the build, only make Netlify auto-detect Next.js and publish again. The original
+runtime configuration is preserved in the same file, commented, so re-enabling is one line.
+
+`.netlify/state.json` was removed locally. It was gitignored and never reached the remote.
+
+**Nothing was deleted**: the site, its deployment history and its `netlify.app` subdomain are all
+untouched. **Toggling *Stop builds* or *Unlink repository* in the Netlify UI is the one remaining
+account action**, and it is optional — the repository already cancels the build.
+
+**No DNS record was touched.** Verified read-only after the release: nameservers still
+`ns59` / `ns60.domaincontrol.com` (GoDaddy), MX still `smtp.secureserver.net` and
+`mailstore1.secureserver.net`, SPF present, apex A records `216.198.79.1` / `64.29.17.1`.
+
+### GA4 — verified on the production domain
+
+Every line below was measured against `https://mishram.media` after the deployment, with cleared
+cookies and storage.
+
+| | Result |
+| --- | --- |
+| Measurement id | **`G-QKQK14BSFG`**, read off the live `<script src="…gtag/js?id=">` — the only proof that counts for a build-time-inlined variable |
+| Consent default | all four **denied** — `ad_storage`, `ad_user_data`, `ad_personalization`, `analytics_storage` |
+| Before answering | **no cookies at all**, `_ga` absent |
+| **Allow analytics** | `consent update` carrying **`analytics_storage: granted` only** — the three advertising signals were never granted. `_ga` and `_ga_QKQK14BSFG` appear |
+| **Only necessary** | **no cookies at all** after navigating to `/about`; consent stays at `default` all-denied; the notice does not return |
+| Page views | **one per navigation and no duplicate** — 1 on load, 2 after `/ → /about`, 3 across the three-page lead journey |
+| `form_start` | **once** |
+| `generate_lead` | **once**, after the row existed |
+| PII | **none.** The payload is `services`, `service_count`, `budget_range`, `timeline`, `page_path`, `form_context` — option ids, a count and a page. No name, email, phone, message or company text |
+
+**Google's own *Test installation* was NOT run and this document does not claim it was.** It needs
+an authenticated Google Analytics screen; no Chrome session is connected here. The tag is
+verifiably live and collecting, which is the precondition — the button is the client's to press.
+
+### Google Ads — deferred, and nothing was invented
+
+**Zero occurrences of `AW-` in `src/`, in `.env.example`, on Vercel and in the live production
+HTML.** One gtag mount, one measurement id. `generate_lead` already exists as the event a future
+Ads conversion maps onto, so the work when a real conversion id and label arrive is configuration,
+not architecture. **No second global tag and no duplicate tracking.**
+
+### Supabase — healthy, and proved with one controlled lead
+
+The `leads` table is the only table exposed, with all twenty-one columns present. **No migration was
+run, nothing was reset and no real lead exists or was touched** — the table held zero rows before
+the test and holds zero rows after it.
+
+**One synthetic inquiry, submitted from the real production form.** It landed on
+`/?utm_source=release_qa&utm_medium=qa&utm_campaign=phase13_release&utm_content=synthetic&utm_term=verification`,
+made **two client-side navigations**, and submitted from `/services/web-digital-experiences`.
+
+| | |
+| --- | --- |
+| API | **`200`**, one request to `https://mishram.media/api/inquiry` |
+| Row | **one**, no duplicate |
+| Fields | name, email, phone, business, message correct; `services {web}` preselected by the route |
+| `source` | `website` |
+| `page_path` | `/services/web-digital-experiences` — the submit page, not the landing page |
+| **Attribution** | **all five UTMs survived two client-side navigations** — first-touch held |
+| `status` | `new` |
+| `email_notification_status` | **`not_configured`**, `email_notification_error` `null` |
+| Success UI | **“Brief received. Thanks — we'll take a look and get back to you.”** with `Send another inquiry`; the form is replaced |
+| Cleanup | **deleted by exact id under a marker guard** — the delete refused to run unless that id still carried the QA name, the `INTERNAL QA` business and the `…mishram-internal.test` address. **Table verified empty afterwards** |
+
+**The honeypot was verified in production too, and without creating a row.** Submitting with the
+hidden field filled returns `200 ok` — indistinguishable from success, which is the design — and
+**stored nothing**: zero rows appeared. That path was also used to capture the success state, so
+the UI was proved without a second lead.
+
+> **One honest observation, recorded rather than fixed.** A honeypot submission returns `ok`, so a
+> browser that runs the site's JavaScript with analytics granted also fires `generate_lead` on it.
+> Making the client tell the two apart would tell the *bot* it had been detected, which is exactly
+> what the route's design refuses to do. Bots overwhelmingly do not execute the tag, so the
+> practical effect is nil. **Not changed** — the honeypot's silence is worth more.
+
+### Live verification
+
+**Domain.** `https://mishram.media` **200**; `https://www.mishram.media` **308 → apex**;
+`http://mishram.media` **308 → https**. SSL valid — Let's Encrypt, `CN=mishram.media`, 30 Aug 2026
+to 28 Nov 2026, verified by `curl` with no warning. No redirect loop.
+
+**Routes, all correct on the public domain:** `/`, `/about`, the four public service routes,
+`/privacy`, `/terms`, `/cookies`, `/sitemap.xml`, `/robots.txt` → **200**; an unknown path → **404**
+on the branded not-found page.
+
+**SEO, read off the live HTML.** `robots.txt` allows `/`, disallows `/api/`, declares the host and
+the sitemap. `sitemap.xml` carries **nine** `https://mishram.media` URLs. Every canonical resolves
+against `https://mishram.media` and **there is no `.vercel.app` canonical anywhere.**
+
+**Visibility, checked and not touched.** **Web & Digital Experiences is public** — indexable, no
+`robots` override, present in the sitemap. **Brand Shoots & Content is `noindex, nofollow`, absent
+from the sitemap, and appears zero times in the HTML of `/`, `/about` or a service page.**
+
+**Responsive.** Document heights on production are **identical to the local production build** —
+home 17,787 at 1440, 18,070 at 390, 18,299 at 320; `/about` 13,654 at 390; Web & Digital 14,700 at
+390 and 16,008 at 320. The WebGL hero reports a live context. **Overflow: `PASS — 40/40` against
+the live domain.**
+
+**Console, on `/`, `/about` and `/services/web-digital-experiences`.** **Zero application errors,
+zero hydration warnings, zero failed first-party resources, zero `>=400` responses.** The only
+failed request anywhere is an aborted `google-analytics.com/g/collect` beacon carrying `gcs=G100` —
+a third-party consent-denied ping, cancelled by GA's own transport.
+
+**Contact, read out of the live DOM:** `mailto:info@mishram.media`, `tel:+919548278558`,
+`https://wa.me/919548278558`, `instagram.com/filmybande`,
+`linkedin.com/in/prashant-mishra-mishram-media` and the Facebook page. **Nothing was sent, dialled
+or messaged.**
+
+### Performance — LOCAL LAB METHODOLOGY, measured against the live domain
+
+Cold cache, no scrolling, mobile throttled 4× on CPU, LCP/CLS from an observer registered before
+the document. These include real network latency and are **not** production Core Web Vitals.
+
+| | FCP | LCP | LCP element | CLS | Cold transfer | Requests |
+| --- | ---: | ---: | --- | ---: | ---: | ---: |
+| HOME desktop 1440×900 | 1,340ms | 3,532ms | text | **0** | 1,371KB | 61 |
+| HOME mobile 390×844 @2× | 664ms | 3,328ms | text | **0** | 1,217KB | 54 |
+| WEB & DIGITAL desktop | 1,076ms | 1,288ms | text | **0** | 665KB | 41 |
+| WEB & DIGITAL mobile @2× | 612ms | 2,796ms | text | **0** | 547KB | 35 |
+
+**CLS is 0 on all four and the LCP element is text everywhere — no image is the LCP.** Lazy loading
+is intact: 3 of 23 homepage images and 2 of 19 on mobile had decoded before any scroll. **No eager
+image and no image preload anywhere.** The ~20–40KB and 4–5 requests above the equivalent local
+figures are GA4, which is Production-only and therefore absent from a local build.
+
+### Pre-release gate
+
+- **Types, lint and the production build clean.** Twenty routes, all static; `/api/inquiry` dynamic.
+- **`PASS — 120/120`** on the overflow matrix against the local production build, before the push.
+- **Secret scan, by name and by literal value.** `.next/static` carries no occurrence of
+  `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`, `RESEND_API_KEY`,
+  `VERCEL_OIDC_TOKEN` or `service_role`; and **3,176 files** — every git-tracked file plus `public/`,
+  `.next/static`, `docs/` and the QA captures — were searched for the **literal values** of the
+  three live secrets in `.env.local`: **zero hits.** Only `.env.example` is tracked and it holds
+  names. **No value was printed at any point.**
+- **Local processes.** No `node` process and no listener on 3000, 3001, 3100, 3210 or 3211 —
+  Revision 39's port-3100 server and Revision 40's servers were already gone. No temporary
+  `next start` was left running.
+- **Visual smoke on the production build before the push**, then again on the live domain: home at
+  1440 / 390 / 320 in both themes, `/about` at 390, Web & Digital at 390 / 320, Social at 390, and
+  the homepage under reduced motion. Every document height matched the recorded value exactly.
+
+### What is deferred, and why each one is genuinely external
+
+1. **Resend.** Needs an account, a verified sending domain and two Vercel Production variables. The
+   code path is complete and waiting.
+2. **Google's *Test installation*.** Needs the client's authenticated Google Analytics screen.
+3. **Google Ads conversion.** Needs a real `AW-` id and label. `generate_lead` is the mapping point.
+4. **Netlify *Stop builds* / *Unlink repository*.** Optional — the repository already cancels the
+   build — and it needs the Netlify UI.
+5. **Git-connected Vercel deployments.** Still blocked by Hobby-plan-plus-private-repository
+   (§17b). Unchanged, still the client's decision, and it blocks nothing: the CLI upload builds and
+   deploys fine.
+
+**None of these is a design phase.** Every one is an account action.
