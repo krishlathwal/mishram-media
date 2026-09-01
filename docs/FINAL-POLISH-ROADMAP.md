@@ -20,7 +20,7 @@
 | **04** | **Social & Personal Brand Growth media** | **Done — Revision 31** |
 | **05** | **Influencer Marketing media + campaign proof** | **Done — Revision 32** |
 | **06** | **Quick-scan proof layer** | **Done — Revision 33** |
-| 07 | Creator / viral network refinement | Not started |
+| **07** | **Creator / viral network refinement** | **Done — Revision 34** |
 | 08 | Selected Work / real campaign proof | Not started |
 | 09 | Recognition / NUFEW award upgrade | Not started — **asset reserved** |
 | 10 | About / Prashant Mishra / agency credibility | Not started — **asset reserved** |
@@ -73,7 +73,7 @@ compared or recognised at any point** — §18 rule 7 stands untouched.
 | `Prashant Mishra.jpeg` | 6048×8064¹ | JPEG | 9.2MB | Prashant Mishra | **1** | Excellent, informal (sunglasses) | Very flexible | **RESERVED — Phase 10** |
 | `Shadab Hasan.jpeg` | 6048×8064¹ | JPEG | 10.1MB | Shadab Hasan | **3** | Good, busy street | Moderate | **HOLD — see brand safety** |
 | `JJ Communication.jpeg` | 2160×3840 | JPEG | 1.38MB | JJ Communication | 2 | Good | Flexible | **BLOCKED — OPPO in frame** |
-| `Immortal Kaka Ji.jpeg` | 2160×3840 | JPEG | 1.92MB | Immortal Kaka Ji | 2 | Good, café interior | Flexible | **RESERVED — Phase 07** |
+| `Immortal Kaka Ji.jpeg` | 2160×3840 | JPEG | 1.92MB | Immortal Kaka Ji | 2 | Good, café interior | Flexible | **HELD — identity yes, RELATIONSHIP NOT VERIFIED (Rev 34). See Revision 34** |
 | `award.jpg.jpeg` | 3920×2160 | JPEG | 2.41MB | — (award) | 2 | **Composite marketing graphic, not a photo** | Poor — baked-in type | **RESERVED — Phase 09, with caveat** |
 | `blue logo mishram.png` | 15625×15625 | PNG α | 1.48MB | Mishram mark, indigo | — | Vector-grade, 69.6% empty padding | Trim to 12499×5946 | **Logo — light surfaces** |
 | `grey logo mishram.png` | 15625×15625 | PNG α | 1.46MB | Mishram mark, grey | — | Same mark, desaturated | Same | **No unique role** |
@@ -135,7 +135,7 @@ without passing the phase that owns it.
 | P1 | "An award-winning creative influencer & digital marketing agency" | B+C | Cover | Award graphic exists | About / Recognition | **READY** — §06 already carries the NUFEW award |
 | P2 | "Scaling influencers · Creating content · Building iconic digital careers" | B+C | Cover | — | About positioning | **READY** — editorial copy, no metric |
 | P3 | About paragraph — "creator focused talent and marketing agency… India's most influential, viral, and emerging creators" | C | About Us | — | About / Influencer Marketing | **READY** — rewrite in site voice, do not paste |
-| P4 | "premium influencers and trending creators" — two-tier network | C | About Us | — | Creator network (§07) | **READY** — matches the existing two-layer model (§10u §6) |
+| P4 | "premium influencers and trending creators" — two-tier network | B+C | p9 | — | 03 / Creators intro | **PUBLIC (Rev 34)** — renders as **Established** / **Trending**. *Premium* was rejected: on a website it reads as a pricing tier. **The two halves describe the network and never label a person** |
 | P5 | Full collaboration journey: strategy → selection → execution → tracking | C | About Us | — | Influencer Marketing (§05) | **READY** |
 | P6 | **130 million+ views on a single Reel** | B+C | p2 | **YES — deck Reel-grid capture, top tile 139M** | Homepage proof band | **PUBLIC (Rev 33)** — renders as `130M+ / Views on a single Reel`. The published figure is deliberately *below* the evidence |
 | P7 | **100+ brands** | B+C | p2, p6 | No | Homepage proof band | **PUBLIC (Rev 33)** — renders as `100+ / Brands worked with`. Same wording the rail uses, so the eighteen marks and the figure agree rather than compete |
@@ -147,12 +147,14 @@ without passing the phase that owns it.
 | P13 | "Viral sensation": `@shubhamkochale`, `@shadabjakati1`, `@xbhandesiri_`, `@jj_mobile_world` | C | Viral slide | Portraits | Creator network (§07) | **NEEDS VERIFY** + Jakati flag |
 | P14 | Brand partners named: `@canvaindia`, `@zingbus`, `@troovyfoods` | C | Brand slide | Logos in deck | Brands rail (§02) | **PART HOLD** — zingbus blocked by §18; Canva and Troovy already on the rail |
 | P15 | "Proven Brand Partnerships" narrative | C | Brand slide | — | Influencer Marketing | **READY** |
-| P16 | `@puravjha9` is Purav Jha's handle | C | Network slide | — | Creator network | **READY as a handle** — but see the missing-photograph finding |
+| P16 | `@puravjha9` is Purav Jha's handle | C | Network slide | — | — | **SUPERSEDED (Rev 34).** The site publishes **`@puravjha`**, verified in Rev 17B against the live account whose own display name reads *Purav Jha* — and re-confirmed this phase. `@puravjha9` resolves to nothing; his YouTube is a third variant (`@Puravjha_`). **The deck's handle is a deck-side variant and is not published** |
 | P17 | **“an average of more than 10 million views per creator”** (Trending Influencers) | B+C | p8 | No | — | **HELD** — an average over an unnamed, unbounded set. The site cannot state what it is an average *of*, so a reader cannot check it |
-| P18 | **Premium Influencer names**: Elvish Yadav, Purav Jha, Harsh Beniwal, Faisal Khan (Faizu), Jannat Zubair, **Lovekesh Kataria**, JJ Communication, Tijara Vines, Round2hell | B+C | p9 | Portraits in deck | Creator network (§07) | **NEEDS VERIFY** — two-source rule. Lovekesh alone is client-supplied and already published |
+| P18 | **Premium Influencer names**: Elvish Yadav, Purav Jha, Harsh Beniwal, Faisal Khan (Faizu), Jannat Zubair, **Lovekesh Kataria**, JJ Communication, Tijara Vines, Round2hell | B+C | p9 | Portraits in deck | — | **HELD (unchanged, re-checked Rev 34).** Being named on a network slide is **not** the same evidence as a client-confirmed working relationship, and the two must not be collapsed. Only the names already in `WORKED_WITH` are published, with the wording that list carries. **No name was added to the site from this slide** |
 | P19 | Mishram “manages production” on campaigns | B+C | p7 | No | Influencer scope (§05) | **HELD** — first-party copy, awaiting the same client confirmation outreach and negotiation got |
 | P20 | **@xbhandesiri_ Reel view counts** — 70.9M, 40.3M, 33.9M (and 33.5M, 26.6M, 13.2M, 12.1M, 9.9M, 7.6M) | B | p3 capture | **YES — the capture carries the handle, the verified badge, the active Reels tab and Instagram's own view UI** | Current Management inset | **PUBLIC (Rev 33)** — three figures render as *Selected Reel views*, beside the screenshot they were read off |
 | P21 | **139M / 111M** on the same account's grid | B | p2 capture | **YES — but the capture carries NO account header** | — | **HELD.** Stronger figures, weaker provenance. Used only as corroboration for P6's 130M+, never published as figures |
+| P22 | **Immortal Kaka Ji** — a creator relationship | — | — | Photograph only | — | **HELD — RELATIONSHIP NOT VERIFIED.** Identity is established by the client's own filename; **nothing establishes a relationship.** The name appears in no `WORKED_WITH` entry, no roster entry, no brief section and **nowhere in the proposal**. A file sitting in `WEBSITE SHORTLIST` is not a relationship claim |
+| P23 | Per-creator **Established / Trending** classification | B+C | p9 | No | — | **HELD, AND DELIBERATELY SO.** The taxonomy is published about the *network*; sorting named people into it would assert a characteristic the project cannot evidence — the §10b follower-count mistake in a different currency |
 
 **Source discipline, as the plan asked.** Every row above is **class A — text claim only**. Not one
 figure in the deck is accompanied by a screenshot of a platform showing it, and no local raw asset
@@ -177,7 +179,7 @@ relationship, and the *portrait* frame goes to the Hero — never the other way 
 | `Akash sagar 2nd.jpeg` | Akash Sagar | Weak | — | — | everywhere | — | **HOLD** |
 | `Lovekesh Kataria.jpeg` | Lovekesh Kataria | Excellent | **Influencer Marketing (05)** | Roster portrait — already spent, Rev 17B | Hero¹ | `/media/creators/featured/lovekesh-kataria.webp` 1000×1333 **+** `/media/services/influencer/lovekesh-kataria-worked-with.webp` 800×1000, 77KB | **LIVE (local) — two crops, two jobs. See Revision 32** |
 | `Prashant Mishra.jpeg` | Prashant Mishra | Excellent | **About (10)** | Agency credibility | Hero, Creators | — | **RESERVED** |
-| `Immortal Kaka Ji.jpeg` | Immortal Kaka Ji | Good | **Creator network (07)** | Viral personalities | Hero | — | **RESERVED** |
+| `Immortal Kaka Ji.jpeg` | Immortal Kaka Ji | Good | — | — | everywhere, pending | — | **HELD — no relationship record exists (Rev 34). Unblock is one client sentence** |
 | `Shadab Hasan.jpeg` | Shadab Hasan | Good | — | — | everywhere, pending | — | **HOLD — brand safety** |
 | `JJ Communication.jpeg` | JJ Communication | Good | — | — | everywhere | — | **BLOCKED — OPPO** |
 | `award.jpg.jpeg` | Award | Graphic | **Recognition (09)** | — | Hero, Favicon | — | **RESERVED, with caveat²** |
@@ -1265,3 +1267,213 @@ Hero, the brands rail, all five service pages, The Mishram Difference, Work Proc
 Client Notes, Recognition, About (the chapter and the page), Project Inquiry, the Footer, Supabase,
 GA4 and the legal documents. `globals.css` is **purely additive** — three new rule groups, no
 existing selector modified. No dependency was added.
+
+---
+
+## Revision 34 — Phase 07, the creator network refinement
+
+### The finding that decided the phase: the reserved asset has no relationship
+
+`WEBSITE SHORTLIST/Immortal Kaka Ji.jpeg` has been reserved for this phase since Revision 28. It
+was searched for properly before anything was built with it:
+
+| Where a relationship would be recorded | Result |
+| --- | --- |
+| `WORKED_WITH` — the client's confirmed relationship list, August 2026 | **absent** |
+| `CREATORS` / `ROSTER` | **absent** |
+| `WORKED_WITH_UNVERIFIED` — the names whose *handles* did not resolve | **absent** |
+| `docs/PROJECT-BRIEF.md` | **absent** — no mention outside media-ledger rows |
+| The proposal, all nine pages of text | **absent** — not in the Premium list, not anywhere |
+
+**So: identity yes, relationship no.**
+
+- **IDENTITY — VERIFIED.** The client supplied and explicitly named the file. That is the same
+  evidence Ali Fazal, Akash Sagar and Lovekesh Kataria are published on.
+- **RELATIONSHIP — NOT VERIFIED.** Nothing anywhere establishes one.
+
+**The file being in `WEBSITE SHORTLIST` is not a relationship claim**, and the only records that
+ever pointed at this phase are the ledger's own *allocation* rows — written in Revision 28 as
+"where might this go", never as "what is this". A shortlist is a shortlist.
+
+**HELD.** No production image was made. The unblock is one sentence from the client, and it is now
+registered as **P22** rather than left implied by a reservation.
+
+The photograph itself was inspected for the record: 2160×3840, **orientation 1** (no rotate needed),
+two figures, café interior, good quality. Branded cups sit on the tables — ambient rather than a
+placement, and moot while the relationship is unverified.
+
+---
+
+### What the chapter now says, and where it says it
+
+The chapter answered *who* three times over — `CreatorMeta` labels every creator on the stage
+individually, the roster note says it again, and the intro's lead said it a third time. **It never
+answered the question a brand actually arrives with: what kind of network is this?**
+
+Mishram's own proposal answers that in two categories. They now open the chapter:
+
+> **ESTABLISHED** — Actors and creators with audiences already built, and personal brands people
+> recognise.
+>
+> **TRENDING** — Fast-moving creators making the kind of short-form work that is in the
+> conversation now.
+
+Two halves on hairlines, in the intro's right column. **It replaced the lead sentence rather than
+being added to it**, which is why the chapter got *shorter*.
+
+**"Premium" was considered and rejected.** The proposal says *Premium Influencers*, and on a website
+that reads as a pricing tier — the rate-card register this chapter has avoided since Revision 17.
+`Established` carries the same meaning with none of the commercial edge. `Tier 1/2`, `A-list` and
+`Micro/Macro` were never candidates.
+
+**No promise of future virality.** *"in the conversation now"* describes what is already true.
+*"Our creators consistently generate an average of more than 10 million views"* is the proposal's
+own claim and it **stays held** (P17).
+
+---
+
+### The rule that shaped everything else: categories describe the network, never a person
+
+**Not one name on this page is sorted into Established or Trending, and none should be.**
+
+The proposal lists nine Premium Influencers — Elvish Yadav, Purav Jha, Harsh Beniwal, Faisal Khan
+(Faizu), Jannat Zubair, Lovekesh Kataria, JJ Communication, Tijara Vines, Round2hell. **Being named
+on a network slide is not the same evidence as a client-confirmed working relationship**, and
+collapsing the two would publish a relationship claim the project cannot make. P18 stays held and
+**no name was added to the site from that slide.**
+
+Sorting real people into tiers would also be the §10b follower-count mistake in a different
+currency: a characteristic asserted about a human being that the project cannot evidence. A general
+statement about the network is both safer and truer, and it is the whole of what this phase
+publishes. Registered as **P23**.
+
+---
+
+### Featured stage — audited, and deliberately unchanged
+
+**Ali Fazal · Zoya Jaan · Nikita Kumawat · Lovekesh Kataria · Mukul Sharma · Vishnu Priya.**
+
+Every question the phase asked was run:
+
+| Question | Answer |
+| --- | --- |
+| Is Ali valuable here despite also being in the Hero? | **Yes.** Different production file — `featured/ali-fazal.webp` 1000×1333 against the Hero's `hero/creators/ali-fazal.webp` 620×1102 — and he is the stage's only `Worked With`, its strongest relationship label |
+| Does the chapter over-repeat Lovekesh? | **Not within the chapter** — he appears once here. His other crops are on other routes, which is the ledger working as designed |
+| Should a slot take a different verified creator already in production? | **There is no candidate.** Every published creator with an approved photograph is already on the stage. Akash Sagar is `published: false` on purpose — he has his own chapter |
+| Would a change improve breadth? | **No.** Breadth would need a photograph the project does not have |
+
+**The phase's own rule applies: "NO CHANGE IS ACCEPTABLE."** The six remain the strongest truthful
+lineup, so the lineup did not move — and the category framing improved the chapter without forcing
+a portrait.
+
+---
+
+### Worked-With Index — audited, four findings
+
+**Eighteen confirmed relationships; twelve render in the index, two as leads, four filtered because
+they are on the stage.** Structure untouched — not redesigned, not turned into a table.
+
+**1 — A published outbound link was checked and stands.** The proposal says `@puravjha9`; the site
+publishes **`@puravjha`**. Two first-party sources disagreeing on a live link is exactly what §17's
+*"no link is better than the wrong link"* guards against, so it was resolved rather than left: the
+live account's own profile title reads *"Purav Jha (@puravjha)"*, corroborating Revision 17B's
+verification. `@puravjha9` resolves to nothing, and his YouTube is a third variant (`@Puravjha_`),
+which is how these proliferate. **The site is correct; the register row was wrong and is corrected.**
+This was the only handle checked — §18 rules out a broad sweep and nothing else was in conflict.
+
+**2 — Five names carry no link, and that is a real state.** Allen Chaudhary, Manish Jain, Shadab
+Jakati, Shubham Kochale and Famous Ram each have their reason recorded in
+`WORKED_WITH_UNVERIFIED`. A name renders as a name — no dead link, no disabled control, no
+"coming soon".
+
+**3 — JJ Communication stays textual.** The relationship is confirmed and renders as
+*Manish Jain · JJ Communications*. **The photograph stays blocked** — OPPO environment, §18 — and
+was not cropped around.
+
+**4 — Purav Jha stays textual.** Relationship confirmed, handle verified, and **still no still**:
+four `Purav` folders, `.MOV` only. No frame was extracted and none should be.
+
+#### The reputational flag, reported rather than acted on
+
+**Shadab Jakati** carries an unresolved 2026 brand-safety finding — national outlets report an
+arrest over a reel involving a minor, with a police complaint filed. §18 has flagged it since
+Revision 17B and it is still open.
+
+**The row renders.** He is a user-confirmed relationship, and §18's rule is that a real relationship
+is not quietly deleted to tidy a page — removing him is the client's call, not this project's.
+
+**What changed is that the client's call is now one line.** `WorkedWith.withheld` was added: a
+development-only string that removes a row from the index entirely when set, in the same shape
+`published: false` gives a creator and `visible: false` gives a brand. **Nothing sets it**, so no
+row moved this phase. `withheld: "client decision, <date>"` is the whole of the future edit.
+
+**A brand running outreach off this page should be told about this name before the campaign, not
+after.**
+
+---
+
+### Metric restraint — held, and verified in the rendered DOM
+
+The chapter's rendered text was probed rather than assumed:
+
+| | |
+| --- | --- |
+| Follower counts | **none** — no figure, no "follower" anywhere |
+| `500+` / `1,000+` | **absent.** Revision 33's deduplication is intact and was not reversed |
+| `130M+` and every other proof-band figure | **absent** |
+| Figure-like matches in the whole chapter | **one**, and it is the roster's own index number `05` beside *Mukul Sharma* |
+
+The proposal's follower figures stay held on the same ground as ever — **six handles against five
+figures**, still not mappable.
+
+---
+
+### Measurements
+
+| | Before | After | Δ |
+| --- | --- | --- | --- |
+| `#creators`, 1440×900 | 1,640px | **1,618px** | **−22** |
+| Homepage, 1440×900 | 17,700px | **17,678px** | **−22** |
+| Other viewports (`#creators`) | — | 1024 · 1,550 / 768 · 2,274 / 430 · 2,594 / 390 · 2,538 | — |
+
+**The chapter gained the category framing and got shorter**, which is the outcome the phase asked
+for. Two reasons: the two halves sit in a column the intro already bottom-aligns against a
+two-line headline, so the row's height never changed; and the roster note's opening clause —
+which now repeated the framing above it — came out.
+
+| | |
+| --- | --- |
+| New production images | **0** |
+| Homepage image nodes | **23 → 23** |
+| Lazy / eager / preload | **23 / 0 / 0 — unchanged** |
+| Asset delta | **0KB** |
+| Dependencies | none added |
+
+### Mobile — 390px
+
+**Pass.** The chapter reads: `03 / CREATORS` → headline → **ESTABLISHED** → **TRENDING** → featured
+stage → talent index → worked-with roster. The two halves are full-width editorial rows on
+hairlines — **no dual-column category cards, no follower grid**. Zero overflowing elements inside
+`#creators` at 1440, 1024, 768, 430 or 390; the document-level overflow is the pre-existing brands
+marquee, proved against production in Revision 33.
+
+### Visual QA — 16 real composited captures
+
+The chapter at 1440×900 light and dark, 1280×800, 1024×768, 768×1024, 430×932, 390×844 light and
+dark, and 1440×900 under `prefers-reduced-motion`. Its three beats captured separately — intro and
+category framing (1440 both themes, 390), talent index and stage, worked-with roster. Both seams:
+**The Mishram Difference → Creators** and **Creators → 04 / Work Process**, the section order read
+off `app/page.tsx` rather than remembered.
+
+`scripts/shoot.mjs` gained `sectionScroll(selector, into)` — a scroll position resolved inside the
+page against a section's own top edge, for the same reason `slotScroll` exists: a section offset
+moves whenever anything above it changes height, and a hardcoded pixel value silently captures the
+wrong beat.
+
+### Untouched
+
+Hero, the brands rail, Current Management, the Quick Proof band, all five What We Do scenes, every
+service page, The Mishram Difference, Work Process, Selected Work, Client Notes, Recognition, About
+(chapter and page), Project Inquiry, the Footer, Supabase, GA4 and the legal documents. **No
+analytics event was added** — the handle links use the existing `creator_profile_click`.
+`globals.css` is purely additive: one new rule group, no existing selector modified.

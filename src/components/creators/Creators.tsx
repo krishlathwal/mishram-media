@@ -268,15 +268,42 @@ function Intro() {
           ))}
         </motion.h2>
 
-        <motion.p
+        {/* THE NETWORK, IN TWO HALVES — Revision 34.
+
+            This slot held one sentence about the *relationship*, which the
+            chapter already states twice more: `CreatorMeta` labels every
+            creator on the stage individually, and the roster's own note says
+            it again. What it never answered was what a brand actually arrives
+            asking — **what kind of network is this** — so the slot now carries
+            the two halves the proposal itself describes.
+
+            **The categories describe the network and never a person.** Not one
+            name on this page is sorted into either, and none should be: the
+            proposal's Premium list is registered NEEDS VERIFY, and asserting a
+            category about a real human being is the §10b follower-count
+            mistake in a different currency.
+
+            Two columns from `sm` and stacked below it, each on its own
+            hairline — the site's existing label-plus-prose grammar used twice,
+            not a card, a chip, a tier badge or a toggle. Bottom-aligned
+            against the headline at `lg`, which is what keeps the row's height
+            unchanged. */}
+        <motion.dl
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 0.8, delay: 0.25, ease: EASE }}
-          className="max-w-[46ch] text-[0.8125rem] leading-[1.7] text-ink-soft lg:max-w-[34ch] lg:pb-2"
+          className="crt-network"
         >
-          {CREATORS_COPY.lead}
-        </motion.p>
+          {CREATORS_COPY.network.map((part) => (
+            <div key={part.label} className="crt-network-part">
+              <dt className="caps text-ink">{part.label}</dt>
+              <dd className="mt-3 text-[0.8125rem] leading-[1.7] text-ink-soft">
+                {part.line}
+              </dd>
+            </div>
+          ))}
+        </motion.dl>
       </div>
     </>
   );

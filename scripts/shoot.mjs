@@ -52,6 +52,19 @@ const slotScroll = (slot) =>
     return Math.round(top + (span * ${slot}) / 4);
   })()`;
 
+/**
+ * A scroll position `into` pixels below a section's own top edge, resolved
+ * inside the page. Section offsets move whenever anything above them changes
+ * height, so a hardcoded pixel value silently captures the wrong beat — the
+ * same failure `slotScroll` exists to avoid for the pinned track.
+ */
+const sectionScroll = (selector, into) =>
+  `(() => {
+    const el = document.querySelector("${selector}");
+    if (!el) return 0;
+    return Math.round(el.getBoundingClientRect().top + scrollY + ${into});
+  })()`;
+
 /** viewport, theme, reduced motion, and where on the page to look. */
 const SHOTS = [
   { name: "hero-1440-light", w: 1440, h: 900, scheme: "light" },
@@ -166,6 +179,32 @@ const SHOTS = [
   { name: "seam-mgt-proof", w: 1440, h: 900, scheme: "dark", selector: "#proof", pad: 420 },
   { name: "seam-proof-what", w: 1440, h: 900, scheme: "dark", selector: "#what-we-do", pad: 420 },
   { name: "seam-mgt-proof-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#proof", pad: 300 },
+
+  /* ── Phase 07 — 03 / Creators, the network refinement ───────────────────
+     The chapter at every viewport, plus its two seams. The section order the
+     seams assume is read off `app/page.tsx`, not remembered: The Mishram
+     Difference sits above Creators and 04 / Work Process below it. */
+  { name: "crt-1440-light", w: 1440, h: 900, scheme: "light", selector: "#creators" },
+  { name: "crt-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#creators" },
+  { name: "crt-1280", w: 1280, h: 800, scheme: "dark", selector: "#creators" },
+  { name: "crt-1024", w: 1024, h: 768, scheme: "dark", selector: "#creators" },
+  { name: "crt-768", w: 768, h: 1024, scheme: "dark", selector: "#creators" },
+  { name: "crt-430", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#creators" },
+  { name: "crt-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#creators" },
+  { name: "crt-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#creators" },
+  { name: "crt-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#creators" },
+
+  /* The chapter's own beats, so each can be judged without scrolling a
+     1,600px capture: the intro and its category framing, the talent index
+     and stage, and the worked-with roster. */
+  { name: "crt-intro-1440", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#creators", 0) },
+  { name: "crt-intro-1440-light", w: 1440, h: 900, scheme: "light", scrollExpr: sectionScroll("#creators", 0) },
+  { name: "crt-stage-1440", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#creators", 420) },
+  { name: "crt-roster-1440", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#creators", 1000) },
+  { name: "crt-intro-390", w: 390, h: 844, scheme: "dark", mobile: true, scrollExpr: sectionScroll("#creators", 0) },
+
+  { name: "seam-difference-crt", w: 1440, h: 900, scheme: "dark", selector: "#creators", pad: 380 },
+  { name: "seam-crt-process", w: 1440, h: 900, scheme: "dark", selector: "#process", pad: 380 },
 ];
 
 const only = process.argv.slice(3);

@@ -6211,6 +6211,29 @@ section asked for — see §10v.
 Approved and locked. Extend, don't rebuild:
 
 
+- **Revision 34’s decisions (§10al) — awaiting review, then locked.**
+  - **The Established / Trending framing describes the NETWORK and never a person.** Not one name
+    on the site carries a category and none should. The proposal’s Premium list is held — being
+    named on a network slide is not the same evidence as a client-confirmed relationship, and
+    sorting real people into tiers is §10b’s follower-count mistake in a different currency.
+  - **“Premium” stays out of the public wording.** It reads as a pricing tier. `Established` says
+    the same thing; `Tier 1/2`, `A-list` and `Micro/Macro` are not candidates.
+  - **No promise of future virality**, and the proposal’s 10M-average claim stays held.
+  - **Immortal Kaka Ji is HELD on relationship, not on quality.** Identity is established by the
+    client’s filename; **nothing establishes a relationship**. A file in `WEBSITE SHORTLIST` is not
+    a relationship claim, and a media-ledger reservation is not one either. One client sentence
+    unblocks it.
+  - **The featured six stand.** Do not swap a slot without a verified relationship, a suitable
+    existing image, no allocation conflict and a genuine visual improvement — all four.
+  - **`WorkedWith.withheld` is the client’s switch, not this project’s.** Shadab Jakati’s
+    unresolved flag is **reported, not acted on**: the row renders because the relationship is
+    user-confirmed. Do not set `withheld` without an instruction, and do not silently delete a
+    confirmed relationship to tidy the page.
+  - **`@puravjha` is the published handle**, verified against the live account twice. The deck’s
+    `@puravjha9` resolves to nothing and is not published.
+  - **No figure enters this chapter.** No follower count, and Revision 33’s move of `500+` /
+    `1,000+` to the proof band is not to be reversed.
+
 - **Revision 33's decisions (§10ak) — awaiting review, then locked.**
   - **`config/proof.ts` is the only place a figure lives.** Adding a number to a component means
     adding a record there, with its `source`, `sourceType` and `confirmed`. **Never hardcode a
@@ -9498,4 +9521,151 @@ which is why `scrollWidth > innerWidth` reads false there. **Compare `clientWidt
   in both themes and at 390, Creators after the dedupe, and both seams.
 - **The screenshot was read at high zoom before any figure was published**, which is how the
   Revision 29 transcription error was found.
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## 10al. FINAL POLISH PHASE 07 — CREATOR / VIRAL NETWORK REFINEMENT (Revision 34)
+
+**Nothing was deployed.** Production still serves Revision 27. Full working detail, the audits and
+the register are in `docs/FINAL-POLISH-ROADMAP.md`; this records the decisions.
+
+### 1 — THE RESERVED ASSET HAS NO RELATIONSHIP, AND THAT IS THE PHASE'S MAIN FINDING
+
+`WEBSITE SHORTLIST/Immortal Kaka Ji.jpeg` had been reserved for this phase since Revision 28. It was
+searched for properly before anything was built with it, and the name appears in **`WORKED_WITH`:
+no. `CREATORS`: no. `WORKED_WITH_UNVERIFIED`: no. This brief: no. The proposal, all nine pages:
+no.**
+
+- **IDENTITY — VERIFIED.** The client supplied and explicitly named the file, which is the same
+  evidence Ali Fazal, Akash Sagar and Lovekesh Kataria are published on.
+- **RELATIONSHIP — NOT VERIFIED.** Nothing anywhere establishes one.
+
+**A file sitting in a shortlist folder is not a relationship claim.** The only records pointing at
+this phase were the media ledger's own *allocation* rows, written in Revision 28 as "where might
+this go" and never as "what is this" — and it is worth naming that distinction, because a
+reservation reads like a decision three revisions later.
+
+**HELD**, no production image made, and now registered as **P22** rather than left implied by a
+ledger row. The unblock is one sentence from the client.
+
+### 2 — THE CHAPTER ANSWERED *WHO* THREE TIMES AND *WHAT KIND* NEVER
+
+`CreatorMeta` labels every creator on the stage individually, the roster note says it again, and the
+intro's lead said it a third time. What was missing is the question a brand actually arrives with.
+
+Mishram's own proposal answers it in two categories, and they now open the chapter:
+
+> **ESTABLISHED** — Actors and creators with audiences already built, and personal brands people
+> recognise.
+>
+> **TRENDING** — Fast-moving creators making the kind of short-form work that is in the
+> conversation now.
+
+Two halves on hairlines in the intro's right column, in the site's existing label-plus-prose
+grammar. **No card, chip, badge, toggle or tabbed marketplace UI.** It **replaced** the lead
+sentence rather than being added to it.
+
+**"Premium" was considered and rejected.** The proposal says *Premium Influencers*; on a website
+that reads as a pricing tier — the rate-card register this chapter has avoided since Revision 17.
+`Established` carries the meaning without the commercial edge. `Tier 1/2`, `A-list` and
+`Micro/Macro` were never candidates.
+
+**No promise of future virality.** *"in the conversation now"* describes what is already true; the
+proposal's *"an average of more than 10 million views per creator"* **stays held**.
+
+### 3 — THE RULE THAT SHAPED EVERYTHING ELSE
+
+**The categories describe the network. They never label a person, and not one name on this page
+carries either.**
+
+The proposal names nine Premium Influencers. **Being named on a network slide is not the same
+evidence as a client-confirmed working relationship**, and collapsing the two would publish a claim
+the project cannot make — so P18 stays held and **no name was added to the site from that slide.**
+
+Sorting real people into tiers would also be §10b's follower-count mistake in a different currency:
+a characteristic asserted about a human being that the project cannot evidence. A general statement
+about the network is both safer and truer.
+
+### 4 — THE FEATURED STAGE WAS AUDITED AND DELIBERATELY NOT CHANGED
+
+**Ali Fazal · Zoya Jaan · Nikita Kumawat · Lovekesh Kataria · Mukul Sharma · Vishnu Priya.**
+
+Ali earns his slot despite the Hero — different production file, and he is the stage's only
+`Worked With`. Lovekesh appears **once** within the chapter; his other crops are on other routes,
+which is the ledger working. And no replacement exists: every published creator with an approved
+photograph is already on the stage, and Akash Sagar is `published: false` because he has his own
+chapter. **Breadth would need a photograph the project does not have.**
+
+The six remain the strongest truthful lineup, so the lineup did not move. **The category framing
+improved the chapter without forcing a portrait**, which is the outcome the phase wanted.
+
+### 5 — THE INDEX AUDIT, AND A PUBLISHED LINK THAT NEEDED RESOLVING
+
+Eighteen confirmed relationships; twelve render in the index, two as leads, four filtered because
+they are on the stage. Structure untouched.
+
+**A live outbound link was in conflict between two first-party sources.** The proposal says
+`@puravjha9`; the site publishes **`@puravjha`**. §17's *"no link is better than the wrong link"*
+makes that worth resolving rather than leaving: the live account's own profile title reads
+*"Purav Jha (@puravjha)"*, corroborating Revision 17B. `@puravjha9` resolves to nothing, and his
+YouTube is a third variant (`@Puravjha_`) — which is how handle variants proliferate in the first
+place. **The site is correct; the register row was wrong and is corrected.** This was the only
+handle checked; a broad sweep is explicitly out of scope.
+
+Five names carry no link, each with its reason in `WORKED_WITH_UNVERIFIED` — a name renders as a
+name, never a dead link. **JJ Communication stays textual**, its photograph still blocked by the
+OPPO rule and **not cropped around**. **Purav Jha stays textual** — four folders, `.MOV` only, no
+frame extracted.
+
+### 6 — A REPUTATIONAL FLAG, REPORTED RATHER THAN ACTED ON
+
+**Shadab Jakati** carries the unresolved 2026 brand-safety finding §18 has flagged since Revision
+17B — an arrest reported by national outlets over a reel involving a minor.
+
+**The row renders**, because he is a user-confirmed relationship and §18's rule is that a real
+relationship is not quietly deleted to tidy a page. **What changed is that the client's decision is
+now one line.** `WorkedWith.withheld` was added — a development-only string that removes a row from
+the index entirely when set, the same shape `published: false` gives a creator and `visible: false`
+gives a brand. **Nothing sets it**, so no row moved.
+
+**A brand running outreach off this page should be told about this name before the campaign.**
+
+### 7 — METRIC RESTRAINT, VERIFIED IN THE RENDERED DOM RATHER THAN ASSUMED
+
+The chapter's rendered text was probed: **no follower count, no `500+`, no `1,000+`, no `130M+`, no
+figure of any kind.** Revision 33's deduplication is intact and was not reversed. The single
+figure-like match in the whole chapter is the roster's own index number `05` beside *Mukul Sharma*.
+
+The proposal's follower figures stay held on the same ground as ever — six handles against five
+figures, still not mappable.
+
+### 8 — MEASURED
+
+| | Before | After |
+| --- | --- | --- |
+| `#creators`, 1440×900 | 1,640px | **1,618px (−22)** |
+| Homepage, 1440×900 | 17,700px | **17,678px (−22)** |
+| New production images | — | **0** |
+| Image nodes · lazy · eager · preload | 23 · 23 · 0 · 0 | **unchanged** |
+
+**The chapter gained the category framing and got shorter.** The two halves sit in a column the
+intro already bottom-aligns against a two-line headline, so the row's height never changed — and
+the roster note's opening clause, which now repeated the framing above it, came out.
+
+### 9 — MOBILE
+
+At 390 the chapter reads `03 / CREATORS` → headline → **ESTABLISHED** → **TRENDING** → featured
+stage → talent index → worked-with roster. The two halves are full-width editorial rows on
+hairlines — **no dual-column category cards, no follower grid.** Zero overflowing elements inside
+`#creators` at any viewport; the document-level overflow is the pre-existing brands marquee (§10ak).
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static.
+- **Sixteen real composited captures** — the chapter at eight viewports plus reduced motion, its
+  three beats separately, and both seams, with the section order read off `app/page.tsx`.
+- **`scripts/shoot.mjs` gained `sectionScroll(selector, into)`**, for the same reason `slotScroll`
+  exists: a section offset moves whenever anything above it changes height.
+- **No new dependency, no new analytics event, no new production image.**
 - **Nothing pushed, nothing deployed.**

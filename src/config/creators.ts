@@ -460,11 +460,60 @@ export const CREATORS_COPY = {
   headline: ["Built with people", "who move culture."],
   /** Rendered in the serif italic accent, matching the hero and §02. */
   accentWord: "culture.",
-  // "Creators" alone stopped being accurate in Revision 17B: Ali Fazal is an
-  // actor, not a content creator, and describing him as one on a live site
-  // would misstate who he is. The wording now matches the worked-with index's
-  // own note, which already had to say this.
-  lead: "Creators, actors and personalities we've worked with, managed and built alongside.",
+  /**
+   * ─────────────────────────────────────────────────────────────────────────
+   * THE NETWORK, IN TWO HALVES — Revision 34
+   * ─────────────────────────────────────────────────────────────────────────
+   *
+   * This slot used to hold one line: *"Creators, actors and personalities we've
+   * worked with, managed and built alongside."* It said what the relationship
+   * is, which the chapter says twice more anyway — `CreatorMeta` labels every
+   * creator on the stage individually, and `workedWithNote` says it again over
+   * the roster. **What the chapter never answered was the question a brand
+   * actually arrives with: what *kind* of network is this?**
+   *
+   * Mishram's own proposal answers it in two categories — *Premium
+   * Influencers* (established names, strong personal brands, proven influence)
+   * and *Trending Influencers* (fast-growing creators driving viral
+   * conversations). That distinction is the network's real shape and it was
+   * nowhere on the site.
+   *
+   * **"PREMIUM" WAS CONSIDERED AND REJECTED.** On a website it reads as a
+   * pricing tier — the rate-card register this chapter has avoided since
+   * Revision 17. `Established` carries the same meaning and none of the
+   * commercial edge. `Tier 1/2`, `A-list` and `Micro/Macro` were never
+   * candidates; nothing in the project uses them.
+   *
+   * ════════════════════════════════════════════════════════════════════════
+   * **THE TWO CATEGORIES DESCRIBE THE NETWORK. THEY NEVER LABEL A PERSON.**
+   *
+   * Not one name anywhere in this file carries a category, and none should.
+   * The proposal lists nine Premium Influencers, but that list is registered
+   * as **NEEDS VERIFY** — naming somebody in a network slide is not the same
+   * evidence as the client confirming a working relationship, and the two must
+   * not be collapsed. Sorting real people into tiers on a live site would also
+   * be the §10b follower-count mistake in a different currency: a
+   * characteristic asserted about a human being that the project cannot
+   * evidence.
+   *
+   * A general statement about the network is both safer and truer, and it is
+   * the whole of what this phase publishes.
+   * ════════════════════════════════════════════════════════════════════════
+   *
+   * **No promise of future virality.** *"in the conversation now"* is a
+   * description of what is already true; *"our creators consistently get 10M+
+   * views"* is the proposal claim that stays held. No figure appears here.
+   */
+  network: [
+    {
+      label: "Established",
+      line: "Actors and creators with audiences already built, and personal brands people recognise.",
+    },
+    {
+      label: "Trending",
+      line: "Fast-moving creators making the kind of short-form work that is in the conversation now.",
+    },
+  ] as readonly { label: string; line: string }[],
   /**
    * Roster header. The number beside it is `ROSTER.length` — it counts the
    * people actually on this page and nothing else. **Not** "network size":
@@ -495,7 +544,7 @@ export const CREATORS_COPY = {
    */
   workedWithLabel: "Also worked with",
   workedWithNote:
-    "Creators, actors and personalities Mishram Media has worked with on campaigns and content. The index is a selection — the working network is larger than the names shown here.",
+    "Creators, actors and personalities Mishram Media has worked with on campaigns and content — a selection, not the whole network.",
   /**
    * The two names the index sets at display scale above the list. Reading
    * emphasis, not a tier — see `lead` on `WorkedWith`.
@@ -583,6 +632,32 @@ export type WorkedWith = {
    * here, and no number appears anywhere in this section.
    */
   lead?: boolean;
+  /**
+   * DEVELOPMENT ONLY — the reason a confirmed relationship is not rendered.
+   * Set it and the row disappears from the index entirely; leave it unset and
+   * the row renders. **The string is never shown on the page.**
+   *
+   * ─────────────────────────────────────────────────────────────────────────
+   * WHY THIS EXISTS, AND WHY IT IS CURRENTLY UNUSED (Revision 34)
+   *
+   * Every name here is a **user-confirmed relationship**, so removing one is
+   * the client's call and not this project's — §18's rule that a real
+   * relationship is not quietly deleted to tidy a page. But one name carries
+   * an unresolved reputational flag that a brand running outreach off this
+   * page would want to know about:
+   *
+   * **Shadab Jakati** — national outlets report a 2026 arrest over a reel
+   * involving a minor, with a police complaint filed (`WORKED_WITH_UNVERIFIED`
+   * records the detail). §18 has flagged it since Revision 17B and it is still
+   * open. It is **reported, not acted on**: the row renders, because the
+   * client confirmed the relationship and has not asked for its removal.
+   *
+   * This field is the switch for when they do. One line —
+   * `withheld: "client decision, <date>"` — and the name is gone from the DOM
+   * with no component edit, the same shape `published: false` gives a creator
+   * and `visible: false` gives a brand. **Do not set it without an instruction.**
+   */
+  withheld?: string;
 };
 
 /**
@@ -750,7 +825,10 @@ const ROSTER_KEYS = new Set(ROSTER.map((c) => nameKey(c.name)));
  * Lovekesh Kataria joined the stage and left this list without a second edit.
  */
 const WORKED_WITH_OFF_STAGE: readonly WorkedWith[] = WORKED_WITH.filter(
-  (p) => !ROSTER_KEYS.has(nameKey(p.name)),
+  // `withheld` is the client's switch, not a filter this project reaches for —
+  // see the field's own note. Nothing currently sets it, so this changes no
+  // row today; it means changing one later needs no component edit.
+  (p) => !p.withheld && !ROSTER_KEYS.has(nameKey(p.name)),
 );
 
 /**
