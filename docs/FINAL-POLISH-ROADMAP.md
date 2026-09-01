@@ -19,7 +19,7 @@
 | **03** | **Current Management / Akash Sagar** | **Done — Revision 30** |
 | **04** | **Social & Personal Brand Growth media** | **Done — Revision 31** |
 | **05** | **Influencer Marketing media + campaign proof** | **Done — Revision 32** |
-| 06 | Quick-scan proof layer | Not started — **blocked on the proof register below** |
+| **06** | **Quick-scan proof layer** | **Done — Revision 33** |
 | 07 | Creator / viral network refinement | Not started |
 | 08 | Selected Work / real campaign proof | Not started |
 | 09 | Recognition / NUFEW award upgrade | Not started — **asset reserved** |
@@ -137,20 +137,22 @@ without passing the phase that owns it.
 | P3 | About paragraph — "creator focused talent and marketing agency… India's most influential, viral, and emerging creators" | C | About Us | — | About / Influencer Marketing | **READY** — rewrite in site voice, do not paste |
 | P4 | "premium influencers and trending creators" — two-tier network | C | About Us | — | Creator network (§07) | **READY** — matches the existing two-layer model (§10u §6) |
 | P5 | Full collaboration journey: strategy → selection → execution → tracking | C | About Us | — | Influencer Marketing (§05) | **READY** |
-| P6 | **130 million+ views on a single Reel** | C | Slide 3 | **No screenshot in deck** | Quick-scan proof (§06) | **NEEDS VERIFY** — headline figure, needs a dated capture |
-| P7 | **100+ brands** | C | About Us | No | Quick-scan proof (§06) | **NEEDS VERIFY** — the rail publishes 18; 100+ needs a list |
-| P8 | **1,000+ creator videos** | C | About Us | No | Quick-scan proof (§06) | **NEEDS VERIFY** |
-| P9 | "billions of views" | C | About Us | No | — | **HOLD** — unbounded language, §1 forbids it |
-| P10 | **40M+ views on a single branded video** | C | About Us + Brand Video | No | Selected Work (§08) | **NEEDS VERIFY** |
+| P6 | **130 million+ views on a single Reel** | B+C | p2 | **YES — deck Reel-grid capture, top tile 139M** | Homepage proof band | **PUBLIC (Rev 33)** — renders as `130M+ / Views on a single Reel`. The published figure is deliberately *below* the evidence |
+| P7 | **100+ brands** | B+C | p2, p6 | No | Homepage proof band | **PUBLIC (Rev 33)** — renders as `100+ / Brands worked with`. Same wording the rail uses, so the eighteen marks and the figure agree rather than compete |
+| P8 | **1,000+ creator videos** | B+C, + client Aug 2026 | p2, p6 | No | Homepage proof band | **PUBLIC (Rev 33)** — renders as `1,000+ / Creator-led videos`. Wording reconciled: the client said *promotional videos*, the deck says *creator-led videos*; same figure, the deck's noun ships |
+| P9 | "billions of views" | B+C | p2, p6 | No | — | **HELD (unchanged)** — unbounded, uncheckable, §1 forbids the register. Recorded in `config/proof.ts` as `public: false`. Not scheduled |
+| P10 | **40M+ views on a single branded video** | B+C | p2, p5 | No | Selected Work (§08) | **HELD — RESERVED, not rejected.** A campaign result belongs on the campaign page; a fifth large figure would have turned the homepage band into a statistics board. `public: false` in `config/proof.ts` |
 | P11 | Creator network handles: `@mishram_media`, `@corrupt_tuber`, `@puravjha9`, `@shadabjakati1`, `@xbhandesiri_`, `@jj_mobile_world` | C | Network slide | Portraits in deck | Creator network (§07) | **NEEDS VERIFY** — two-source rule (§18) |
-| P12 | Follower figures: 40M+, 3.4M+, 7.6M+, 3.4M+, 1M | C | Network slide | No | — | **HOLD — UNMAPPABLE.** Six handles, five figures. **The deck does not let you say which figure belongs to which creator.** §18: no metric, ever, for anybody, without verification |
+| P12 | Follower figures: 40M+, 3.4M+, 7.6M+, 3.4M+, 1M | C | Network slide | No | — | **HELD — UNMAPPABLE (unchanged).** Six handles, five figures, and the six profile screenshots on p8 are a *different* set of creators. Re-checked in Revision 33 and still not mappable |
 | P13 | "Viral sensation": `@shubhamkochale`, `@shadabjakati1`, `@xbhandesiri_`, `@jj_mobile_world` | C | Viral slide | Portraits | Creator network (§07) | **NEEDS VERIFY** + Jakati flag |
 | P14 | Brand partners named: `@canvaindia`, `@zingbus`, `@troovyfoods` | C | Brand slide | Logos in deck | Brands rail (§02) | **PART HOLD** — zingbus blocked by §18; Canva and Troovy already on the rail |
 | P15 | "Proven Brand Partnerships" narrative | C | Brand slide | — | Influencer Marketing | **READY** |
 | P16 | `@puravjha9` is Purav Jha's handle | C | Network slide | — | Creator network | **READY as a handle** — but see the missing-photograph finding |
-| P17 | **“an average of more than 10 million views per creator”** (Trending Influencers) | B+C | p8 | No | Quick-scan proof (§06) | **NEEDS VERIFY** — registered in Revision 32, unevidenced |
+| P17 | **“an average of more than 10 million views per creator”** (Trending Influencers) | B+C | p8 | No | — | **HELD** — an average over an unnamed, unbounded set. The site cannot state what it is an average *of*, so a reader cannot check it |
 | P18 | **Premium Influencer names**: Elvish Yadav, Purav Jha, Harsh Beniwal, Faisal Khan (Faizu), Jannat Zubair, **Lovekesh Kataria**, JJ Communication, Tijara Vines, Round2hell | B+C | p9 | Portraits in deck | Creator network (§07) | **NEEDS VERIFY** — two-source rule. Lovekesh alone is client-supplied and already published |
 | P19 | Mishram “manages production” on campaigns | B+C | p7 | No | Influencer scope (§05) | **HELD** — first-party copy, awaiting the same client confirmation outreach and negotiation got |
+| P20 | **@xbhandesiri_ Reel view counts** — 70.9M, 40.3M, 33.9M (and 33.5M, 26.6M, 13.2M, 12.1M, 9.9M, 7.6M) | B | p3 capture | **YES — the capture carries the handle, the verified badge, the active Reels tab and Instagram's own view UI** | Current Management inset | **PUBLIC (Rev 33)** — three figures render as *Selected Reel views*, beside the screenshot they were read off |
+| P21 | **139M / 111M** on the same account's grid | B | p2 capture | **YES — but the capture carries NO account header** | — | **HELD.** Stronger figures, weaker provenance. Used only as corroboration for P6's 130M+, never published as figures |
 
 **Source discipline, as the plan asked.** Every row above is **class A — text claim only**. Not one
 figure in the deck is accompanied by a screenshot of a platform showing it, and no local raw asset
@@ -441,6 +443,11 @@ imagery shows platform screenshots:
 - A `@xbhandesiri_` post grid with view counts of **135M, 111M, 70.9M, 58.3M, 56.3M and 34.6M** —
   direct visual evidence for the *130 million+ on a single Reel* claim (P6), and it puts the claimed
   figure slightly *below* what the screenshot shows.
+  > **CORRECTED IN REVISION 33 — four of those six figures were transcribed wrong.** Re-read at
+  > high zoom, that capture reads **139M · 111M · 70.9M · 58.3M · 58.3M · 58.1M**. The conclusion
+  > is unaffected and if anything stronger (139M, not 135M), but **do not quote the old six**.
+  > The capture also has **no account header**, which Revision 33 found is what disqualifies it
+  > as the published proof asset — see P21.
 - Instagram profile screenshots carrying follower counts for `@priyanka_chouhan70` (16.1M),
   `@aaryankelvin` (25.4M), `@vikesh.24` (4M), `@alian_star_` (1.7M), `@muzakkir011_` (1.6M) and
   `@xbhandesiri_` (928K).
@@ -998,3 +1005,263 @@ hardcoded pixel offset silently captures the wrong service, which is not a failu
 Personal Brand Growth is used on this route**, and `ali fazal.jpeg`, `Akash sagar.jpeg` and
 `Akash sagar 1st.jpeg` are untouched. The one shared source — `Lovekesh Kataria.jpeg` — is split
 across two crops with two jobs, and that split is recorded above rather than left to be rediscovered.
+
+---
+
+## Revision 33 — Phase 06, the quick-scan proof layer
+
+### The change that made this phase possible, and it was not technical
+
+Every phase before this one recorded the same sentence: *the proposal's figures are unevidenced and
+§1 forbids an unverified metric.* **The client has now asked the website to carry the same
+information the brand-collaboration proposal already puts in front of brands.** That does not make
+the figures verified by a third party — it makes them **first-party business claims, stated by the
+business, approved by the business for publication**, which is the same class of evidence
+`CONTACT`, `MANAGEMENT.statement` and the brand rail have always run on.
+
+So the register below moves rows from *NEEDS VERIFY* to **PUBLIC** — and, just as importantly,
+leaves four of them **HELD**, because approval to publish the proposal is not approval to publish
+anything the proposal implies.
+
+---
+
+### The screenshot audit — and the capture with the best numbers is the one that lost
+
+The deck holds **four captures of `@xbhandesiri_`'s Reels grid**. Two matter:
+
+| Capture | Figures | Account header | Verdict |
+| --- | --- | --- | --- |
+| p2, cropped grid (647×800) | **139M · 111M · 70.9M · 58.3M · 58.3M · 58.1M** | **NONE** | **Not published.** Proves a set of view counts without proving whose |
+| p3, full phone capture (716×1600) | 33.5M · 7.6M · 13.2M · 40.3M · 33.9M · 9.9M · **70.9M** · 26.6M · 12.1M | **Handle, verified badge, Reels tab active** | **PUBLISHED** |
+
+**The whole decision is in that table.** §4 of the plan set four conditions — handle visible, metric
+labels/context, figures visible, crop preserves provenance — and the capture with the spectacular
+numbers satisfies two of four. Taking **70.9M with provenance over 139M without it** is the phase's
+central call, and it is the same rule §18 rule 7 applies to faces: a figure whose account cannot be
+seen is not evidence about that account.
+
+**The two captures are demonstrably the same grid.** The p2 crop's second row is byte-for-byte the
+p2/p3 family's first row — the same tile at the same 58.1M — and 70.9M appears in both. So the p2
+crop *is* this account, one row higher. That chain is what lets 139M corroborate the 130M+ claim
+while never being published as a figure.
+
+**A transcription error was found and corrected.** Revision 29 recorded that capture as
+*135M, 111M, 70.9M, 58.3M, 56.3M, 34.6M*. Read at high zoom it is
+**139M, 111M, 70.9M, 58.3M, 58.3M, 58.1M** — four of six wrong. The conclusion was unaffected (and
+139M is *stronger* than 135M), but the old six must not be quoted. Corrected in place above.
+
+**The published crop removes exactly one thing.** `{ 0, 85, 716×1215 }` drops the phone's status bar
+— clock, battery percentage, notification icons. Nothing else: **no figure altered, no label added,
+no interface redrawn, no tile removed, no recolouring.** The row cut off at the bottom is cut by the
+grid, not by a decision about which numbers to show.
+
+---
+
+### What is public, and the exact wording
+
+| Value | Label | Source | Where |
+| --- | --- | --- | --- |
+| **130M+** | Views on a single Reel | Proposal p2, corroborated by the 139M tile | Homepage proof band, lead |
+| **100+** | Brands worked with | Proposal p2 + p6 | Homepage proof band |
+| **500+** | Creators worked with | Client, August 2026 | Homepage proof band |
+| **1,000+** | Creator-led videos | Client Aug 2026 + proposal p2/p6 | Homepage proof band |
+| **70.9M · 40.3M · 33.9M** | Selected Reel views | The p3 capture, rendered beside them | Current Management inset |
+
+**Every label carries its claim's scope, and that is the label's job.** *Views on a single Reel*, not
+"views" — the difference between the claim and `130M+ average` is one word, and it is that word.
+*Brands worked with*, not "clients". *Creator-led videos*, not "campaigns". *Selected Reel views*,
+not "average". Nothing anywhere is an average, a total, a monthly figure or a Mishram-attributed
+result.
+
+**The 1,000+ wording was reconciled, not changed.** The client said *promotional videos*; the deck
+says *creator videos* / *creator-led videos*. Same figure, two nouns, and the site was carrying the
+vaguer one. `Creator-led videos` ships: it is the client's own current wording, it is specific to
+the business Mishram actually runs, and it cannot be misread as advertising spots. Both sources are
+recorded on the record in `config/proof.ts`.
+
+### What is held, and why each one
+
+- **40M+ on a single branded video — RESERVED, not rejected.** It is a *campaign* result and
+  Selected Work (Phase 08) is the page that argues campaigns. A fifth large number on the homepage
+  would have turned an editorial index into the statistics board this layer exists not to be.
+- **"Billions of views" — HELD on language.** Unbounded, uncheckable, and exactly the register §1
+  forbids. The four public figures say the same thing with edges on it. Not scheduled for any phase.
+- **The 139M / 111M figures — HELD on provenance.** See the audit above.
+- **Every follower figure — HELD, unmappable.** Six handles against five figures on the network
+  slide, and the six profile screenshots are a different set of creators. Re-checked this phase and
+  still not mappable.
+- **"An average of more than 10 million views per creator" — HELD.** An average over an unnamed,
+  unbounded set. The site cannot state what it is an average *of*.
+- **Everything discussed in planning for Current Management** — 30M average, 800K growth, a 100K
+  starting point, 1B dashboard totals, 35% retention — **remains unevidenced and unpublished.** None
+  appears in the screenshot, so none appears on the site.
+
+---
+
+### The architecture — one file, and no number in JSX
+
+`src/config/proof.ts` is now **the only place a figure lives on this site.** Every record carries
+`value`, `label`, `source`, `sourceType`, `confirmed`, an optional `proofAsset`, and `public`.
+`public: false` renders nothing at all — no dash, no placeholder, no "coming soon" — the
+self-suppressing pattern Recognition, Client Notes and `MANAGEMENT.metrics` already use. Held
+figures are recorded there so the next session does not re-research them and cannot accidentally
+render them.
+
+`source` / `sourceType` / `confirmed` are **development-only**. No internal path, deck page or file
+name reaches the DOM; the public surface carries one plain-English attribution line and nothing else.
+
+---
+
+### Placement — and it was the hypothesis, tested
+
+```
+Hero  →  Brands  →  Current Management  →  QUICK PROOF  →  What We Do
+        recognition      relationship          scale          capability
+```
+
+**After Current Management, not before it.** A real managed creator outranks a number, and leading
+with the figures would have made the figures the argument. A visitor who reads nothing but the first
+three screens now knows which brands, which relationship, and how much work.
+
+The band is **397px at 1440 — 0.44 of a viewport**, under the 0.45–0.7 target rather than over it.
+
+### Design — an index, and every alternative refused
+
+Four facts, hairlines, display numerals, small-caps labels. **No KPI cards, no stat tiles, no
+bordered boxes, no icons, no circles, no rings, no animated count-up, no chart, no axis, no
+sparkline, no percentage, no comparison.**
+
+**The hierarchy is typographic and nothing else.** The reach fact leads at roughly double the scale
+of the three operating facts, because one Reel's reach and the shape of the business are different
+kinds of statement — flattening them into four equal cells would say they are not. Nothing is
+coloured, boxed or marked to achieve it.
+
+**A measured correction.** The first build split the row `1.15fr / 1.85fr`, which left the lead
+column 180px wider than `130M+` needs and pushed the three operating facts into the last third of
+the page — the band read as two separate things. `1fr / 2fr` closes it.
+
+**Plum was not used.** §19 of the plan permitted a test only if the band materially benefited. It
+does not: the band's whole argument is that it is *not* a highlighted panel, and a full-bleed plum
+surface is the one treatment that would make it look like one. Three phases have now tested plum on
+real surfaces and none found one.
+
+---
+
+### Current Management — the promise in the config came due
+
+`MANAGEMENT.metrics` had been empty for five revisions under one written condition: *"A figure needs
+a dated screenshot tied unambiguously to this account before it goes here, and `source` has to say
+which one."* **The bar it was held against is exactly the bar it cleared** — and, as with §10ah's
+photograph, the note written under the worst-case constraint is what made the unblock cheap.
+
+The inset renders **the three figures and the screenshot they were read off, side by side**, so the
+evidence is the other half of the block rather than a footnote. Three figures, not the nine the
+capture shows: nine as type would be the dashboard §10t refused.
+
+**It sits in the claim column's own headroom, and that is the whole reason it is affordable.** The
+chapter's height is set by the photograph on the left, which ran **243px taller than the text beside
+it** — measured, not assumed. Putting the inset there cost the section **173px** instead of its own
+~470px, and the photograph stays the dominant object in the chapter.
+
+**Still not a dashboard**: no chart, no axis, no bar, no percentage, no growth arrow, no comparison,
+no timeframe, no total. And no analytics event was added — §17 of the plan asked for none, and the
+existing `creator_profile_click` vocabulary is untouched.
+
+---
+
+### Creators — the deduplication, and a first attempt that was worse
+
+The chapter set **500+** and **1,000+** at display scale above the worked-with index. Both figures
+are still published; the proof band owns them now, in the third screen instead of the ninth.
+Printing two of the band's four facts again, at display scale, six chapters lower turned the same
+evidence into what a reader would fairly read as more evidence.
+
+**The first attempt kept the block and replaced the numbers with a sentence. Captured, that was
+worse:** a caps label plus prose sitting directly above *another* caps label plus prose read as the
+same statement made twice in the same shape. So the sentence moved into `CREATORS_COPY.workedWithNote`
+— a note that already existed and already framed the index — and the block went entirely.
+
+`ScaleFact` and `CREATOR_SCALE` were **deleted rather than left exported and unused**, so nothing can
+re-render them by accident. **The roster, the index, the leads, the profile links and the creator
+interaction are all untouched.**
+
+Chapter: **1,805px → 1,640px (−165px).**
+
+---
+
+### Numeric integrity — the repo-wide audit
+
+Every occurrence of `130`, `135`, `139`, `111`, `70.9`, `40.3`, `33.9`, `40M`, `100+`, `500+`,
+`1,000`, `1000+`, `billion` in `src/` was reviewed.
+
+| Finding | |
+| --- | --- |
+| Values reachable by a component | `config/proof.ts` (four public, four held) and `config/management.ts` (three) — **and nowhere else** |
+| `1,000+ Promotional videos` | **Gone.** The phrase survives only inside comments recording the reconciliation |
+| Duplicate rendering of any figure | **None.** `CREATOR_SCALE` deleted; `PUBLIC_PROOF` is imported by exactly one component |
+| Held figures reachable | **None.** `HELD_PROOF` is exported for documentation and imported by nothing |
+| `SERVICE_SCROLL_VH = 130` | A viewport-height constant, not a metric. Untouched |
+| `config/about-page.ts` | Its comment still forbids `"1000+ influencers"` on About — and About renders no statistic. §22 honoured |
+| `config/service-influencer.ts` | Its boundary still says the page carries **no figure of any kind**, and it still doesn't. §23 honoured — no metric wallpaper on any service page |
+| SVG path coordinates, hex colours | 11 further matches, all geometry. Reviewed, none is a metric |
+
+---
+
+### Measurements
+
+| | Before | After | Δ |
+| --- | --- | --- | --- |
+| **Homepage, 1440×900** | 17,296px | **17,700px** | **+404 (+2.3%)** |
+| `#current-management` | 958 | 1,131 | +173 |
+| `#proof` | — | **397** | +397 |
+| `#creators` | 1,805 | 1,640 | **−165** |
+| Other viewports | — | 1280 · 16,658 / 1024 · 13,873 / 768 · 17,314 / 430 · 18,324 / 390 · 17,948 | — |
+
+Comfortably inside the plan's ≤500–600px target, and the deduplication is why.
+
+| | Homepage |
+| --- | --- |
+| New asset | `xbhandesiri-reel-performance.webp` — 560×950, **75.1KB** |
+| Image nodes | 22 → **23** |
+| Lazy / eager / preload | 22 / 0 / 0 → **23 / 0 / 0** |
+
+**The homepage still has no eager image and no image preload**, which is the state §16 wants: the
+Hero's photography is WebGL texture loading and nothing on this page competes with it for the first
+megabyte. The proof screenshot is far below the fold and lazy.
+
+### Mobile — 390px
+
+**Pass.** The band renders as **single vertical editorial rows**, never four columns: `130M+` at
+display scale on its own, then `100+`, `500+`, `1,000+` each with its label beneath. Every figure is
+readable while scrolling past.
+
+**One defect caught in capture.** At full column width the Reel screenshot rendered ~660px tall —
+**taller than the relationship photograph above it**, which inverts the chapter. Capped at `17rem`
+(272px wide, ~461px tall): the handle is still ~120px of legible type, all nine view counts still
+read, and the photograph is the dominant object again.
+
+### Visual QA — 25 real composited captures
+
+Homepage at 1440×900 light and dark, 1280×800, 1024×768, 768×1024, 430×932, 390×844 light and dark,
+and 1440×900 under `prefers-reduced-motion`. The proof band clipped at 1440 in both themes, 1280,
+768, 390 in both themes and under reduced motion. Current Management with its inset at 1440 in both
+themes and at 390. Creators after the dedupe at 1440 and 390. Both seams — Current Management → the
+band, and the band → What We Do — at 1440 and 390.
+
+**Horizontal overflow: unchanged, and proved rather than asserted.** The document overflows at
+1024 and 768 exactly as §10ag registered for Phase 12. The same probe run against **live production
+(Revision 27, which has none of this work)** returns the same numbers within ±1px — 390 → 496,
+768 → 844, 1024 → 1038, 1440 → 1440 — and the offending elements are all `.collab-viewport` /
+`.collab-track`, the brands marquee. **Zero overflowing elements inside `#proof`,
+`#current-management` or `#creators` at 1024, 768 or 390.**
+
+Worth writing down: at 390 `innerWidth` reports **496**, not 390, *because* the document overflows —
+which is why `scrollWidth > innerWidth` reads false there. Compare `clientWidth`, not `innerWidth`,
+when checking this defect.
+
+### Untouched
+
+Hero, the brands rail, all five service pages, The Mishram Difference, Work Process, Selected Work,
+Client Notes, Recognition, About (the chapter and the page), Project Inquiry, the Footer, Supabase,
+GA4 and the legal documents. `globals.css` is **purely additive** — three new rule groups, no
+existing selector modified. No dependency was added.

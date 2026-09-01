@@ -480,17 +480,34 @@ export const CREATORS_COPY = {
   /** Format captions on the supporting frames — descriptive, not claimed work. */
   formats: { reel: "Reel / 9:16", content: "Content / 4:5" },
 
-  /** The worked-with index's own heading and its one clarifying line. */
+  /**
+   * The worked-with index's own heading and its one clarifying line.
+   *
+   * **The second sentence arrived in Revision 33**, and it is what is left of
+   * the two scale facts this chapter used to set at display scale. Those
+   * figures now live once, on the homepage proof band; the job they were also
+   * doing — saying that a page of eighteen names is not the whole network —
+   * is done here, in words, inside a note that already existed.
+   *
+   * Folding it in rather than giving it its own labelled block was deliberate:
+   * a second caps-label-plus-prose row directly above this one read as the
+   * same statement made twice in the same shape. **No figure, no "over N".**
+   */
   workedWithLabel: "Also worked with",
   workedWithNote:
-    "Creators, actors and personalities Mishram Media has worked with on campaigns and content.",
+    "Creators, actors and personalities Mishram Media has worked with on campaigns and content. The index is a selection — the working network is larger than the names shown here.",
   /**
    * The two names the index sets at display scale above the list. Reading
    * emphasis, not a tier — see `lead` on `WorkedWith`.
    */
   workedWithLeadLabel: "Selected",
-  /** The two scale facts, introduced. */
-  scaleLabel: "Across the network",
+  /**
+   * `scaleLabel` and the two facts it introduced were removed in Revision 33.
+   * The figures moved to `config/proof.ts` and render once, on the homepage
+   * proof band; the sentence they were also carrying moved into
+   * `workedWithNote` above. Nothing replaced the label, because a labelled
+   * block of its own was the repetition.
+   */
 } as const;
 
 /* ============================================================
@@ -756,35 +773,27 @@ export const WORKED_WITH_INDEX: readonly WorkedWith[] =
   WORKED_WITH_OFF_STAGE.filter((p) => !p.lead);
 
 /* ============================================================
-   SCALE — two facts, and the conservative reading of each
+   SCALE — MOVED OUT OF THIS FILE IN REVISION 33
 
-   The client confirmed **500+ creators worked with** and **1,000+ promotional
-   videos** released through Mishram's work (August 2026).
+   This chapter used to set **500+ creators worked with** and **1,000+
+   promotional videos** at display scale above the index. Both figures are
+   still published; **they are published once, and not here.**
 
-   Both are published as the **lower bound they were given as**. "500–1,000"
-   was not used: a range invites the reader to average it, and the figure the
-   client stands behind is the floor. Nothing is rounded up, nothing is
-   extrapolated, and neither number is presented as a KPI, a counter or a
-   chart — §1 rules out the dashboard reading and §10m already refused it on a
-   page where numbers were expected.
+   Revision 33 gave the homepage a quick-scan proof band in its third screen
+   (`config/proof.ts`, `components/proof/QuickProof.tsx`) carrying four facts —
+   brands, creators, creator-led videos and single-Reel reach. Printing two of
+   those four again, at display scale, six chapters further down turned the
+   same evidence into what a reader would fairly read as more evidence. **The
+   number of facts on the page did not change; the number of times two of them
+   are stated did.**
+
+   What stands in their place is one quiet line naming the same relationship in
+   words — `CREATORS_COPY.scaleNote` — because a roster of eighteen names still
+   needs saying that the real network is larger than the page.
+
+   **`ScaleFact` and `CREATOR_SCALE` are deliberately gone rather than left
+   exported and unused**, so nothing can re-render them by accident, and
+   `config/proof.ts` is the only place a figure lives. The provenance for both
+   went with them: the client's August 2026 confirmation is recorded on the
+   `creators` and `videos` records there.
    ============================================================ */
-
-export type ScaleFact = {
-  value: string;
-  label: string;
-  /** DEVELOPMENT ONLY — never rendered. */
-  source: string;
-};
-
-export const CREATOR_SCALE: readonly ScaleFact[] = [
-  {
-    value: "500+",
-    label: "Creators worked with",
-    source: "user-confirmed: August 2026",
-  },
-  {
-    value: "1,000+",
-    label: "Promotional videos",
-    source: "user-confirmed: August 2026",
-  },
-];

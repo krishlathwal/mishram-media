@@ -130,6 +130,42 @@ const SHOTS = [
   { name: "svc01-to-02", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(0.96) },
   { name: "svc02-to-03", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(2.02) },
   { name: "svc02-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#what-we-do div.border-t" },
+
+  /* ── Phase 06 — the quick-scan proof layer ──────────────────────────────
+     The homepage sweep, the new band on its own, the Current Management
+     chapter with its Reel-performance inset, the Creators chapter after the
+     scale deduplication, and the two seams the band now sits between. */
+  { name: "home-1440-light", w: 1440, h: 900, scheme: "light" },
+  { name: "home-1440-dark", w: 1440, h: 900, scheme: "dark" },
+  { name: "home-1280", w: 1280, h: 800, scheme: "dark" },
+  { name: "home-1024", w: 1024, h: 768, scheme: "dark" },
+  { name: "home-768", w: 768, h: 1024, scheme: "dark" },
+  { name: "home-430", w: 430, h: 932, scheme: "dark", mobile: true },
+  { name: "home-390-light", w: 390, h: 844, scheme: "light", mobile: true },
+  { name: "home-390-dark", w: 390, h: 844, scheme: "dark", mobile: true },
+  { name: "home-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true },
+
+  { name: "proof-band-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#proof" },
+  { name: "proof-band-1440-light", w: 1440, h: 900, scheme: "light", selector: "#proof" },
+  { name: "proof-band-1280", w: 1280, h: 800, scheme: "dark", selector: "#proof" },
+  { name: "proof-band-768", w: 768, h: 1024, scheme: "dark", selector: "#proof" },
+  { name: "proof-band-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#proof" },
+  { name: "proof-band-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#proof" },
+  { name: "proof-band-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#proof" },
+
+  { name: "mgt-proof-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#current-management" },
+  { name: "mgt-proof-1440-light", w: 1440, h: 900, scheme: "light", selector: "#current-management" },
+  { name: "mgt-proof-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#current-management" },
+
+  { name: "creators-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#creators" },
+  { name: "creators-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#creators" },
+
+  /* The two seams the band lives between. `pad` pulls the capture upward so
+     the boundary above it is in frame — a transition cannot be judged from
+     two separate screenshots. */
+  { name: "seam-mgt-proof", w: 1440, h: 900, scheme: "dark", selector: "#proof", pad: 420 },
+  { name: "seam-proof-what", w: 1440, h: 900, scheme: "dark", selector: "#what-we-do", pad: 420 },
+  { name: "seam-mgt-proof-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#proof", pad: 300 },
 ];
 
 const only = process.argv.slice(3);

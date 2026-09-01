@@ -6,6 +6,7 @@ import { CurrentManagement } from "@/components/management/CurrentManagement";
 import { Difference } from "@/components/difference/Difference";
 import { Hero } from "@/components/Hero";
 import { ProjectInquiry } from "@/components/inquiry/ProjectInquiry";
+import { QuickProof } from "@/components/proof/QuickProof";
 import { WorkProcess } from "@/components/process/WorkProcess";
 import { Recognition } from "@/components/recognition/Recognition";
 import { SelectedWork } from "@/components/work/SelectedWork";
@@ -25,6 +26,16 @@ export default function Home() {
         other interludes, so §02, §03 and ABOUT_CHAPTER keep their numbering.
       */}
       <CurrentManagement />
+      {/*
+        THE QUICK-SCAN PROOF BAND, and its position is the decision.
+        Recognition (the rail) → relationship (management) → **scale** →
+        capability (§02). A visitor who reads nothing but the first three
+        screens now knows which brands, which relationship and how much work.
+        It sits *after* Current Management on purpose: a real managed creator
+        outranks a number, and leading with figures would have made the
+        figures the argument. Unnumbered, like the other interludes.
+      */}
+      <QuickProof />
       <WhatWeDo />
       {/*
         An unnumbered interlude, not a chapter: §02 has just said what Mishram

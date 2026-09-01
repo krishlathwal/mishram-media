@@ -8,6 +8,7 @@ import {
   MANAGEMENT,
   MANAGEMENT_AVATAR,
   MANAGEMENT_FRAME,
+  MANAGEMENT_PROOF,
 } from "@/config/management";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -250,26 +251,71 @@ function RelationshipFrame() {
 }
 
 /**
- * The metric row — **architecture only until there is evidence.**
+ * THE REEL-PERFORMANCE INSET — Revision 33, and the promise in
+ * `config/management.ts` finally coming due.
  *
- * `MANAGEMENT.metrics` is empty and returning `null` is the whole behaviour:
- * an empty state here would be a claim that figures exist and are being
- * withheld. Populating the array is the only change needed to switch it on.
+ * `MANAGEMENT.metrics` was empty for five revisions under one condition: *"A
+ * figure needs a dated screenshot tied unambiguously to this account before it
+ * goes here."* This renders the figures **and the screenshot they were read
+ * off, side by side** — so the evidence is not a footnote, it is the other
+ * half of the block.
+ *
+ * **Still not a dashboard**, and the constraints are the same ones §10t set:
+ * no chart, no axis, no bar, no percentage, no growth arrow, no comparison, no
+ * timeframe, no total. Three figures as type, one image, one line saying what
+ * the reader is looking at.
+ *
+ * **It sits in the claim column's own headroom.** The chapter's height is set
+ * by the photograph on the left, which ran 243px taller than the text beside
+ * it — so the inset costs the section a fraction of its own height rather than
+ * all of it, and the photograph stays the dominant object. That is why it is
+ * here and not in a strip beneath the composition.
+ *
+ * Self-suppressing exactly as before: empty the array and this renders
+ * nothing at all — no empty box, no dash, no "coming soon".
+ *
+ * Below the fold, so `loading="lazy"` and **no preload** (§16).
  */
 function Metrics() {
   if (MANAGEMENT.metrics.length === 0) return null;
 
   return (
-    <dl className="mt-9 flex flex-wrap gap-x-12 gap-y-6 border-t border-line pt-7">
-      {MANAGEMENT.metrics.map((m) => (
-        <div key={m.label}>
-          <dt className="caps text-ink-muted">{m.label}</dt>
-          <dd className="mt-2 font-display text-[clamp(1.5rem,2.4vw,2.1rem)] leading-none font-medium tracking-[-0.03em] text-ink">
-            {m.value}
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <div className="mgt-proof mt-9">
+      <figure className="mgt-proof-shot">
+        <Image
+          src={MANAGEMENT_PROOF.src}
+          alt={MANAGEMENT_PROOF.alt}
+          width={MANAGEMENT_PROOF.width}
+          height={MANAGEMENT_PROOF.height}
+          loading="lazy"
+          /* 208px in the two-column inset, full column width below 480px.
+             The 560px source covers 2× at both. */
+          sizes="(min-width: 480px) 13rem, 92vw"
+        />
+      </figure>
+
+      <div>
+        <p className="caps text-ink-muted">{MANAGEMENT.proofLabel}</p>
+
+        {/* Three figures, each labelled for what it is. `dt` before `dd` in
+            the DOM so a screen reader hears "Reel views — 70.9 million"
+            rather than a bare number; visually the figure leads. */}
+        <dl className="mgt-proof-figures mt-4">
+          {MANAGEMENT.metrics.map((m) => (
+            <div key={m.value} className="flex flex-col-reverse">
+              <dt className="sr-only">{m.label}</dt>
+              <dd className="mgt-proof-figure">{m.value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* What the reader is looking at, and nothing more. No result, no
+            attribution to Mishram, no timeframe. */}
+        <p className="mt-5 max-w-[34ch] text-[0.8125rem] leading-[1.65] text-ink-soft">
+          {MANAGEMENT.proofNote}
+        </p>
+      </div>
+    </div>
   );
 }
 

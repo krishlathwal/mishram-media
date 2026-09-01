@@ -101,21 +101,63 @@ export const MANAGEMENT = {
   plateNote: "Creator — currently managed",
 
   /**
-   * METRICS — EMPTY, AND THE SECTION RENDERS NOTHING FOR THEM.
+   * METRICS — POPULATED IN REVISION 33, AND ONLY FROM ONE SCREENSHOT.
    *
-   * The architecture is here so verified figures can appear from config
-   * without touching the component: fill this array and the row appears,
-   * leave it empty and **there is no empty box, no dash, no "coming soon"** —
-   * the same self-suppressing pattern §06 Recognition and Client Notes use.
+   * This array was empty for five revisions with the note: *"A figure needs a
+   * dated screenshot tied unambiguously to this account before it goes here,
+   * and `source` has to say which one."* **That screenshot now exists**, and
+   * the bar it was held against is exactly the bar it cleared.
    *
-   * **Do not populate it from the numbers discussed in planning.** Follower
-   * growth, average reel views, total reels, retention and any projection are
-   * all unevidenced: Revision 17 searched the entire supplied media library
-   * and found no analytics screenshot, insights export or dashboard capture of
-   * any kind. A figure needs a dated screenshot tied unambiguously to this
-   * account before it goes here, and `source` has to say which one.
+   * `MANAGEMENT_PROOF` below is a capture of `@xbhandesiri_`'s own Reels grid,
+   * embedded in Mishram's brand-collaboration proposal. **Every figure here is
+   * read off that one frame**, which also renders beside them — so a visitor
+   * sees the number and the thing it came from at the same time.
+   *
+   * WHAT THESE FIGURES ARE NOT, and each of these is a content-integrity
+   * constraint rather than caution:
+   *
+   * - **Not an average.** They are three individual Reels' view counts.
+   * - **Not a total, a monthly figure or a 30-day window.** The screenshot
+   *   establishes none of those and the labels claim none of them.
+   * - **Not a Mishram result.** Managing a creator and causing a view count
+   *   are different statements, and only the first is evidenced.
+   * - **Not follower growth, retention, engagement rate or a projection.**
+   *   None of those appears in the screenshot, so none appears here. The
+   *   figures discussed in planning — 30M average, 800K growth, a 100K
+   *   starting point, 1B dashboard totals, 35% retention — remain
+   *   **unevidenced and unpublished**.
+   *
+   * **Three, not nine.** The screenshot shows nine tiles; publishing all nine
+   * as type would turn the chapter into the dashboard §10t refused. Three is
+   * enough to establish the order of magnitude, and the frame beside them
+   * carries the rest.
    */
-  metrics: [] as readonly ManagementMetric[],
+  metrics: [
+    {
+      value: "70.9M",
+      label: "Reel views",
+      source: "visible in MANAGEMENT_PROOF — row 3, tile 1",
+    },
+    {
+      value: "40.3M",
+      label: "Reel views",
+      source: "visible in MANAGEMENT_PROOF — row 2, tile 1",
+    },
+    {
+      value: "33.9M",
+      label: "Reel views",
+      source: "visible in MANAGEMENT_PROOF — row 2, tile 2",
+    },
+  ] as readonly ManagementMetric[],
+
+  /** The inset's own label and its one line of public attribution. */
+  proofLabel: "Selected Reel views",
+  /**
+   * Rendered on the page. It says exactly what the reader is looking at and
+   * nothing more — no result, no attribution to Mishram, no timeframe.
+   */
+  proofNote:
+    "Reel view counts visible on the @xbhandesiri_ account, captured in Mishram Media's own brand-collaboration deck.",
 
   /** DEVELOPMENT ONLY — never rendered. */
   source: "user-confirmed: 2026-08 current management relationship",
@@ -216,6 +258,59 @@ export const MANAGEMENT_FRAME_SOURCE =
   "F:\\Drive data\\WEBSITE SHORTLIST\\Akash sagar 1st.jpeg — client-labelled, first-party. " +
   "Reserved for this chapter by the Revision 28 media ledger; the Hero uses a different file " +
   "(Akash sagar.jpeg) and 'Akash sagar 2nd.jpeg' stays held on resolution and third-party signage.";
+
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * THE REEL-PERFORMANCE SCREENSHOT — REVISION 33
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * The chapter's third provenance, and the one that took longest to arrive.
+ * The photograph is identified by the client's own filename; the avatar by the
+ * account itself; **this is identified by nothing but its own visible UI**, and
+ * that is what makes it usable as evidence.
+ *
+ * SOURCE. An image embedded in Mishram's brand-collaboration proposal
+ * (`WEBSITE SHORTLIST/PROPOSAL - PDF (1).pdf`, page 3 — a 716×1600 capture) —
+ * first-party material, not a repost, not a third-party statistics site, not
+ * a recreation. Extracted from the PDF directly rather than photographed off a
+ * screen, so nothing is resampled twice.
+ *
+ * WHY *THIS* CAPTURE, AND NOT THE ONE WITH THE BIGGER NUMBERS. The deck holds
+ * four captures of this account's Reels grid. One of them — a tighter crop —
+ * shows **139M, 111M and 70.9M**, which are far stronger figures. **It carries
+ * no account header**, so it proves a set of view counts without proving whose
+ * they are, and a figure whose account cannot be seen is exactly the class of
+ * evidence §18 rule 7 rejects.
+ *
+ * The capture used here shows, in one uncropped frame: the back arrow, the
+ * handle **`xbhandesiri_`**, the verified badge, the profile tabs with **Reels
+ * active**, and nine tiles each carrying Instagram's own eye icon and view
+ * count. **Account, metric type and figures are all established by the same
+ * image.** The strongest figure it carries is 70.9M, and taking 70.9M with
+ * provenance over 139M without it is the whole decision.
+ *
+ * THE CROP. `{ left: 0, top: 85, width: 716, height: 1215 }` of the extracted
+ * original, which removes **only the phone's status bar** — clock, battery
+ * percentage and notification icons, none of which is evidence and one of
+ * which is personal. Nothing else was touched: **no figure altered, no label
+ * added, no interface redrawn, no tile removed, no recolouring.** The frame
+ * below the crop is the account's next row, cut by the grid rather than by a
+ * decision about which numbers to show.
+ */
+export const MANAGEMENT_PROOF = {
+  src: "/media/proof/xbhandesiri-reel-performance.webp",
+  alt: "Screenshot of the Instagram profile @xbhandesiri_ with the Reels tab open, showing nine Reels with view counts from 7.6M to 70.9M",
+  width: 560,
+  height: 950,
+} as const satisfies ManagementFrame;
+
+/** DEVELOPMENT ONLY — never rendered. */
+export const MANAGEMENT_PROOF_SOURCE =
+  "F:\\Drive data\\WEBSITE SHORTLIST\\PROPOSAL - PDF (1).pdf — embedded image on page 3, " +
+  "716x1600, extracted from the PDF's own JPEG stream. Cropped to { 0, 85, 716x1215 } to drop " +
+  "the phone status bar only, then resized to 560 wide (a downscale; nothing is upscaled). " +
+  "A second deck capture shows 139M / 111M / 70.9M but carries no account header and is " +
+  "therefore NOT used — see the note above.";
 
 export const MANAGEMENT_AVATAR = {
   src: "/media/creators/akash-sagar/akash-sagar-xbhandesiri-avatar.webp",

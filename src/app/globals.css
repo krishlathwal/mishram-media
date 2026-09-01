@@ -2943,6 +2943,110 @@ html.theme-transition *::after {
     color: var(--color-accent);
   }
 
+  /* ── QUICK-SCAN PROOF — the editorial evidence index ────────────
+     Four facts, no boxes. The reach fact leads at display scale and the three
+     operating facts sit beside it, so the hierarchy is typographic rather than
+     decorative — nothing here is coloured, bordered or marked to make one
+     number matter more than another.
+
+     **At 390 this is rows, never four columns.** The lead fact takes the full
+     width and the other three stack as single editorial rows on hairlines, so
+     every figure stays at a size a visitor can read while scrolling past. */
+
+  .qp-index {
+    display: grid;
+    gap: 2.5rem 2rem;
+  }
+
+  .qp-rest {
+    display: grid;
+    gap: 1.75rem 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .qp-rest {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    /* Lead on the left, the three operating facts sharing the rest. The split
+       is measured, not chosen: at 1.15fr the lead column ran 180px wider than
+       `130M+` needs and pushed the three facts into the last third of the
+       page, so the band read as two separate things. 1fr / 2fr closes that
+       and still leaves the reach fact its own air. */
+    .qp-index {
+      grid-template-columns: 1fr 2fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+  }
+
+  /* ── Current Management — the Reel-performance inset ────────────
+     A screenshot and three figures, sitting in the claim column's own
+     headroom rather than under the composition, which is what keeps the
+     photograph the dominant object in the chapter. */
+
+  .mgt-proof {
+    display: grid;
+    gap: 1.5rem 1.75rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.75rem;
+  }
+
+  @media (min-width: 480px) {
+    .mgt-proof {
+      grid-template-columns: 13rem minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+
+  /* The screenshot keeps a real border and ground, like every other image on
+     the site — it is evidence, so it is framed as an image rather than bled
+     into the page as decoration. */
+  .mgt-proof-shot {
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--color-image-line);
+    background-color: var(--color-canvas-raise);
+    box-shadow: var(--t-image-shadow);
+    /* Capped, because a phone screenshot at full column width on a phone runs
+       *taller than the relationship photograph above it* — which inverts the
+       chapter. At 17rem the handle is still 120px of legible type and the
+       photograph stays the dominant object. Above 480px the grid column is
+       narrower than this, so it never binds there. */
+    max-width: 17rem;
+  }
+
+  .mgt-proof-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .mgt-proof-figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+  }
+
+  @media (min-width: 480px) {
+    .mgt-proof-figures {
+      display: block;
+    }
+  }
+
+  .mgt-proof-figure {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    color: var(--color-ink);
+  }
+
   /* ── Why fit matters — paired terms ─────────────────────────────
      Fit is a relationship between two things, so it is drawn as one. */
 

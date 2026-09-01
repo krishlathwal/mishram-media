@@ -40,6 +40,11 @@ Current Management — Xbhandesiri        [interlude, unnumbered; §10t.
                                          gone; the chapter is now typographic
                                          with the official 72px avatar. §10u]
   ↓
+Quick Proof                             [interlude, unnumbered; §10ak.
+                                         Four facts — 130M+ / 100+ / 500+ /
+                                         1,000+ — from config/proof.ts, the
+                                         site's only home for a figure]
+  ↓
 02 / What We Do                         [Services 01-04 public, 05 hidden but built
                                          + closing statement — LOCKED. §10s]
   ↓
@@ -5795,6 +5800,9 @@ src/config/site.ts            brand, NAV_ITEMS + SECTION_ORDER + TOP_ANCHOR, SOC
 src/config/hero.ts            hero copy, media surfaces, annotations
 src/config/collaborations.ts  public brand rail + brand-safety note
 src/config/services.ts        five services, `built` flags, SERVICE_SCROLL_VH, section copy
+src/config/proof.ts            THE PROOF REGISTER — every figure the site publishes or holds,
+                              each with its source, type, confirmation date and `public` flag.
+                              The only place a number lives (§10ak)
 src/config/creators.ts        the roster, per-creator media + crops, publish flag, section copy,
                               WORKED_WITH + the derived index, CREATOR_SCALE (§10t)
 src/config/management.ts      the Current Management chapter — copy, the evidence chain, the
@@ -5846,7 +5854,8 @@ src/components/ui/SocialIcon  the three platform marks, inline SVG
 src/app/api/inquiry/route.ts  server-side inquiry delivery (the only holder of the API key)
 src/components/creators/*     section shell, talent index matrix, photographic stage, meta
                               block, load-gated transition, worked-with index + scale facts
-src/components/management/*   the Current Management chapter
+src/components/proof/*        the quick-scan proof band — four facts as an editorial index
+src/components/management/*   the Current Management chapter, with the Reel-performance inset (§10ak)
 src/components/process/*      section shell, pipeline SVG, active-stage detail, vertical rail
 src/components/work/*         section shell, work index, media stage, media surface
 src/components/recognition/*  section shell (self-suppressing), evidence surface
@@ -5896,6 +5905,8 @@ hotlinked),
 `public/media/services/influencer/lovekesh-kataria-worked-with.webp` (800×1000, the Influencer hero's
 relationship node) and `public/media/services/influencer/troovy-branded-content.webp` (1200×750, the
 site's **only campaign photograph** — a frame from Mishram's own proposal deck, §10aj),
+`public/media/proof/xbhandesiri-reel-performance.webp` (560×950, the Reel-performance capture from
+Mishram's own proposal — the site's only screenshot of a third-party platform, §10ak),
 `public/brand/mishram-wordmark.png` (used as a CSS mask so it inherits `currentColor`). Everything is
 local — nothing is hotlinked.
 
@@ -6198,6 +6209,41 @@ section asked for — see §10v.
 ## 18. Do NOT redesign
 
 Approved and locked. Extend, don't rebuild:
+
+
+- **Revision 33's decisions (§10ak) — awaiting review, then locked.**
+  - **`config/proof.ts` is the only place a figure lives.** Adding a number to a component means
+    adding a record there, with its `source`, `sourceType` and `confirmed`. **Never hardcode a
+    figure in JSX**, and never re-introduce a second scale block anywhere — that duplication is
+    exactly what this phase removed.
+  - **`public: false` renders nothing.** No dash, no placeholder, no "coming soon". Held figures
+    are recorded so nobody re-researches them; `PUBLIC_PROOF` is the only export a component reads
+    and `HELD_PROOF` must stay unimported.
+  - **The label carries the claim's scope and must not be shortened.** *Views on a single Reel*
+    never becomes "views" or "average views"; *Brands worked with* never becomes "clients";
+    *Creator-led videos* never becomes "campaigns"; *Selected Reel views* never becomes an
+    average. Scope drift happens in the noun.
+  - **40M+ stays reserved for Selected Work (§08), "billions of views" stays held permanently,
+    and every follower figure stays unmappable.** Do not promote any of them to the homepage to
+    balance a composition.
+  - **The published Reel screenshot is the one with the account header**, not the one with the
+    bigger numbers. 139M / 111M are **not** published as figures — a capture that shows view
+    counts without showing whose they are is the §18 rule 7 failure in a different medium. If a
+    better capture arrives it must carry handle, badge, tab and figures **in one frame**.
+  - **The screenshot is never edited.** No figure altered, no label added, no interface redrawn,
+    no tile removed, no recolouring. The only permitted crop is the phone status bar.
+  - **`MANAGEMENT.metrics` takes figures visible in `MANAGEMENT_PROOF` and nothing else.** Not
+    averages, totals, timeframes, follower growth, retention or projections — none of those
+    appears in the screenshot.
+  - **The proof band is an editorial index, not a dashboard.** No KPI cards, stat tiles, bordered
+    boxes, icons, circles, animated count-up, charts, axes, percentages or comparisons. The
+    hierarchy stays typographic — nothing coloured, boxed or marked to make one figure matter
+    more.
+  - **No metric wallpaper.** The four facts stay on the homepage. **About and every service page
+    carry no statistic**, and §10l's "not one figure on this page" boundary is still true of
+    `/services/influencer-marketing`.
+  - **No analytics event was added and none should be.** A handle link uses the existing
+    `creator_profile_click`; viewing a number is not an event.
 
 - **Revision 32’s decisions (§10aj) — awaiting review, then locked.**
   - **The Troovy frame is the page’s only campaign photograph and it names nobody.** It passes
@@ -9236,4 +9282,220 @@ Duolingo are all exactly where Revision 29 left them.
   both figures in frame, the gesture intact, the product mark legible.
 - **No Hero, Current Management or Social Brand source photograph is reused on this route.**
 - **No metric published.**
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## 10ak. FINAL POLISH PHASE 06 — THE QUICK-SCAN PROOF LAYER (Revision 33)
+
+**Nothing was deployed.** Production still serves Revision 27. Full working detail, the screenshot
+audit and the complete proof register are in `docs/FINAL-POLISH-ROADMAP.md`; this records the
+decisions.
+
+### 1 — THE UNBLOCK WAS EDITORIAL, NOT TECHNICAL
+
+Every phase since Revision 28 recorded the same sentence: *the proposal's figures are unevidenced,
+and §1 forbids an unverified metric.* **The client has now asked the website to carry the same
+information the brand-collaboration proposal already puts in front of brands.**
+
+That does not make the figures third-party-verified. It makes them **first-party business claims,
+stated by the business and approved by the business for publication** — the same class of evidence
+`CONTACT`, `MANAGEMENT.statement` and the entire brand rail have always run on. §1 forbids a metric
+the project cannot source; it has never forbidden a claim the business makes about itself and
+stands behind.
+
+**Approval to publish the proposal is not approval to publish anything the proposal implies**, and
+four of its figures stayed held for that reason — see §5 below.
+
+### 2 — `src/config/proof.ts`: ONE FILE, AND NO NUMBER IN JSX
+
+Every figure on this site now lives in one register, published or not. Each record carries `value`,
+`label`, `source`, `sourceType`, `confirmed`, an optional `proofAsset` and `public`.
+
+**`public: false` renders nothing at all** — no dash, no placeholder, no "coming soon" — the
+self-suppressing pattern Recognition, Client Notes and `MANAGEMENT.metrics` already use. Held
+figures are recorded so the next session does not re-research them, and **cannot be rendered by
+accident**: `PUBLIC_PROOF` is the only export a component reads.
+
+`source` / `sourceType` / `confirmed` are development-only. **No internal path, deck page or file
+name reaches the DOM.**
+
+**The label is the load-bearing field, not the value.** *Views on a single Reel*, not "views" — one
+word is the whole difference between the claim and `130M+ average`. *Brands worked with*, not
+"clients". *Creator-led videos*, not "campaigns". The four rules at the head of that file exist
+because scope drift is the failure mode a figure has, and it happens in the noun.
+
+### 3 — THE CAPTURE WITH THE BEST NUMBERS IS THE ONE THAT LOST
+
+The deck holds four captures of `@xbhandesiri_`'s Reels grid. Two matter:
+
+| | Figures | Account header | |
+| --- | --- | --- | --- |
+| p2, cropped grid | **139M · 111M · 70.9M · 58.3M · 58.3M · 58.1M** | **none** | **not published** |
+| p3, full phone capture | …**70.9M** · 40.3M · 33.9M · 33.5M · 26.6M · 13.2M · 12.1M · 9.9M · 7.6M | **handle, verified badge, Reels tab active** | **published** |
+
+**The whole decision is in that table.** The capture with the spectacular numbers proves a set of
+view counts without proving whose they are, which is the same failure §18 rule 7 rejects for faces.
+**Taking 70.9M with provenance over 139M without it** is this phase's central call.
+
+**The two captures are demonstrably the same grid**: the p2 crop's second row is the p3 family's
+first row — same tile, same 58.1M — and 70.9M appears in both. That chain is what lets the 139M tile
+*corroborate* the 130M+ claim while never being published as a figure itself.
+
+**A Revision 29 transcription error was found and corrected.** That capture was recorded as
+*135M, 111M, 70.9M, 58.3M, 56.3M, 34.6M*. At high zoom it reads
+**139M, 111M, 70.9M, 58.3M, 58.3M, 58.1M** — four of six wrong. The conclusion is unaffected and if
+anything stronger, but the old six must not be quoted.
+
+**The published crop removes exactly one thing**: the phone's status bar — clock, battery
+percentage, notification icons. **No figure altered, no label added, no interface redrawn, no tile
+removed, no recolouring.**
+
+### 4 — WHAT IS PUBLIC
+
+| | | Where |
+| --- | --- | --- |
+| **130M+** | Views on a single Reel | homepage proof band, lead |
+| **100+** | Brands worked with | homepage proof band |
+| **500+** | Creators worked with | homepage proof band |
+| **1,000+** | Creator-led videos | homepage proof band |
+| **70.9M · 40.3M · 33.9M** | Selected Reel views | Current Management inset |
+
+**The 1,000+ wording was reconciled, not changed.** The client said *promotional videos*; the deck
+says *creator-led videos*. Same figure, two nouns, and the site carried the vaguer one. The deck's
+noun ships because it is specific to the business Mishram actually runs and cannot be misread as
+advertising spots. Both sources are on the record.
+
+Nothing anywhere is an average, a total, a monthly figure or a Mishram-attributed result — managing
+a creator and causing a view count remain different statements.
+
+### 5 — WHAT IS HELD, AND WHY EACH ONE
+
+- **40M+ on a single branded video — RESERVED, not rejected.** A campaign result belongs on the
+  campaign page (Phase 08). A fifth large number would have turned an editorial index into the
+  statistics board this layer exists not to be.
+- **"Billions of views" — HELD on language.** Unbounded, uncheckable, exactly the register §1
+  forbids. The four public figures say the same thing with edges on it. Not scheduled.
+- **139M / 111M — HELD on provenance.** See §3.
+- **All follower figures — HELD, unmappable.** Six handles against five figures, and the profile
+  screenshots are a different set of creators. Re-checked; still not mappable.
+- **"An average of more than 10 million views per creator" — HELD.** An average over an unnamed,
+  unbounded set; the site cannot state what it is an average *of*.
+- **Everything discussed in planning for Current Management** — 30M average, 800K growth, a 100K
+  starting point, 1B dashboard totals, 35% retention — **remains unevidenced and unpublished.**
+
+### 6 — PLACEMENT, AND THE BAND ITSELF
+
+```
+Hero  →  Brands  →  Current Management  →  QUICK PROOF  →  What We Do
+        recognition      relationship          scale         capability
+```
+
+**After Current Management, not before it.** A real managed creator outranks a number, and leading
+with figures would have made the figures the argument. A visitor who reads nothing but three
+screens now knows which brands, which relationship and how much work.
+
+**397px at 1440 — 0.44 of a viewport**, under the target rather than over it.
+
+Four facts, hairlines, display numerals, small-caps labels. **No KPI cards, no stat tiles, no
+bordered boxes, no icons, no circles, no animated count-up, no chart, no axis, no percentage, no
+comparison.** The hierarchy is typographic and nothing else: the reach fact leads at roughly double
+the scale of the three operating facts, because one Reel's reach and the shape of the business are
+different kinds of statement.
+
+**A measured correction.** The first split, `1.15fr / 1.85fr`, left the lead column 180px wider than
+`130M+` needs and pushed the three operating facts into the last third of the page — the band read
+as two separate things. `1fr / 2fr` closes it.
+
+**Plum was not used.** A test was permitted only if the band materially benefited; it does not — the
+band's argument is that it is *not* a highlighted panel, and a plum field is the one treatment that
+would make it look like one. **Three phases have now tested plum on real surfaces and none has found
+one.** That is a finding, not a failure to try.
+
+### 7 — CURRENT MANAGEMENT: THE PROMISE IN THE CONFIG CAME DUE, AGAIN
+
+`MANAGEMENT.metrics` sat empty for five revisions under one written condition: *"A figure needs a
+dated screenshot tied unambiguously to this account before it goes here, and `source` has to say
+which one."* **The bar it was held against is exactly the bar it cleared** — the second time in this
+programme that a note written under the worst-case constraint made the unblock cheap (§10ah §1).
+
+The inset renders **the three figures and the screenshot they were read off, side by side**, so the
+evidence is the other half of the block rather than a footnote. Three figures, not the nine the
+capture shows: nine as type would be the dashboard §10t refused.
+
+**It sits in the claim column's own headroom, and that is why it is affordable.** The chapter's
+height is set by the photograph, which ran **243px taller than the text beside it** — measured, not
+assumed. Putting the inset there cost the section **173px** rather than its own ~470px, and the
+photograph stays the dominant object.
+
+**No analytics event was added.** The existing `creator_profile_click` vocabulary is untouched.
+
+### 8 — CREATORS: DEDUPLICATED, AND THE FIRST ATTEMPT WAS WORSE
+
+The chapter set **500+** and **1,000+** at display scale above the worked-with index. Both figures
+are still published — the band owns them now, in the third screen instead of the ninth. Printing two
+of four facts again, at display scale, six chapters lower turned the same evidence into what a
+reader would fairly read as more evidence.
+
+**The first attempt kept the block and swapped the numbers for a sentence. Captured, that was
+worse**: a caps label plus prose directly above *another* caps label plus prose read as the same
+statement made twice in the same shape. The sentence moved into `CREATORS_COPY.workedWithNote` — a
+note that already existed and already framed the index — and the block went entirely.
+
+`ScaleFact` and `CREATOR_SCALE` were **deleted rather than left exported and unused.** The roster,
+the index, the leads, the profile links and the creator interaction are untouched.
+**1,805px → 1,640px.**
+
+### 9 — NUMERIC INTEGRITY, AUDITED REPO-WIDE
+
+Every occurrence of `130`, `135`, `139`, `111`, `70.9`, `40.3`, `33.9`, `40M`, `100+`, `500+`,
+`1,000`, `1000+` and `billion` in `src/` was reviewed. **Values reachable by a component exist in
+exactly two files** — `config/proof.ts` and `config/management.ts` — and nowhere else. No figure
+renders twice. `1,000+ Promotional videos` is gone. `HELD_PROOF` is imported by nothing.
+`SERVICE_SCROLL_VH = 130` is a viewport constant. The remaining matches are SVG path coordinates and
+hex colours.
+
+**About and every service page carry no statistic**, which is what §22 and §23 asked for — and
+`config/about-page.ts`'s own comment forbidding `"1000+ influencers"` is still accurate.
+
+### 10 — MEASURED
+
+| | Before | After |
+| --- | --- | --- |
+| Homepage, 1440×900 | 17,296px | **17,700px (+404, +2.3%)** |
+| `#current-management` / `#proof` / `#creators` | 958 / — / 1,805 | **1,131 / 397 / 1,640** |
+| Image nodes · lazy · eager · preload | 22 · 22 · 0 · 0 | **23 · 23 · 0 · 0** |
+| New asset | — | **75.1KB**, 560×950 WebP |
+
+**Still no eager image and no image preload on the homepage**, which is the state §16 wants.
+
+### 11 — MOBILE, AND A DEFECT CAUGHT IN CAPTURE
+
+At 390 the band renders as **single vertical editorial rows**, never four columns. Every figure is
+readable while scrolling past.
+
+At full column width the Reel screenshot rendered ~660px tall — **taller than the relationship
+photograph above it**, inverting the chapter. Capped at `17rem`: the handle is still ~120px of
+legible type, all nine view counts still read, and the photograph is dominant again.
+
+### 12 — THE OVERFLOW DEFECT, RE-PROVED RATHER THAN RE-ASSERTED
+
+The document still overflows at 1024 and 768, as §10ag registered for Phase 12. **The same probe run
+against live production — Revision 27, which has none of this work — returns the same numbers within
+±1px** (390 → 496, 768 → 844, 1024 → 1038, 1440 → 1440), and every offending element is
+`.collab-viewport` / `.collab-track`. **Zero overflowing elements inside `#proof`,
+`#current-management` or `#creators` at 1024, 768 or 390.**
+
+Worth writing down: at 390 `innerWidth` reports **496**, not 390, *because* the document overflows —
+which is why `scrollWidth > innerWidth` reads false there. **Compare `clientWidth`, not
+`innerWidth`,** when checking this defect.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static.
+- **Twenty-five real composited captures** — the homepage at eight viewports plus reduced motion,
+  the band in both themes at four widths and under reduced motion, Current Management with its inset
+  in both themes and at 390, Creators after the dedupe, and both seams.
+- **The screenshot was read at high zoom before any figure was published**, which is how the
+  Revision 29 transcription error was found.
 - **Nothing pushed, nothing deployed.**

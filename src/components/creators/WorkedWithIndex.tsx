@@ -6,7 +6,6 @@ import { Arrow } from "@/components/ui/Arrow";
 import { onTrackedClick } from "@/lib/analytics";
 import {
   CREATORS_COPY,
-  CREATOR_SCALE,
   WORKED_WITH_INDEX,
   WORKED_WITH_LEAD,
   workedWithUrl,
@@ -36,13 +35,15 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * applies to unbuilt routes, the suppressed LinkedIn icon, Recognition and
  * Client Notes. A missing thing is absent, never faked.
  *
- * The two scale facts sit above it as **large type on the same hairline
- * grammar** — deliberately not KPI cards, not a counter, not a chart.
+ * **The two scale facts that used to sit above it are gone.** Revision 33
+ * moved 500+ and 1,000+ into the homepage quick-scan proof band, where a
+ * scanning visitor meets them in the third screen instead of the ninth. What
+ * stands in their place is one line saying this index is a selection — see
+ * `Scale` below.
  */
 export function WorkedWithIndex() {
   return (
     <div className="mt-12 md:mt-16">
-      <Scale />
       <Roster />
     </div>
   );
@@ -93,32 +94,21 @@ function ProfileLink({
   );
 }
 
-function Scale() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.85, ease: EASE }}
-    >
-      <p className="caps text-ink-muted">{CREATORS_COPY.scaleLabel}</p>
-
-      {/* Two facts on one rule. Sized like a statement rather than a metric —
-          the number is the sentence, so it takes display type and the label
-          sits under it in the site's own small caps. */}
-      <dl className="mt-5 grid gap-x-8 gap-y-7 border-t border-line pt-7 sm:grid-cols-2">
-        {CREATOR_SCALE.map((fact) => (
-          <div key={fact.label}>
-            <dd className="font-display text-[clamp(2rem,4vw,3.1rem)] leading-[0.98] font-medium tracking-[-0.038em] text-ink">
-              {fact.value}
-            </dd>
-            <dt className="caps mt-4 text-ink-soft">{fact.label}</dt>
-          </div>
-        ))}
-      </dl>
-    </motion.div>
-  );
-}
+/*
+ * `Scale()` LIVED HERE, AND IT IS GONE — Revision 33.
+ *
+ * It set **500+ creators worked with** and **1,000+ promotional videos** at
+ * display scale above the index. Both figures are still published; the
+ * homepage quick-scan proof band now owns them, in the third screen where a
+ * scanning visitor actually meets them rather than the ninth.
+ *
+ * A first attempt kept the block and replaced the numbers with a sentence.
+ * **Captured, that was worse**: a caps label plus prose, sitting directly
+ * above another caps label plus prose, read as the same statement made twice
+ * in the same shape. So the sentence moved into `CREATORS_COPY.workedWithNote`
+ * — a note that already existed and already framed the index — and the block
+ * went entirely. The chapter lost 132px and gained nothing to skim past.
+ */
 
 function Roster() {
   return (
