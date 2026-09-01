@@ -67,6 +67,57 @@ export const INFLUENCER_HERO = {
   centreLabel: "Campaign",
 } as const;
 
+/**
+ * THE RELATIONSHIP NODE — one photograph in the constellation doing proof work
+ * rather than decoration.
+ *
+ * The hero shows five creators around a campaign signal. Four of them are there
+ * because the network is real; **this one is there because the relationship is
+ * evidenced**, and it says so on the page. It is deliberately one node of five
+ * and not a portrait taking the composition over — the hero has to read as
+ * campaign orchestration, not as a celebrity profile.
+ *
+ * IDENTITY. The user supplied and explicitly labelled the source file,
+ * `F:\Drive data\WEBSITE SHORTLIST\Lovekesh Kataria.jpeg`. **The filename is
+ * the identity evidence and nothing else was used** — no face was compared,
+ * here or anywhere (§18 rule 7). The photograph also appears in Mishram's own
+ * current proposal deck, which corroborates it as first-party material; the
+ * deck's own layout was **not** used to infer who is who.
+ *
+ * RELATIONSHIP. `Worked with`, and nothing stronger. Never *managed*,
+ * *represented*, *signed* or *exclusive* — exactly one person on this site is
+ * described as managed and it is not this one (§18).
+ *
+ * BOTH FIGURES STAY IN FRAME. The project records that Lovekesh Kataria is *in*
+ * the photograph, not which figure he is, so isolating one would assert
+ * something unverified. The 4:5 crop was chosen by testing which aspect held
+ * the pair largest **with the arm across the shoulder intact** — that gesture
+ * is the part that makes the frame evidence rather than a portrait.
+ *
+ * ONE EXPORT, so the name, the relationship and the file can never disagree.
+ * §10ai cost a revision to the opposite arrangement: a hardcoded caption beside
+ * a configurable image is an identity bug waiting for its trigger.
+ */
+export const INFLUENCER_ANCHOR = {
+  /** Matches a `ROSTER` id, so the display name comes from one place. */
+  creatorId: "lovkesh",
+  /**
+   * A crop composed for this page only. The roster's own 3:4 file is untouched
+   * and still renders in the match field and the casting wall.
+   */
+  src: "/media/services/influencer/lovekesh-kataria-worked-with.webp",
+  aspect: "4 / 5",
+  position: "50% 22%",
+  relationship: "Worked with",
+  /**
+   * The in-frame marker is `aria-hidden` like every other tag on this page, so
+   * the relationship has to reach the accessibility tree through the alt — and
+   * it is written here rather than in the component for the same reason the
+   * name is: a caption and an image that can disagree is an identity bug (§10ai).
+   */
+  alt: "Lovekesh Kataria, a creator Mishram Media has worked with, photographed with Mishram Media",
+} as const;
+
 /* ── Relevance — the calm beat after the hero ───────────────────── */
 
 export const INFLUENCER_RELEVANCE: ServiceSectionCopy & {
@@ -308,9 +359,71 @@ export const INFLUENCER_PROOF = {
    * piece of work happened.
    */
   caption:
-    "Portraits from the Mishram Media creator network. No campaign, client or result is attributed to any of them here.",
+    "Portraits from the Mishram Media creator network. Nobody in the campaign frame is named, and no campaign, client, deliverable or result is attributed to anyone on this page.",
   action: "Explore our creator network",
   actionHref: "/#creators",
+} as const;
+
+/* ── Campaign context — the one piece of real campaign proof ─────── */
+
+/**
+ * CAMPAIGN CONTEXT — a real frame, and a deliberately short set of facts.
+ *
+ * The page argues creator campaigns for nine sections without ever showing one.
+ * This is the correction: **one photograph of actual branded work**, inside the
+ * proof section that already exists rather than as an eleventh chapter.
+ *
+ * ════════════════════════════════════════════════════════════════════════════
+ * PROVENANCE, because every word here has to be traceable.
+ *
+ * The frame is an image embedded in **Mishram's own current proposal deck**
+ * (`WEBSITE SHORTLIST/PROPOSAL - PDF (1).pdf`, the export of
+ * `canva.link/2zuy2cde0ar0kfd`) — first-party material, not a repost, not a
+ * screenshot of someone else's page, not a mockup. The product pack in frame
+ * is legible: it is Troovy.
+ *
+ * **Troovy is confirmed twice over**: the deck names `@troovyfoods` under
+ * *Proven Brand Partnerships*, and the brand already renders on this site's own
+ * collaborations rail from an official asset (§10s). §18's rule that a
+ * third-party brand in frame is a brand claim is therefore satisfied rather
+ * than breached — the claim is one the site already makes and can evidence.
+ * That is exactly the test OPPO, zingbus and Cream Bell fail.
+ *
+ * WHAT IS DELIBERATELY NOT SAID, and each omission has a reason:
+ *
+ * - **Nobody is named.** The photograph carries no identity metadata, and
+ *   §18 rule 7 bars using a face to identify anyone. Recognition already sets
+ *   the precedent: publish the moment, name no one.
+ * - **No Mishram role is listed.** The deck describes the campaign journey in
+ *   general terms; nothing establishes who did what on *this* piece of work.
+ *   The phase brief's example role row is left empty on purpose.
+ * - **No campaign name, date, brief, deliverable count or result.**
+ * - **No figure of any kind.** The deck's 130M+ / 40M+ / 100+ / 1,000+ claims
+ *   stay in the proof register — Phase 06 owns numeric proof, and this section
+ *   was built to work without any of it.
+ */
+export const INFLUENCER_CAMPAIGN_PROOF = {
+  label: "Campaign context",
+  headline: "What the work looks like.",
+  media: {
+    src: "/media/services/influencer/troovy-branded-content.webp",
+    width: 1200,
+    height: 750,
+    alt: "A branded content still from Mishram Media campaign material, showing a Troovy product presented to camera",
+  },
+  /** Three facts. Every one of them is checkable against a first-party source. */
+  facts: [
+    { term: "Brand", value: "Troovy" },
+    { term: "Work", value: "Branded content" },
+    { term: "Relationship", value: "Worked with" },
+  ],
+  /**
+   * Provenance, rendered on the page. **The boundary itself lives in
+   * `INFLUENCER_PROOF.caption`**, which closes the whole section — one
+   * statement covering the wall and this frame together, rather than the same
+   * disclaimer printed twice on one screen.
+   */
+  note: "A frame from Mishram Media's own campaign material. Troovy is one of the brands on our collaborations rail.",
 } as const;
 
 /* ── Why fit matters ────────────────────────────────────────────── */

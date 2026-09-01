@@ -2896,6 +2896,53 @@ html.theme-transition *::after {
     transition: opacity 420ms var(--ease-out-expo);
   }
 
+  /* ── Campaign context — the facts beside the frame ──────────────
+     A definition list on hairlines, the same grammar the scope index uses, so
+     the band belongs to the page rather than arriving as a card. */
+
+  .inf-fact {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 0.85rem;
+  }
+
+  .inf-fact dt {
+    flex: 0 0 7.5rem;
+  }
+
+  /* ── The hero's relationship node ───────────────────────────────
+     One frame in the constellation states the relationship as an eyebrow above
+     the name. It lives inside `.svp-tag` so it inherits the ink-plus-canvas
+     halo that keeps a label legible over both a bright and a dark region of a
+     photograph — and it reads at near-full strength rather than the tag's own
+     0.66, because it is the one label on the composition making a claim rather
+     than naming a picture. At 0.66 the teal sat close to the light theme's
+     parchment over the pale region it happens to fall on. */
+  .inf-node-tag {
+    opacity: 0.95;
+  }
+
+  /* The anchor is the only tag carrying two statements, so it is the only one
+     that runs out of room on a phone: at the shared 0.2em it took four lines
+     and 44% of the frame. Tighter tracking and a narrower inset put it back to
+     three — one marker line and the same two-line name every other node
+     wraps to at this width. Measured, not guessed. */
+  @media (max-width: 640px) {
+    .inf-node-tag {
+      right: 4%;
+      left: 4%;
+      letter-spacing: 0.12em;
+    }
+  }
+
+  .inf-node-relation {
+    display: block;
+    margin-bottom: 0.4em;
+    color: var(--color-accent);
+  }
+
   /* ── Why fit matters — paired terms ─────────────────────────────
      Fit is a relationship between two things, so it is drawn as one. */
 

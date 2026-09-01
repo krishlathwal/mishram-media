@@ -18,7 +18,7 @@
 | **02** | **Full-colour brands rail** | **Done — Revision 29** |
 | **03** | **Current Management / Akash Sagar** | **Done — Revision 30** |
 | **04** | **Social & Personal Brand Growth media** | **Done — Revision 31** |
-| 05 | Influencer Marketing media + campaign proof | Not started — **assets reserved: Lovekesh + Swiggy campaign material** |
+| **05** | **Influencer Marketing media + campaign proof** | **Done — Revision 32** |
 | 06 | Quick-scan proof layer | Not started — **blocked on the proof register below** |
 | 07 | Creator / viral network refinement | Not started |
 | 08 | Selected Work / real campaign proof | Not started |
@@ -69,7 +69,7 @@ compared or recognised at any point** — §18 rule 7 stands untouched.
 | `Akash sagar.jpeg` | 3024×4032 | JPEG | 0.95MB | Akash Sagar | **2** | Very good, bright corridor | Holds both to 4:5 | **HERO — used** |
 | `Akash sagar 1st.jpeg` | 3120×4160 | JPEG | 1.00MB | Akash Sagar | **2** | Good, fuller/relational | Wide, needs 4:5+ | **RESERVED — Phase 03** |
 | `Akash sagar 2nd.jpeg` | 1280×853 | JPEG | 0.10MB | Akash Sagar | 2 | **Weak — 1.1MP**, third-party signage in shot | Poor | **HOLD — do not publish** |
-| `Lovekesh Kataria.jpeg` | 6048×8064¹ | JPEG | 10.1MB | Lovekesh Kataria | **2** | Excellent, clean interior | Very flexible | **RESERVED — Phase 05** |
+| `Lovekesh Kataria.jpeg` | 6048×8064¹ | JPEG | 10.1MB | Lovekesh Kataria | **2** | Excellent, clean interior | Very flexible | **SPENT TWICE — 3:4 roster portrait (Rev 17B) + 4:5 relationship node (Rev 32). See Revision 32** |
 | `Prashant Mishra.jpeg` | 6048×8064¹ | JPEG | 9.2MB | Prashant Mishra | **1** | Excellent, informal (sunglasses) | Very flexible | **RESERVED — Phase 10** |
 | `Shadab Hasan.jpeg` | 6048×8064¹ | JPEG | 10.1MB | Shadab Hasan | **3** | Good, busy street | Moderate | **HOLD — see brand safety** |
 | `JJ Communication.jpeg` | 2160×3840 | JPEG | 1.38MB | JJ Communication | 2 | Good | Flexible | **BLOCKED — OPPO in frame** |
@@ -148,6 +148,9 @@ without passing the phase that owns it.
 | P14 | Brand partners named: `@canvaindia`, `@zingbus`, `@troovyfoods` | C | Brand slide | Logos in deck | Brands rail (§02) | **PART HOLD** — zingbus blocked by §18; Canva and Troovy already on the rail |
 | P15 | "Proven Brand Partnerships" narrative | C | Brand slide | — | Influencer Marketing | **READY** |
 | P16 | `@puravjha9` is Purav Jha's handle | C | Network slide | — | Creator network | **READY as a handle** — but see the missing-photograph finding |
+| P17 | **“an average of more than 10 million views per creator”** (Trending Influencers) | B+C | p8 | No | Quick-scan proof (§06) | **NEEDS VERIFY** — registered in Revision 32, unevidenced |
+| P18 | **Premium Influencer names**: Elvish Yadav, Purav Jha, Harsh Beniwal, Faisal Khan (Faizu), Jannat Zubair, **Lovekesh Kataria**, JJ Communication, Tijara Vines, Round2hell | B+C | p9 | Portraits in deck | Creator network (§07) | **NEEDS VERIFY** — two-source rule. Lovekesh alone is client-supplied and already published |
+| P19 | Mishram “manages production” on campaigns | B+C | p7 | No | Influencer scope (§05) | **HELD** — first-party copy, awaiting the same client confirmation outreach and negotiation got |
 
 **Source discipline, as the plan asked.** Every row above is **class A — text claim only**. Not one
 figure in the deck is accompanied by a screenshot of a platform showing it, and no local raw asset
@@ -170,7 +173,7 @@ relationship, and the *portrait* frame goes to the Hero — never the other way 
 | `Akash sagar.jpeg` | Akash Sagar | Very good | **Hero** | — | Current Management, Creators | `public/media/hero/creators/akash-sagar.webp` 640×800, 38KB | **LIVE (local)** |
 | `Akash sagar 1st.jpeg` | Akash Sagar | Good, relational | **Current Management (03)** | — | Hero, Creators | — | **RESERVED** |
 | `Akash sagar 2nd.jpeg` | Akash Sagar | Weak | — | — | everywhere | — | **HOLD** |
-| `Lovekesh Kataria.jpeg` | Lovekesh Kataria | Excellent | **Influencer Marketing (05)** | Creator network | Hero¹ | — | **RESERVED** |
+| `Lovekesh Kataria.jpeg` | Lovekesh Kataria | Excellent | **Influencer Marketing (05)** | Roster portrait — already spent, Rev 17B | Hero¹ | `/media/creators/featured/lovekesh-kataria.webp` 1000×1333 **+** `/media/services/influencer/lovekesh-kataria-worked-with.webp` 800×1000, 77KB | **LIVE (local) — two crops, two jobs. See Revision 32** |
 | `Prashant Mishra.jpeg` | Prashant Mishra | Excellent | **About (10)** | Agency credibility | Hero, Creators | — | **RESERVED** |
 | `Immortal Kaka Ji.jpeg` | Immortal Kaka Ji | Good | **Creator network (07)** | Viral personalities | Hero | — | **RESERVED** |
 | `Shadab Hasan.jpeg` | Shadab Hasan | Good | — | — | everywhere, pending | — | **HOLD — brand safety** |
@@ -685,3 +688,313 @@ image — exactly the budget the phase set.
 
 **None added.** No follower count, no view figure, nothing from the deck. The `@xbhandesiri_`
 screenshot and the 130M+/100+/1,000+/40M+ claims all stay in the proof register for Phase 06.
+
+---
+
+## Revision 32 — Phase 05, Influencer Marketing
+
+### Three findings that change what the next session should assume
+
+**1 — The Phase 05 Lovekesh reservation was already half spent, and nobody noticed.**
+`WEBSITE SHORTLIST/Lovekesh Kataria.jpeg` is recorded above as **RESERVED — Phase 05**. It was not:
+**Revision 17B already produced `public/media/creators/featured/lovekesh-kataria.webp`** (1000×1333,
+a 3:4 crop of the rotated original) and that file has been rendering on this very route ever since —
+in the hero constellation, in the match-field backdrop and in the casting wall. The ledger row was
+written before that revision and never corrected. **Corrected here.** The source is now allocated
+twice, deliberately and to two different crops with two different jobs.
+
+**2 — The proposal PDF's text layer decodes after all.** Revision 28 recorded that
+*"the PDF's text layer uses subset-font encoding that does not decode to plain text"* and that the
+Canva deck was the only readable copy. **`pdftotext -layout` (the mingw poppler build already on
+this machine, `/mingw64/bin/pdftotext.exe`) extracts all nine pages cleanly.** That matters because
+the Canva link now 301s to a `canva.com/design/.../edit` URL which returns **403** without a login —
+so the deck is currently *only* readable through the PDF. Do not conclude the deck is inaccessible.
+
+**3 — The Swiggy campaign material does not show a campaign.** See the audit below. This is the
+phase's most consequential negative result, because the roadmap reserved those two files for exactly
+this phase.
+
+---
+
+### Source audit — every candidate, and why
+
+#### The reserved Swiggy frames — **HELD, and the reason is the frames themselves**
+
+`Prashant - data/PRASHANT VIDEO/Swiggy/IMG_3865.HEIC` and `IMG_3866.HEIC`, already converted in the
+Revision 17 staging tree. Both were opened and looked at.
+
+| | Finding |
+| --- | --- |
+| Content | **Two near-identical frames of the same moment**: four people posing together in a small orange-walled room with an air conditioner, a bench, bags and a water bottle |
+| Campaign context in frame | **None.** No set, no camera, no lighting, no crew, no product, no deliverable, no branding of any kind |
+| Swiggy in frame | **Nothing.** The orange walls are the only thing suggesting it, and a wall colour is not a brand |
+| Identity metadata | **None.** `IMG_3865` / `IMG_3866` — four unidentified people |
+| Cross-reference | **`IMG_3866.HEIC` is byte-identical (md5 `0ac772cb…`) to `PRASHANT SIR - PICTURES/IMG_3866.heic`** and to the loose `IMG_3866.HEIC.heif` at the drive root. The same file sits in a person-named folder *and* a brand-named folder, so the folder name does not even establish the context unambiguously |
+
+**Verdict: held.** Publishing either as *Swiggy campaign work* would assert a context the photograph
+does not carry and the metadata does not establish — the §10u error, and the plan's own instruction
+was *"do not assume context beyond what folder/file metadata and first-party material support."*
+The folder name is a real signal; it is not evidence of what is in the frame. **To unblock: the
+client confirms what the photograph is and who is in it.**
+
+#### The proposal deck — 35 embedded images, all extracted and reviewed
+
+Extracted by scanning the PDF for JPEG streams and mapped back to pages through the page objects'
+`/XObject` dictionaries. Page numbers below are real, not inferred from order.
+
+| Deck image | Page | What it is | Verdict |
+| --- | --- | --- | --- |
+| `img-023` | 4 | **Two people presenting a Troovy pack to camera.** Clean interior, blurred background, legible product | **USED — the campaign proof** |
+| `img-018` | 3 | The Lovekesh corridor photograph — **the same frame as the shortlist file** | Corroborates first-party provenance. Not used from the deck; the shortlist original is higher resolution |
+| `img-020`, `img-025` | 3 | **Inside an OPPO store** — `oppo` counter graphics, a *"…1 Series 5G"* display, retail shelving | **BLOCKED.** Identical to the `JJ Communication.jpeg` block. The deck being first-party does not reopen an OPPO decision |
+| `img-022` | 4 | The Swiggy-folder group photo, in the deck | Held, as above |
+| `img-029` | — | Two people in front of a coach with partial third-party operator livery | **HELD** — an unidentified third-party brand in frame (§18) |
+| `img-013` | 1 | Award presentation | **Phase 09.** §18 forbids naming anyone in it |
+| `img-000`–`img-011` | 2, 5, 6, 8 | Instagram post grids (135M/111M/70.9M/58.3M/56.3M/34.6M) and six profile screenshots with follower counts; Duolingo and Avvatar tiles | **Phase 06.** Registered, unpublished |
+| the remaining ~14 | 1, 3, 4, 7, 9 | Relationship and meeting photographs — no campaign context, no identity metadata, various unconfirmed third-party environments | Not used |
+
+#### Everything else on the drive
+
+The complete still inventory was re-run: **44 image files outside the staging tree.** No new
+candidate appeared. `Purav`, `Dr 69 - sagar bhai shoot +bts`, `RAMAH` and
+`PRASHANT VIDEO/Swiggy/Funny edits` still contain **only `.MOV`**, so Revision 31's finding stands
+and the Purav still blocker stays open.
+
+---
+
+### Media ledger — Phase 05
+
+| | |
+| --- | --- |
+| **Source file** | `F:\Drive data\WEBSITE SHORTLIST\Lovekesh Kataria.jpeg` — 8064×6048 stored, **EXIF orientation 6**, 10.1MB |
+| **Identity / context** | **Lovekesh Kataria**, from the client's own filename. No face was compared. Corroborated as first-party by the same frame appearing in the proposal deck (page 3) — the deck's *layout* was **not** used to infer which figure is which |
+| **Role** | The hero constellation's **relationship node** — one photographic node of five inside the network story |
+| **Production output** | `public/media/services/influencer/lovekesh-kataria-worked-with.webp` — **800×1000, 77KB**, 4:5, `.rotate()` first, extracted `{ left: 1620, top: 3000, width: 2800, height: 3500 }` of the rotated original |
+| **Used in** | `/services/influencer-marketing` hero only, through `INFLUENCER_ANCHOR` |
+| **Do NOT repeat in** | Homepage Hero, Current Management, Social & Personal Brand Growth, Creators, Brand Shoots |
+| **Provenance** | First-party, client-supplied. Original untouched |
+| **Status** | **LIVE (local)** |
+
+| | |
+| --- | --- |
+| **Source file** | `WEBSITE SHORTLIST/PROPOSAL - PDF (1).pdf`, embedded image on **page 4** (`img-023`, 1286×1714) — the export of `canva.link/2zuy2cde0ar0kfd` |
+| **Identity / context** | **A Troovy product presented to camera.** The pack is legible: *"THE HEALTHY PROTEIN PANCAKE"* with the Troovy script mark and giraffe. **Nobody in the frame is named** — the photograph carries no identity metadata and §18 rule 7 bars using a face |
+| **Role** | The page's **only real campaign proof** |
+| **Production output** | `public/media/services/influencer/troovy-branded-content.webp` — **1200×750, 46KB**, 16:10, extracted `{ left: 0, top: 390, width: 1286, height: 804 }`. Downscaled from 1286; no upscaling |
+| **Used in** | `/services/influencer-marketing`, the campaign-context band inside `#creator-proof` |
+| **Do NOT repeat in** | Anywhere. It is this page's single campaign frame |
+| **Provenance** | First-party Mishram material. **Troovy is confirmed twice**: `@troovyfoods` under *Proven Brand Partnerships* (deck page 5) and the official mark already on the site's own rail since Revision 16 |
+| **Status** | **LIVE (local)** |
+
+**Creator-photo allocation stays separate from brand-logo provenance**, as before. The Troovy *logo*
+row in the brand register is unchanged — the rail's asset is an official transparent PNG, and this
+photograph is a different class of thing.
+
+#### The ledger correction, restated as a row
+
+| Source file | Crop | Production output | Section |
+| --- | --- | --- | --- |
+| `Lovekesh Kataria.jpeg` | 3:4, `{ 3800×5067 }` | `/media/creators/featured/lovekesh-kataria.webp` 1000×1333 | Roster portrait — **Revision 17B**, six sections site-wide |
+| `Lovekesh Kataria.jpeg` | 4:5, `{ 1620, 3000, 2800×3500 }` | `/media/services/influencer/lovekesh-kataria-worked-with.webp` 800×1000 | Influencer hero anchor — **Revision 32** |
+
+Two crops, two jobs, one source. The 3:4 is a portrait among portraits; the 4:5 is the relationship,
+composed by testing which aspect held the pair largest **with the arm across the shoulder intact**.
+
+---
+
+### The relationship word
+
+**`Worked with`.** Not *managed*, *represented*, *signed* or *exclusive* (§18). The deck names
+Lovekesh Kataria among its *Premium Influencers*, which would have supported *creator network* — the
+site's existing label for him — but the phase's default is the weaker word and there was no reason
+to reach past it. It renders as a teal eyebrow above the name, inside the frame, on that one node.
+
+---
+
+### Homepage Service 02 — inspected at four states, deliberately unchanged
+
+Captured active-pinned in both themes, at the 01→02 handoff, at the 02→03 handoff, and stacked at
+390. **It already communicates a network being orchestrated**: four creators at four depths around
+an abstract campaign board, three convergence arcs, and the annotations
+`CREATOR NETWORK · CAMPAIGN STRATEGY · COLLABORATION · DISTRIBUTION`. That is the visual vocabulary
+the phase asked for, already built.
+
+Both possible replacements make it worse:
+
+- **The new Lovekesh crop** would put the same photograph on the homepage and on the dedicated
+  route's hero — **the exact same-file repeat Revision 31 spent the phase removing** for Zoya Jaan.
+- **The Troovy frame** would put a real third-party brand into a scene §10 requires to have *"no
+  brand marks and no figures."*
+
+So the media stayed. **The homepage document height is byte-identical — 17,296px at 1440 and
+16,784px at 390, matching the pre-phase capture exactly**, which is the proof that nothing moved.
+
+---
+
+### The dedicated page — what changed
+
+**Two things, and nothing else.**
+
+1. **The hero constellation gained a relationship node.** One of the five frames — the `lovkesh`
+   node, already in the composition — now draws from `INFLUENCER_ANCHOR`: its own 4:5 production
+   crop, 25% width instead of 22%, and the marker `Worked with` above the name. The other four
+   nodes, the five arcs, the campaign node, the travelling signal, the parallax and the entry
+   choreography are untouched. The arc to that node already terminated behind the photograph, so no
+   geometry moved.
+
+2. **The proof section gained a campaign-context band.** Inside `#creator-proof`, under the casting
+   wall: the Troovy frame at `col-span-5`, three facts at `col-span-6 / col-start-7`, and one line of
+   provenance. **No eleventh section was added.**
+
+**Not touched, and each for a stated reason:**
+
+- **The Creator Match Field.** §18 locks its constraint — the route runs through formats, never
+  through people, and no intent changes which creator is emphasised. It uses **real roster
+  portraits, not placeholder media**, so the phase's "replace placeholders" clause never fired.
+- **The campaign system.** Objective → Creator Fit → Brief → Coordination → Launch + Learn already
+  maps onto the brief's BRIEF → MATCH → COORDINATE → CREATE → LAUNCH → LEARN. Adding a sixth strand
+  would break the five-strand braid for a word the page already carries.
+- **The scope index.** Audited against the phase's list of nine supported capabilities; **all nine
+  are already published** across the ten rows. Nothing was added and nothing was removed.
+
+---
+
+### Scope audit — and one capability held
+
+The deck's *WHY PARTNER WITH US* page says Mishram's team manages *"the entire campaign journey,
+from understanding the brand's objective and developing the right creative strategy to selecting the
+most relevant creators, **managing production**, ensuring smooth execution, and delivering detailed
+performance insights."*
+
+**"Managing production" is not on the page and was not added.** It is a materially different promise
+from the ten published rows, and this project has been here twice: §10l held *negotiation* back for
+two revisions on first-party copy alone and only published it when the client confirmed that
+specific thing. **Same treatment.** Recorded here as first-party-supported and awaiting
+confirmation; one row when it comes.
+
+Still absent and still deliberate: legal contracting, talent exclusivity, payment custody,
+guaranteed performance, guaranteed virality.
+
+---
+
+### Metrics — none published, and the list is longer than it was
+
+Nothing numeric was added anywhere. Withheld this phase, all of it from the deck:
+
+`130 million+ views on a single Reel` · `135M / 111M / 70.9M / 58.3M / 56.3M / 34.6M` ·
+`40M+ on a single branded video` · `100+ brands` · `1,000+ creator videos` · `billions of views` ·
+`an average of more than 10 million views per creator` · every follower figure on the network,
+viral-sensation and profile-screenshot slides.
+
+**One new claim was found and registered rather than published:** the *Trending Influencers* slide's
+*"average of more than 10 million views per creator."* It joins the register as unevidenced.
+
+---
+
+### Non-numeric deck material actually used
+
+- **Provenance** for the Troovy relationship (`@troovyfoods`, *Proven Brand Partnerships*, page 5).
+- **Corroboration** that the Lovekesh photograph is first-party Mishram material (page 3).
+- The **campaign journey** (P5) — confirmed as already fully represented by the page's five stages,
+  so it needed no new copy.
+- The **two-tier network** (P4, Premium / Trending) — confirmed as already represented by the site's
+  existing two-layer creator model. Not restated.
+
+---
+
+### Measurements
+
+| Viewport | Before | After | Δ |
+| --- | --- | --- | --- |
+| 1440×900 | 10,930px | **11,357px** | **+427 (+3.9%)** |
+| 1280×800 | 10,601px | 11,009px | +408 |
+| 1024×768 | 10,234px | 10,636px | +402 |
+| 768×1024 | 14,331px | 15,211px | +880 |
+| 430×932 | 14,925px | 15,600px | +675 |
+| 390×844 | 15,035px | 15,703px | +668 |
+
+Per section at 1440 after: hero 900 · relevance 584 · match-field 1275 · campaign-system 987 ·
+**creator-proof 1411 (was 984)** · scope 1115 · creator-fit 796 · who-its-for 652 · approach 674 ·
+faq 683 · inquiry 1377 · nav 221.
+
+**Where the height came back from.** The first build put the band at +509px. Rebalancing the frame
+from `col-span-6` to `col-span-5` made the two columns end together instead of leaving dead space
+under the text, and the casting wall's top gap came down one step — **−82px**. The band's own
+boundary statement was then merged into the section's closing caption, so the page does not print
+two disclaimers a screen apart. **The section gained real campaign evidence for 427px.**
+
+### Performance
+
+| | Homepage | `/services/influencer-marketing` |
+| --- | --- | --- |
+| Images | 22 → **22** | 15 → **16** |
+| Lazy | 22 → **22** | 14 → **15** |
+| Eager | 0 → **0** | 1 → **1** |
+| `preload as=image` | 0 → **0** | 1 → **1** |
+| New media weight | **0KB** | **+123KB** (77KB Lovekesh + 46KB Troovy) |
+
+The one eager image is still the hero's above-fold anchor portrait, unchanged. **The campaign frame
+is `loading="lazy"` with no preload**, as §16 and the phase both require. The Lovekesh anchor
+replaces a roster crop at the same node, so it adds a node's worth of bytes rather than a node.
+
+### Mobile — 390px
+
+**Pass.** The constellation still reads as a network — five frames, the campaign node and five arcs
+in the same arrangement. Both figures and the arm across the shoulder survive in the anchor. The
+campaign frame is full width at ~318px, not a thumbnail. The facts list is three hairline rows. No
+horizontal overflow in either theme.
+
+**One real defect was caught in capture.** The anchor's tag is the only label on the composition
+carrying two statements, and at the shared `0.2em` tracking it wrapped to **four lines and 44% of
+the frame** at 390. Measured, not eyeballed: 48px of label in a 109px frame. `0.12em` and a 4%
+inset below 640px put it back to three lines / 37px — one marker line plus the same two-line name
+every other node already wraps to at that width. Desktop is untouched at 26px.
+
+### Visual QA — 21 real composited captures
+
+Dedicated route at 1440×900 light and dark, 1280×800, 1024×768, 768×1024, 430×932, 390×844 light and
+dark, and 1440×900 under `prefers-reduced-motion`. Hero section clipped at 1440 in both themes and
+at 390. Campaign band clipped at 1440 and 390 in **both** themes. Homepage Service 02 active in both
+themes, the 01→02 and 02→03 handoffs, and the stacked chapter at 390.
+
+**No horizontal overflow at any viewport, in either theme, reduced motion included.**
+
+#### `scripts/shoot.mjs` — two capture bugs fixed, and both produced a wrong verdict first
+
+1. **A clip is in document coordinates, not viewport coordinates.** A shot that scrolls somewhere and
+   then clips at `y: 0` returns a **completely black frame**, because the region is not composited.
+   The homepage Service 02 captures were black until the clip was moved to the shot's own `scrollY`.
+2. **A section far below the fold composites black even with `captureBeyondViewport`.** Every earlier
+   phase clipped sections near the top of the document, so this never surfaced. The reliable
+   technique is: grow the viewport to the region's height, **sweep again** (resizing reflows the
+   page, so the pre-resize measurement is stale and the `whileInView` elements below the new fold
+   have never intersected — that produced a section with a visible label and nothing under it),
+   re-measure, scroll, and capture the viewport with no clip.
+
+`slotScroll(n)` was added for the pinned What We Do track: a scroll position in **slot units**,
+resolved inside the page against the track's own box, so it survives any height change above it. A
+hardcoded pixel offset silently captures the wrong service, which is not a failure a thumbnail shows.
+
+**No dependency was added.**
+
+### Held, and unchanged
+
+| | |
+| --- | --- |
+| `JJ Communication.jpeg` | **BLOCKED — OPPO.** And the deck's own two OPPO-store frames are blocked by the same rule. **The environment was not cropped away to get past it** |
+| `Shadab Hasan.jpeg` / `@shadabjakati1` | **HELD.** Still two different people until the client says otherwise. The unresolved brand-safety finding stands |
+| Purav Jha | **Still no still.** Four folders, `.MOV` only. No frame was extracted |
+| `Immortal Kaka Ji.jpeg` | **Still reserved for Phase 07.** A viable asset existed, so there was no reason to spend it |
+| `Prashant Mishra.jpeg` | Still reserved for Phase 10 |
+| Swiggy `IMG_3865` / `IMG_3866` | **Newly held** — see the audit above |
+| Zingbus, Fun N Earn, VYRL, Duolingo | Unchanged. No hold was reopened, weakened or revisited |
+| `Akash sagar 2nd.jpeg`, the three `AKASH COVER PHOTO` files | Unchanged — held and permanently revoked respectively |
+
+### No-repeat, proved
+
+`/media/services/influencer/` is a new directory and neither file existed before. The Hero reads
+`/media/hero/creators/`, Current Management reads `/media/management/`, Social Brand reads
+`/media/creators/`. **No source photograph allocated to the Hero, Current Management or Social &
+Personal Brand Growth is used on this route**, and `ali fazal.jpeg`, `Akash sagar.jpeg` and
+`Akash sagar 1st.jpeg` are untouched. The one shared source — `Lovekesh Kataria.jpeg` — is split
+across two crops with two jobs, and that split is recorded above rather than left to be rediscovered.

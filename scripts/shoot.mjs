@@ -30,6 +30,28 @@ const PORT = 9223;
 const BASE = process.env.SHOOT_BASE ?? "http://localhost:3000";
 const OUT = process.argv[2] ?? "./shots";
 
+const INF = "/services/influencer-marketing";
+
+/**
+ * A scroll position expressed in **What We Do slot units**: 0 is the first
+ * service arriving, 1.5 is the second one settled, 2.0 is the second handing
+ * off to the third. Resolved inside the page against the pinned track's own
+ * box, which is what makes it survive a height change anywhere above it.
+ *
+ * The track is the element carrying the inline `calc(100svh + Nvh)` height and
+ * `useScroll` maps [start start, end end] onto it, so slot s sits at
+ * `trackTop + (s / count) * (trackHeight - innerHeight)`.
+ */
+const slotScroll = (slot) =>
+  `(() => {
+    const el = [...document.querySelectorAll("#what-we-do div")]
+      .find((d) => /calc\\(100svh/.test(d.style.height));
+    if (!el) return 0;
+    const top = el.getBoundingClientRect().top + scrollY;
+    const span = el.offsetHeight - innerHeight;
+    return Math.round(top + (span * ${slot}) / 4);
+  })()`;
+
 /** viewport, theme, reduced motion, and where on the page to look. */
 const SHOTS = [
   { name: "hero-1440-light", w: 1440, h: 900, scheme: "light" },
@@ -77,6 +99,37 @@ const SHOTS = [
   { name: "social-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: "/services/social-personal-brand-growth" },
   { name: "seam-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#collaborations", pad: 420 },
   { name: "seam-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#collaborations", pad: 300 },
+
+  /* ── Phase 05 — 02 / Influencer Marketing ───────────────────────────────
+     The dedicated route, its campaign-proof band, and the homepage Service 02
+     slot. The homepage shots use `scrollExpr` rather than a fixed pixel offset
+     because the pinned track moves down the document whenever anything above
+     it changes height — a hardcoded number silently captures the wrong
+     service, which is not a failure you notice in a thumbnail. */
+  { name: "inf-1440-light", w: 1440, h: 900, scheme: "light", path: INF },
+  { name: "inf-1440-dark", w: 1440, h: 900, scheme: "dark", path: INF },
+  { name: "inf-1280", w: 1280, h: 800, scheme: "dark", path: INF },
+  { name: "inf-1024", w: 1024, h: 768, scheme: "dark", path: INF },
+  { name: "inf-768", w: 768, h: 1024, scheme: "dark", path: INF },
+  { name: "inf-430", w: 430, h: 932, scheme: "dark", mobile: true, path: INF },
+  { name: "inf-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: INF },
+  { name: "inf-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: INF },
+  { name: "inf-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: INF },
+
+  { name: "inf-hero-1440-dark", w: 1440, h: 900, scheme: "dark", path: INF, selector: "#hero" },
+  { name: "inf-hero-1440-light", w: 1440, h: 900, scheme: "light", path: INF, selector: "#hero" },
+  { name: "inf-hero-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: INF, selector: "#hero" },
+
+  { name: "proof-1440-dark", w: 1440, h: 900, scheme: "dark", path: INF, selector: "#creator-proof" },
+  { name: "proof-1440-light", w: 1440, h: 900, scheme: "light", path: INF, selector: "#creator-proof" },
+  { name: "proof-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: INF, selector: "#creator-proof" },
+  { name: "proof-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: INF, selector: "#creator-proof" },
+
+  { name: "svc02-active", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(1.5) },
+  { name: "svc02-active-light", w: 1440, h: 900, scheme: "light", scrollExpr: slotScroll(1.5) },
+  { name: "svc01-to-02", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(0.96) },
+  { name: "svc02-to-03", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(2.02) },
+  { name: "svc02-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#what-we-do div.border-t" },
 ];
 
 const only = process.argv.slice(3);
@@ -173,23 +226,22 @@ for (const shot of shots) {
   await sleep(shot.settle ?? 5500);
 
   // §10q's gotcha: sweep the page so IntersectionObserver fires, then return.
-  await S("Runtime.evaluate", {
-    expression: `(async () => {
+  const SWEEP = `(async () => {
       const step = Math.round(innerHeight * 0.8);
       for (let y = 0; y < document.body.scrollHeight; y += step) {
         window.scrollTo(0, y);
         await new Promise(r => setTimeout(r, 90));
       }
-      window.scrollTo(0, ${shot.scrollTo ?? 0});
+      window.scrollTo(0, ${shot.scrollExpr ?? (shot.scrollTo ?? 0)});
       await new Promise(r => setTimeout(r, 900));
-    })()`,
-    awaitPromise: true,
-  });
+    })()`;
+  await S("Runtime.evaluate", { expression: SWEEP, awaitPromise: true });
   await sleep(shot.after ?? 2200);
 
   const probe = await S("Runtime.evaluate", {
     expression: `JSON.stringify({
       theme: document.documentElement.dataset.theme,
+      scrollY: Math.round(scrollY),
       hOverflow: document.documentElement.scrollWidth > innerWidth,
       scrollW: document.documentElement.scrollWidth,
       docHeight: document.documentElement.scrollHeight,
@@ -206,40 +258,76 @@ for (const shot of shots) {
     returnByValue: true,
   });
 
-  // A selector shot clips to the section's own document box, optionally
-  // extended upward by `pad` so the seam with the section above is in frame.
-  let clip = { x: 0, y: 0, width: shot.w, height: shot.h, scale: 1 };
+  const p = JSON.parse(probe.result.value);
+
+  /* A section shot clips to the section's own document box, optionally
+     extended upward by `pad` so the seam with the section above is in frame.
+
+     **`Page.captureScreenshot` with a clip returns a black frame for anything
+     far below the fold**, `captureBeyondViewport` or not — the earlier phases
+     only ever clipped sections near the top of the document, so this never
+     surfaced. The reliable technique is to make the viewport the size of the
+     region, scroll the region to the top of it, and capture the viewport with
+     no clip at all. Costs one extra layout pass and always composites. */
+  let box = null;
   if (shot.selector) {
-    const box = await S("Runtime.evaluate", {
+    const measured = await S("Runtime.evaluate", {
       expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.selector)});
         if (!el) return null;
         const r = el.getBoundingClientRect();
-        return JSON.stringify({ x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height });
+        return JSON.stringify({ y: r.top + scrollY, h: r.height });
       })()`,
       returnByValue: true,
     });
-    const v = box.result.value;
-    if (v) {
-      const b = JSON.parse(v);
-      const pad = shot.pad ?? 0;
-      clip = {
-        x: Math.max(0, Math.round(b.x)),
-        y: Math.max(0, Math.round(b.y - pad)),
-        width: Math.round(b.w),
-        height: Math.round(b.h + pad),
-        scale: 1,
-      };
-    }
+    if (measured.result.value) box = JSON.parse(measured.result.value);
   }
 
-  const { data } = await S("Page.captureScreenshot", {
-    format: "png",
-    clip,
-    captureBeyondViewport: Boolean(shot.selector),
-  });
+  let data;
+  if (box) {
+    const pad = shot.pad ?? 0;
 
+    // Grow the viewport to the region, **then sweep again**. Resizing
+    // reflows the document, so the pre-resize measurement is stale and the
+    // `whileInView` elements below the new fold have never intersected — that
+    // is what produced a section with a visible label and nothing under it.
+    await S("Emulation.setDeviceMetricsOverride", {
+      width: shot.w,
+      height: Math.min(Math.round(box.h + pad), 12000),
+      deviceScaleFactor: 1,
+      mobile: Boolean(shot.mobile),
+    });
+    await sleep(400);
+    await S("Runtime.evaluate", { expression: SWEEP, awaitPromise: true });
+
+    const again = await S("Runtime.evaluate", {
+      expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.selector)});
+        const r = el.getBoundingClientRect();
+        return JSON.stringify({ y: r.top + scrollY, h: r.height });
+      })()`,
+      returnByValue: true,
+    });
+    box = JSON.parse(again.result.value);
+
+    await S("Emulation.setDeviceMetricsOverride", {
+      width: shot.w,
+      height: Math.min(Math.round(box.h + pad), 12000),
+      deviceScaleFactor: 1,
+      mobile: Boolean(shot.mobile),
+    });
+    await S("Runtime.evaluate", {
+      expression: `window.scrollTo(0, ${Math.max(0, Math.round(box.y - pad))}); new Promise((r) => setTimeout(r, 900))`,
+      awaitPromise: true,
+    });
+    await sleep(900);
+    ({ data } = await S("Page.captureScreenshot", { format: "png" }));
+  } else {
+    ({ data } = await S("Page.captureScreenshot", {
+      format: "png",
+      clip: { x: 0, y: p.scrollY ?? 0, width: shot.w, height: shot.h, scale: 1 },
+      captureBeyondViewport: true,
+    }));
+  }
   writeFileSync(`${OUT}/${shot.name}.png`, Buffer.from(data, "base64"));
-  const p = JSON.parse(probe.result.value);
   results.push({ shot: shot.name, ...p });
   console.log(
     `${shot.name.padEnd(22)} theme=${String(p.theme).padEnd(5)} overflow=${p.hOverflow} canvas=${p.canvas ? "gl" : "none"} doc=${p.docHeight}px imgs=${p.imgs} lazy=${p.lazyImgs} eager=${p.eagerImgs} preload=${p.imgPreloads}`,

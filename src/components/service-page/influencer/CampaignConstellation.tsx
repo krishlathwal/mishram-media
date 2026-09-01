@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 
 import { ROSTER, resolveFrame, type FrameKind } from "@/config/creators";
-import { INFLUENCER_HERO } from "@/config/service-influencer";
+import { INFLUENCER_ANCHOR, INFLUENCER_HERO } from "@/config/service-influencer";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
@@ -30,6 +30,13 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
  * engagement figure, no campaign score, no price, and no implication that these
  * five people were ever on one campaign together.** The attribution line under
  * the composition says what they are: creators from the network.
+ *
+ * **ONE NODE IS THE RELATIONSHIP NODE** (Revision 32). `INFLUENCER_ANCHOR`
+ * gives a single frame its own production photograph and the only relationship
+ * word the project can evidence for it — `Worked with`, never *managed*. It is
+ * one node of five on purpose: the hero has to keep reading as a network being
+ * orchestrated, so the proof arrives inside the composition rather than
+ * replacing it with a portrait.
  */
 
 /** Box aspect, and the SVG viewBox that matches it exactly. */
@@ -51,6 +58,11 @@ type Placement = {
   sizes: string;
   /** Only the anchor is eager — see the note on `eager` below. */
   eager?: boolean;
+  /**
+   * Draw this node from `INFLUENCER_ANCHOR` — its own crop, its own aspect and
+   * the relationship marker — instead of from the roster's shared portrait.
+   */
+  anchor?: boolean;
 };
 
 /**
@@ -102,17 +114,23 @@ const FIELD: readonly Placement[] = [
     sizes: "(max-width: 640px) 32vw, (max-width: 1023px) 18vw, 10vw",
   },
   {
+    // The relationship node. Three percent wider than the four around it and a
+    // 4:5 rather than a 3:4 — enough to be the frame a visitor looks at first
+    // in the lower half, not enough to stop the field reading as a field. Its
+    // arc already terminates behind the photograph, so the geometry is
+    // unchanged; only the frame's own box grew.
     creatorId: "lovkesh",
     kind: "portrait",
-    aspect: "3 / 4",
+    aspect: INFLUENCER_ANCHOR.aspect,
     left: 3,
     top: 60,
-    width: 22,
+    width: 25,
     z: 24,
     depth: 1.8,
     drift: "d",
     delay: 0.76,
-    sizes: "(max-width: 640px) 28vw, (max-width: 1023px) 16vw, 9vw",
+    sizes: "(max-width: 640px) 32vw, (max-width: 1023px) 18vw, 10vw",
+    anchor: true,
   },
   {
     creatorId: "vishnu",
@@ -276,7 +294,18 @@ function CreatorNode({
   const y = useTransform(sy, (v) => v * 9 * place.depth);
 
   if (!creator) return null;
-  const frame = resolveFrame(creator, place.kind);
+
+  // The anchor brings its own crop; everyone else uses the roster's, which is
+  // what keeps this page's other two compositions byte-identical.
+  const rosterFrame = resolveFrame(creator, place.kind);
+  const frame = place.anchor
+    ? {
+        src: INFLUENCER_ANCHOR.src,
+        position: INFLUENCER_ANCHOR.position,
+        zoom: 1,
+        origin: INFLUENCER_ANCHOR.position,
+      }
+    : rosterFrame;
 
   return (
     <motion.div
@@ -306,7 +335,7 @@ function CreatorNode({
         >
           <Image
             src={frame.src}
-            alt={creator.alt}
+            alt={place.anchor ? INFLUENCER_ANCHOR.alt : creator.alt}
             fill
             sizes={place.sizes}
             /**
@@ -320,8 +349,20 @@ function CreatorNode({
             className="svp-photo object-cover"
           />
           <span aria-hidden className="svp-veil" />
-          {/* Real name, and nothing else. */}
-          <span aria-hidden className="svp-tag">
+          {/* Real name — plus, on the anchor only, the one relationship word
+              the project can evidence, as an eyebrow above it. Above rather
+              than below so all five tags keep the same last-line baseline and
+              the marker grows into the frame instead of off the bottom of it.
+              Never a follower count. */}
+          <span
+            aria-hidden
+            className={place.anchor ? "svp-tag inf-node-tag" : "svp-tag"}
+          >
+            {place.anchor && (
+              <span className="inf-node-relation">
+                {INFLUENCER_ANCHOR.relationship}
+              </span>
+            )}
             {creator.name}
           </span>
         </div>

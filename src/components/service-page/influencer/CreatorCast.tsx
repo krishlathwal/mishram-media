@@ -5,7 +5,10 @@ import { motion } from "motion/react";
 
 import { Arrow } from "@/components/ui/Arrow";
 import { ROSTER, resolveFrame } from "@/config/creators";
-import { INFLUENCER_PROOF } from "@/config/service-influencer";
+import {
+  INFLUENCER_CAMPAIGN_PROOF,
+  INFLUENCER_PROOF,
+} from "@/config/service-influencer";
 
 import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
 
@@ -26,6 +29,18 @@ import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
  * they worked together, that a result followed, or anything at all about
  * audience size. §10b's verification pass closed every figure off and none has
  * reappeared here. The caption says so on the page, not just in this comment.
+ *
+ * ── CAMPAIGN CONTEXT, added in Revision 32 ────────────────────────────────
+ *
+ * The wall proves the network. It does not prove that any campaign was ever
+ * run, and for nine sections this page never showed one. A compact band under
+ * the wall now carries **one real frame of branded work** and three checkable
+ * facts about it — **the existing proof section upgraded, not an eleventh
+ * chapter appended.** Its provenance and, more importantly, the list of things
+ * it deliberately does not claim are at `INFLUENCER_CAMPAIGN_PROOF`.
+ *
+ * The two halves share one closing boundary rather than each getting their own,
+ * which is where most of the band's height came back from.
  */
 export function CreatorCast({ id }: { id: string }) {
   /** Uneven widths and crops. A casting wall is not a grid. */
@@ -53,7 +68,7 @@ export function CreatorCast({ id }: { id: string }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-8% 0px" }}
         transition={{ duration: 0.9, ease: EASE }}
-        className="inf-cast mt-14 md:mt-16 lg:mt-20"
+        className="inf-cast mt-12 md:mt-14 lg:mt-16"
       >
         {cast.map((member, i) => {
           const creator = ROSTER.find((c) => c.id === member.id);
@@ -98,6 +113,66 @@ export function CreatorCast({ id }: { id: string }) {
             </figure>
           );
         })}
+      </motion.div>
+
+      {/* ── Campaign context ──────────────────────────────────────────
+          One real frame of branded work, and three facts that are each
+          checkable against a first-party source. No result, no figure, no
+          name. */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-8% 0px" }}
+        transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
+        className="mt-12 border-t border-line pt-9 md:mt-14 lg:grid lg:grid-cols-12 lg:gap-x-8"
+      >
+        <figure className="lg:col-span-5">
+          <div className="svp-frame">
+            <Image
+              src={INFLUENCER_CAMPAIGN_PROOF.media.src}
+              alt={INFLUENCER_CAMPAIGN_PROOF.media.alt}
+              width={INFLUENCER_CAMPAIGN_PROOF.media.width}
+              height={INFLUENCER_CAMPAIGN_PROOF.media.height}
+              sizes="(max-width: 1023px) 92vw, 40vw"
+              /* Below the fold, so it never competes with the hero anchor for
+                 the first megabyte (§16). No preload, deliberately. */
+              loading="lazy"
+              className="svp-photo block h-auto w-full"
+            />
+            <span aria-hidden className="svp-veil" />
+          </div>
+        </figure>
+
+        <div className="mt-8 lg:col-span-6 lg:col-start-7 lg:mt-0">
+          <p className="caps text-ink-soft">
+            {INFLUENCER_CAMPAIGN_PROOF.label}
+          </p>
+
+          <p className="mt-5 max-w-[22ch] font-display text-[clamp(1.35rem,2.1vw,1.85rem)] leading-[1.08] font-medium tracking-[-0.03em] text-ink">
+            {INFLUENCER_CAMPAIGN_PROOF.headline}
+          </p>
+
+          <dl className="mt-8 border-t border-line">
+            {INFLUENCER_CAMPAIGN_PROOF.facts.map((fact) => (
+              <div key={fact.term} className="inf-fact">
+                <dt className="caps text-[0.5625rem] text-ink-muted">
+                  {fact.term}
+                </dt>
+                <dd className="text-[0.9375rem] leading-[1.4] font-medium text-ink/90">
+                  {fact.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* Provenance, set as prose rather than through `.caps` — the
+              section's closing boundary a few lines below is tracked-out
+              uppercase, and two caps blocks in one column read as the same
+              statement made twice. */}
+          <p className="mt-7 max-w-[46ch] text-[0.8125rem] leading-[1.65] text-ink-soft">
+            {INFLUENCER_CAMPAIGN_PROOF.note}
+          </p>
+        </div>
       </motion.div>
 
       <motion.div
