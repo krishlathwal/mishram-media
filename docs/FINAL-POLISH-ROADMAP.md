@@ -17,8 +17,8 @@
 | **01** | **Brand identity + Hero + media allocation** | **Done — Revision 28. Visual QA closed in Revision 29** |
 | **02** | **Full-colour brands rail** | **Done — Revision 29** |
 | **03** | **Current Management / Akash Sagar** | **Done — Revision 30** |
-| 04 | Social & Personal Brand Growth media | Not started |
-| 05 | Influencer Marketing media + campaign proof | Not started — **assets reserved** |
+| **04** | **Social & Personal Brand Growth media** | **Done — Revision 31** |
+| 05 | Influencer Marketing media + campaign proof | Not started — **assets reserved: Lovekesh + Swiggy campaign material** |
 | 06 | Quick-scan proof layer | Not started — **blocked on the proof register below** |
 | 07 | Creator / viral network refinement | Not started |
 | 08 | Selected Work / real campaign proof | Not started |
@@ -568,3 +568,120 @@ Below the fold, so it never competes with the hero for the first megabyte (§16)
 is still an empty array that renders nothing at all. The `@xbhandesiri_` screenshot showing
 135M/111M/70.9M is registered in the proof register and stays there — **Phase 06 owns numeric
 proof**, and this section was built to work without any of it.
+
+---
+
+## Revision 31 — Phase 04, Social & Personal Brand Growth
+
+### The finding that shaped the phase: there is no new media
+
+The brief for this phase was to replace weaker imagery with better first-party creator proof. **An
+exhaustive scan of `F:\Drive data` found 58 still images in total, and not one of them is available
+for this service.** That is the phase's most important output, so the classification is recorded in
+full rather than summarised:
+
+| Group | Count | Status |
+| --- | --- | --- |
+| `WEBSITE SHORTLIST` creator photographs | 8 | Allocated (Hero ×2, Current Management), reserved (Lovekesh → 05, Prashant → 10, Immortal Kaka Ji → 07), held (Shadab, Akash 2nd), blocked (JJ / OPPO) |
+| `Prashant - data/PRASHANT SIR - PICTURES/*` | 7 | Explicit Prashant folder — **reserved Phase 10** |
+| `AKASH COVER PHOTO/IMG_2188-2190.jpg` | 3 | **Permanently revoked (§18).** Never represent Akash Sagar again, in any crop, at any size |
+| Root `IMG_*` / `*.HEIC` / UUID files, and their `_website-converted-jpg` copies | ~30 | **No identity metadata.** A UUID is not a person — §18 rule 7 bars publishing them as any named creator |
+| `PRASHANT VIDEO/Swiggy/*` | 2 | Campaign material in a brand folder → **Phase 05**, not personal branding |
+| Logos, award artwork | ~8 | Phases 02 and 09 |
+
+The named creator folders that looked promising — `Purav`, `Dr 69 - sagar bhai shoot +bts`,
+`RAMAH` — **contain only `.MOV` files.** No stills anywhere under them.
+
+**So no new photograph was produced, and none was invented.** The alternative — publishing a
+UUID-named file as a named creator — is the exact mistake §10u cost a revision to learn.
+
+### What was actually improved, and why it is not cosmetic
+
+**The Brand Signal anchor moved from Zoya Jaan to Vishnu Priya.**
+
+Revision 28 rebuilt the Hero around Ali Fazal and Akash Sagar while keeping Zoya, Nikita and
+Lovekesh. That left `zoya-jaan.webp` rendering in **both the Hero and this route's opening
+composition** — the same production file, one screen apart on a visitor's way down the site, and the
+only same-file repeat of its kind.
+
+Exactly two published creators came *off* the Hero in that revision: **Mukul Sharma and Vishnu
+Priya**. Mukul already carries the Content System Board further down this page, so the hero takes
+Vishnu Priya. **The route now opens and argues on two creators the homepage's first screen does not
+use at all**, which is the no-repeat principle applied where it could actually be applied.
+
+She also arrived with all three crops already tuned (`portrait`, `reel`, `content`), so the swap
+needed no new art direction and no layout change.
+
+### A real defect the swap exposed
+
+The hero's attribution line was a hardcoded string: `"Pictured — Zoya Jaan, Mishram creator
+network"`. Changing the anchor left **the wrong creator's name printed under a photograph** — an
+identity error of precisely the class §10u exists to prevent, and it survived a clean build because
+nothing connects a caption to an image.
+
+**Fixed at the root, not patched.** `SOCIAL_ANCHOR` is now a single export in
+`config/service-social.ts`; `BrandSignal` reads it and the caption derives from
+`SOCIAL_ANCHOR.name`. **The name and the photograph can no longer disagree**, and changing the
+anchor is one id.
+
+### Copy audit — passed, no changes required
+
+Every capability the phase asked about is already present and supported: Personal Brand Strategy,
+Content Strategy, Social Media Management, Content Planning, Creative Direction, Short-Form Content
+Strategy, Creator Growth Direction, Collaboration Coordination. Positioning, publishing consistency
+and brand voice are carried by the four pillars.
+
+A scan for the banned register — *viral, 10x, guarantee, unlock, next level, one-stop, icon*, and
+for any figure or `NNM+` pattern — returned **zero hits**. The headline
+**"Build a brand people remember."** was reviewed and kept; nothing was found wrong with it.
+
+The creator proof already carries the only defensible framing: label *"Selected creators from our
+network"*, and a config comment stating explicitly that no follower figure, growth claim, management
+relationship or campaign attribution is made about those portraits. **Nothing needed rewording.**
+
+### Homepage Service 01 — inspected, deliberately unchanged
+
+`SocialGrowthScene` renders Nikita Kumawat, Mukul Sharma and Vishnu Priya. Nikita is also in the
+Hero, so one overlap remains — and **it cannot be removed.** Only two published creators are absent
+from the Hero, the scene needs three, and §18 locks the What We Do system. Shuffling would move the
+repeat, not remove it. Left alone, and recorded here so the next phase does not re-derive it.
+
+### Media ledger — Phase 04
+
+| Source | Identity | Where | Production output | Reserved elsewhere | Do not repeat in |
+| --- | --- | --- | --- | --- | --- |
+| `/media/creators/vishnu-priya.webp` (existing) | Vishnu Priya | **Dedicated page hero** + homepage Service 01 | none — reused, three tuned crops | no | Hero, Current Management |
+| `/media/creators/mukul-sharma.webp` (existing) | Mukul Sharma | Content System Board + homepage Service 01 | none — reused | no | Hero, Current Management |
+| `ROSTER` portraits ×6 | Ali, Zoya, Nikita, Lovekesh, Mukul, Vishnu | Creator field (proof) | none — reused | no | — |
+
+**No new production asset was created in this phase**, so media weight is unchanged everywhere.
+
+### Reserved for Phase 05 — Influencer Marketing
+
+Held deliberately so that page has its own visual identity:
+
+- **`WEBSITE SHORTLIST/Lovekesh Kataria.jpeg`** — 6048×8064, excellent, two figures, EXIF 6.
+- **`Prashant - data/PRASHANT VIDEO/Swiggy/IMG_3865.HEIC`, `IMG_3866.HEIC`** — campaign material in
+  a brand-named folder. Campaign execution is Phase 05's argument, not Phase 04's.
+- `WEBSITE SHORTLIST/Immortal Kaka Ji.jpeg` stays reserved for Phase 07.
+
+**Phase 04 leaned on identity, personality and content language; Phase 05 gets network, campaign and
+coordination.** That split is the reason nothing was spent here.
+
+### Measurements
+
+| | |
+| --- | --- |
+| Page height, 1440×900 | **10,445px** — and **identical with either anchor**, measured by swapping back and re-capturing. The change is exactly height-neutral |
+| 1280 / 1024 / 768 / 430 / 390 | 10,189 / 9,805 / 13,061 / 13,124 / 13,222px |
+| Images on the page | 10 — **9 lazy, 1 eager, 1 preload** |
+| Horizontal overflow | **none at any of the eight viewports**, in both themes and under reduced motion |
+| New media weight | **0KB** |
+
+The single eager image is the hero composition's anchor portrait, which is the one truly above-fold
+image — exactly the budget the phase set.
+
+### Metrics
+
+**None added.** No follower count, no view figure, nothing from the deck. The `@xbhandesiri_`
+screenshot and the 130M+/100+/1,000+/40M+ claims all stay in the proof register for Phase 06.

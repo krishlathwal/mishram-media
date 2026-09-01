@@ -21,6 +21,35 @@ import type {
   ServiceSectionCopy,
   ServiceStep,
 } from "./service-pages";
+import { CREATORS, type Creator } from "./creators";
+
+/**
+ * THE ONE CREATOR THIS ROUTE IS BUILT ON — named once, read by both the hero
+ * composition and its attribution line.
+ *
+ * **Vishnu Priya, and the choice is the media ledger's rather than taste.**
+ * Revision 28 rebuilt the Hero around Ali Fazal and Akash Sagar while keeping
+ * Zoya Jaan, Nikita Kumawat and Lovekesh Kataria — so those five are spoken
+ * for on the homepage. Exactly two published creators came *off* the Hero,
+ * Mukul Sharma and Vishnu Priya, and Mukul already carries the Content System
+ * Board further down this page. **That leaves one creator who appears nowhere
+ * on the homepage's first screen, and she anchors this one.**
+ *
+ * She also arrived with all three crops already tuned in `config/creators.ts`,
+ * so the swap needed no new art direction.
+ *
+ * Exported so the attribution below is *derived*. Hardcoding it is what let
+ * the caption read "Zoya Jaan" under somebody else's photograph for one build.
+ */
+const SOCIAL_ANCHOR_ID = "vishnu";
+
+export const SOCIAL_ANCHOR: Creator = (() => {
+  const found = CREATORS.find((c) => c.id === SOCIAL_ANCHOR_ID);
+  if (!found) {
+    throw new Error(`SOCIAL_ANCHOR: unknown creator "${SOCIAL_ANCHOR_ID}"`);
+  }
+  return found;
+})();
 
 /* ── Hero ───────────────────────────────────────────────────────── */
 
@@ -43,8 +72,20 @@ export const SOCIAL_HERO = {
   secondaryCta: "Start a Project",
   /** The concept line under the composition. */
   signalPath: ["Positioning", "Content System", "Social Presence", "Recognition"],
-  /** Factual attribution for the photography in the hero composition. */
-  pictured: "Pictured — Zoya Jaan, Mishram creator network",
+  /**
+   * Factual attribution for the photography in the hero composition.
+   *
+   * **DERIVED FROM THE ANCHOR, NOT TYPED — and Revision 31 is why.** This line
+   * read "Pictured — Zoya Jaan" while it was hardcoded. Changing
+   * `BrandSignal`'s anchor to Vishnu Priya left the caption naming the wrong
+   * creator under her photograph, which is an identity error of exactly the
+   * class §10u cost a whole revision to learn: **a person's name must never be
+   * able to drift from the image beside it.**
+   *
+   * It now reads the anchor's own record, so the two cannot disagree again.
+   * Swapping the anchor is one id in `BrandSignal.tsx` and the caption follows.
+   */
+  pictured: `Pictured — ${SOCIAL_ANCHOR.name}, Mishram creator network`,
 } as const;
 
 /* ── Positioning — the calm editorial beat after the hero ───────── */

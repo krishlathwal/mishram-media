@@ -66,6 +66,15 @@ const SHOTS = [
   { name: "mgt-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#current-management" },
   { name: "seam-brands-mgt", w: 1440, h: 900, scheme: "dark", selector: "#current-management", pad: 300 },
   { name: "seam-mgt-what", w: 1440, h: 900, scheme: "dark", selector: "#what-we-do", pad: 400 },
+  { name: "social-1440-dark", w: 1440, h: 900, scheme: "dark", path: "/services/social-personal-brand-growth" },
+  { name: "social-1440-light", w: 1440, h: 900, scheme: "light", path: "/services/social-personal-brand-growth" },
+  { name: "social-1280", w: 1280, h: 800, scheme: "dark", path: "/services/social-personal-brand-growth" },
+  { name: "social-1024", w: 1024, h: 768, scheme: "dark", path: "/services/social-personal-brand-growth" },
+  { name: "social-768", w: 768, h: 1024, scheme: "dark", path: "/services/social-personal-brand-growth" },
+  { name: "social-430", w: 430, h: 932, scheme: "dark", mobile: true, path: "/services/social-personal-brand-growth" },
+  { name: "social-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: "/services/social-personal-brand-growth" },
+  { name: "social-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: "/services/social-personal-brand-growth" },
+  { name: "social-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: "/services/social-personal-brand-growth" },
   { name: "seam-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#collaborations", pad: 420 },
   { name: "seam-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#collaborations", pad: 300 },
 ];
@@ -183,6 +192,11 @@ for (const shot of shots) {
       theme: document.documentElement.dataset.theme,
       hOverflow: document.documentElement.scrollWidth > innerWidth,
       scrollW: document.documentElement.scrollWidth,
+      docHeight: document.documentElement.scrollHeight,
+      imgs: document.querySelectorAll("img").length,
+      lazyImgs: document.querySelectorAll('img[loading="lazy"]').length,
+      eagerImgs: document.querySelectorAll('img[loading="eager"]').length,
+      imgPreloads: document.querySelectorAll('link[rel=preload][as=image]').length,
       inner: innerWidth,
       canvas: (() => { const c = document.querySelector('canvas'); if (!c) return null;
         const g = c.getContext('webgl2') || c.getContext('webgl');
@@ -228,7 +242,7 @@ for (const shot of shots) {
   const p = JSON.parse(probe.result.value);
   results.push({ shot: shot.name, ...p });
   console.log(
-    `${shot.name.padEnd(22)} theme=${String(p.theme).padEnd(5)} overflow=${p.hOverflow} canvas=${p.canvas ? p.canvas.w + "x" + p.canvas.h + " gl=" + p.canvas.gl : "none"} textures=${p.textures.length}`,
+    `${shot.name.padEnd(22)} theme=${String(p.theme).padEnd(5)} overflow=${p.hOverflow} canvas=${p.canvas ? "gl" : "none"} doc=${p.docHeight}px imgs=${p.imgs} lazy=${p.lazyImgs} eager=${p.eagerImgs} preload=${p.imgPreloads}`,
   );
 }
 

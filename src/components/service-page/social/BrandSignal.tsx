@@ -5,11 +5,11 @@ import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
 
 import {
-  CREATORS,
   resolveFrame,
   type Creator,
   type FrameKind,
 } from "@/config/creators";
+import { SOCIAL_ANCHOR } from "@/config/service-social";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
@@ -42,11 +42,29 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 /**
  * The anchor. A real creator with approved local photography and three crops
  * already tuned in `config/creators.ts` — never stock, never a scraped profile.
+ *
+ * **ZOYA JAAN → VISHNU PRIYA, Revision 31, and the reason is the ledger.**
+ * Revision 28 rebuilt the Hero around Ali Fazal and Akash Sagar and kept Zoya,
+ * Nikita and Lovekesh — which left `zoya-jaan.webp` rendering in **both** the
+ * Hero and this page's opening composition. Same file, two places, one screen
+ * apart on a visitor's way down the site.
+ *
+ * Exactly two published creators came *off* the Hero in that revision, Mukul
+ * Sharma and Vishnu Priya, so those two are the only ones this page can anchor
+ * without repeating the homepage. Mukul already carries the Content System
+ * Board below, so the hero takes Vishnu Priya — and this route now opens and
+ * argues on **two creators the Hero does not use at all**.
+ *
+ * She also has all three crops already tuned (`portrait`, `reel`, `content`),
+ * so the composition needed no new art direction to make the swap.
+ *
+ * **Read from `SOCIAL_ANCHOR`, not looked up here.** The hero's attribution
+ * line derives from the same export, so the caption and the photograph cannot
+ * name two different people — which they briefly did while this was a local
+ * lookup and the caption was a hardcoded string.
  */
 function anchor(): Creator {
-  const found = CREATORS.find((c) => c.id === "zoya");
-  if (!found) throw new Error("BrandSignal: anchor creator is not configured");
-  return found;
+  return SOCIAL_ANCHOR;
 }
 
 const ANCHOR = anchor();

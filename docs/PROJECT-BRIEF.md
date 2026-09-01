@@ -8857,3 +8857,106 @@ register — **Phase 06 owns numeric proof**, and this section was built to work
 - **The plum A/B was rendered before the decision**, and the test CSS was removed — the diff carries
   no `!important` and no test rule.
 - **Nothing pushed, nothing deployed.**
+
+---
+
+## 10ai. FINAL POLISH PHASE 04 — SOCIAL & PERSONAL BRAND GROWTH (Revision 31)
+
+**Nothing was deployed.** Production still serves Revision 27. Working detail is in
+`docs/FINAL-POLISH-ROADMAP.md`.
+
+### 1 — THE LIBRARY IS EXHAUSTED, AND THAT IS THE PHASE'S MAIN FINDING
+
+The phase was scoped to replace weaker imagery with better first-party creator proof. **A complete
+scan of `F:\Drive data` found 58 stills, and none of them is available to this service.**
+
+Everything usable is already allocated (Hero, Current Management), reserved (Lovekesh → Phase 05,
+Prashant → Phase 10, Immortal Kaka Ji → Phase 07), held (Shadab Hasan, Akash 2nd) or blocked
+(JJ Communication, OPPO in frame). The rest is: three permanently revoked `AKASH COVER PHOTO`
+files, roughly thirty **UUID- and `IMG_`-named files with no identity metadata whatsoever**, two
+Swiggy campaign frames that belong to Phase 05, and logos.
+
+The three named creator folders that looked most promising — `Purav`, `Dr 69 - sagar bhai shoot
++bts`, `RAMAH` — **contain only `.MOV` files.**
+
+**So no photograph was added, and none was invented.** Publishing a UUID-named file as a named
+creator is the precise mistake §10u cost a revision to learn, and the temptation was real: thirty
+unused images sitting in the library with nothing to say about who is in them.
+
+### 2 — THE ONE REAL IMPROVEMENT, AND IT IS A LEDGER FIX
+
+**Brand Signal's anchor moved from Zoya Jaan to Vishnu Priya.**
+
+Revision 28 kept Zoya, Nikita and Lovekesh in the Hero, which left `zoya-jaan.webp` rendering in
+**both the Hero and this route's opening composition** — the same file, one screen apart, and the
+only same-file repeat of its kind on the site.
+
+Exactly two published creators came *off* the Hero in that revision: Mukul Sharma and Vishnu Priya.
+Mukul already carries the Content System Board further down this page, so the hero takes Vishnu
+Priya, and **the route now opens and argues on two creators the homepage's first screen never
+shows.** She also arrived with all three crops (`portrait`, `reel`, `content`) already tuned, so the
+swap changed no art direction and no layout.
+
+### 3 — AND THE SWAP EXPOSED A REAL DEFECT
+
+The hero's attribution was a hardcoded string, `"Pictured — Zoya Jaan, Mishram creator network"`.
+Changing the anchor left **the wrong creator's name printed under a photograph** — the §10u class of
+error exactly — and it survived types, lint and a clean build, because nothing in the codebase
+connected a caption to an image.
+
+**Fixed at the root.** `SOCIAL_ANCHOR` is now one export in `config/service-social.ts`;
+`BrandSignal` reads it and the caption derives from `SOCIAL_ANCHOR.name`. **A name and the
+photograph beside it can no longer disagree**, and swapping the anchor is one id.
+
+Worth recording as a general lesson: **a hardcoded caption next to a configurable image is an
+identity bug waiting for its trigger.** This one waited three revisions.
+
+### 4 — COPY AUDIT: PASSED, NOTHING CHANGED
+
+All eight capabilities the phase listed are present and supported. A scan for the banned register —
+*viral, 10x, guarantee, unlock, next level, one-stop, icon* — and for any figure or `NNM+` pattern
+returned **zero hits**. The headline **"Build a brand people remember."** was reviewed and kept.
+
+The creator proof already carries the only defensible framing — *"Selected creators from our
+network"*, with a config note stating outright that no follower figure, growth claim, management
+relationship or campaign attribution attaches to those portraits. **Nothing needed rewording, and
+nothing was reworded to look busy.**
+
+### 5 — HOMEPAGE SERVICE 01: INSPECTED, DELIBERATELY UNCHANGED
+
+`SocialGrowthScene` uses Nikita, Mukul and Vishnu Priya. Nikita is also in the Hero, and **that
+overlap cannot be removed**: only two published creators are absent from the Hero, the scene needs
+three, and §18 locks the What We Do system. Shuffling would relocate the repeat, not fix it.
+Recorded so the next phase does not re-derive it.
+
+### 6 — MEASURED
+
+| | |
+| --- | --- |
+| Page height, 1440×900 | **10,445px — and identical with either anchor.** Verified by swapping back, re-capturing, and swapping forward again |
+| Other viewports | 1280 · 10,189 / 1024 · 9,805 / 768 · 13,061 / 430 · 13,124 / 390 · 13,222 |
+| Images | 10 — **9 lazy, 1 eager, 1 preload**, the eager one being the single above-fold hero portrait |
+| New media weight | **0KB**, homepage and service page alike |
+| Horizontal overflow | **none at any of the eight viewports**, both themes, reduced motion included |
+
+Notably this route is clean at 1024 and 768, where the **homepage** carries the pre-existing overflow
+registered for Phase 12 — so that defect is homepage-specific.
+
+### 7 — RESERVED FOR PHASE 05
+
+`Lovekesh Kataria.jpeg`, and the two `PRASHANT VIDEO/Swiggy/` campaign frames. **Phase 04 argued
+identity, personality and content language; Phase 05 gets network, campaign and coordination.** That
+split is why nothing was spent here.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all static.
+- **Nine real composited captures** of the service route — 1440 light and dark, 1280, 1024, 768,
+  430, 390 light and dark, reduced motion.
+- **The caption defect was caught in capture, not in review**, and the served HTML now reads
+  *"Pictured — Vishnu Priya, Mishram creator network"*.
+- **No Hero or Current Management source file is reused on this route.** The Hero's files live in
+  `/media/hero/creators/`, Current Management's in `/media/management/`; this page reads only
+  `/media/creators/`.
+- **No metric added.**
+- **Nothing pushed, nothing deployed.**
