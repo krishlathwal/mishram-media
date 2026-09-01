@@ -16,7 +16,7 @@
 | --- | --- | --- |
 | **01** | **Brand identity + Hero + media allocation** | **Done — Revision 28. Visual QA closed in Revision 29** |
 | **02** | **Full-colour brands rail** | **Done — Revision 29** |
-| 03 | Current Management / Akash Sagar | Not started — **assets reserved** |
+| **03** | **Current Management / Akash Sagar** | **Done — Revision 30** |
 | 04 | Social & Personal Brand Growth media | Not started |
 | 05 | Influencer Marketing media + campaign proof | Not started — **assets reserved** |
 | 06 | Quick-scan proof layer | Not started — **blocked on the proof register below** |
@@ -458,3 +458,113 @@ handles against five figures, and the profile screenshots are a different set of
 - **Zingbus** appears in the deck and stays **blocked** by the standing brand-safety decision.
 - **YesMadam and Bajaj Finserv were looked for and not found** — neither appears in the deck's text
   or in any of its 35 extracted images. They are not added.
+
+---
+
+## Revision 30 — Phase 03, Current Management
+
+### The unblock arrived, and the file said it would
+
+`config/management.ts` has carried this line since Revision 17B: *"The unblock is one file. Supply
+a Mishram-owned photograph of Akash with explicit identity and this goes back to a full portrait
+composition."* **That turned out to be exactly right** — one config export and one component
+function. The chapter was typographic because the evidence was a 150px avatar, not because anyone
+preferred type.
+
+### Media allocation — unchanged, and now proved in production
+
+| Source file | Destination | Production output |
+| --- | --- | --- |
+| `Akash sagar.jpeg` | **Hero** (Rev 28) | `/media/hero/creators/akash-sagar.webp` 640×800, 38KB |
+| `Akash sagar 1st.jpeg` | **Current Management** (Rev 30) | `/media/management/akash-sagar-current-management.webp` 960×1280, 63KB |
+| `Akash sagar 2nd.jpeg` | — | **still held**: 1.1MP, third-party signage in shot |
+
+**Two different source files, two different sections, no repetition.** The ledger's whole purpose,
+honoured. The reserved frame was the *relational* one on purpose: the Hero has to look like proof,
+this chapter has to be it.
+
+**The crop was tested, not assumed.** 5:4 and 16:10 both cut heads off; 1:1 held the pair well;
+**3:4 held them largest with headroom intact**, which is what a dominant column wants. Extracted
+from `{ left: 624, top: 666, width: 1934, height: 2579 }` of the rotated original. The original is
+untouched. **Both figures stay in frame** — the arm across the shoulder is the part that makes the
+photograph evidence rather than decoration, and cropping to a solo portrait would also assert which
+figure is which, which the client's label does not establish (§10u).
+
+### The composition
+
+Photograph left at `col-span-5`, claim right at `col-span-6 / col-start-7`. The old identity plate
+is gone; its teal corner marker moved onto the image, so the mark travelled with the composition
+rather than being dropped.
+
+The handle came **down** from display scale to a byline beside the official 150px avatar, rendered
+at 44px so it still covers 2× exactly. That pairing is deliberate: **two provenances on one line** —
+the photograph is identified by the client's own filename, the avatar by the account itself.
+
+`CURRENT MANAGEMENT` gained a small teal dot beside its rule — the same point the header uses, and
+the whole of the status signal. **No "LIVE", no "SIGNED", no "EXCLUSIVE"**; none of those is
+supported and §18 forbids two of them outright.
+
+### Scope, and what was rejected
+
+Three rows: **Creator strategy · Brand opportunities · Short-form growth**. Every one is lifted out
+of the client-confirmed sentence rather than added to it.
+
+**Campaign coordination, content direction, payment handling and legal representation were all
+considered and rejected.** The deck describes the first two as things Mishram does on *campaigns* —
+a different claim from what it does for *this creator*. Add an item when the client confirms that
+item, not when it sounds plausible.
+
+### Plum — tested on the one surface that could have earned it, and rejected
+
+Option A is the existing obsidian/parchment treatment; Option B made the whole section a plum field
+with ivory content, which is the only way the token can be used (ivory on plum is 9.14:1; plum as
+text on obsidian is 1.89:1 and fails).
+
+**Option B was rendered and rejected.** Against the colour brands rail directly above it, the plum
+band reads as a hard flat slab with no transition — and gradients are explicitly off the table, so
+there is no softening it. It also fights the photograph, whose corridor light is warm cream and
+white. The chapter already earns its rhythm through **composition**: a dominant photograph after a
+logo ribbon is a clear change of gear without changing the canvas.
+
+**Plum remains declared and unused.** Two phases have now tested it on real surfaces and neither
+found one; that is a finding, not a failure to try.
+
+### Height, and the correction that got there
+
+First build measured **1108px = 1.23 viewports**, over the 0.85–1.1 target, with visible dead space
+under the text column. The image was at `col-span-6`; narrowing it to `col-span-5` took the section
+to **958px = 1.06 viewports** — inside target, and better balanced because the two columns now end
+nearer each other.
+
+Before: ~834px / 0.93 viewports. After: **958px / 1.06**. The chapter gained a photograph for
+124px.
+
+### Mobile, and a real defect caught
+
+At 390 the section is 1120px, reading image → label → name → byline → statement → scope → CTA.
+Both figures visible, no head cut, no horizontal overflow, both themes correct.
+
+**The first attempt had a genuine bug.** The columns carried `order-2` / `order-1`, intending the
+photograph to drop below the claim on a phone — but below `lg` the parent is a plain block, so
+`order` does nothing at all. The figure's caption landed a few pixels above the chapter label and
+read as a collision. Fixed by dropping the ineffective `order-*` entirely and using `mb-14 lg:mb-0`:
+one reading order at every size, with real space between the image and the words.
+
+### Performance
+
+| | |
+| --- | --- |
+| Production image | 63KB, 960×1280 WebP |
+| Loading | `loading="lazy"` |
+| Preload | **none** |
+| Image nodes in section | 2 (relationship frame + 44px avatar) |
+| Section total | ~68KB |
+
+Below the fold, so it never competes with the hero for the first megabyte (§16).
+
+### Metrics
+
+**None published.** No follower count, no view figure, nothing from the deck. `MANAGEMENT.metrics`
+is still an empty array that renders nothing at all. The `@xbhandesiri_` screenshot showing
+135M/111M/70.9M is registered in the proof register and stays there — **Phase 06 owns numeric
+proof**, and this section was built to work without any of it.

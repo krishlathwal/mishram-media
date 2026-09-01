@@ -65,6 +65,32 @@ export const MANAGEMENT = {
   statement:
     "Mishram Media currently manages Akash Sagar across creator strategy, brand opportunities and the development of his short-form presence.",
   cta: "View Instagram",
+
+  /**
+   * WHAT MISHRAM HANDLES — three items, and every one is lifted straight out
+   * of `statement` above rather than added to it.
+   *
+   * `statement` is the client-confirmed sentence: *creator strategy, brand
+   * opportunities and the development of his short-form presence*. This rail
+   * is that sentence as a scannable index, so a brand visitor reads the scope
+   * in a second without the section growing a paragraph.
+   *
+   * **Nothing was invented to round it to four.** Campaign coordination,
+   * content direction, payment handling and legal representation were all
+   * considered and all rejected: the deck describes those as things Mishram
+   * does on *campaigns*, which is a different claim from what it does for
+   * *this creator*. Add an item only when the client confirms that item.
+   *
+   * It is scope, never performance. No figure belongs in this array.
+   */
+  scope: [
+    "Creator strategy",
+    "Brand opportunities",
+    "Short-form growth",
+  ] as readonly string[],
+
+  /** Names the photograph for what it is, so it is never read as a portrait. */
+  frameCaption: "Working relationship",
   /**
    * The identity plate's own eyebrow. It names what the small image actually
    * is — the account's published profile picture — so the avatar is never
@@ -144,6 +170,53 @@ export type ManagementFrame = {
  * `.mgt-plate` treatment is one block in `CurrentManagement.tsx`, not a
  * redesign of the chapter.
  */
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * THE UNBLOCK ARRIVED — REVISION 30
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * The note above ends: *"The unblock is one file. Supply a Mishram-owned
+ * photograph of Akash with explicit identity and this goes back to a full
+ * portrait composition."* **That file now exists**, and this is it.
+ *
+ * Source: `F:\Drive data\WEBSITE SHORTLIST\Akash sagar 1st.jpeg`, a
+ * client-labelled first-party photograph. **The filename is the identity
+ * evidence** — no face was matched, and §18 rule 7 is untouched. It is the
+ * *second* Akash frame the client supplied: Revision 28 gave the Hero the
+ * cleaner portrait frame and **deliberately reserved this one**, because it is
+ * the relational photograph and this is the chapter that argues a
+ * relationship. The Hero looks like proof; this has to *be* it.
+ *
+ * **TWO FIGURES, AND BOTH STAY.** §10u again: the label says Akash Sagar is
+ * *in* the frame, not which figure he is, so cropping to a solo portrait would
+ * assert something unverified — and would also throw away the arm-around-the-
+ * shoulder gesture that makes the photograph evidence rather than decoration.
+ *
+ * The crop was chosen by testing, not assumed: 5:4 and 16:10 both cut heads
+ * off, 1:1 held the pair well, and **3:4 held them largest with headroom
+ * intact**, which is what a dominant left column wants. Extracted from
+ * `{ left: 624, top: 666, width: 1934, height: 2579 }` of the rotated
+ * original, then fitted — the original is never modified.
+ *
+ * **The avatar below is not replaced by this.** They carry different
+ * provenance and both are worth having: this photograph is identified by the
+ * client's own label, the avatar is identified by the official account itself.
+ * The photograph now carries the composition and the avatar became the byline
+ * beside the handle — a verification mark rather than the graphic.
+ */
+export const MANAGEMENT_FRAME = {
+  src: "/media/management/akash-sagar-current-management.webp",
+  alt: "Akash Sagar photographed with Mishram Media during current management work",
+  width: 960,
+  height: 1280,
+} as const satisfies ManagementFrame;
+
+/** DEVELOPMENT ONLY — never rendered. */
+export const MANAGEMENT_FRAME_SOURCE =
+  "F:\\Drive data\\WEBSITE SHORTLIST\\Akash sagar 1st.jpeg — client-labelled, first-party. " +
+  "Reserved for this chapter by the Revision 28 media ledger; the Hero uses a different file " +
+  "(Akash sagar.jpeg) and 'Akash sagar 2nd.jpeg' stays held on resolution and third-party signage.";
+
 export const MANAGEMENT_AVATAR = {
   src: "/media/creators/akash-sagar/akash-sagar-xbhandesiri-avatar.webp",
   alt: "Profile picture of Akash Sagar from his official Instagram account @xbhandesiri_",

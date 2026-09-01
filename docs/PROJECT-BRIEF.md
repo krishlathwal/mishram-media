@@ -8750,3 +8750,110 @@ unchanged. `/about`'s brand marks were specifically protected by the token split
 - **The plate list is measured**, and the measurement agreed with the config that already existed.
 - **−18 network requests and −158KB** on the homepage, verified from the rendered HTML.
 - **Nothing pushed, nothing deployed.** One local commit.
+
+---
+
+## 10ah. FINAL POLISH PHASE 03 — CURRENT MANAGEMENT (Revision 30)
+
+**Nothing was deployed.** Production still serves Revision 27. Full working detail is in
+`docs/FINAL-POLISH-ROADMAP.md`; this records the decisions.
+
+### 1 — §10u's PROMISE CAME DUE
+
+`config/management.ts` has said since Revision 17B: *"The unblock is one file. Supply a
+Mishram-owned photograph of Akash with explicit identity and this goes back to a full portrait
+composition — the `.mgt-plate` treatment is one block in `CurrentManagement.tsx`, not a redesign of
+the chapter."*
+
+**That file arrived, and the estimate was exact**: one config export and one component function.
+The chapter was typographic because the evidence was a 150px avatar, never because type was
+preferred — and it is worth noting that the note written under the worst-case constraint is what
+made this phase cheap.
+
+### 2 — THE MEDIA, AND THE LEDGER HELD
+
+`Akash sagar 1st.jpeg`, client-labelled, **reserved for this chapter by the Revision 28 ledger and
+not spent on the Hero**. The Hero keeps `Akash sagar.jpeg`. Two source files, two sections, no
+repetition — which is the entire reason the ledger exists.
+
+The reservation was the right call for a reason worth restating: **the Hero has to look like proof;
+this chapter has to be it.** The relational frame — two figures, arm across the shoulder — is the
+one that argues a working relationship, and it would have been wasted as hero decoration.
+
+**Crop chosen by testing.** 5:4 and 16:10 decapitated; 1:1 held the pair; **3:4 held them largest
+with headroom**, which is what a dominant column wants. Extracted from
+`{ 624, 666, 1934×2579 }` of the rotated original, which is never modified. **Both figures stay** —
+§10u, and because the gesture *is* the evidence.
+
+### 3 — THE COMPOSITION INVERTED
+
+Photograph left (`col-span-5`), claim right (`col-span-6 / col-start-7`). The identity plate is
+gone and its teal corner marker moved onto the image, so the mark travelled with the composition
+rather than being discarded.
+
+**The handle came down from display scale to a byline beside the 44px official avatar**, and that
+pairing is the point: **two provenances on one line.** The photograph is identified by the client's
+filename; the avatar by the account itself. Revision 17B set the handle huge because it was the only
+graphic available — it no longer is, so the handle went back to being a destination.
+
+The label gained a small teal dot beside its rule — the header's own point, and the whole of the
+status signal. **No "LIVE", no "SIGNED", no "EXCLUSIVE".**
+
+### 4 — SCOPE, AND FOUR THINGS DELIBERATELY LEFT OUT
+
+Three rows: **Creator strategy · Brand opportunities · Short-form growth** — each lifted straight
+out of the client-confirmed sentence rather than added to it.
+
+**Campaign coordination, content direction, payment handling and legal representation were all
+considered and rejected.** The deck describes the first two as things Mishram does on *campaigns*,
+which is a different claim from what it does for *this creator*; the last two were never confirmed
+at all. A fourth row would have balanced the column nicely and that is not a reason.
+
+### 5 — PLUM: TESTED ON THE BEST CANDIDATE SURFACE, AND REJECTED
+
+This was the first section with a legitimate claim to it. Option B made the whole chapter a plum
+field with ivory content — the only usable form, since ivory on plum is 9.14:1 while plum as text on
+obsidian is 1.89:1.
+
+**Rendered and rejected.** Directly beneath the full-colour brands rail the plum band reads as a
+hard flat slab with no transition, and gradients are explicitly off the table so there is nothing to
+soften it with. It also fights the photograph, whose corridor light is warm cream. **The chapter
+already earns its rhythm through composition** — a dominant photograph after a logo ribbon is a
+clear change of gear without changing the canvas.
+
+**Two phases have now tested plum on real surfaces and neither found one.** That is a finding.
+The token stays declared and unused.
+
+### 6 — HEIGHT, AND THE CORRECTION
+
+First build measured **1108px / 1.23 viewports** — over the 0.85–1.1 target, with dead space under
+the text. Narrowing the image from `col-span-6` to `col-span-5` gave **958px / 1.06 viewports**,
+inside target and better balanced. Before this phase: ~834px / 0.93. **The chapter gained a
+photograph for 124px.**
+
+### 7 — A REAL MOBILE DEFECT, CAUGHT IN CAPTURE
+
+The first attempt used `order-2` / `order-1` to drop the photograph below the claim on a phone.
+**Below `lg` the parent is a plain block, so `order` does nothing** — the figure's caption landed a
+few pixels above the chapter label and read as a collision. Fixed by removing the ineffective
+`order-*` and using `mb-14 lg:mb-0`: **one reading order at every size**, with real space between
+image and words. At 390 the section is 1120px, both figures visible, no head cut, no overflow.
+
+### 8 — METRICS: STILL NONE
+
+No follower count, no view figure, nothing from the deck. `MANAGEMENT.metrics` remains an empty
+array rendering nothing. The `@xbhandesiri_` screenshot showing 135M/111M/70.9M stays in the proof
+register — **Phase 06 owns numeric proof**, and this section was built to work without any.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all static.
+- **Ten real composited captures** — 1440 light and dark, 1280, 1024, 768, 430, 390 light and dark,
+  reduced motion, and both seams — via `scripts/shoot.mjs`.
+- **Brands → Current Management seam** reads as intentional: hairline, generous space, then a
+  photograph after a logo ribbon.
+- **No image repeated.** Hero and this chapter use different source files and different outputs.
+- **63KB, lazy, no preload**, two image nodes in the section.
+- **The plum A/B was rendered before the decision**, and the test CSS was removed — the diff carries
+  no `!important` and no test rule.
+- **Nothing pushed, nothing deployed.**

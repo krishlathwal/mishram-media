@@ -4,7 +4,11 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { Arrow } from "@/components/ui/Arrow";
-import { MANAGEMENT, MANAGEMENT_AVATAR } from "@/config/management";
+import {
+  MANAGEMENT,
+  MANAGEMENT_AVATAR,
+  MANAGEMENT_FRAME,
+} from "@/config/management";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -55,8 +59,22 @@ export function CurrentManagement() {
 
       <div className="page-x relative pt-14 pb-14 sm:pt-20 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
         <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8">
+          {/* ── The evidence, and it leads ──────────────────────────────
+              Photograph first in the DOM and first on screen at every size.
+              The image *is* the argument this chapter makes, so it opens the
+              chapter on a phone exactly as it opens the left column on a
+              desktop — one reading order, not two.
+
+              `mb-14` rather than a top margin, and no `order-*`: below `lg`
+              the parent is a plain block, so `order` does nothing there and
+              the figure's caption would otherwise land a few pixels above the
+              chapter label and read as a collision. */}
+          <div className="mb-14 lg:col-span-5 lg:mb-0">
+            <RelationshipFrame />
+          </div>
+
           {/* ── The claim ───────────────────────────────────────────── */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6 lg:col-start-7">
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -65,8 +83,16 @@ export function CurrentManagement() {
               className="caps flex items-center gap-3 text-ink"
             >
               {/* A short teal rule instead of a chapter index — the interlude
-                  grammar the Difference and Client Notes already use. */}
-              <span aria-hidden className="block h-px w-6 shrink-0 bg-accent" />
+                  grammar the Difference and Client Notes already use.
+                  The dot beside it is the status marker: the same teal point
+                  the header already uses, and the whole of the "this is
+                  current" signal. **No "LIVE", no "SIGNED", no "EXCLUSIVE"** —
+                  the label says Current Management and the sentence says
+                  currently manages; none of the rest is supported. */}
+              <span aria-hidden className="flex shrink-0 items-center gap-2">
+                <span className="block h-1.5 w-1.5 rounded-full bg-accent" />
+                <span className="block h-px w-5 bg-accent" />
+              </span>
               {MANAGEMENT.label}
             </motion.p>
 
@@ -96,13 +122,46 @@ export function CurrentManagement() {
               viewport={{ once: true, margin: "-12% 0px" }}
               transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
             >
-              {/* The handle used to sit here in teal caps. It moved into the
-                  identity plate in Revision 17B, where it is the graphic and
-                  is set five times larger — printing it in both columns at the
-                  same eye level read as a duplication rather than as emphasis. */}
-              <p className="mt-6 max-w-[46ch] text-[clamp(0.9375rem,1.05vw,1.0625rem)] leading-[1.72] text-ink/72">
+              {/* THE BYLINE — handle and avatar together, Revision 30.
+                  Revision 17B set the handle at display scale because it was
+                  the only graphic the chapter had. The photograph is the
+                  graphic now, so the handle returns to what it actually is: a
+                  destination, next to the one image identified by the account
+                  itself rather than by a filename. Two provenances, one line. */}
+              <div className="mgt-byline">
+                <span className="mgt-avatar">
+                  <Image
+                    src={MANAGEMENT_AVATAR.src}
+                    alt={MANAGEMENT_AVATAR.alt}
+                    width={MANAGEMENT_AVATAR.width}
+                    height={MANAGEMENT_AVATAR.height}
+                    // 44px on screen, so the 150px source still covers 2x and
+                    // is never asked to do more than it can (§10u).
+                    sizes="44px"
+                    className="mgt-avatar-img"
+                  />
+                </span>
+                <span className="mgt-byline-text">
+                  <span className="mgt-handle-inline">{MANAGEMENT.handle}</span>
+                  <span className="caps mt-1 block text-ink-muted">
+                    {MANAGEMENT.plateNote}
+                  </span>
+                </span>
+              </div>
+
+              <p className="mt-7 max-w-[46ch] text-[clamp(0.9375rem,1.05vw,1.0625rem)] leading-[1.72] text-ink/72">
                 {MANAGEMENT.statement}
               </p>
+
+              {/* WHAT MISHRAM HANDLES. A hairline index, not KPI cards — every
+                  item is scope, and there is no figure anywhere on this page. */}
+              <ul className="mgt-scope">
+                {MANAGEMENT.scope.map((item) => (
+                  <li key={item} className="caps mgt-scope-item text-ink-soft">
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
               {/* Metrics render only when there are verified ones. Empty today,
                   and an empty array renders nothing at all — no placeholder
@@ -133,10 +192,6 @@ export function CurrentManagement() {
             </motion.div>
           </div>
 
-          {/* ── The identity plate ──────────────────────────────────── */}
-          <div className="mt-12 lg:col-span-6 lg:col-start-7 lg:mt-0">
-            <IdentityPlate />
-          </div>
         </div>
       </div>
     </section>
@@ -144,63 +199,53 @@ export function CurrentManagement() {
 }
 
 /**
- * THE IDENTITY PLATE — the handle as the graphic, the official avatar as the
- * verification mark.
+ * THE RELATIONSHIP FRAME — Revision 30, and the chapter's centre of gravity.
  *
- * The one image this project can trace to Akash Sagar is 150×150 (see
- * `MANAGEMENT_AVATAR`), so **it is rendered at 72px and the typography carries
- * the composition**. Nothing here is a placeholder for a photograph that is
- * coming: it is a complete editorial treatment of the evidence that exists,
- * built from the site's own hairline vocabulary — the same self-suppressing
- * discipline §06 and Client Notes apply to content they cannot verify.
+ * Revision 17B replaced a portrait composition with a typographic one because
+ * the only image traceable to Akash Sagar was a 150px avatar. That was the
+ * honest state of the evidence then. **A client-labelled photograph now
+ * exists**, so the chapter returns to what §10u said it would return to — and
+ * the note in `config/management.ts` that promised "the unblock is one file"
+ * turned out to be exactly right: one config export and one component.
  *
- * Deliberately **not** a social-profile card: no follower count, no verified
- * tick, no Instagram chrome, no gradient ring, no "Follow" button. The avatar
- * sits in the site's own square 3px frame with an `image-line` hairline, the
- * treatment every other photograph on this page already uses.
+ * **Both figures stay in frame.** The photograph is evidence of a working
+ * relationship, and the arm across the shoulder is the part that makes it
+ * evidence. Cropping to a solo portrait would delete the argument *and* assert
+ * which figure is which, which the client's label does not establish (§10u).
+ *
+ * The caption names what the image is, so it is never read as a commissioned
+ * portrait — the same discipline the avatar's `plateLabel` used.
+ *
+ * Below the fold, so `loading="lazy"` and **no preload**: this must not
+ * compete with the hero for the first megabyte (§16).
  */
-function IdentityPlate() {
+function RelationshipFrame() {
   return (
-    <motion.div
+    <motion.figure
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.95, delay: 0.12, ease: EASE }}
-      className="mgt-plate"
+      transition={{ duration: 0.95, ease: EASE }}
+      className="mgt-frame"
     >
-      {/* A teal corner marker rather than a border on all four sides — the
-          same restraint the interlude's rule uses instead of a chapter index. */}
-      <span aria-hidden className="mgt-plate-mark" />
+      {/* The teal corner marker the identity plate used to carry — the mark
+          moved with the composition rather than being dropped. */}
+      <span aria-hidden className="mgt-frame-mark" />
 
-      <div className="mgt-plate-head">
-        <span className="mgt-avatar">
-          <Image
-            src={MANAGEMENT_AVATAR.src}
-            alt={MANAGEMENT_AVATAR.alt}
-            width={MANAGEMENT_AVATAR.width}
-            height={MANAGEMENT_AVATAR.height}
-            // Rendered at 72px, so the 150px source covers 2x DPR exactly and
-            // is never asked to do more than it can. `sizes` is deliberately a
-            // fixed pixel value: this box does not scale with the viewport.
-            sizes="72px"
-            className="mgt-avatar-img"
-          />
-        </span>
+      <Image
+        src={MANAGEMENT_FRAME.src}
+        alt={MANAGEMENT_FRAME.alt}
+        width={MANAGEMENT_FRAME.width}
+        height={MANAGEMENT_FRAME.height}
+        loading="lazy"
+        sizes="(min-width: 1024px) 38vw, 92vw"
+        className="mgt-frame-img"
+      />
 
-        <span className="mgt-plate-caption caps text-ink-muted">
-          {MANAGEMENT.plateLabel}
-        </span>
-      </div>
-
-      {/* The handle is the graphic. It is distinctive, it is the thing a brand
-          partner will search for, and it is set at display scale for exactly
-          that reason — the name is already the headline in the column left. */}
-      <p className="mgt-handle font-display text-ink">{MANAGEMENT.handle}</p>
-
-      <p className="mgt-plate-note caps text-ink-muted">
-        {MANAGEMENT.plateNote}
-      </p>
-    </motion.div>
+      <figcaption className="mgt-frame-caption caps text-ink-muted">
+        {MANAGEMENT.frameCaption}
+      </figcaption>
+    </motion.figure>
   );
 }
 
