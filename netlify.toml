@@ -1,20 +1,39 @@
-# Netlify build configuration.
+# Netlify build configuration — NEUTRALISED. THIS SITE DEPLOYS ON VERCEL.
 #
-# WHY THIS FILE EXISTS. The site was created through the Netlify API rather than
-# the UI's new-project flow, so the Next.js Runtime was never attached to it and
-# the first deploy published the raw `.next` directory as static files — every
-# route 404'd because `/` was sitting at `/server/app/index.html`. Declaring the
-# runtime here fixes it for this deploy and every future one, and keeps the
-# build configuration in version control rather than in dashboard state.
+# ── READ THIS BEFORE RE-ENABLING ANYTHING ──────────────────────────────────
 #
-# `@netlify/plugin-nextjs` is Netlify's **current** Next.js Runtime (v5), not one
-# of the superseded community plugins. It is what the UI installs automatically
-# when it detects Next.js.
+# Mishram Media is served from Vercel (project `mishram-media`, team
+# `silksora`, §17b). `mishram.media` and `www.mishram.media` are attached
+# there and nowhere else — verified in Revision 41 against the Netlify API:
+# the legacy site `magical-naiad-871d41` (`d41f4d3c-…`) carries
+# **`custom_domain: null` and no domain aliases**, so it cannot serve this
+# domain and never could take it down.
 #
-# The app is NOT statically exported: `/api/inquiry` is a real route handler and
-# the runtime is what serves it (§10h).
+# What it *can* still do is build. Its `build_settings` point at
+# `github.com/krishlathwal/mishram-media`, branch `main`, so every push runs a
+# second, pointless pipeline on a second host — the exact half-state §17b asked
+# somebody to decide about rather than leave lying around.
+#
+# **`ignore` is the decision, taken in the repository.** Netlify runs this
+# command before a build and cancels the build when it exits `0`. So the legacy
+# site stays exactly as it is — same deploys, same history, same subdomain,
+# nothing deleted — and simply stops rebuilding from this repository.
+#
+# The file is kept rather than deleted on purpose: removing it would not stop
+# the build, it would only make Netlify auto-detect Next.js and publish again.
+#
+# **To bring Netlify back**, delete the `ignore` line and restore the runtime
+# block preserved below. To disconnect it permanently instead, use *Stop builds*
+# or *Unlink repository* in the Netlify UI — one toggle, and the only step that
+# needs an account action rather than a commit.
 
 [build]
+  # Cancel every Netlify build. See above.
+  ignore = "exit 0"
+
+  # Preserved from the original configuration, and correct if Netlify is ever
+  # re-enabled: the app is NOT statically exported — `/api/inquiry` is a real
+  # route handler and the Next.js Runtime is what serves it (§10h).
   command = "npm run build"
   publish = ".next"
 

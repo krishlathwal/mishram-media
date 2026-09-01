@@ -123,7 +123,10 @@ export async function POST(request: Request) {
   const id = data.id as string;
 
   // ── 2. NOTIFY ────────────────────────────────────────────────────────────
-  const outcome = await notify(value);
+  // The attribution goes with it: whoever reads the inbox needs to know which
+  // page the brief came from and which campaign sent them, and re-deriving
+  // that from the Table Editor afterwards is the step nobody takes.
+  const outcome = await notify(value, attribution);
 
   // ── 3. RECORD WHAT THE NOTIFICATION DID ──────────────────────────────────
   // Awaited rather than fired and forgotten: a promise left dangling on a
@@ -196,7 +199,10 @@ function rowFor(value: InquiryPayload, attribution: InquiryAttribution) {
  * time this runs the lead is already captured and nothing here is allowed to
  * turn that into a failure.
  */
-async function notify(value: InquiryPayload): Promise<EmailOutcome> {
+async function notify(
+  value: InquiryPayload,
+  attribution: InquiryAttribution,
+): Promise<EmailOutcome> {
   const apiKey = process.env.RESEND_API_KEY;
   // The published address is the sensible default recipient; the sender has no
   // default, because it needs a domain verified with the provider and pretending
@@ -219,7 +225,7 @@ async function notify(value: InquiryPayload): Promise<EmailOutcome> {
         // So a reply from the inbox goes straight to the person who wrote in.
         reply_to: value.email,
         subject: subjectFor(value),
-        text: bodyFor(value),
+        text: bodyFor(value, attribution),
       }),
     });
 
@@ -267,12 +273,38 @@ function subjectFor(value: InquiryPayload): string {
   return `Project inquiry — ${value.name} · ${what}`;
 }
 
-/** Plain text. An inquiry is something to read and reply to, not a newsletter. */
-function bodyFor(value: InquiryPayload): string {
+/**
+ * Plain text. An inquiry is something to read and reply to, not a newsletter.
+ *
+ * **The attribution block is the half this was missing.** The row carries
+ * `page_path`, `referrer` and five UTMs; the email carried none of them, so
+ * anyone replying from the inbox could not tell a cold homepage visit from a
+ * campaign click without opening the Table Editor. It renders only when there
+ * is something in it — a direct visit prints no empty headings.
+ *
+ * **What is deliberately absent, and it is a list.** No IP address, no user
+ * agent, no cookie, no session or GA client id, no request header and no
+ * database id. None of those is collected (the table does not have columns for
+ * them), and a notification is not the place to start.
+ */
+function bodyFor(
+  value: InquiryPayload,
+  attribution: InquiryAttribution,
+): string {
   const row = (label: string, v: string) => (v ? `${label}: ${v}` : null);
 
+  const context = [
+    row("Page", attribution.pagePath),
+    row("Referrer", attribution.referrer),
+    row("Campaign source", attribution.utm_source),
+    row("Campaign medium", attribution.utm_medium),
+    row("Campaign", attribution.utm_campaign),
+    row("Campaign content", attribution.utm_content),
+    row("Campaign term", attribution.utm_term),
+  ].filter((line) => line !== null);
+
   return [
-    "New project inquiry from the Mishram Media homepage.",
+    "New project inquiry from the Mishram Media website.",
     "",
     row("Name", value.name),
     row("Email", value.email),
@@ -284,6 +316,7 @@ function bodyFor(value: InquiryPayload): string {
     "",
     "Project:",
     value.message,
+    ...(context.length > 0 ? ["", "Where it came from:", ...context] : []),
   ]
     .filter((line) => line !== null)
     .join("\n");
