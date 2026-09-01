@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 
 import { useContact } from "@/components/contact/ContactProvider";
 import { Arrow } from "@/components/ui/Arrow";
-import { ABOUT_PAGE_COPY } from "@/config/about-page";
-import { BRAND } from "@/config/site";
+import { ABOUT_PAGE_COPY, ABOUT_PERSON } from "@/config/about-page";
+import { BRAND, SOCIAL_URLS } from "@/config/site";
+import { onTrackedClick } from "@/lib/analytics";
 
 import { AboutSection, EASE } from "./AboutSection";
 
@@ -27,6 +29,103 @@ import { AboutSection, EASE } from "./AboutSection";
  * **`INDIA` is the only locator**, for the reason §10f records: the old site
  * contradicts itself on every city it names.
  */
+/**
+ * ONE NAMED HUMAN, in the chapter about the present tense.
+ *
+ * The page argues by provenance — dates, records, portraits, a recognition —
+ * and until Revision 37 the one thing it could not show was a person. §10f
+ * wrote the unblock five revisions ago: *"A genuine agency or BTS photograph
+ * would slot into the right column if the client supplies one."*
+ *
+ * **A name, an entity and a link. No title, and no biography.** The whole of
+ * the reasoning, including every source that was searched, is at
+ * `ABOUT_PERSON` in `config/about-page.ts` — read it before adding a word.
+ * `role` is rendered only if it is ever set, so confirming the title is a
+ * one-line config edit rather than a component change.
+ *
+ * **It sits in the left column's own headroom**, which is the §10ak move: the
+ * chapter's height was set by the body paragraphs on the right while the left
+ * held a headline and a locator with a third of a column empty beneath them.
+ * That is what makes a real portrait affordable here.
+ */
+function Person() {
+  const href = SOCIAL_URLS.linkedin;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12% 0px" }}
+      transition={{ duration: 0.85, delay: 0.18, ease: EASE }}
+      className="mt-12 flex items-end gap-6 sm:gap-7"
+    >
+      {/* The width lives on this wrapper, never on `.abt-frame` itself —
+          `.abt-frame` is `width: 100%` in globals.css, so a width utility on
+          it is overridden and the portrait silently fills the whole column.
+          That happened once and it took the name block's width with it. */}
+      <div className="w-[8.5rem] shrink-0 sm:w-[10rem] lg:w-[11.5rem]">
+        <span
+          className="abt-frame block"
+          style={{ aspectRatio: "3 / 4" }}
+        >
+          <Image
+            src={ABOUT_PERSON.image}
+            alt={ABOUT_PERSON.alt}
+            fill
+            // Measured against the wrapper: 136px below sm, 160px to lg, 184px above.
+            sizes="(max-width: 639px) 136px, (max-width: 1023px) 160px, 184px"
+            className="abt-photo object-cover"
+          />
+        </span>
+      </div>
+
+      <div className="pb-1">
+        <p className="font-display text-[clamp(1.05rem,1.35vw,1.3rem)] leading-[1.15] font-medium tracking-[-0.025em] text-ink">
+          {ABOUT_PERSON.name}
+        </p>
+
+        {/* Renders only if the client ever confirms the title. Absent today,
+            and absent deliberately — see ABOUT_PERSON. */}
+        {ABOUT_PERSON.role ? (
+          <p className="caps mt-2.5 text-ink-muted">{ABOUT_PERSON.role}</p>
+        ) : null}
+
+        <p className="caps mt-2.5 text-ink-muted">{ABOUT_PERSON.context}</p>
+
+        {href ? (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${ABOUT_PERSON.name} on ${ABOUT_PERSON.linkLabel}`}
+            // The existing vocabulary, reused. No new GA event was added.
+            onClick={onTrackedClick({
+              name: "social_outbound",
+              platform: "linkedin",
+              context: "about_person",
+            })}
+            className="group mt-5 inline-flex items-center gap-2 text-[0.8125rem] font-medium text-ink"
+          >
+            <span className="relative">
+              {ABOUT_PERSON.linkLabel}
+              <span
+                aria-hidden
+                className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+              />
+            </span>
+            <span aria-hidden className="block h-3 w-3 overflow-hidden">
+              <Arrow
+                size={12}
+                className="-rotate-45 transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-4 group-hover:-translate-y-4"
+              />
+            </span>
+          </a>
+        ) : null}
+      </div>
+    </motion.div>
+  );
+}
+
 export function AboutNow() {
   const { openContact } = useContact();
   const copy = ABOUT_PAGE_COPY.now;
@@ -79,17 +178,7 @@ export function AboutNow() {
             ))}
           </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-12% 0px" }}
-            transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
-            className="caps mt-12 flex items-center gap-3 text-ink-muted"
-          >
-            <span aria-hidden className="block h-px w-4 bg-line-strong" />
-            {copy.locatorLabel}
-            <span className="text-ink">{BRAND.locator}</span>
-          </motion.p>
+          <Person />
         </div>
 
         <motion.div
@@ -109,6 +198,24 @@ export function AboutNow() {
               {para}
             </p>
           ))}
+
+          {/* The locator moved here from the left column in Revision 37, and
+              it was a measurement rather than a preference: once the portrait
+              landed, the left column ran 243px past the right and the chapter
+              was 145px taller than it needed to be. Under the body it also
+              closes the chapter instead of interrupting it, which is the
+              better stacked reading order below `lg`. */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-12% 0px" }}
+            transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
+            className="caps mt-12 flex items-center gap-3 text-ink-muted"
+          >
+            <span aria-hidden className="block h-px w-4 bg-line-strong" />
+            {copy.locatorLabel}
+            <span className="text-ink">{BRAND.locator}</span>
+          </motion.p>
         </motion.div>
       </div>
 

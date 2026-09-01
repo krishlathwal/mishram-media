@@ -266,6 +266,43 @@ const SHOTS = [
   { name: "abt-board-1440", w: 1440, h: 900, scheme: "dark", path: "/about" },
   { name: "abt-record-1440", w: 1440, h: 900, scheme: "dark", path: "/about", selector: "#on-the-record" },
   { name: "abt-board-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about" },
+
+  /* ── Phase 10 — About, and the human behind the work ────────────────────
+     The homepage preview and the dedicated route. Section order read off
+     `app/page.tsx`: 06 / Recognition sits above the homepage About chapter
+     and Project Inquiry below it. */
+  { name: "hab-1440-light", w: 1440, h: 900, scheme: "light", selector: "#about" },
+  { name: "hab-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#about" },
+  { name: "hab-1280", w: 1280, h: 800, scheme: "dark", selector: "#about" },
+  { name: "hab-1024", w: 1024, h: 768, scheme: "dark", selector: "#about" },
+  { name: "hab-768", w: 768, h: 1024, scheme: "dark", selector: "#about" },
+  { name: "hab-430", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#about" },
+  { name: "hab-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#about" },
+  { name: "hab-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#about" },
+  { name: "hab-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#about" },
+
+  { name: "seam-rcg-hab", w: 1440, h: 900, scheme: "dark", selector: "#about", pad: 380 },
+  { name: "seam-hab-inq", w: 1440, h: 900, scheme: "dark", selector: "#project-inquiry", pad: 380 },
+  { name: "seam-rcg-hab-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#about", pad: 300 },
+
+  /* The dedicated route: every viewport, plus each narrative beat on its own
+     so the page can be judged without scrolling a 10,000px capture. */
+  { name: "abt-1440-light", w: 1440, h: 900, scheme: "light", path: "/about" },
+  { name: "abt-1440-dark", w: 1440, h: 900, scheme: "dark", path: "/about" },
+  { name: "abt-1024", w: 1024, h: 768, scheme: "dark", path: "/about" },
+  { name: "abt-768", w: 768, h: 1024, scheme: "dark", path: "/about" },
+  { name: "abt-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: "/about" },
+  { name: "abt-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about" },
+  { name: "abt-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: "/about" },
+
+  { name: "abt-origin-1440", w: 1440, h: 900, scheme: "dark", path: "/about", selector: "#origin" },
+  { name: "abt-now-1440-dark", w: 1440, h: 900, scheme: "dark", path: "/about", selector: "#now" },
+  { name: "abt-now-1440-light", w: 1440, h: 900, scheme: "light", path: "/about", selector: "#now" },
+  { name: "abt-now-1024", w: 1024, h: 768, scheme: "dark", path: "/about", selector: "#now" },
+  { name: "abt-now-768", w: 768, h: 1024, scheme: "dark", path: "/about", selector: "#now" },
+  { name: "abt-now-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about", selector: "#now" },
+  { name: "abt-now-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: "/about", selector: "#now" },
+  { name: "abt-now-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: "/about", selector: "#now" },
 ];
 
 const only = process.argv.slice(3);

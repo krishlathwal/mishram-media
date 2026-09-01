@@ -4142,6 +4142,13 @@ The full list with sources is at the head of `config/about-page.ts`. The load-be
   `employee` array; the content-migration audit classified all four **B — needs current
   confirmation**. Publishing a historical employment record as a current one is exactly what §1
   forbids. The founder is the best-evidenced of the four and is still not named.
+  > **PARTLY SUPERSEDED BY §10ao (Revision 37) — and the half that changed is not the half you would
+  > expect.** The page now carries **one named human**: `Prashant Mishra`, a client-named photograph,
+  > an entity line and a LinkedIn link, in the `now` chapter. **NO FOUNDER, NO TITLE AND NO TEAM
+  > still hold exactly as written** — the role was searched across every first-party source and stays
+  > **HELD** (P31), the other three names stay unpublished, and there is no team grid. What changed is
+  > that a *name and a face* are publishable on the client's own filename evidence, while a *title* is
+  > not.
 - **NO CITY, OFFICE OR ADDRESS.** `INDIA` only (§10f).
 - **NO SCALE CLAIMS.** No client, creator, campaign or head count; no years-in-business, reach or
   revenue; not the old homepage's "1000+ influencers".
@@ -5929,6 +5936,9 @@ site's **only campaign photograph** — a frame from Mishram's own proposal deck
 §05, both first-party and both carrying a legible brand already on the rail (§10am),
 `public/media/proof/xbhandesiri-reel-performance.webp` (560×950, the Reel-performance capture from
 Mishram's own proposal — the site's only screenshot of a third-party platform, §10ak),
+`public/media/about/prashant-mishra.webp` (900×1200, the `/about` `now` chapter's one named human —
+a 3:4 crop of the client-named `WEBSITE SHORTLIST/Prashant Mishra.jpeg`, orientation 6 so `.rotate()`
+first. **`/about` only**, and **no title is published beside it**, §10ao),
 `public/brand/mishram-wordmark.png` (used as a CSS mask so it inherits `currentColor`). Everything is
 local — nothing is hotlinked.
 
@@ -6231,6 +6241,36 @@ section asked for — see §10v.
 ## 18. Do NOT redesign
 
 Approved and locked. Extend, don't rebuild:
+
+- **Revision 37’s decisions (§10ao) — awaiting review, then locked.**
+  - **PRASHANT MISHRA IS A NAME, NOT A TITLE.** *Founder & Chief Marketing Officer* exists in
+    Mishram’s own former markup in three places, is corroborated **only as “Founder” and only
+    partially**, and is classified **B — needs current confirmation**. §10r’s *“NO TEAM AND NO
+    FOUNDER”* is **not reversed**. **Do not add Founder, CEO, Managing Director, Creative Director or
+    Owner** because it sounds natural — the unblock is one client sentence and one line,
+    `ABOUT_PERSON.role`.
+  - **No biography, ever, without a first-party source.** No years of experience, education,
+    achievements, brand count, “visionary founder”, “serial entrepreneur” or “industry leader”.
+  - **NO TEAM GRID.** Three further names sit in the old `employee` array, all **B**, none
+    corroborated, every headshot a placeholder GIF. **One evidenced person does not make a team
+    section**, and a team section with one filled slot is worse than none.
+  - **`PRASHANT SIR - PICTURES/` is `IDENTITY UNKNOWN`, all seven files.** A folder name says whose
+    folder it is, not who is in the frame (§18 rule 7). **Do not publish any of them as Prashant
+    Mishra**; several also carry unidentified third-party brands. Only the client-named
+    `WEBSITE SHORTLIST/Prashant Mishra.jpeg` has identity.
+  - **The portrait lives on `/about` only.** Not the homepage About preview, not the Hero, Current
+    Management, Creators, Selected Work, Recognition or any service page. One identified photograph
+    on two surfaces is the same-file repeat Revision 31 spent a phase removing.
+  - **The homepage About preview stays a preview.** It was inspected this phase and deliberately not
+    changed; §10f’s test still governs — *if it needs to say more, `/about` is not doing its job.*
+  - **`.abt-frame` is `width: 100%`.** A width utility on it is silently overridden — put the width
+    on a wrapper. This cost a capture.
+  - **The LinkedIn URL is written once**, in `SOCIAL_URLS`. The About click reuses the existing
+    `social_outbound` event with a `context`; **no new GA event was added and none should be.**
+  - **No metric on either About surface**, no fourth chronology moment, no 2026, and `INDIA` stays
+    the only locator.
+  - **PLUM IS SETTLED.** Five real surfaces across four phases, no home. **Do not test it again**
+    without a new argument; the token stays declared and unused.
 
 - **Revision 36’s decisions (§10an) — awaiting review, then locked.**
   - **`NUFEW` is still never expanded, and the reason is now stronger rather than weaker.** The
@@ -10086,4 +10126,176 @@ must re-check both.
   1024 and 768 is the pre-existing brands marquee registered for Phase 12.
 - **No name, rank, jurisdiction or expansion was added**, and no second award was invented.
 - **No dependency, no new analytics event, no `globals.css` change.**
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## 10ao. FINAL POLISH PHASE 10 — ABOUT, AND THE PERSON BEHIND THE WORK (Revision 37)
+
+**Nothing was deployed.** Production still serves Revision 27. The full audits, the register and the
+ledger are in `docs/FINAL-POLISH-ROADMAP.md`; this records the decisions.
+
+### 1 — THE ROLE QUESTION WAS SEARCHED, NOT GUESSED — AND THE ANSWER IS NO TITLE
+
+The phase turns on one decision: does a title go next to the name? Every first-party source the
+project holds was checked first.
+
+| Source | Says |
+| --- | --- |
+| Old site `about.html:1347` (visible team block), `:101-104` (schema `employee`), `llms.txt` | **Founder & Chief Marketing Officer** |
+| **`@filmybande`** — Mishram's *current* public Instagram (§10s) | publicly **"Prashant mishra"**, bio *"Talent Management"*, `mishram.media` highlight |
+| **`SOCIAL_URLS.linkedin`** — supplied by the client in Revision 16 | `linkedin.com/in/**prashant-mishra-mishram-media**` |
+| The first-party proposal deck, nine pages | **no role for anybody** |
+
+**The title is first-party and historical.** The migration audit's verdict is exact and still stands —
+*"'Founder' and 'CMO' are separate claims and only the first is corroborated"*, classified **B,
+needs current confirmation** — and §10r locked **NO TEAM AND NO FOUNDER** because publishing a
+historical employment record as a current one is what §1 forbids.
+
+**Nothing found this phase changes that, so nothing here reverses it.** The two *current* sources
+corroborate that he is the person Mishram's public channels run through — the agency's own Instagram
+is an account publicly named "Prashant mishra", and the agency's own LinkedIn is his personal
+profile — and **neither states a title.**
+
+> **PRASHANT PUBLIC ROLE FOUND IN FIRST-PARTY SOURCES: NO VERIFIED CURRENT ROLE.**
+> The site publishes **the name, an entity line and a real link. No title.** Registered as **P31**.
+
+**The unblock is one line** — `ABOUT_PERSON.role` in `config/about-page.ts`. The component already
+renders it, so confirming the title is a config edit, not a design change. **Do not add "Founder" on
+the grounds that it sounds natural.**
+
+### 2 — ONE PHOTOGRAPH IS USABLE, AND THAT IS RULE 7 DOING ITS JOB
+
+**`WEBSITE SHORTLIST/Prashant Mishra.jpeg` is the only Prashant photograph the project may use.**
+
+`Prashant - data/PRASHANT SIR - PICTURES/` holds seven further stills, reserved for this phase since
+Revision 31. All seven were inventoried and **all seven are `IDENTITY UNKNOWN`** under §18 rule 7 —
+*a folder name says whose folder it is, not who is in the frame.* Several independently carry
+unidentified third-party brands (a cinema lobby, a fast-food interior, an unidentified product
+carton), one is a masked subject who cannot be attributed at all, and one is a screenshot of a
+photograph.
+
+So the plan's preferred two-photograph allocation was **not available**, and its own fallback is what
+shipped: one photograph, on the dedicated route only.
+
+**Orientation was handled, not assumed.** The source is stored **8064×6048 with EXIF orientation 6**;
+`.rotate()` is called first and the output's pixel orientation was verified. §10af's gotcha, still
+live.
+
+### 3 — THE CROP WAS CHOSEN BY LOOKING
+
+`public/media/about/prashant-mishra.webp` — **900×1200, 77.8KB**, 3:4, `extract{1616, 2200,
+2600×3467}` of the rotated original. **Pure crop and downscale**: nothing retouched, recoloured,
+enhanced, relit, background-replaced or generated.
+
+**A full-length environmental 4:5 was rendered first and rejected** — the styled set's yellow
+dominated the figure, and at section scale it would have repeated Phase 09's retired-banner problem:
+a bright flat field taking over an obsidian page. **3:4 head-to-lap makes the person the subject and
+the set context**, and 3:4 is the aspect §10b already established as this site's portrait crop.
+
+**The sunglasses and the set stay.** They are in the photograph, and the alternative is the nothing
+this page had for five revisions.
+
+### 4 — WHERE IT WENT, AND WHAT PAID FOR IT
+
+**`/about` → the `now` chapter** — the present-tense chapter, and the right home for someone who is
+here today. Not the hero board (§18 locks its five fragments as five separate chapters), not `origin`
+(that files him as history), not `on the record` (that files a person under evidence).
+
+**It sits in the left column's own headroom**, the §10ah / §10ak move: the chapter's height was set by
+the body paragraphs on the right while the left held a headline and a locator over a third of an
+empty column.
+
+**Then a measured correction.** With the portrait in, the left column ran **243px past the right**.
+Moving the `WHERE WE WORK · INDIA` locator to the foot of the **right** column balanced them, **took
+59px back**, and reads better in both layouts — the locator now closes the chapter instead of
+interrupting it before the body.
+
+**§10f's note came due**, the third time in this programme that a line written under the worst-case
+constraint made an unblock cheap: *"A genuine agency or BTS photograph would slot into the right
+column if the client supplies one."*
+
+### 5 — THE HOMEPAGE ABOUT PREVIEW WAS INSPECTED AND DELIBERATELY NOT CHANGED
+
+**`config/about.ts` and `components/about/About.tsx` are untouched, and the homepage is
+byte-identical at all six viewports.** Four reasons:
+
+1. **Only one identified photograph exists and it is allocated to `/about`.** The same file on both
+   surfaces is the same-file repeat Revision 31 spent a phase removing for `zoya-jaan.webp`.
+2. **The preview already carries the positioning.** *"a creative growth and digital agency working
+   with brands, businesses and established Indian creators — social, influencer marketing,
+   performance and digital experiences"* — it is **not** described as an influencer agency, and its
+   history line already carries the creator-first → broader-practice arc.
+3. **§10f wrote the test**: *"If this chapter needs to say more, that is a signal `/about` is not
+   doing its job."* `/about` now does it better — an argument for leaving the preview alone.
+4. A human module here would add homepage height for a claim the page one click away now makes with
+   a photograph.
+
+Recorded as a deliberate no-change, like Phase 04's Service 01 scene and Phase 07's featured stage.
+
+### 6 — WHAT IS NEVER SAID
+
+No title · no biography, years of experience, education or achievements · **no team grid** (three
+further names sit in the old `employee` array, all **B**, none corroborated, every headshot a
+placeholder GIF — one evidenced person does not make a team section) · no city, office or address,
+`INDIA` only and not beside the person · **no metric** (`100+`, `500+`, `1,000+`, `130M+`, `40M+`,
+follower counts, the Reel screenshot and any second rendering of the award are all absent from both
+About surfaces) · **no fourth chronology moment**, no 2026, no "today" milestone for balance · and
+**no role in the alt text**.
+
+### 7 — RECOGNITION, RE-VERIFIED RATHER THAN ASSUMED
+
+`/about` reads `RECOGNITION_ITEMS[0]` in two places, so Revision 36's award swap reaches this route.
+**Both were captured again and both are correct** — the archive board's 4:3 fragment and the
+`on the record` chapter's record-scale frame, wording unchanged. **No crop or layout issue, so no fix
+was made.** The **`NUFEW` / `NUFW` discrepancy stays held exactly as Revision 36 left it** (P28):
+not resolved, not expanded, not touched.
+
+### 8 — PLUM: NOT TESTED, AND THAT IS THE DECISION
+
+Four phases have rendered `#4c3660` on real surfaces — the global canvas, the Brands rail, Current
+Management, the Quick Proof band and Recognition — and none found a home, including the award chapter
+it was explicitly saved for. **No further test was run in Phase 10**, deliberately: the evidence is
+sufficient and another QA cycle would re-derive a settled answer. **PLUM REMAINS DECLARED AND
+UNUSED.**
+
+### 9 — MEASURED
+
+| | Before | After |
+| --- | --- | --- |
+| **`/about`, 1440×900** | 10,731px | **10,897px (+166, +1.5%)** |
+| `/about` at 1280 / 1024 / 768 / 430 / 390 | 10,489 / 10,072 / 12,965 / 13,385 / 13,424 | **10,653 / 10,191 / 13,226 / 13,615 / 13,654** |
+| `#now`, 1440 | 708px | **874px (+166)** |
+| The other seven `/about` chapters | — | **byte-identical, all seven** |
+| **Homepage, every viewport** | 17,787 / 16,739 / 13,969 / 17,437 / 18,401 / 18,070 | **identical** |
+| Homepage `#about` | 718px | **718px** |
+| `/about` images · lazy · **eager · preload** | 8 · 7 · **1 · 1** | 9 · 8 · **1 · 1 — unchanged** |
+| Homepage images · lazy · eager · preload | 23 · 23 · 0 · 0 | **unchanged** |
+| New asset | — | **77.8KB on disk, 17.9KB delivered** |
+
+**The whole change is contained in one chapter**, which the seven unchanged section heights prove.
+**No eager image and no preload were added** — §24 asked for a measurement before deciding whether a
+portrait justified one, and it does not: the route's single eager image is still the archive board's
+dominant creator fragment, and the person sits ~9,000px down the page.
+
+### 10 — TWO DEFECTS CAUGHT IN CAPTURE, NEITHER VISIBLE TO MEASUREMENT
+
+§10q's lesson, earning its place again:
+
+1. **`.abt-frame` is `width: 100%` in `globals.css`**, so a width utility on it is overridden. The
+   portrait silently filled the whole column at ~530px and took the name block's width with it.
+   **The width belongs on a wrapper** — and the reason is now written beside it.
+2. **The left column then overran the right by 243px.** Fixed by moving the locator, not by shrinking
+   the photograph.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static.
+- **Thirty-two real composited captures** — `/about` at six viewports plus reduced motion, the `now`
+  chapter at seven, the `on the record` chapter, the homepage preview at nine, both homepage seams,
+  three baselines and four intermediates.
+- **No face was compared, matched or recognised**, and no role reached the copy or the alt text.
+- **No dependency, no new analytics event, no `globals.css` change** — the LinkedIn click reuses the
+  existing `social_outbound` vocabulary with a new `context`, and the URL comes from
+  `SOCIAL_URLS.linkedin` rather than being written a second time.
 - **Nothing pushed, nothing deployed.**
