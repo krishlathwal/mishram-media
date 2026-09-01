@@ -6242,6 +6242,27 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 38’s decisions (§10ap) — awaiting review, then locked.**
+  - **THE HOMEPAGE ORDER IS FINAL.** Hero → Brands → Current Management → Quick Proof → What We Do →
+    The Mishram Difference → Creators → Work Process → Selected Work → Recognition → About → Project
+    Inquiry → Footer. It matches the intended narrative beat for beat and **nothing moved.** Do not
+    reorder without a proven narrative defect.
+  - **The Mishram Difference does not enumerate the disciplines.** `Strategy — Content — Creators —
+    Performance — Technology` is `WHAT_WE_DO_CLOSING`'s baseline, 124px above it. The lead says
+    *"The same disciplines…"* on purpose — **do not restore the list**, and do not "improve" the lead
+    by naming them again.
+  - **The page has exactly two filled primary CTAs** — `Book a 15-Min Call` (Hero) and `Send project
+    brief` (Inquiry). A third would break the hierarchy §13 sets.
+  - **Boundary spacing is the design system, not slack.** §10i settled this at Revision 06; Revision
+    38 re-measured it and agreed. **Do not trim section padding to shorten the page.**
+  - **A scroll sweep can step over a `whileInView` trigger.** `MOMENTUM` at the foot of the Difference
+    chapter reads `opacity: 0` under an 0.8×viewport sweep and `opacity: 1` when its foot is centred.
+    **Verify a "missing" element with the foot in view before calling it a defect** — three separate
+    padding findings in this phase were this artifact.
+  - **A grep does not prove a CSS class unused.** Twelve `--a/--b/--c/--d` drift modifiers look dead
+    to a text search and are built by template interpolation. **Do not delete a selector without
+    checking for dynamic construction.**
+
 - **Revision 37’s decisions (§10ao) — awaiting review, then locked.**
   - **PRASHANT MISHRA IS A NAME, NOT A TITLE.** *Founder & Chief Marketing Officer* exists in
     Mishram’s own former markup in three places, is corroborated **only as “Founder” and only
@@ -10298,4 +10319,118 @@ dominant creator fragment, and the person sits ~9,000px down the page.
 - **No dependency, no new analytics event, no `globals.css` change** — the LinkedIn click reuses the
   existing `social_outbound` vocabulary with a new `context`, and the URL comes from
   `SOCIAL_URLS.linkedin` rather than being written a second time.
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## 10ap. FINAL POLISH PHASE 11 — HOMEPAGE RHYTHM AND INFORMATION HIERARCHY (Revision 38)
+
+**Nothing was deployed.** Production still serves Revision 27. The full audit, the section table and
+the observation ledger are in `docs/FINAL-POLISH-ROADMAP.md`; this records the decisions.
+
+### 1 — THE PAGE WAS ALREADY BALANCED, AND SIX TESTS SAY SO
+
+This phase read the homepage as one editorial experience rather than a set of good sections, and
+found **one** defect worth fixing. That is the honest result, not a thin one:
+
+| Test | Result |
+| --- | --- |
+| Section order vs. the narrative test | **Exact match, all twelve beats.** Nothing moved |
+| Inter-section gaps | **0px at every boundary, every viewport** |
+| Boundary empty runs at 1440 | 154–341px around §10i's recorded **256px** standard — and both >320 readings were instrument artifacts |
+| Client Notes dead space | **Zero** — `#client-notes` is absent from the DOM entirely |
+| CTA hierarchy | **Exactly two filled primaries** on the page |
+| Chapter numbering | `01`–`07`, no gaps, four unnumbered interludes. Consistent |
+
+**Total page length is unchanged: 17,787px at 1440, byte-identical at all six viewports.** There was
+no dead space to reclaim — every boundary is the design system's own padding scale (§10i settled
+that at Revision 06), and the single chapter over two viewports is the pinned What We Do track §18
+locks.
+
+### 2 — THE ONE CHANGE: A DISCIPLINE LIST PRINTED TWICE, 124px APART
+
+`WHAT_WE_DO_CLOSING.baseline` renders **`Strategy — Content — Creators — Performance — Technology`**
+at the foot of `02 / What We Do`. The very next section's lead read *"Creators, content, performance
+and technology working as one team, not four suppliers."* — **four of five words repeated verbatim,
+one boundary later**, with no new information between them. It also pulled the Mishram Difference
+toward answering *what Mishram does* when §10a gives it *why Mishram*.
+
+**Now:** *"The same disciplines, working as one team rather than four suppliers."*
+
+The claim is unchanged — *"working as one team"*, *"four suppliers"* and the **four** that anchors the
+argument all survive verbatim; only the enumeration became a reference to the enumeration, which
+turns a redundancy into a connective. Nothing is lost: the disciplines are named 124px above and
+again in the four numbered differentiator rows below. **Height-neutral at all six viewports.**
+
+`WHAT_WE_DO_CLOSING` was **not** touched — What We Do is locked, and the junior chapter is the one
+that should stop repeating.
+
+### 3 — THREE FINDINGS OBSERVED AND DELIBERATELY NOT ACTED ON
+
+- **Mobile Current Management opens with an unlabelled photograph**, so the chapter announces itself
+  ~600px late where every other chapter opens with its label. **Left:** Revision 30 chose *one
+  reading order at every size* deliberately after `order-*` proved inert in a block parent, and the
+  photograph carries its `WORKING RELATIONSHIP` caption immediately. Photo-then-label is a legitimate
+  editorial device, not a defect, and §18's bar for moving an approved composition is *materially*
+  better.
+- **Four consecutive chapters each close with a same-destination contextual action** under four
+  different labels. **Left:** each is individually approved, all four are small text actions rather
+  than buttons, and the two primaries remain uncontested.
+- **Selected Work's headline sits ~170px below its own label** at 1440. **Left:** the intro uses
+  `lg:items-end`, which Recognition and Creators use identically — it is the shared pattern meeting
+  the taller right column Revision 35 built for the 40M+ block. Changing one chapter would break the
+  consistency.
+
+### 4 — THE INSTRUMENT WAS WRONG THREE TIMES, AND ACTING ON IT WOULD HAVE DONE DAMAGE
+
+A boundary-padding probe was built to find dead space objectively. **Three of its findings were
+artifacts:**
+
+- `#difference` reported 216px of empty bottom padding. The foot actually carries the **`MOMENTUM`**
+  resolution, which computed to `opacity: 0` because a 0.8×viewport scroll sweep **steps over** its
+  `whileInView` trigger. Re-probed with the foot centred, it renders at `opacity: 1` at 1440 **and**
+  390 — a real visitor scrolls continuously and never misses it.
+- The two largest boundary runs (341px, 335px) were the same un-triggered-element error.
+- `#collaborations` reported 164px of empty bottom padding; that band is **the logo rail** — the
+  detector only walked text nodes.
+
+**§10q's lesson has a converse worth recording: geometry cannot clear a composition, and it cannot
+condemn one either.** Every conclusion in this phase was settled on a real composited capture.
+
+### 5 — ZERO CONTENT, ZERO MEDIA, ZERO CSS
+
+Image nodes **23 → 23**, lazy/eager/preload **23 / 0 / 0 unchanged**, canvases/videos **1 / 0
+unchanged**, DOM nodes **2,070 → 2,070**, **`globals.css` not modified at all**, no dependency. Brands,
+creators, metrics, award wording, campaign proof, the Prashant role restraint, services, history and
+contact data are all untouched.
+
+**No dead homepage CSS was removed, because none was proven dead.** A selector sweep flagged twelve
+`--a/--b/--c/--d` drift modifiers as unreferenced and **every one is live**, built by template
+interpolation (`` `svc-drift--${place.drift}` ``). **A grep does not prove a class unused.** The one
+genuinely unreachable selector found — `a.abt-svc-row .abt-arrow` — is `/about` CSS and is recorded
+for Phase 12 rather than touched here.
+
+### 6 — FIRST FIVE SCROLLS: PASSES, UNCHANGED
+
+Hero → Brands → Current Management → Quick Proof → What We Do. The four credibility layers stay
+distinct — a rail, a relationship, a set of figures, a capability track — with different eyebrows,
+different compositions and no repeated copy. A visitor who reads only these knows what Mishram does
+and where to enquire, which brands the work has run alongside, that a named creator is managed
+**today** with the account's own figures beside the screenshot they were read off, and the operating
+scale.
+
+### 7 — HANDED TO PHASE 12
+
+1. **The 1024 / 768 document overflow** — untouched by design. `scrollWidth` 1038 vs 1024, and 844 vs
+   768; Revision 33 proved it reproduces on live production, so it predates every final-polish phase.
+2. **`#collaborations` and `#proof` use their eyebrow label as the section `<h2>`**, where every
+   other chapter's `h2` is a real headline. Heading semantics belong to Phase 12.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static.
+- **Baseline:** all twelve seams at true 1440×900, four mobile outlier chapters whole, and a
+  **22-frame true-viewport read of the entire page at 390**.
+- **After:** the homepage at eight viewports plus reduced motion, and the changed seam at 1440 and
+  390.
 - **Nothing pushed, nothing deployed.**

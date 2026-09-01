@@ -24,7 +24,7 @@
 | **08** | **Selected Work / real campaign proof** | **Done — Revision 35** |
 | **09** | **Recognition / NUFEW award proof** | **Done — Revision 36** |
 | **10** | **About / Prashant Mishra / agency credibility** | **Done — Revision 37** |
-| 11 | Homepage length + information hierarchy | Not started |
+| **11** | **Homepage length + information hierarchy** | **Done — Revision 38** |
 | 12 | Global responsive / performance / accessibility polish | Not started |
 | 13 | Operational hardening | Not started |
 | 14 | Web & Digital Experiences final deep polish | Not started |
@@ -2353,3 +2353,202 @@ Project Inquiry, the Footer, Supabase, GA4, the legal documents and every servic
 which already existed. **No dependency, no new analytics event** — the LinkedIn click reuses the
 existing `social_outbound` with a new `context` value, and the URL comes from `SOCIAL_URLS.linkedin`
 rather than being written a second time.
+
+---
+
+## Revision 38 — Phase 11, homepage rhythm and information hierarchy
+
+### The verdict first: the page was already balanced, and the evidence says so
+
+This phase measured the whole homepage as one editorial experience and found **one** defect worth
+fixing. That is the honest outcome rather than a thin one — six independent tests all came back
+clean, and the plan's own §8 is explicit: *if the page is already well balanced, do not destroy it
+just to hit a percentage.*
+
+| Test | Result |
+| --- | --- |
+| **Section order vs. the narrative test** | **Exact match, all twelve beats.** Nothing moved |
+| **Inter-section gaps** | **0px at every boundary, every viewport.** No phantom space anywhere |
+| **Boundary empty runs at 1440** | 154–341px around §10i's recorded 256px standard (two `lg:py-32` meeting), and both >320 readings were instrument artifacts — see below |
+| **Client Notes dead space** | **Zero.** `#client-notes` is absent from the DOM entirely |
+| **CTA hierarchy** | **Exactly two filled primaries** on the whole page — `Book a 15-Min Call` (Hero) and `Send project brief` (Inquiry) |
+| **Chapter numbering** | `01`–`07` with no gaps; four unnumbered interludes each on a rule-plus-label. Consistent |
+
+### The one change: a discipline list printed twice, 124px apart
+
+`WHAT_WE_DO_CLOSING.baseline` renders **`Strategy — Content — Creators — Performance — Technology`**
+as the closing baseline of `02 / What We Do`. The very next section's lead read:
+
+> *"Creators, content, performance and technology working as one team, not four suppliers."*
+
+**Four of the five words, repeated verbatim, one boundary later** — 124px of empty run on desktop and
+about one screen on a phone. Same idea, adjacent sections, no new information between them, which is
+the precise case §29 exists to catch. It also pulled the Mishram Difference toward answering *what
+Mishram does* when its whole job is *why Mishram*.
+
+**Now:** *"The same disciplines, working as one team rather than four suppliers."*
+
+- **The claim is unchanged.** *"working as one team"*, *"four suppliers"* and the **four** that
+  anchors the argument all survive verbatim. Only the enumeration became a reference to the
+  enumeration.
+- **Nothing is lost.** The disciplines are named 124px above and again in the four numbered
+  differentiator rows below.
+- **It turns a redundancy into a connective** — the lead now points at the section it follows.
+- **Height-neutral at all six viewports**: the lead occupied two lines in its column before and
+  after, so `#difference` is byte-identical at 1440, 1280, 1024, 768, 430 and 390.
+
+**Reason: DUPLICATE COPY.** `WHAT_WE_DO_CLOSING` was not touched — §15 locks What We Do, and the
+junior chapter is the one that should stop repeating.
+
+### Three findings observed and deliberately not acted on
+
+Each has a reason, and each is recorded so the next session does not re-derive it.
+
+1. **Mobile Current Management opens with an unlabelled photograph.** At 390 the order is photo →
+   caption → chapter label → name, so the chapter announces itself ~600px late; every other chapter
+   opens with its label. **Not changed:** Revision 30 chose *one reading order at every size*
+   deliberately, after `order-*` proved inert in a block parent, and the photograph does carry its
+   `WORKING RELATIONSHIP` caption immediately. §5 requires the alternative to be *materially* better
+   before an approved composition moves, and photo-then-label is a legitimate editorial device rather
+   than a defect.
+2. **Four consecutive chapters each close with a same-destination contextual action** — Creators
+   *"Work with our creator network"*, Work Process *"Start a project"*, Selected Work *"Create with
+   us"*, Recognition *"Build something worth noticing"*. All four open the same contact panel under
+   four different labels. **Not changed:** each is individually approved, each is a small text action
+   rather than a button, the two *primary* CTAs remain uncontested, and §30 is explicit that useful
+   actions are not removed merely to simplify. Recorded as a density observation.
+3. **Selected Work's headline sits ~170px below its own chapter label** at 1440. **Not changed:** the
+   intro uses `lg:flex-row lg:items-end`, which is the *shared* pattern — Recognition and Creators
+   use the identical class list. The gap is that pattern meeting the taller right column Revision 35
+   built for the 40M+ block. Changing it for one chapter would break the consistency §31/§32 ask to
+   preserve.
+
+### The instrument was wrong three times, and that is worth writing down
+
+A boundary-padding probe was built to find dead space objectively. **Three of its findings were
+artifacts, and acting on any of them would have damaged the page:**
+
+- It reported `#difference` with 216px of empty bottom padding. The foot actually carries the
+  **`MOMENTUM`** resolution — which computed to `opacity: 0` because a 0.8×viewport scroll sweep
+  *steps over* its `whileInView` trigger. Re-probed with the chapter's foot centred, **`Momentum`
+  renders at `opacity: 1` at both 1440 and 390.** A real visitor scrolls continuously and never
+  misses it.
+- It reported the two largest boundary runs at `difference → creators` (341px) and `process → work`
+  (335px). Both were the same un-triggered-element error; the seam captures show both boundaries
+  sitting at the standard.
+- It reported `#collaborations` with 164px of empty bottom padding at 390. That band is **the logo
+  rail** — the detector only walked text nodes.
+
+**Geometry cannot clear a composition (§10q), and it cannot condemn one either.** Every conclusion
+above was settled by looking at a real composited capture.
+
+### CTA inventory, read off the rendered DOM
+
+| Tier | Actions |
+| --- | --- |
+| **PRIMARY CONVERSION** (filled ivory) | `Book a 15-Min Call` — Hero → WhatsApp consultation · `Send project brief` — Project Inquiry → the form. **Two, and no more** |
+| **SECONDARY EXPLORATION** | `Contact Us` ×2 (Hero, About) · `Explore service ↗` ×4 (one per public service) · `Read our story ↗` → `/about` · `Tell us what you're building ↓` → `#project-inquiry` |
+| **CONTEXTUAL / OUTBOUND** | `View Instagram` · `Discuss this project` ×4 · `Work with our creator network` · `Start a project` · `Create with us` · `Build something worth noticing` · 11 creator handle links · the email and WhatsApp rows |
+
+No two consecutive filled CTAs, no competing primaries, and no primary repeated a screen later.
+**Unchanged this phase.**
+
+### Section height table — 1440×900
+
+| Section | Before | After | Δ |
+| --- | --- | --- | --- |
+| Hero | 900 | 900 | 0 |
+| 01 / Brands | 298 | 298 | 0 |
+| Current Management | 1,131 | 1,131 | 0 |
+| Quick Proof | 397 | 397 | 0 |
+| 02 / What We Do | 6,280 | 6,280 | 0 |
+| The Mishram Difference | 929 | 929 | 0 |
+| 03 / Creators | 1,618 | 1,618 | 0 |
+| 04 / Work Process | 1,081 | 1,081 | 0 |
+| 05 / Selected Work | 1,137 | 1,137 | 0 |
+| Client Notes | **absent** | **absent** | 0 |
+| 06 / Recognition | 1,239 | 1,239 | 0 |
+| 07 / About | 718 | 718 | 0 |
+| Project Inquiry | 1,377 | 1,377 | 0 |
+| Footer | 681 | 681 | 0 |
+| **TOTAL** | **17,787** | **17,787** | **0 (0.00%)** |
+
+Other viewports, before → after: 1280 · 16,739 → 16,739 · 1024 · 13,969 → 13,969 · 768 · 17,437 →
+17,437 · 430 · 18,401 → 18,401 · 390 · 18,070 → 18,070. **Byte-identical at every one.**
+
+**Zero reduction, and it is the correct result.** The page carries no dead space to reclaim: every
+boundary is the design system's own padding scale, every gap is 0px, and the one chapter over two
+viewports is the pinned What We Do track, which §15 locks.
+
+### Mobile and tablet
+
+**390 — full-page read, 22 true-viewport frames.** Hero → Brands → Current Management → Quick Proof →
+four stacked services → Difference → Creators → Work Process → Selected Work → Recognition → About →
+Inquiry → Footer. **No excessive gaps, no consecutive giant headlines, no consecutive full-width
+photographs, no tiny UI stranded after large media, no dead bottom spacing.** Quick Proof renders as
+four single vertical rows and stays compact at 547px.
+
+**430.** Both 390 and 430 sit below the `sm` breakpoint, so they share layout classes exactly and the
+differences are pure text reflow — **no two-column leftover, no breakpoint height jump.** 430 is
+331px taller than 390 overall, and 228px of that is arithmetic rather than layout: the Hero is
+`100svh` (+88) and the stacked What We Do track is viewport-height-derived (+140).
+
+**1024 and 768 — rhythm only.** Chapter pacing is correct at both. **The known document overflow at
+these two widths is untouched and still deferred to Phase 12**, exactly as §37 requires: `scrollWidth`
+1038 vs `clientWidth` 1024, and 844 vs 768. Revision 33 already proved it reproduces identically on
+live production, so it predates every final-polish phase.
+
+### Zero-content, zero-media result
+
+| | |
+| --- | --- |
+| New production media | **0** |
+| Image nodes | **23 → 23** (19 at ≤768) |
+| Lazy / eager / preload | **23 / 0 / 0 — unchanged** |
+| Canvases / videos | **1 / 0 — unchanged** |
+| DOM nodes at 1440 | **2,070 → 2,070** |
+| CSS | **`globals.css` not modified — 0 bytes** |
+| Dependencies | none added |
+| Brands, creators, metrics, award wording, campaign proof, Prashant role, services, history, contact data | **all untouched** |
+
+**No dead homepage CSS was removed, because none was proven dead.** A sweep of every `.tst-*`,
+`.rcg-*`, `.mgt-*`, `.dif-*`, `.prc-*`, `.wrk-*`, `.crt-*` and `.svc-*` selector flagged twelve
+`--a/--b/--c/--d` drift modifiers as unreferenced — **and every one of them is live**, built by
+template interpolation (`` `abt-drift--${f.drift}` ``, `` `svc-drift--${place.drift}` ``). A grep does
+not prove a class unused, which is §39's own bar. The one genuinely unreachable selector found,
+`a.abt-svc-row .abt-arrow`, is `/about` CSS and therefore outside a homepage rhythm pass —
+**recorded for Phase 12.**
+
+### Visual QA
+
+**Baseline:** all twelve seams at true 1440×900, the four mobile outlier chapters whole, and a
+22-frame true-viewport read of the entire page at 390 composited into two contact sheets.
+
+**After:** the homepage at 1440 light and dark, 1280, 1024, 768, 430, 390 light and dark, and 1440
+under `prefers-reduced-motion`, plus the changed seam at 1440 and 390.
+
+**All twelve transitions reviewed:** Hero → Brands · Brands → Current Management · Current Management
+→ Quick Proof · Quick Proof → What We Do · **What We Do → Mishram Difference (changed)** · Difference
+→ Creators · Creators → Work Process · Work Process → Selected Work · Selected Work → Recognition ·
+Recognition → About · About → Project Inquiry · Project Inquiry → Footer.
+
+`scripts/shoot.mjs` gained the two seams no earlier phase had needed — What We Do → Difference and
+Project Inquiry → Footer — plus five whole-chapter mobile shots. **No dependency added.**
+
+### First five scrolls — the conversion zone
+
+**Hero → Brands → Current Management → Quick Proof → What We Do.** A visitor who reads only these
+learns, in order: what Mishram does and where to enquire (Hero, with the page's one booking CTA);
+which brands the work has run alongside (eighteen marks in full colour at rest); that the agency
+manages a named creator **today**, with the account's own Reel figures beside the screenshot they
+were read off; the operating scale — `130M+ / 100+ / 500+ / 1,000+`; and then the capability system.
+**Verdict: passes, unchanged.** Each of the four credibility layers stays distinct — a rail, a
+relationship, a set of figures, a capability track — with different eyebrows, different compositions
+and no repeated copy.
+
+### Two items handed to Phase 12
+
+1. **The 1024 / 768 document overflow.** Untouched by design (§37).
+2. **`#collaborations` and `#proof` use their eyebrow label as the section `<h2>`** — every other
+   chapter's `h2` is a real headline. That is heading semantics, which §21 of Phase 12 owns, and
+   §38 forbids fixing it here.

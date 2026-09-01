@@ -47,7 +47,24 @@ export const DIFFERENCE_COPY = {
    * word carrying the actual claim.
    */
   accentWord: "Fewer",
-  lead: "Creators, content, performance and technology working as one team, not four suppliers.",
+  /**
+   * **This used to enumerate the disciplines, and that was a duplication.**
+   * `WHAT_WE_DO_CLOSING.baseline` prints `Strategy — Content — Creators —
+   * Performance — Technology` immediately above this section — 124px of empty
+   * run away on desktop, and roughly one screen on a phone. The old lead
+   * ("Creators, content, performance and technology working as one team, not
+   * four suppliers.") repeated four of those five words and added nothing
+   * between them: the same idea in adjacent sections, which is the one copy
+   * failure a rhythm pass exists to catch.
+   *
+   * **The claim is unchanged** — "working as one team", "four suppliers" and
+   * the "four" that anchors it all survive verbatim. Only the list became a
+   * reference to the list, which turns a redundancy into a connective and lets
+   * this chapter get on with answering *why Mishram* rather than restating
+   * *what Mishram does*. The disciplines are still named above it and again in
+   * the four differentiator rows below, so nothing is lost.
+   */
+  lead: "The same disciplines, working as one team rather than four suppliers.",
   /** Names the vertical axis the four layers connect into. */
   axisLabel: "Mishram",
   /** What the system resolves into at the foot of the axis. */

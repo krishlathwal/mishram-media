@@ -303,6 +303,23 @@ const SHOTS = [
   { name: "abt-now-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about", selector: "#now" },
   { name: "abt-now-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: "/about", selector: "#now" },
   { name: "abt-now-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: "/about", selector: "#now" },
+
+  /* ── Phase 11 — homepage rhythm ─────────────────────────────────────────
+     The two seams no earlier phase needed, so the full twelve-transition
+     sequence can be read in one pass. Section order is `app/page.tsx`:
+     … What We Do → Mishram Difference … Project Inquiry → Footer. */
+  { name: "seam-what-difference", w: 1440, h: 900, scheme: "dark", selector: "#difference", pad: 400 },
+  { name: "seam-inq-footer", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#project-inquiry", 1100) },
+  { name: "seam-inq-footer-390", w: 390, h: 844, scheme: "dark", mobile: true, scrollExpr: sectionScroll("#project-inquiry", 1700) },
+  { name: "seam-what-difference-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#difference", pad: 300 },
+
+  /* The chapters whose mobile height is furthest from their desktop height,
+     captured whole so the growth can be judged rather than inferred. */
+  { name: "mgt-768-full", w: 768, h: 1024, scheme: "dark", selector: "#current-management" },
+  { name: "mgt-430-full", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#current-management" },
+  { name: "proof-430-full", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#proof" },
+  { name: "wrk-430-full", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#work" },
+  { name: "dif-390-full", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#difference" },
 ];
 
 const only = process.argv.slice(3);
