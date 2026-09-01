@@ -33,25 +33,21 @@
   /* Held constant across themes; used sparingly. */
   --color-ember: #ff7048;
 
-  /* ── BRAND PLUM — declared, measured, and deliberately unused (Rev 28) ──
-     #4c3660, tested as a Mishram brand colour. It is registered here so a
-     later phase has one name to reach for, and it is applied to **nothing**.
+  /* ── BRAND PLUM — REMOVED IN REVISION 39, AND IT IS NOT COMING BACK ─────
+     `--color-brand-plum: #4c3660` was declared in Revision 28 so a later phase
+     would have one name to reach for. **Five real surfaces across five phases
+     were rendered in it and every one was rejected**: the global canvas and
+     the Brands rail (Rev 28), Current Management (Rev 30), the quick-scan
+     proof band (Rev 33) and Recognition (Rev 36) — the last being the award
+     chapter the token was explicitly being saved for.
 
-     IT IS A SURFACE COLOUR, NOT AN ACCENT, AND THAT IS MEASURED:
-
-       plum as text on the dark canvas ......  1.89:1   FAILS (needs 4.5)
-       teal as text on the dark canvas ...... 10.87:1
-       ivory text on a plum surface .........  9.14:1   passes comfortably
-
-     So it can carry a section, and it can never carry a line, a label or a
-     link on the dark theme. A global plum canvas was rendered and rejected on
-     sight: it flattens the obsidian, muddies the teal, fights the photography
-     and reads as a generic purple SaaS site.
-
-     It is not arbitrary — the first-party logo's own indigo is #5c37ff, and
-     this is that hue desaturated and darkened, which is why it belongs to the
-     brand rather than to a mood board. See `docs/FINAL-POLISH-ROADMAP.md`. */
-  --color-brand-plum: #4c3660;
+     It shipped with **zero runtime consumers for eleven revisions**, verified
+     again here: no `var(--color-brand-plum)`, and no Tailwind utility derived
+     from it, anywhere in `src/`. A design token that names a settled negative
+     is documentation, and documentation belongs in the docs — the full
+     measurement (1.89:1 as text on obsidian, 9.14:1 as ivory on a plum
+     surface) and the reasoning are kept in `docs/FINAL-POLISH-ROADMAP.md` and
+     `docs/PROJECT-BRIEF.md` §10an. **Do not reintroduce it.** */
   /* The one semantic state colour. Themed, because ember itself is far too
      light to read as text on parchment. Used for form validation only. */
   --color-error: var(--t-error);
@@ -332,6 +328,43 @@ html.theme-transition *::after {
      at that viewport the box *is* the stage and nothing moves. Everywhere else
      the same composition is letterboxed and scaled rather than distorted, and
      every scene keeps the proportions it was art-directed at. */
+
+  /* ── THE DOCUMENT-OVERFLOW FIX, AND THE DIAGNOSIS IT CORRECTS ──────────
+     Revisions 29 through 38 all measured a horizontal document overflow at
+     1024 and 768 and all recorded the same suspect: the Collaborations
+     marquee, because `.collab-viewport` is `width: max-content` and is by far
+     the widest box on the page. **That diagnosis was wrong**, and it survived
+     ten revisions because every "sort the offenders by right edge" probe puts
+     the 5,492px marquee at the top of the list. The marquee is *fully
+     contained* by `.collab-rail { overflow: hidden }` and contributes nothing.
+
+     Bisected by hiding one section at a time: hiding `#what-we-do` takes the
+     document from 1038 to 1024 at a 1024 viewport, and from 497 to 390 at 390.
+     Every other section moves it by at most 1px. The chain inside is
+     `.svc-stage-inner` reporting `scrollWidth 477` in a `clientWidth 350` box
+     — the scenes' tilted `.svc-surface` overhang, which §10 designs in
+     deliberately and which nothing was clipping.
+
+     **`body { overflow-x: hidden }` was believed to contain it and never did.**
+     When `html`'s overflow is `visible`, body's overflow *propagates to the
+     viewport* and body itself stops clipping — so the viewport hid the overhang
+     visually while `documentElement.scrollWidth` kept reporting it, and a real
+     mobile browser could still rubber-band sideways.
+
+     So the section that owns the overhanging composition owns the clip — the
+     same relationship `.collab-rail` already has to its marquee.
+
+     **`clip`, not `hidden`, and that distinction is load-bearing.**
+     `overflow-x: hidden` forces the other axis to `auto`, which makes the
+     element a scroll container and **breaks `position: sticky` inside it** —
+     which would silently kill the pinned What We Do track. `overflow-x: clip`
+     creates no scroll container and leaves `overflow-y: visible` intact.
+
+     Clipping at the section is visually a no-op: the section is full-viewport
+     width, so everything removed was already outside the viewport. */
+  #what-we-do {
+    overflow-x: clip;
+  }
 
   .svc-stage {
     --svc-stage-ar: 1.141;
@@ -5520,7 +5553,10 @@ html.theme-transition *::after {
     min-height: 48px;
   }
 
-  a.abt-svc-row .abt-arrow,
+  /* `a.abt-svc-row .abt-arrow` was the first half of this selector list and it
+     matched nothing: `.abt-arrow` is applied to no element anywhere in `src/`.
+     Removed in Revision 39 — the `a.abt-svc-row` half is live and is what the
+     linked service rows actually use. */
   a.abt-svc-row {
     transition: opacity 420ms var(--ease-out-expo);
   }

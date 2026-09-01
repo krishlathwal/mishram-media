@@ -320,6 +320,28 @@ const SHOTS = [
   { name: "proof-430-full", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#proof" },
   { name: "wrk-430-full", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#work" },
   { name: "dif-390-full", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#difference" },
+  /* ── Phase 12 — responsive, accessibility and technical QA ──────────────
+     The branded 404, the consent notice at its new touch-target size, the
+     mobile menu open, and the 320px hard floor the phase adds. */
+  { name: "nf-1440-dark", w: 1440, h: 900, scheme: "dark", path: "/this-page-does-not-exist-mishram" },
+  { name: "nf-1440-light", w: 1440, h: 900, scheme: "light", path: "/this-page-does-not-exist-mishram" },
+  { name: "nf-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/this-page-does-not-exist-mishram" },
+  { name: "nf-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/this-page-does-not-exist-mishram" },
+
+  { name: "home-320", w: 320, h: 568, scheme: "dark", mobile: true },
+  { name: "home-360", w: 360, h: 800, scheme: "dark", mobile: true },
+  { name: "home-375", w: 375, h: 812, scheme: "dark", mobile: true },
+  { name: "home-414", w: 414, h: 896, scheme: "dark", mobile: true },
+  { name: "home-1600", w: 1600, h: 900, scheme: "dark" },
+  { name: "home-1366", w: 1366, h: 768, scheme: "dark" },
+  { name: "hdr-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "header" },
+  { name: "ftr-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "footer" },
+  { name: "inq-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "#project-inquiry" },
+  { name: "proof-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "#proof" },
+  { name: "abt-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/about" },
+  { name: "svc-social-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/services/social-personal-brand-growth" },
+  { name: "legal-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/privacy" },
+  { name: "legal-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/privacy" },
 ];
 
 const only = process.argv.slice(3);

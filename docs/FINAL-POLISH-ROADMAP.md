@@ -25,7 +25,7 @@
 | **09** | **Recognition / NUFEW award proof** | **Done — Revision 36** |
 | **10** | **About / Prashant Mishra / agency credibility** | **Done — Revision 37** |
 | **11** | **Homepage length + information hierarchy** | **Done — Revision 38** |
-| 12 | Global responsive / performance / accessibility polish | Not started |
+| **12** | **Global responsive / performance / accessibility polish** | **Done — Revision 39** |
 | 13 | Operational hardening | Not started |
 | 14 | Web & Digital Experiences final deep polish | Not started |
 
@@ -2552,3 +2552,259 @@ and no repeated copy.
 2. **`#collaborations` and `#proof` use their eyebrow label as the section `<h2>`** — every other
    chapter's `h2` is a real headline. That is heading semantics, which §21 of Phase 12 owns, and
    §38 forbids fixing it here.
+
+---
+
+## Revision 39 — Phase 12, responsive, accessibility and technical hardening
+
+### The overflow: ten revisions blamed the wrong element
+
+`.collab-viewport` has been the recorded suspect since Revision 29 and was carried, re-measured and
+deferred through Revision 38. **It was never the cause.**
+
+The marquee is `width: max-content` and is by far the widest box on the page — 5,492px at a 1024
+viewport — so it tops every "sort the overflowing elements by right edge" list ever run against this
+site. It is also **completely contained** by `.collab-rail { overflow: hidden }` and contributes
+nothing to the document.
+
+**Bisected properly, by hiding one section at a time and re-reading `scrollWidth`:**
+
+| Hidden | scrollWidth @1024 | @390 |
+| --- | --- | --- |
+| nothing (baseline) | 1038 | 497 |
+| `.inq-honeypot` | 1038 | 497 |
+| `.collab-rail` | **1038** | **497** |
+| `header` | 1038 | 497 |
+| every other section, individually | 1037 | 495 |
+| **`#what-we-do`** | **1024** | **390** |
+
+The chain inside is `.svc-stage-inner` reporting `scrollWidth 477` in a `clientWidth 350` box — the
+tilted `.svc-surface` overhang §10 designs into every scene, which nothing was clipping.
+
+**And the mitigation everyone believed was in place never worked.** `body { overflow-x: hidden }`
+does not clip: when `html`'s overflow is `visible`, body's overflow **propagates to the viewport**
+and body itself computes to `visible`. So the viewport hid the overhang while
+`documentElement.scrollWidth` kept reporting it — and on a real mobile browser it can still
+rubber-band sideways. §10i's note that the overhang was "clipped by `body { overflow-x: hidden }`"
+was wrong about the mechanism, which is why the defect survived every pass that trusted it.
+
+### The fix — one declaration, and the keyword matters
+
+```css
+#what-we-do { overflow-x: clip; }
+```
+
+**The section that owns the overhanging composition owns the clip** — the same relationship
+`.collab-rail` already has to its marquee.
+
+**`clip`, not `hidden`, is load-bearing.** `overflow-x: hidden` forces the other axis to `auto`,
+which makes the element a scroll container and **breaks `position: sticky` inside it** — it would
+have silently killed the pinned What We Do track. `overflow-x: clip` creates no scroll container and
+leaves `overflow-y: visible` intact. Verified rather than assumed: the sticky panel's
+`getBoundingClientRect().top` reads **0 at 20%, 45%, 70% and 95%** through the track at 1600, 1440,
+1366 and 1280, and 1024 still resolves to the stacked path with no sticky panel at all.
+
+**Visually a no-op.** The section is full-viewport width, so everything the clip removes was already
+outside the viewport. Service 02's scene was captured at 1440 pinned and at 390 stacked: all four
+creator frames, the campaign board and every annotation render exactly as before.
+
+| | Before | After |
+| --- | --- | --- |
+| 1024×768 | scrollWidth **1038** (+14) | **1024** (0) |
+| 768×1024 | **844** (+76) | **768** (0) |
+| 390×844 | **497** (+107) | **390** (0) |
+| 320×568 | **453** (+133) | **320** (0) |
+
+### `scripts/overflow.mjs` — the assertion that keeps it closed
+
+New, and **no dependency added**: headless Chrome over CDP, the same route as `scripts/shoot.mjs`.
+It fails when `documentElement.scrollWidth > clientWidth + 1` and prints the offending elements with
+the numbers needed to fix them — computed width, transform, and whether an ancestor already clips
+them. It also prints `innerWidth` beside `clientWidth`, because §10ak's trap is real: at a 390
+viewport `innerWidth` reports **497** *because* the document overflows, so the naive comparison reads
+false.
+
+**Result: `PASS — 120/120 viewport checks clean`** — 10 public routes × 12 viewports
+(1600, 1440, 1366, 1280, 1024, 768, 430, 414, 390, 375, 360, 320).
+
+`node scripts/overflow.mjs --quick` re-checks the four widths the defect ever appeared at.
+
+### The 320px hard floor
+
+**Passes.** No horizontal scroll on any route. The header is usable, the Quick Proof band renders all
+four figures — `130M+ / 100+ / 500+ / 1,000+` — with legible labels and no wrap defect, the inquiry
+form is complete and operable (all fields, single-column service list, two-column budget and
+timeline, full-width submit), the footer wraps cleanly and the branded 404 reads correctly.
+
+### Consent notice — the open item from the launch, closed
+
+§10ae item 5 recorded both buttons at **40px**, under this project's own 48px standard, and left it
+rather than changing production during a launch.
+
+| | Before | After |
+| --- | --- | --- |
+| `Allow analytics` | `h-10` — 40px | **`h-12` — 48px** |
+| `Only necessary` | `h-10` — 40px | **`h-12` — 48px** |
+| `Privacy` link target | the text's own height (~16px) | **`min-h-11` — 44px** |
+
+The privacy link keeps its 12px type and its underline reveal; the underline had to move onto an
+inner `<span>` because on the link box it would have drawn along the bottom of the new 44px hit area
+instead of under the words. The row does not grow — the buttons are the tallest things in it.
+
+**Consent semantics untouched.** No change to Consent Mode v2, the granted/denied values, the storage
+key or the boot script.
+
+### Accessibility — audited across every public route
+
+| | Result |
+| --- | --- |
+| `<h1>` per page | **exactly one**, on all ten routes |
+| Heading order | **no skipped levels anywhere** |
+| Landmarks | `main` / `nav` / `header` / `footer` present on every route |
+| Images without `alt` | **0** |
+| Buttons without an accessible name | **0** |
+| Form controls without a label | **0** — every checkbox and radio is wrapped in its own `<label>`, and every text field has a real `for`/`id` pair |
+| Honeypot | still off-screen, still `aria-hidden`, and **no longer contributes to document overflow** |
+
+**Alt-text audit.** Creator names appear only where identity is established by the client's own
+filename; the award photograph names nobody; the campaign frames name nobody; decorative scene
+fragments carry `alt=""` with `aria-hidden`; brand marks carry the brand name. No filename is used as
+alt text anywhere.
+
+### Image loading — two `sizes` values were wrong at every breakpoint
+
+The homepage came back clean: **23 images, 23 lazy, 0 eager, 0 preload**, and served widths within
+5% of their boxes.
+
+Two service-page scene fragments did not. Both sit inside `.svc-stage-box`, which **letterboxes to a
+fixed aspect** — so a viewport-percentage `sizes` estimate drifts from the real box, and both had
+drifted badly:
+
+| | Declared | Measured box | Served | Now |
+| --- | --- | --- | --- | --- |
+| `ContentSystemBoard` reel frame | `18vw / 14vw / 9vw` | 33.7vw · 34.7vw · **19.9vw** | 286px box → **129px file** | `34vw / 35vw / 20vw` |
+| `CampaignConstellation` reel node | `26vw / 15vw / 8vw` | 32.1vw · 22.5vw · **13.6vw** | 196px box → **115px file** | `33vw / 23vw / 14vw` |
+
+Both were served **narrower than their own box even at DPR 1**, which is visible softness rather than
+a retina nicety. Re-measured after the fix: 286→288, 266→268, 131→132 and 196→201, 173→176, 125→128
+— served width now matches the box at every breakpoint. **`sizes` selects a srcset candidate and
+affects layout in no way**, so this carries no visual-regression risk.
+
+### Lab performance — LOCAL LAB DATA, not field data
+
+Measured against `next start` on a production build, cold cache, **no scrolling** (a cold load is
+what LCP and CLS describe). Mobile cases carry a **4× CPU throttle**. These are lab figures from one
+machine and are **not production Core Web Vitals**.
+
+| | FCP | LCP | LCP element | CLS | Cold transfer |
+| --- | --- | --- | --- | --- | --- |
+| HOME desktop 1440×900 | 1,440ms | **2,712ms** | text | **0** | 1,345KB / 57 req |
+| HOME mobile 390×844 @2× | 456ms | **3,384ms** | text | **0** | 1,357KB / 54 req |
+| ABOUT mobile | 504ms | **2,356ms** | text | **0** | 674KB / 42 req |
+| WEB & DIGITAL mobile | 448ms | **2,780ms** | text | **0** | 528KB / 31 req |
+
+**CLS is 0 on all four**, and **the LCP element is text on every route — no image is the LCP
+anywhere.** That last point settles a warning worth writing down: Next's dev overlay reported both
+`zoya-jaan.webp` and the Recognition photograph as LCP on `/about` and asked for `loading="eager"`.
+Both were **artifacts of the QA scroll sweep in dev** — LCP updates as larger elements paint, and
+sweeping the page paints them. On a real cold load neither is the LCP. **No eager image was added.**
+
+**Lazy loading verified at cold load**: only **3 of 23** homepage images and **2 of 19** on mobile had
+decoded before any scroll. Current Management's proof screenshot, Selected Work's posters, the
+Recognition photograph and the Prashant portrait all stay unfetched until scrolled to.
+
+Lighthouse is not installed and **no dependency was added to produce a score**; the figures above are
+CDP performance-entry measurements, which is the substitute §41 permits.
+
+### Bundle
+
+30 chunks, **2,246KB uncompressed JS** and 162KB CSS. The largest single chunk is **877KB — three.js**,
+which §16 already documents as lazy-loaded, client-only and never blocking first paint, and the
+measurement matches that record exactly. **No unnecessary client boundary and no duplicate runtime
+was found, so nothing was changed.** No dependency added.
+
+### Console
+
+**One message across all ten public routes**, and it is third-party:
+`THREE.Clock: This module has been deprecated.` — emitted from inside `@react-three/fiber`'s own
+store, not from this codebase. §10i records it, records that reading `state.clock` makes no
+difference, and rules out a three.js migration for it. **Zero application errors, zero hydration
+warnings, zero failed resource requests** other than the deliberate 404 on the not-found probe.
+
+### Links
+
+**Every internal path returns 200** — `/`, `/about`, the four public service routes, `/privacy`,
+`/terms`, `/cookies`. **Every hash target exists**: `#hero`, `#what-we-do`, `#creators`, `#work`,
+`#project-inquiry` on the homepage and `#digital-work`, `#build-websites`, `#build-product`,
+`#build-commerce` on the web route. `mailto:info@mishram.media`, `tel:+919548278558` and both
+`wa.me/919548278558` deep links are well-formed. Eighteen external destinations (eleven creator
+Instagram profiles, the agency Instagram, Facebook, LinkedIn and two client project sites) are
+well-formed HTTPS URLs; **nothing was sent and no action was performed against any of them.**
+
+### 404 — created
+
+The route rendered Next's own default: an unstyled *"404: This page could not be found."* with **its
+own `<title>`**, no header, no footer and no trace of the site. `src/app/not-found.tsx` replaces it —
+a server component with no client state, no imagery and no animation of its own, built entirely from
+existing primitives: the `Wordmark` CSS mask, `PageLink` playing the site's own wipe, the `Arrow`,
+and `CONTACT.email`. Header, footer, theme and consent all arrive from `app/layout.tsx`.
+
+**`robots: { index: false }`**, two routes out (home and the published address) and **no invented
+navigation** — a fabricated list of "popular pages" is the template move §18 rules out. **No new
+media, no new dependency, no new CSS.**
+
+### SEO technical
+
+`robots.txt` permissive with `/api/` disallowed and both `Host` and `Sitemap` declared. `sitemap.xml`
+lists **nine URLs** — home, about, the four public services and the three legal routes. All five icon
+endpoints return 200. Canonicals correct on every route. **Brand Shoots is `noindex, nofollow` and
+absent from the sitemap; Web & Digital Experiences is indexable and present.** Neither visibility
+state was touched.
+
+### Cleanup
+
+- **`--color-brand-plum` removed.** Declared in Revision 28, rendered on **five real surfaces across
+  five phases** and rejected every time — most recently on the Recognition chapter it was explicitly
+  being saved for. Verified to have **zero runtime consumers**: no `var(--color-brand-plum)` and no
+  Tailwind utility derived from it anywhere in `src/`. The measurements and reasoning stay in the
+  docs, where a settled negative belongs.
+- **`a.abt-svc-row .abt-arrow` removed** from its selector list. `.abt-arrow` is applied to no element
+  anywhere; the `a.abt-svc-row` half of the same rule is live and was kept.
+- **Nothing else was removed.** Revision 38's warning held: twelve `--a/--b/--c/--d` drift modifiers
+  look dead to a grep and are built by template interpolation.
+
+### Deferred, with reasons
+
+1. **The remaining service-page scene `sizes` estimates.** Four more fragments on the social and
+   influencer routes are served at 0.7–0.95× their box. Each needs its own three-breakpoint
+   measurement inside a letterboxed stage, and every one is a small `aria-hidden` decorative frame.
+   The two that were off by more than 1.5× are fixed; these are recorded rather than guessed at.
+2. **`THREE.Clock` deprecation warning** — third-party, no safe local fix, clears when
+   `@react-three/fiber` ships on `THREE.Timer`.
+3. **The 404's canonical resolves to `https://mishram.media/`**, inherited from the layout. It is
+   `noindex`, so nothing consumes it; noted rather than special-cased.
+4. **Operational items unchanged and still Phase 13's**: Resend notification email, `/api/inquiry`
+   rate limiting, the Netlify remnant, and Google's *Test installation* against the live domain.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static; `/api/inquiry`
+  still dynamic.
+- **`PASS — 120/120`** on the overflow matrix, re-run to `40/40` after every later change.
+- **Secret scan clean.** `.next/static` contains **zero** occurrences of `SUPABASE_SECRET_KEY`,
+  `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `VERCEL_OIDC_TOKEN` or `service_role`. The tracked
+  hits are **environment-variable names in server-only code** (`src/lib/supabase/server.ts`, which
+  imports `server-only`) and role names in `supabase/config.toml`. Only `.env.example` is tracked and
+  it holds names. **No value was printed at any point.**
+- **Theme.** First visit follows `prefers-color-scheme` in both directions with the correct canvas;
+  the boot script is inline in `<head>`; `.theme-transition` is **absent on first paint**, so the
+  440ms cross-fade cannot leak into load; the toggle switches `dark → light`, writes
+  `mishram-theme`, and the choice survives navigation to `/about` and `/privacy`.
+- **Reduced motion**, proved by control rather than assertion: **92** elements sit at `opacity: 0`
+  under reduced motion against **124** under normal motion — reduced motion *reveals* more, which is
+  the reduced-motion block forcing drawn states visible. **Zero infinite animations**, and
+  `scroll-behavior` resolves to `auto`. The Brands rail renders its static two-row featured grid with
+  the seven plates intact.
+- **Brands regression**: captured dark, light, 390 and reduced motion after the fix. The fix touched
+  `#what-we-do` and not the rail, and the roster, provenance, timing and plates are all unchanged.
+- **Nothing pushed, nothing deployed.**

@@ -323,7 +323,18 @@ function PersonalityState() {
           alt=""
           aria-hidden
           fill
-          sizes="(max-width: 640px) 18vw, (max-width: 1023px) 14vw, 9vw"
+          /* MEASURED, not estimated (Rev 39). The old value —
+             `18vw / 14vw / 9vw` — under-declared this frame at every
+             breakpoint, so the browser fetched a candidate narrower than the
+             box and the photograph rendered soft even at DPR 1: a 286px box
+             was served a 129px file.
+
+             The frame sits inside `.svc-stage-box`, which letterboxes to a
+             fixed aspect, so its width does **not** track the viewport the way
+             a `vw` estimate assumes. Measured: 33.7vw at 390, 34.7vw at 768,
+             19.9vw at 1440. `sizes` changes which srcset candidate is chosen
+             and nothing else, so this has no layout effect. */
+          sizes="(max-width: 640px) 34vw, (max-width: 1023px) 35vw, 20vw"
           style={{ objectPosition: frame.position }}
           className="svp-photo object-cover"
         />

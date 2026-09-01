@@ -98,7 +98,12 @@ const FIELD: readonly Placement[] = [
     depth: 1.6,
     drift: "b",
     delay: 0.52,
-    sizes: "(max-width: 640px) 26vw, (max-width: 1023px) 15vw, 8vw",
+    /* MEASURED, not estimated (Rev 39). `26vw / 15vw / 8vw` under-declared
+       this node at every breakpoint — a 196px box was served a 115px file.
+       The constellation is positioned inside the letterboxed
+       `.svc-stage-box`, so a `vw` estimate drifts from the real box.
+       Measured: 32.1vw at 390, 22.5vw at 768, 13.6vw at 1440. */
+    sizes: "(max-width: 640px) 33vw, (max-width: 1023px) 23vw, 14vw",
   },
   {
     creatorId: "nikita",

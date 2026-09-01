@@ -100,11 +100,22 @@ export function AnalyticsConsent() {
             {COPY.body}
           </p>
 
+          {/* TOUCH TARGETS — 48px, which is this project's own standard rather
+              than a floor borrowed from the spec.
+
+              Both buttons shipped at `h-10` (40px). That clears WCAG 2.2 AA's
+              24px minimum comfortably and was left alone during the launch
+              (§10ae item 5), but it is under the 48px the inquiry form's option
+              rows hold themselves to — and a consent notice is the one control
+              a visitor must operate before doing anything else. `h-12` brings
+              it to the same bar. The notice's own height is unchanged where it
+              matters: these two are the tallest things in the row, so the row
+              grows by the 8px difference and nothing reflows around it. */}
           <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
             <button
               type="button"
               onClick={() => answer("granted")}
-              className="inline-flex h-10 items-center rounded-[3px] bg-ink px-4 text-[0.8125rem] font-medium text-canvas transition-opacity duration-300 hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex h-12 items-center rounded-[3px] bg-ink px-4 text-[0.8125rem] font-medium text-canvas transition-opacity duration-300 hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {COPY.allow}
             </button>
@@ -112,22 +123,34 @@ export function AnalyticsConsent() {
             <button
               type="button"
               onClick={() => answer("denied")}
-              className="inline-flex h-10 items-center rounded-[3px] border border-line-strong px-4 text-[0.8125rem] font-medium text-ink transition-colors duration-300 hover:border-ink/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex h-12 items-center rounded-[3px] border border-line-strong px-4 text-[0.8125rem] font-medium text-ink transition-colors duration-300 hover:border-ink/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {COPY.deny}
             </button>
 
             {/* Deliberately quiet and deliberately present: the one place a
-                visitor can read what this actually does before answering. */}
+                visitor can read what this actually does before answering.
+
+                `min-h-11` (44px) is a target, not a size — the link keeps its
+                12px type and its underline reveal, and because the buttons
+                beside it are 48px the row does not grow by a pixel. Without it
+                the hit area was the height of the text itself, which is under
+                WCAG 2.2 AA's 24px minimum for a control that is not inline in
+                a sentence. */}
             <PageLink
               href="/privacy"
-              className="group relative text-[0.75rem] text-ink-muted transition-colors duration-300 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="group inline-flex min-h-11 items-center text-[0.75rem] text-ink-muted transition-colors duration-300 hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              {COPY.privacy}
-              <span
-                aria-hidden
-                className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
-              />
+              {/* The underline anchors to the text, not to the 44px target —
+                  on the link box it would have drawn along the bottom of the
+                  hit area instead of under the words. */}
+              <span className="relative">
+                {COPY.privacy}
+                <span
+                  aria-hidden
+                  className="absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+                />
+              </span>
             </PageLink>
           </div>
         </motion.section>
