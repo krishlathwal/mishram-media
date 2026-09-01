@@ -170,12 +170,28 @@ export type WorkProject = {
    * one-line description of what the site is would be legitimate; a line about
    * results, stack, timeline or Mishram's exact role would not. The layout
    * renders correctly with it absent, so nothing is redesigned when it arrives.
+   *
+   * **Both are now filled, and every word in them is read off the live site's
+   * own pages** — its `<title>`, its navigation and the sections it actually
+   * carries. That is the same evidence class as the screenshot beside it: a
+   * visitor can open the URL and check the sentence. Nothing in either line is
+   * a result, a role, a technology, a date or a scope of engagement.
    */
   note?: string;
   desktop?: WorkProjectMedia;
   mobile?: WorkProjectMedia;
   /** Meaningful alt text. Describes the site, never editorialises about it. */
   alt: string;
+  /**
+   * The narrow capture's own alt text.
+   *
+   * It used to be `alt=""`. That was right while the phone rendered at 66px on
+   * a 390 viewport — a decorative fragment carrying nothing a reader could
+   * judge. Revision 40 makes it a real object at every width, and a real object
+   * describes itself. The two strings differ only in the width they name,
+   * because that is the only thing that differs about the two views.
+   */
+  mobileAlt?: string;
 };
 
 /**
@@ -201,7 +217,12 @@ export const WEB_WORK: readonly WorkProject[] = [
       height: 1600,
     },
     mobile: { src: "/media/work/ekly-mobile.webp", width: 720, height: 2400 },
+    /* Read off the live site: its own title is "Ekly — Create polished video,
+       image, and audio in one studio", and its navigation carries Pricing,
+       Guides, Blog and Partner Program beside the route into the app. */
+    note: "A product and marketing site for an AI generation studio — pricing, guides, editorial and the route into the app.",
     alt: "The Ekly website, captured from the live site at desktop width.",
+    mobileAlt: "The Ekly website, captured from the live site at mobile width.",
   },
   {
     id: "ruchita",
@@ -220,7 +241,15 @@ export const WEB_WORK: readonly WorkProject[] = [
       width: 720,
       height: 2400,
     },
+    /* Read off the live site: its own title is "Ruchita Interiors —
+       Residential, Commercial & Turnkey Interior Solutions", and it carries a
+       service index, a project index with per-project pages, an editorial
+       section and an enquiry form. **Its own hero publishes counters; those
+       figures appear only inside the screenshot and are never repeated in
+       Mishram's voice** (§10v). */
+    note: "A studio site for an interior design practice — services, a project index with case pages, editorial and enquiry.",
     alt: "The Ruchita Interiors website, captured from the live site at desktop width.",
+    mobileAlt: "The Ruchita Interiors website, captured from the live site at mobile width.",
   },
 ];
 
@@ -233,6 +262,23 @@ export const WEB_WORK_ACTION = "Visit live site";
  * grammar `ServiceStatement` ends on — not a claim about either site.
  */
 export const WEB_WORK_BASELINE = ["Design", "Build", "Live"] as const;
+
+/**
+ * The provenance line, and it earns its place rather than decorating the rail.
+ *
+ * Every other piece of evidence on this site carries one — Recognition's
+ * caption, the campaign band's source note, the proof band's attribution — and
+ * this section had none, because for five revisions the narrow capture was a
+ * 66px fragment nobody would ask about. Now that both views are real objects at
+ * every width, the line says exactly what a reader is looking at and where it
+ * came from, which is what turns two screenshots into documentation.
+ *
+ * **It states provenance and nothing else.** No date, no role, no tooling, no
+ * claim about either site. It shares the closing rail with `WEB_WORK_BASELINE`,
+ * so on desktop it costs no height at all.
+ */
+export const WEB_WORK_PROVENANCE =
+  "Captured from the live sites — desktop and mobile.";
 
 /* ── 03 / What We Build — the capability index ───────────────────
    THE BREADTH PROBLEM, and why this is not a list.
@@ -313,6 +359,16 @@ export const WEB_BUILD_FAMILIES: readonly CapabilityFamily[] = [
       { name: "Corporate Websites" },
       { name: "Portfolio Websites" },
       { name: "Personal Brand Sites" },
+      /**
+       * Added in Revision 40, and it is the one category this index was
+       * missing rather than a new promise. Mishram's own business is
+       * established Indian content creators (§1), `03 / Creators` is a whole
+       * homepage chapter, and `Personal Brand Sites` beside it named the
+       * outcome without naming the client. A creator arriving on this page had
+       * to infer that Mishram builds for creators from a page that never said
+       * so — on the site of a creator agency.
+       */
+      { name: "Creator Websites" },
       { name: "Agency Websites" },
       { name: "Landing Pages", flow: ["Attention", "Argument", "Action"] },
       { name: "Campaign Websites" },

@@ -20,6 +20,12 @@
 # production
 /build
 
+# visual QA output — the default out dir of `scripts/shoot.mjs`, which also
+# keeps a throwaway Chrome profile inside it. The captures are dev artifacts in
+# the same class as `.next`: a phase is reviewed from them and the roadmap
+# records what they showed, so the files themselves never belong in the remote.
+/shots/
+
 # misc
 .DS_Store
 *.pem

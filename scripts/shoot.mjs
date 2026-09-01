@@ -22,6 +22,7 @@
  */
 
 import { spawn } from "node:child_process";
+import { resolve } from "node:path";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { setTimeout as sleep } from "node:timers/promises";
 
@@ -31,6 +32,7 @@ const BASE = process.env.SHOOT_BASE ?? "http://localhost:3000";
 const OUT = process.argv[2] ?? "./shots";
 
 const INF = "/services/influencer-marketing";
+const WEB = "/services/web-digital-experiences";
 
 /**
  * A scroll position expressed in **What We Do slot units**: 0 is the first
@@ -342,7 +344,82 @@ const SHOTS = [
   { name: "svc-social-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/services/social-personal-brand-growth" },
   { name: "legal-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/privacy" },
   { name: "legal-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/privacy" },
+  /* ── Phase 14 — Web & Digital Experiences final deep polish ─────────────
+     The route is `/services/web-digital-experiences`. Every viewport the phase
+     tests, both themes, reduced motion, and each chapter on its own so the
+     narrative can be judged without scrolling a 14,000px capture.
+
+     `WEB` is the path constant; the shots below run twice — once into a
+     baseline directory before any edit, once after — which is what the
+     before/after measurements in the roadmap are read off. */
+  { name: "web-1600", w: 1600, h: 900, scheme: "dark", path: WEB },
+  { name: "web-1440-dark", w: 1440, h: 900, scheme: "dark", path: WEB },
+  { name: "web-1440-light", w: 1440, h: 900, scheme: "light", path: WEB },
+  { name: "web-1366", w: 1366, h: 768, scheme: "dark", path: WEB },
+  { name: "web-1280", w: 1280, h: 800, scheme: "dark", path: WEB },
+  { name: "web-1024", w: 1024, h: 768, scheme: "dark", path: WEB },
+  { name: "web-768", w: 768, h: 1024, scheme: "dark", path: WEB },
+  { name: "web-430", w: 430, h: 932, scheme: "dark", mobile: true, path: WEB },
+  { name: "web-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB },
+  { name: "web-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: WEB },
+  { name: "web-375", w: 375, h: 812, scheme: "dark", mobile: true, path: WEB },
+  { name: "web-320", w: 320, h: 568, scheme: "dark", mobile: true, path: WEB },
+  { name: "web-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: WEB },
+
+  /* The chapters, each captured whole. */
+  { name: "web-hero-1440-dark", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#hero" },
+  { name: "web-hero-1440-light", w: 1440, h: 900, scheme: "light", path: WEB, selector: "#hero" },
+  { name: "web-hero-1024", w: 1024, h: 768, scheme: "dark", path: WEB, selector: "#hero" },
+  { name: "web-hero-768", w: 768, h: 1024, scheme: "dark", path: WEB, selector: "#hero" },
+  { name: "web-hero-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#hero" },
+  { name: "web-hero-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: WEB, selector: "#hero" },
+  { name: "web-hero-320", w: 320, h: 568, scheme: "dark", mobile: true, path: WEB, selector: "#hero" },
+  { name: "web-hero-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: WEB, selector: "#hero" },
+
+  { name: "web-work-1440-dark", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#digital-work" },
+  { name: "web-work-1440-light", w: 1440, h: 900, scheme: "light", path: WEB, selector: "#digital-work" },
+  { name: "web-work-1024", w: 1024, h: 768, scheme: "dark", path: WEB, selector: "#digital-work" },
+  { name: "web-work-768", w: 768, h: 1024, scheme: "dark", path: WEB, selector: "#digital-work" },
+  { name: "web-work-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#digital-work" },
+  { name: "web-work-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: WEB, selector: "#digital-work" },
+  { name: "web-work-320", w: 320, h: 568, scheme: "dark", mobile: true, path: WEB, selector: "#digital-work" },
+  { name: "web-work-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, path: WEB, selector: "#digital-work" },
+
+  /* Each project on its own, at the scroll position where its capture is in
+     frame — the pinned stage reframes on scroll, so a section clip alone shows
+     whichever project the sweep happened to land on. */
+  { name: "web-ekly-1440", w: 1440, h: 900, scheme: "dark", path: WEB, scrollExpr: sectionScroll("#digital-work", 900) },
+  { name: "web-ruchita-1440", w: 1440, h: 900, scheme: "dark", path: WEB, scrollExpr: sectionScroll("#digital-work", 2100) },
+  { name: "web-ekly-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, scrollExpr: sectionScroll("#digital-work", 500) },
+  { name: "web-ruchita-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, scrollExpr: sectionScroll("#digital-work", 1500) },
+
+  { name: "web-build-1440", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#what-we-build" },
+  { name: "web-build-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#what-we-build" },
+  { name: "web-build-320", w: 320, h: 568, scheme: "dark", mobile: true, path: WEB, selector: "#what-we-build" },
+
+  { name: "web-sys-1440-dark", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#beyond-websites" },
+  { name: "web-sys-1440-light", w: 1440, h: 900, scheme: "light", path: WEB, selector: "#beyond-websites" },
+  { name: "web-sys-768", w: 768, h: 1024, scheme: "dark", path: WEB, selector: "#beyond-websites" },
+  { name: "web-sys-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#beyond-websites" },
+  { name: "web-sys-320", w: 320, h: 568, scheme: "dark", mobile: true, path: WEB, selector: "#beyond-websites" },
+
+  { name: "web-why-1440", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#why-mishram" },
+  { name: "web-why-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#why-mishram" },
+  { name: "web-how-1440", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#how-we-build" },
+  { name: "web-how-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#how-we-build" },
+  { name: "web-inq-1440", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#project-inquiry" },
+  { name: "web-inq-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#project-inquiry" },
+
+  /* The seams — a chapter break is judged from one frame holding both sides. */
+  { name: "web-seam-hero-work", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#digital-work", pad: 380 },
+  { name: "web-seam-work-build", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#what-we-build", pad: 380 },
+  { name: "web-seam-build-sys", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#beyond-websites", pad: 380 },
+  { name: "web-seam-sys-why", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#why-mishram", pad: 380 },
+  { name: "web-seam-why-how", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#how-we-build", pad: 380 },
+  { name: "web-seam-how-inq", w: 1440, h: 900, scheme: "dark", path: WEB, selector: "#project-inquiry", pad: 380 },
+  { name: "web-seam-hero-work-390", w: 390, h: 844, scheme: "dark", mobile: true, path: WEB, selector: "#digital-work", pad: 260 },
 ];
+
 
 const only = process.argv.slice(3);
 const shots = only.length ? SHOTS.filter((s) => only.includes(s.name)) : SHOTS;
@@ -363,7 +440,7 @@ const chrome = spawn(
     "--use-gl=angle",
     "--use-angle=swiftshader",
     "--enable-unsafe-swiftshader",
-    "--user-data-dir=" + OUT + "/.chrome-profile",
+    "--user-data-dir=" + resolve(OUT, ".chrome-profile"),
     "about:blank",
   ],
   { stdio: "ignore", detached: false },

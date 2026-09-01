@@ -27,7 +27,7 @@
 | **11** | **Homepage length + information hierarchy** | **Done — Revision 38** |
 | **12** | **Global responsive / performance / accessibility polish** | **Done — Revision 39** |
 | 13 | Operational hardening | Not started |
-| 14 | Web & Digital Experiences final deep polish | Not started |
+| **14** | **Web & Digital Experiences final deep polish** | **Done — Revision 40** |
 
 **Phase 13 — operational hardening — is the one with a live consequence and is worth naming
 explicitly**, because it is currently the site's only real gap:
@@ -2807,4 +2807,308 @@ state was touched.
   the seven plates intact.
 - **Brands regression**: captured dark, light, 390 and reduced motion after the fix. The fix touched
   `#what-we-do` and not the rail, and the roster, provenance, timing and plates are all unchanged.
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## Revision 40 — Phase 14, Web & Digital Experiences final deep polish
+
+### The audit's verdict first: the route was strong, and one section was failing on a phone
+
+The whole of `/services/web-digital-experiences` was inspected before anything was edited — every
+section's height, purpose, interaction, copy, media, CTA and mobile behaviour, at ten viewports in
+both themes and under reduced motion, plus the web service config, the six route-only components,
+the shared service primitives and homepage Service 04.
+
+**Six of the seven chapters needed no change**, and that is the honest result rather than a thin
+one:
+
+| Chapter | Verdict |
+| --- | --- |
+| `01` Hero — the Digital Build Stage | **Keep.** Four surfaces at four depths over a measurement field, CSS/DOM/Motion only, no WebGL, no browser chrome. It is the route's own visual language and it works at 320 |
+| `02` Selected Digital Work | **The one section that was underpowered.** See below |
+| `03` What We Build | **Keep**, plus one missing category. 33 capabilities in three families with one transforming product architecture — an editorial matrix, no icon grid |
+| `04` Beyond Websites | **Keep.** The ink-inverted chapter, a four-state architecture, the `Custom CRM` callout and a 25-item custom-systems directory. The strongest single moment on the route |
+| `05` Why Mishram | **Keep.** One drawing, drawn once; the page's exhale before the form |
+| `06` How We Build | **Keep.** Six stages, six artifacts, one stack statement, one capability index |
+| Project Inquiry | **Keep.** Shared section, shared form, `web` preselected |
+
+**Nothing was rebuilt from scratch**, no section was added or removed, and the section order is
+unchanged. The information architecture §10aa closed stays closed.
+
+### The defect, and it was only visible in a real capture
+
+`02 / Selected Digital Work` renders two live projects. On the stacked path the narrow capture was
+`w-[19%]` of the column — **66px wide at a 390 viewport**. That is a 720px capture of a 360-CSS-px
+layout shown at **0.18×**: a smudge, on the one page whose entire subject is how a website behaves
+at that width. The wide capture beside it renders at 0.24×, so **the more legible artefact of the
+two per pixel of column was the smaller of the two**, and at 320 the phone was 51px.
+
+This is §32's failure exactly — *do not show a desktop screenshot at 260px wide and call that
+proof* — and no measurement would have caught it, because the layout was correct. §10q's lesson,
+for the fifth time in this programme.
+
+**The fix is art direction, not a redesign.** Below `sm` the narrow capture is `w-[32%]`, capped at
+132px — **111px / 0.31× at 390**, which is the same scale the pinned stage already gives it at 1440
+(124px). Above 640 nothing moves: 19% of a 698px column is already 133px. **Only the widths where
+it was failing changed.**
+
+Two details are worth writing down because both were settled by looking rather than by arithmetic:
+
+1. **The hang below the window is absolute, not a percentage.** `-bottom-[7%]` of a container whose
+   height tracks the column grows to 78px at 639px — past the panel's own padding, into the next
+   project's head. `-bottom-20` is the same 80px at every narrow width, so one `pb` value clears it.
+2. **80px, and a capture chose it.** At 48px the phone's top edge landed 8% into the window,
+   straight across the Ekly capture's own headline. At 80px it sits 21–38% down and the wide view
+   keeps its proposition legible — while the narrow view carries **the same words** at a size a
+   reader can actually read them at. The two are complementary rather than one hiding the other.
+
+### The portfolio is now documented rather than screenshotted
+
+Three additions, and every one of them is factual:
+
+**1 — Each project carries a one-line description, and both are read off the live site.** The field
+(`WorkProject.note`) has existed since §10v with a written rule: *"A one-line description of what
+the site is would be legitimate; a line about results, stack, timeline or Mishram's exact role would
+not."* Both lines are now filled from the sites' own `<title>`, navigation and sections — a visitor
+can open the URL and check the sentence. **Neither carries a result, a role, a technology, a date or
+a scope of engagement.**
+
+**2 — The narrow capture has real alt text.** It was `alt=""` while it was a 66px decoration. It is
+now an object, and an object describes itself: the two strings differ only in the width they name,
+because that is the only thing that differs about the two views.
+
+**3 — A provenance line, on the rail the section already ends on.** Every other piece of evidence on
+this site carries one; this section had none. It states provenance and nothing else, and because it
+shares the closing rail with `Design · Build · Live` it **costs no height at all above `md`**.
+
+### The project index — what a reframing stage cannot say for itself
+
+The pinned stage swaps one project for another and tells a visitor nothing about how many there are.
+Somebody who scrolls quickly past the first can leave believing the portfolio is one site. The
+stacked composition never has that problem, because both panels are simply on the page.
+
+The panel now carries the same device the homepage's own service track uses — indices on a hairline
+with an accent fill. **Nothing is clickable and it stays that way** (§10's ruling on the homepage
+progress indicator), and it is `aria-hidden`, because every project's number, name, category, note
+and link are already real text in both slots and the inactive one is `inert` rather than absent.
+
+The fill is the track's progress driving `scaleX` **directly** — no `useTransform`, because a
+literal input range is what opts a value into Motion's WAAPI path (§10v). `scale` is not one of the
+five accelerated properties either way.
+
+### `Creator Websites` — the one category the index was missing
+
+Mishram's own business is established Indian content creators, `03 / Creators` is a whole homepage
+chapter, and the Websites family listed `Personal Brand Sites` — which names the outcome without
+naming the client. **A creator arriving on this page had to infer that Mishram builds for creators,
+on the site of a creator agency.** One row, in the family it belongs to.
+
+**Nothing else was added, and the phase's capability list was checked against the config item by
+item.** Every other category — static, dynamic, business, corporate, portfolio, personal brand,
+landing pages, campaign sites, e-commerce, custom web applications, custom CRM, internal tools,
+dashboards, custom software, workflow automation, integrations and mobile applications — was
+**already published**, in `WEB_BUILD_FAMILIES` or `WEB_SYSTEM_DIRECTORY`. No capability was invented
+because a brief mentioned it.
+
+The matrix was re-measured after the row landed: **34 rows, zero wrapped, at 320 / 360 / 390 / 768 /
+1200 / 1440.** §10w's defects 2 and 3 do not recur.
+
+### `sizes` — measured, and the section was over-fetching at every desktop width
+
+§10aq's rule applied to this section. The pinned window is `col-span-7` inside `page-x`:
+
+| | Declared | Measured box | Now |
+| --- | --- | --- | --- |
+| Pinned capture | `58vw` | 51.5vw @1600 · 51.4 @1440 · 51.2 @1280 · **50.9 @1024** | `52vw` |
+| Pinned narrow capture | `11vw` | **8.6vw** | `9vw` |
+| Stacked capture | `88vw / 92vw` | 90.9vw @768 · 90.2 @430 · 89.2 @390 · 86.9 @320 | `91vw` |
+| Stacked narrow capture | `24vw` | 17.3vw @768 · **28.6vw @390** | `18vw / 29vw` |
+
+**That is worth 58KB of cold desktop transfer**, measured on a production build below. Neither of
+the four service-scene `sizes` cases §10aq deferred is on this route — the page holds **four images
+in total**, all of them the two projects' captures — so nothing was broadened into another service.
+
+### Media ledger — Phase 14
+
+**No new asset was produced and no capture was taken.** The four production files already existed
+from §10v and are unchanged on disk; what changed is the size they are rendered at and the `sizes`
+hint that selects a candidate for them.
+
+| | |
+| --- | --- |
+| **Source** | `https://www.ekly.ai/` — the live site, captured over CDP in Revision 18 |
+| **Project** | **Ekly** — supplied by the client as Mishram portfolio work |
+| **Production output** | `public/media/work/ekly-desktop.webp` **1440×1600, 85.0KB** · `public/media/work/ekly-mobile.webp` **720×2400, 74.2KB** |
+| **Role** | `02 / Selected Digital Work`, item 01 — the wide view and the narrow view of one site |
+| **Route** | `/services/web-digital-experiences` only |
+| **Crop** | Trimmed to the region that actually rendered — a full-page capture of a site with lazy media leaves unrendered bands. **No visual editing, no fabricated chrome, no AI enhancement, no redesign** |
+| **Public wording** | `Ekly` · `AI / SaaS / Creative Technology` · *"A product and marketing site for an AI generation studio — pricing, guides, editorial and the route into the app."* · `ekly.ai` · `Visit live site` |
+| **Do NOT repeat in** | Anywhere. `/media/work/` also holds §05's two campaign frames; these two are this route's and no other's |
+
+| | |
+| --- | --- |
+| **Source** | `https://ruchitainteriors.com/` — the live site, captured over CDP in Revision 18 |
+| **Project** | **Ruchita Interiors** — supplied by the client as Mishram portfolio work |
+| **Production output** | `public/media/work/ruchita-desktop.webp` **1440×2600, 206.8KB** · `public/media/work/ruchita-mobile.webp` **720×2400, 93.8KB** |
+| **Role** | `02 / Selected Digital Work`, item 02 |
+| **Route** | `/services/web-digital-experiences` only |
+| **Crop** | As above |
+| **Public wording** | `Ruchita Interiors` · `Interior Design / Service Business` · *"A studio site for an interior design practice — services, a project index with case pages, editorial and enquiry."* · `ruchitainteriors.com` · `Visit live site` |
+| **Do NOT repeat in** | Anywhere |
+
+**Ruchita's own hero publishes counters.** They appear only *inside the screenshot of that site* and
+are never repeated in Mishram's voice — §10v's rule, re-verified this phase against the rendered
+DOM. **Kept separate from the creator and campaign media ledgers**, deliberately: these are captures
+of third-party live sites Mishram built, not photographs of people.
+
+### Page length — measured before anything was edited
+
+| Viewport | Before | After | Δ |
+| --- | ---: | ---: | ---: |
+| 1600×900 | 16,889 | **16,898** | **+9** |
+| 1440×900 | 16,854 | **16,863** | **+9** |
+| 1280×800 | 15,707 | **15,716** | **+9** |
+| 1024×768 | 17,682 | **17,723** | **+41** |
+| 768×1024 | 17,852 | **18,051** | **+199** |
+| 430×932 | 14,266 | **14,572** | **+306** |
+| 390×844 | 14,343 | **14,700** | **+357 (+2.5%)** |
+| 375×812 | 14,436 | **14,793** | **+357** |
+| 320×568 | 15,651 | **16,008** | **+357** |
+
+Per section at 390: hero **1,508 → 1,508** · digital-work **1,336 → 1,661 (+325)** · what-we-build
+**2,684 → 2,716 (+32)** · beyond-websites **3,322 → 3,322** · why-mishram **1,085 → 1,085** ·
+how-we-build **994 → 994** · inquiry **2,073 → 2,073**.
+
+**The desktop delta is +9px and the phone delta is +357px, and that asymmetry is the design.** On a
+desktop the notes sit in the meta column's own headroom and the provenance line shares the closing
+rail, so both are free; on a phone there is no beside, so the two notes stack and the taller narrow
+capture hangs. **Every pixel of the +325 in `digital-work` is evidence** — two project descriptions,
+two captures a reader can judge, and one provenance line. §34's test is credibility per screen, and
+the section went from two unreadable screenshots to two documented projects.
+
+**The pinned track's own height did not move** (`100svh + 2 × 115vh`), which is why 1440 is +9 and
+not +300: the desktop composition gained content inside a panel that was already the right size.
+
+### Tablet, and the honest finding about it
+
+**1024 and 768 are the longest widths on this route and always have been** — 17,723 and 18,051
+against 16,863 at 1440. The cause is structural and predates this phase: `What We Build` pins from
+1200 and `Beyond Websites` from 1200, so a 1024 tablet renders both as stacked sequences —
+**9,668px between them, 55% of the route**. §10ab's compact system map switches in below 640, not
+below 768.
+
+**Not changed, deliberately.** Lowering either threshold is a composition decision for two chapters
+this phase was not auditing, it would need its own capture pass at four widths, and §34's rule is
+that new work replaces weak material — not that a strong chapter is compressed to pay for a
+different chapter's improvement. **Recorded here so the next session does not re-derive it**, and it
+is where any future length work on this route starts.
+
+### Responsive — every width the phase tests
+
+| | Verdict |
+| --- | --- |
+| 1600×900 | Pinned stage, index rail clear of the composition by 116px |
+| 1440×900 | Pinned. Meta column carries index, name, category, note, rule, action, URL — the note fills the headroom the column used to leave empty |
+| 1366×768 · 1280×800 | Pinned, unchanged |
+| 1024×768 | Pinned (the query is `min-height: 700`). Index clears the composition by 128px |
+| 768×1024 | Stacked, narrow capture 133px — above `sm`, so unchanged |
+| 430×932 | Stacked, narrow capture 124px |
+| 390×844 | Stacked, narrow capture **111px**. Both project headlines legible in both views |
+| 375×812 | As 390 |
+| 320×568 | Stacked, narrow capture **89px**. Notes wrap to three lines, both captures readable, no overflow |
+
+**Overflow: `PASS — 120/120 viewport checks clean`** on the full matrix — 10 public routes × 12
+viewports (1600, 1440, 1366, 1280, 1024, 768, 430, 414, 390, 375, 360, 320). `#what-we-do`'s
+`overflow-x: clip` and every other Revision 39 decision are untouched.
+
+### Performance — LOCAL LAB DATA, not field data
+
+Both states built for production and served with `next start`, cold cache, **no scrolling**, mobile
+throttled 4× on CPU, LCP/CLS read from an observer registered *before the document* (an observer
+created on `about:blank` never sees the entries the real navigation emits). Two samples each.
+
+| | FCP | LCP | LCP element | CLS | Cold transfer | Requests |
+| --- | ---: | ---: | --- | ---: | ---: | ---: |
+| **Before** — desktop 1440×900 | 1,884 / 1,584ms | 2,040 / 1,736ms | text | **0** | **702KB** | 36 |
+| **After** — desktop 1440×900 | 1,720 / 1,084ms | 1,988 / 1,280ms | text | **0** | **644KB** | 36 |
+| **Before** — mobile 390×844 @2× | 492 / 412ms | 2,692 / 2,640ms | text | **0** | 528KB | 30 |
+| **After** — mobile 390×844 @2× | 488 / 512ms | 2,728 / 2,616ms | text | **0** | 528KB | 30 |
+
+**−58KB of cold desktop transfer, and it is the `sizes` correction** — deterministic, identical
+across both samples. Mobile is byte-identical: the narrow capture grew on screen but the srcset
+candidate it selects did not change. **CLS is 0 in all eight readings**, the LCP element is **text**
+everywhere, and FCP/LCP scatter is machine noise rather than a trend.
+
+**Next's dev overlay reported `ruchita-desktop.webp` as the LCP and asked for `loading="eager"`.**
+That is §10aq's documented artifact of the QA scroll sweep, and the production measurement above is
+the control: the LCP is a `SPAN` on desktop and a `P` on mobile. **No eager image was added, and no
+preload.** The route still runs **4 images, 4 lazy, 0 eager, 0 preload** at every viewport.
+
+### Console
+
+Across 1440, 1024, 768, 390, 320 and 1440 under reduced motion: **zero application errors, zero
+hydration warnings, zero failed resources, zero 4xx**. Three messages, all third-party or
+dev-only — `THREE.Clock` (§10i), `[HMR] connected`, and Motion's own reduced-motion advisory.
+
+### Accessibility
+
+| | Result |
+| --- | --- |
+| `<h1>` | exactly one — *Websites people remember. Systems businesses rely on.* |
+| Heading order | `h1 → h2 → h3`, no skipped level, and **identical at 1440 and 390** |
+| Images | 4, all with `alt`; the two narrow captures gained real alt text this phase |
+| External links | both project links `target="_blank" rel="noopener noreferrer"` with distinguishable accessible names — *"Visit live site — Ekly, opens in a new tab"* |
+| Off-screen project | still `inert` in the pinned stage, so it is out of the tab order and the accessibility tree |
+| The new index | `aria-hidden`, non-interactive, and repeats nothing that is not already real text |
+| Touch targets | `.web-visit` keeps its `min-height: 44px` |
+| Reduced motion | takes the stacked path, captures still, both projects, both notes and both links present |
+
+### Content integrity — the audit, run against the rendered DOM
+
+**Every figure on the route was enumerated.** The complete list: chapter and project indices
+(`01`–`06`), the navigation's own numbers, the published phone number, and the inquiry form's budget
+and timeline options. **Not one metric, result, traffic figure, conversion, launch date, duration,
+team size, technology, ranking or score.** A scan for the banned register — *guarantee, 10x, next
+level, one-stop, unlock, enterprise-grade, best-in-class, award-winning, ROI, ROAS, uptime,
+Lighthouse* — returned **zero** hits.
+
+Nothing was claimed about Mishram's role on either project, no framework is named anywhere, and
+**no number appears inside any interface surface on the page** — §10m's rule, still true.
+
+### Untouched
+
+The homepage — **byte-identical at 1440, 1280, 1024, 768, 430 and 390** (17,787 / 16,739 / 13,969 /
+17,437 / 18,401 / 18,070, the Revision 38 numbers to the pixel) — **homepage Service 04 and its
+scene**, `config/services.ts`, the other four service routes, the shared service primitives
+(`ServiceHero`, `ServiceSection`, `ServiceSectionHead`, `ServiceScope`, `ServiceProcess`,
+`ServiceFaq`, `ServicePageNav`), `/about`, the legal routes, Supabase, GA4 consent, the Footer,
+Recognition, the creator and brand metrics, and **`globals.css`, which was not modified at all**.
+No dependency, no new analytics event, no new media file.
+
+**Route visibility unchanged**: Web & Digital Experiences is public, carries no `robots` override,
+canonicals to `https://mishram.media/services/web-digital-experiences` and is in `sitemap.xml`.
+**Brand Shoots stays `noindex, nofollow` and absent from the sitemap**, and was not touched.
+
+### Tooling
+
+- **`scripts/shoot.mjs`** gained the Phase 14 shot list — 54 shots covering the route at ten
+  viewports, both themes, reduced motion, every chapter, each project at its own scroll position and
+  all six seams. **No dependency added.**
+- **One real bug fixed in it.** Chrome 152 no longer accepts a **relative** `--user-data-dir` on
+  Windows: it exits silently and never opens the CDP port, which reads as *"Chrome did not expose a
+  CDP endpoint"* and looks like a Chrome problem. The path is now resolved.
+- **`/shots/` is gitignored.** It is `shoot.mjs`'s own default output directory and it also holds a
+  throwaway Chrome profile; the captures are dev artifacts in the same class as `.next`.
+- The production build was run the way §10z documents — `NEXT_DIST_DIR` against a temporary
+  `distDir`, reverted afterwards — so it never shared a Turbopack cache with a running dev server.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static; `/api/inquiry`
+  still dynamic.
+- **`PASS — 120/120`** on the overflow matrix.
+- **Secret scan clean** — zero occurrences of `SUPABASE_SECRET_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+  `RESEND_API_KEY`, `VERCEL_OIDC_TOKEN` or `service_role` in the built static output. **No value was
+  printed at any point.**
 - **Nothing pushed, nothing deployed.**
