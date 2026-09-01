@@ -205,6 +205,31 @@ const SHOTS = [
 
   { name: "seam-difference-crt", w: 1440, h: 900, scheme: "dark", selector: "#creators", pad: 380 },
   { name: "seam-crt-process", w: 1440, h: 900, scheme: "dark", selector: "#process", pad: 380 },
+
+  /* ── Phase 08 — 05 / Selected Work, the campaign proof ──────────────────
+     The chapter at every viewport, its intro and 40M+ line, each work item in
+     turn, and both seams. Section order read off `app/page.tsx`: 04 / Work
+     Process sits above and Recognition below. */
+  { name: "wrk-1440-light", w: 1440, h: 900, scheme: "light", selector: "#work" },
+  { name: "wrk-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#work" },
+  { name: "wrk-1280", w: 1280, h: 800, scheme: "dark", selector: "#work" },
+  { name: "wrk-1024", w: 1024, h: 768, scheme: "dark", selector: "#work" },
+  { name: "wrk-768", w: 768, h: 1024, scheme: "dark", selector: "#work" },
+  { name: "wrk-430", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#work" },
+  { name: "wrk-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#work" },
+  { name: "wrk-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#work" },
+  { name: "wrk-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#work" },
+
+  /* Each work item in turn. `click` drives the real index button before the
+     capture, so these are the live selected states rather than three renders
+     of the featured one. */
+  { name: "wrk-item-swiggy", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(1) button" },
+  { name: "wrk-item-pintola", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(2) button" },
+  { name: "wrk-item-mukul", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(3) button" },
+  { name: "wrk-item-pintola-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#work", click: "#work ul li:nth-child(2) button" },
+
+  { name: "seam-process-wrk", w: 1440, h: 900, scheme: "dark", selector: "#work", pad: 380 },
+  { name: "seam-wrk-next", w: 1440, h: 900, scheme: "dark", selector: "#recognition", pad: 380 },
 ];
 
 const only = process.argv.slice(3);
@@ -311,6 +336,22 @@ for (const shot of shots) {
       await new Promise(r => setTimeout(r, 900));
     })()`;
   await S("Runtime.evaluate", { expression: SWEEP, awaitPromise: true });
+
+  // Drive a real control before the capture where a shot asks for one, so a
+  // selected state comes from the component rather than from a prop set for
+  // the screenshot. `click` is a selector; a miss is reported, not silent.
+  if (shot.click) {
+    const hit = await S("Runtime.evaluate", {
+      expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.click)});
+        if (!el) return false;
+        el.click();
+        return true;
+      })()`,
+      returnByValue: true,
+    });
+    if (!hit.result.value) console.warn(`  ! click target not found: ${shot.click}`);
+    await sleep(900);
+  }
   await sleep(shot.after ?? 2200);
 
   const probe = await S("Runtime.evaluate", {
@@ -360,40 +401,70 @@ for (const shot of shots) {
   let data;
   if (box) {
     const pad = shot.pad ?? 0;
+    const measure = async () => {
+      const r = await S("Runtime.evaluate", {
+        expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.selector)});
+          if (!el) return null;
+          const b = el.getBoundingClientRect();
+          return JSON.stringify({ y: b.top + scrollY, h: b.height });
+        })()`,
+        returnByValue: true,
+      });
+      return r.result.value ? JSON.parse(r.result.value) : null;
+    };
 
-    // Grow the viewport to the region, **then sweep again**. Resizing
-    // reflows the document, so the pre-resize measurement is stale and the
-    // `whileInView` elements below the new fold have never intersected — that
-    // is what produced a section with a visible label and nothing under it.
-    await S("Emulation.setDeviceMetricsOverride", {
-      width: shot.w,
-      height: Math.min(Math.round(box.h + pad), 12000),
-      deviceScaleFactor: 1,
-      mobile: Boolean(shot.mobile),
-    });
-    await sleep(400);
-    await S("Runtime.evaluate", { expression: SWEEP, awaitPromise: true });
+    /* GROW THE VIEWPORT TO THE REGION, THEN CONVERGE.
 
-    const again = await S("Runtime.evaluate", {
-      expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.selector)});
-        const r = el.getBoundingClientRect();
-        return JSON.stringify({ y: r.top + scrollY, h: r.height });
-      })()`,
-      returnByValue: true,
-    });
-    box = JSON.parse(again.result.value);
+       Two things make a single resize-and-scroll wrong, and both cost a
+       capture before they were understood:
 
-    await S("Emulation.setDeviceMetricsOverride", {
-      width: shot.w,
-      height: Math.min(Math.round(box.h + pad), 12000),
-      deviceScaleFactor: 1,
-      mobile: Boolean(shot.mobile),
-    });
+       1. Resizing reflows the document, so the pre-resize measurement is
+          stale **and** the `whileInView` elements below the new fold have
+          never intersected — that produced a section with a visible label and
+          nothing underneath it.
+       2. `02 / What We Do` is a `100svh + N×130vh` track, so its height is a
+          function of the viewport height. Resizing moves every section below
+          it by hundreds of pixels, which is how a capture of `#work` came
+          back showing the inquiry form.
+
+       So: resize, sweep, re-measure, and repeat until the offset stops
+       moving. Three passes is plenty; it settles in two. */
+    for (let pass = 0; pass < 3; pass++) {
+      await S("Emulation.setDeviceMetricsOverride", {
+        width: shot.w,
+        height: Math.min(Math.round(box.h + pad), 12000),
+        deviceScaleFactor: 1,
+        mobile: Boolean(shot.mobile),
+      });
+      await sleep(350);
+      await S("Runtime.evaluate", { expression: SWEEP, awaitPromise: true });
+      const next = await measure();
+      if (!next) break;
+      const settled =
+        Math.abs(next.y - box.y) < 2 && Math.abs(next.h - box.h) < 2;
+      box = next;
+      if (settled) break;
+    }
+
     await S("Runtime.evaluate", {
       expression: `window.scrollTo(0, ${Math.max(0, Math.round(box.y - pad))}); new Promise((r) => setTimeout(r, 900))`,
       awaitPromise: true,
     });
     await sleep(900);
+
+    // Prove the frame is the region it claims to be, rather than trusting it.
+    const landed = await S("Runtime.evaluate", {
+      expression: `(() => { const el = document.querySelector(${JSON.stringify(shot.selector)});
+        return Math.round(el.getBoundingClientRect().top);
+      })()`,
+      returnByValue: true,
+    });
+    // After scrolling to `box.y - pad`, the section should sit exactly `pad`
+    // below the top of the frame. Comparing against 0 instead of `pad` reported
+    // every padded seam as 2*pad wrong — the check was the bug, not the shot.
+    const off = landed.result.value - pad;
+    if (Math.abs(off) > 4) console.warn(`  ! ${shot.name}: section is ${off}px off the frame`);
+
     ({ data } = await S("Page.captureScreenshot", { format: "png" }));
   } else {
     ({ data } = await S("Page.captureScreenshot", {

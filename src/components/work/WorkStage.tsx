@@ -202,8 +202,18 @@ export function WorkMeta({
               </motion.span>
             </p>
 
+            {/* Format, then the relationship where the collaborations rail
+                already evidences one. **Never a result** — the chapter's single
+                performance figure is scoped to the agency and lives above the
+                index, deliberately nowhere near a brand name. */}
             <p className="caps mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-ink-muted">
               <span>{w.format}</span>
+              {w.relationship ? (
+                <>
+                  <span aria-hidden className="block h-px w-3 bg-line-strong" />
+                  <span>{w.relationship}</span>
+                </>
+              ) : null}
               {w.year ? (
                 <>
                   <span aria-hidden className="block h-px w-3 bg-line-strong" />

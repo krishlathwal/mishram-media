@@ -2943,6 +2943,18 @@ html.theme-transition *::after {
     color: var(--color-accent);
   }
 
+  /* ── 05 / Selected Work — the one performance figure ────────────
+     An editorial line above the index, on the chapter's own hairline. **Not a
+     KPI card**: no border, no ground, no icon, no counter. The scope note under
+     it is what keeps an agency-level claim from reading as a claim about the
+     brand displayed beside it, so it is never dropped for space. */
+
+  .wrk-proof {
+    margin-top: 1.75rem;
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.25rem;
+  }
+
   /* ── 03 / Creators — the network, in two halves ─────────────────
      Established and Trending, side by side from `sm` and stacked below it.
      Each half is a hairline, a caps label and one line — the same grammar the

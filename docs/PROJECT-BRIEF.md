@@ -5905,6 +5905,9 @@ hotlinked),
 `public/media/services/influencer/lovekesh-kataria-worked-with.webp` (800×1000, the Influencer hero's
 relationship node) and `public/media/services/influencer/troovy-branded-content.webp` (1200×750, the
 site's **only campaign photograph** — a frame from Mishram's own proposal deck, §10aj),
+`public/media/work/swiggy-branded-content.webp` (620×1102) and
+`public/media/work/pintola-branded-content.webp` (620×1103) — the two branded-campaign frames in
+§05, both first-party and both carrying a legible brand already on the rail (§10am),
 `public/media/proof/xbhandesiri-reel-performance.webp` (560×950, the Reel-performance capture from
 Mishram's own proposal — the site's only screenshot of a third-party platform, §10ak),
 `public/brand/mishram-wordmark.png` (used as a CSS mask so it inherits `currentColor`). Everything is
@@ -6210,6 +6213,30 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+
+- **Revision 35’s decisions (§10am) — awaiting review, then locked.**
+  - **A logo is not a campaign.** A brand on the collaborations rail establishes a relationship and
+    nothing more — no specific campaign, deliverable, creator or result. **Canva India is held for
+    exactly this reason**: the deck carries its wordmark and handle and no campaign frame. Do not
+    create a Selected Work item from a rail entry.
+  - **A folder name is a signal; what is in the frame is the evidence.** The Swiggy stills stay held
+    because nothing Swiggy is in them; the video frame publishes because the packaging is legible.
+  - **40M+ renders once, in 05 / Selected Work, attached to no brand.** The scope note *“Across
+    Mishram’s brand collaborations. Not attributed to the work shown here.”* is **not decoration** —
+    it is what stops a true agency claim being read as a claim about Swiggy or Pintola beside it.
+    Never drop it for space, never shorten the label to “views”, never make it an average, and
+    **never add it to the quick-scan proof band** — `public: false` in `config/proof.ts` governs
+    that band only.
+  - **No Mishram role on any work item** until a source establishes what Mishram handled on that
+    specific piece. Agency capability is not evidence of it (§12).
+  - **Nobody in a work frame is named**, and no result is attached to any item.
+  - **NO SAFE VIDEO SELECTED, and that stands until a clip clears all five rules.** A strong
+    still-based index beats the wrong clip. The playback path stays built — `mediaType: "video"`
+    plus `src` and nothing else. Do not ship a raw MOV, and do not force video to fill the
+    architecture.
+  - **Troovy stays on the service page only.** One piece of evidence, one place.
+  - **`zoya-jaan.webp` and `nikita-kumawat.webp` are retired from this chapter, not deleted** —
+    §03 and the Hero still use them. Do not restore them here to lengthen the index.
 
 - **Revision 34’s decisions (§10al) — awaiting review, then locked.**
   - **The Established / Trending framing describes the NETWORK and never a person.** Not one name
@@ -9668,4 +9695,161 @@ hairlines — **no dual-column category cards, no follower grid.** Zero overflow
 - **`scripts/shoot.mjs` gained `sectionScroll(selector, into)`**, for the same reason `slotScroll`
   exists: a section offset moves whenever anything above it changes height.
 - **No new dependency, no new analytics event, no new production image.**
+- **Nothing pushed, nothing deployed.**
+
+---
+
+## 10am. FINAL POLISH PHASE 08 — SELECTED WORK, AND THE FIRST BRANDED CAMPAIGN FRAMES (Revision 35)
+
+**Nothing was deployed.** Production still serves Revision 27. The full audits, the ledger and the
+register are in `docs/FINAL-POLISH-ROADMAP.md`; this records the decisions.
+
+### 1 — THE CHAPTER WAS MAKING THE WRONG CLAIM
+
+`05 / Selected Work` carried three items — `zoya-jaan.webp`, `mukul-sharma.webp`,
+`nikita-kumawat.webp` — each the **same file already rendering in §03 Creators**, two of them in the
+Hero as well. They were honestly labelled and nothing about them was fabricated. They also proved
+that Mishram photographs creators, not that it makes work for brands. **On a chapter called Selected
+Work that is the wrong claim to be able to make.**
+
+### 2 — THE EXTRACTION GAP THAT HAD HIDDEN THE EVIDENCE
+
+Phase 05 extracted the proposal's imagery by scanning for **JPEG streams**. The deck holds **113
+image objects: 41 DCTDecode and 72 FlateDecode** — seventy-two images had never been looked at.
+
+Decoding them found **Pintola**: `img-028`, catalogued in Phase 05 as *"three men, curtain
+background"*, is at full resolution a **Pintola® High Protein Muesli** pack presented to camera,
+wordmark and pack copy legible — a product-integration frame in the same grammar as the Troovy one,
+sitting on **page 6, *BRANDS WE'VE WORKED WITH***. The rest of the Flate set is brand logo lockups,
+a cut-out award photograph with an alpha mask (Recognition, Phase 09 — out of scope) and one
+letterboxed relationship photo.
+
+**A correction fell out of the same pass.** Revision 33 recorded the published Xbhandesiri
+Reel-performance capture as page 3. Traced through the page objects' `/XObject` dictionaries it is
+**page 5 — "BRAND VIDEO & VIEWS"**: better provenance than the record claimed, and the asset and
+figures are unaffected.
+
+### 3 — THE SWIGGY FRAME PHASE 05 COULD NOT FIND
+
+Phase 05 examined the two **stills** in `PRASHANT VIDEO/Swiggy/` and correctly held them — four
+people in a room with nothing Swiggy in shot. That verdict stands for those two files.
+
+**The branding is in the video, one folder over.** `IMG_3842.MOV` — 5.67s, 3840×2160 HEVC with a
+-90 display matrix, so upright it is natively **2160×3840 (9:16)** — shows a content setup with
+**Swiggy delivery boxes and the "Food you ♥ on time" tagline legible** in the foreground.
+
+**A folder name is a signal; the packaging in the frame is the evidence.** That distinction is why
+this frame publishes and those two stills still do not.
+
+### 4 — NO SAFE VIDEO SELECTED, AND IT IS A RESULT RATHER THAN A GAP
+
+Every campaign-relevant clip was probed and sampled: the four in the Swiggy folder, the sixteen
+`REELS - MISHRAM/CREATIVE REEL - ALL` skit folders, and `14th work load/final.mp4`.
+
+**None passes rule 4 — "suitable for a premium agency portfolio."** The in-house reels are Mishram's
+own office skits (*"asking for agency"*, *"WHERE IS OUR SOCIAL MEDIA MANAGER"*); the other Swiggy
+clips are vlog footage of identifiable private individuals in public places; `final.mp4` stays held
+on §10t's three grounds. And **the one clip with real branding makes a better still than motion** —
+as video it is a handheld take of people crossing a room.
+
+The playback path is untouched and fully built: `mediaType: "video"` plus `src` switches it on with
+no component edit, and there are **zero `<video>` elements in the DOM** today.
+
+### 5 — THE FINAL THREE, AND WHY THE THIRD IS THE ONE IT IS
+
+**01 Swiggy · 02 Pintola · Branded Content, Worked with. 03 Mukul Sharma · Creator Content.**
+Branded work leads, so a visitor who reads only the featured state sees a real brand.
+
+The lead promises *creator content, campaigns and visual work*, so dropping creator content entirely
+would make the lead wrong. **Mukul is the least-repeated of the three it replaces**: Zoya Jaan and
+Nikita Kumawat both render in the Hero *and* §03, so either would be a third appearance on one page;
+Revision 28 took Mukul off the Hero. It is still a repeat, and it is the smallest one available.
+
+`WorkItem.relationship` is new and renders only where the collaborations rail already evidences one.
+Absent on creator content, and **never upgraded to *managed*, *client* or *campaign by*.**
+
+**Troovy was deliberately not repeated** — it carries the campaign-proof band on
+`/services/influencer-marketing`, and a second crop of the same photograph would put one piece of
+evidence in two places. **Canva India is held**: the deck has the wordmark and `@canvaindia` and
+**no campaign frame anywhere** across all 113 image objects. A logo is not a campaign.
+
+### 6 — 40M+, PUBLISHED ONCE AND ATTACHED TO NOTHING
+
+> **40M+** / **VIEWS ON A SINGLE BRANDED VIDEO**
+> *Across Mishram's brand collaborations. Not attributed to the work shown here.*
+
+Above the work index, on the chapter's own hairline. Every word of the proposal's scope survives:
+*"on a single video"* — not a total, not an average, not a monthly figure; *"some of our brand
+collaborations"* — an agency-level statement about an unnamed collaboration.
+
+**The scope note is load-bearing, not decoration.** Nothing in any source says which collaboration
+the figure belongs to, and it renders inches from the words *Swiggy* and *Pintola*. That sentence is
+what stops a true agency claim being read as a false client claim.
+
+`config/proof.ts` keeps the record at `public: false` and the flag's meaning was **tightened rather
+than flipped**: it governs the quick-scan band only. Setting it true would render the figure twice
+on one page — the duplication Revision 33 removed.
+
+### 7 — WHAT IS NEVER CLAIMED HERE
+
+No campaign name, brief, date, deliverable count or creator list — the sources establish a brand and
+a frame, not a project. **No Mishram role**: nothing says who did what, and *"agencies usually do
+these things"* is not evidence. **Nobody is named** — neither photograph carries identity metadata,
+and §18 rule 7 bars using a face. **No result on any item.** *"Billions of views"* stays held.
+
+Both published brands are on the collaborations rail with an official asset and a client-confirmed
+relationship. **No held brand appears in any frame** — zingbus, Fun N Earn, VYRL, Duolingo and all
+OPPO material are absent — and **nothing was cropped to get around a prior decision.**
+
+### 8 — MEASURED
+
+| | Before | After |
+| --- | --- | --- |
+| `#work`, 1440×900 | 1,036px | **1,137px (+101)** |
+| Homepage, 1440×900 | 17,678px | **17,779px (+101, +0.6%)** |
+| New assets | — | **2, 125.8KB** (52.8 + 73.0) |
+| Image nodes · lazy · eager · preload | 23 · 23 · 0 · 0 | **unchanged** |
+| `<video>` in `#work` | 0 | **0 — no decoder mounts** |
+| Net media requests | — | **0.** Two new posters replace two no longer requested here |
+
+The growth is the 40M+ block. **No copy was cut to pay for it**, and the only thing available to cut
+was the scope note — the one line that keeps the claim honest.
+
+**Two posters were retired, not deleted**: `zoya-jaan.webp` and `nikita-kumawat.webp` still serve
+§03 and the Hero. Only this chapter's references moved.
+
+### 9 — MOBILE AND REDUCED MOTION
+
+**390: pass.** One item at a time — heading, lead, the 40M+ line, a full-width 9:16 still with the
+Swiggy boxes legible, the item's metadata, the three-row index, the CTA. No three-column metadata,
+no tiny screenshot, **zero overflowing elements inside `#work`** at 1440, 1024, 768 or 390.
+
+**Reduced motion** is unchanged and correct: every item is a poster, so there is nothing to
+autoplay. The clip wipe becomes a short opacity swap and all three items stay selectable.
+
+### 10 — THE CAPTURE SCRIPT LEARNED SOMETHING EXPENSIVE
+
+`scripts/shoot.mjs` gained a **`click`** step, so a selected state comes from the component rather
+than from a prop set for a screenshot.
+
+**And the section-capture routine now converges instead of resizing twice.** Growing the viewport to
+a section's height reflows the document — and `02 / What We Do` is a `100svh + N×130vh` track, so
+**its height is a function of the viewport height.** One resize moved every section below it by
+hundreds of pixels, and a capture of `#work` came back showing the inquiry form. It now resizes,
+sweeps, re-measures and repeats until the offset stops moving, then **asserts the section actually
+landed where the frame claims.**
+
+That assertion immediately flagged every padded seam as `2 × pad` wrong — because it compared
+against 0 rather than `pad`. **The check was the bug, not the shot**, which is what an assertion is
+for.
+
+### Verified
+
+- **Types, lint and the production build clean.** Twenty routes, all still static.
+- **Seventeen real composited captures** — the chapter at eight viewports plus reduced motion, each
+  work item in its own selected state, and both seams.
+- **`40M` appears exactly once on the rendered homepage**, inside `#work`, with zero occurrences in
+  the quick-scan band — audited in the DOM, not in the source.
+- **No brand is attached to the figure**, and no result is attached to any item.
+- **No dependency, no new analytics event.**
 - **Nothing pushed, nothing deployed.**

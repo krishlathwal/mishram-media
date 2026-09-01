@@ -236,15 +236,43 @@ function Intro() {
           ))}
         </motion.h2>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 0.8, delay: 0.25, ease: EASE }}
-          className="max-w-[46ch] text-[0.8125rem] leading-[1.7] text-ink-soft lg:max-w-[32ch] lg:pb-2"
+          className="max-w-[46ch] lg:max-w-[32ch] lg:pb-2"
         >
-          {SELECTED_WORK_COPY.lead}
-        </motion.p>
+          <p className="text-[0.8125rem] leading-[1.7] text-ink-soft">
+            {SELECTED_WORK_COPY.lead}
+          </p>
+
+          {/* THE 40M+ CLAIM — one figure, one line, and the scope note is the
+              load-bearing part.
+
+              It sits **above the index and beside the lead**, so a scanning
+              visitor meets it as a fact about the agency rather than as a
+              caption on whatever work happens to be showing. Phase 06 held it
+              for exactly this chapter; a fifth number in the proof band would
+              have made that band a statistics board.
+
+              **Attached to no brand.** Nothing in any source says which
+              collaboration the figure belongs to, so the note says so on the
+              page — that sentence is what stops a true agency claim being read
+              as a false client claim about Swiggy or Pintola beside it.
+              No KPI card, no counter, no chart. */}
+          <div className="wrk-proof">
+            <p className="font-display text-[clamp(1.6rem,2.6vw,2.2rem)] leading-[0.98] font-medium tracking-[-0.038em] text-ink">
+              {SELECTED_WORK_COPY.proof.value}
+            </p>
+            <p className="caps mt-2.5 text-ink-soft">
+              {SELECTED_WORK_COPY.proof.label}
+            </p>
+            <p className="mt-3 text-[0.75rem] leading-[1.65] text-ink-muted">
+              {SELECTED_WORK_COPY.proof.note}
+            </p>
+          </div>
+        </motion.div>
       </div>
     </>
   );

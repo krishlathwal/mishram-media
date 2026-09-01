@@ -70,7 +70,17 @@ export type ProofFact = {
   confirmed: string;
   /** DEVELOPMENT ONLY — never rendered. A visual corroboration, if one exists. */
   proofAsset?: string;
-  /** False renders nothing at all. See rule 3. */
+  /**
+   * **Whether this figure renders in the quick-scan proof band**, and nothing
+   * wider than that. False means the band never shows it — no dash, no
+   * placeholder (rule 3).
+   *
+   * It is deliberately *not* a claim about the whole site: Revision 35
+   * published `branded-video` inside 05 / Selected Work while it stays `false`
+   * here, because a campaign result belongs beside campaigns and a fifth large
+   * figure would have turned this band into a statistics board. A record's
+   * `note` says where it renders when that is anywhere other than the band.
+   */
   public: boolean;
   /** DEVELOPMENT ONLY — why a held figure is held, or where it is going. */
   note?: string;
@@ -156,10 +166,21 @@ export const PROOF_FACTS: readonly ProofFact[] = [
   /* ── HELD. Recorded, and rendered nowhere. ─────────────────────── */
 
   /**
-   * Reserved rather than rejected. It is a *campaign* result, and the page
-   * that argues campaigns is Selected Work — putting a fifth large number on
-   * the homepage would turn an editorial index into a statistics board, which
-   * is the one thing this layer must not become.
+   * **PUBLISHED IN REVISION 35 — but in 05 / Selected Work, not in this band.**
+   *
+   * It was reserved rather than rejected: a *campaign* result belongs beside
+   * campaigns, and a fifth large number here would have turned an editorial
+   * index into the statistics board this layer must not become. Phase 08 put
+   * it where it belongs, once, above the work index —
+   * `SELECTED_WORK_COPY.proof` carries the rendered wording and the reasoning.
+   *
+   * **`public` stays false because that flag governs this band only.** Setting
+   * it true would render the figure twice on one page, which is the exact
+   * duplication Revision 33 removed.
+   *
+   * **It is attached to no brand**, and the rendered note says so: nothing in
+   * any source identifies which collaboration the figure belongs to, so
+   * naming one would turn a true agency claim into a false client claim.
    */
   {
     id: "branded-video",
@@ -171,7 +192,10 @@ export const PROOF_FACTS: readonly ProofFact[] = [
     sourceType: "first-party-proposal",
     confirmed: "user-approved: 2026-09",
     public: false,
-    note: "RESERVED FOR SELECTED WORK / CAMPAIGN PROOF (Phase 08). Not a homepage figure.",
+    note:
+      "PUBLISHED (Rev 35) in 05 / Selected Work, above the work index, with the scope note " +
+      "'Across Mishram's brand collaborations. Not attributed to the work shown here.' " +
+      "Stays out of this band: one figure, one place.",
   },
   /**
    * Held on language, not on doubt. "Billions" is unbounded, it cannot be
