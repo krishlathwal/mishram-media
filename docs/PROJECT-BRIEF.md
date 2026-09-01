@@ -6116,6 +6116,11 @@ delivery_not_configured` and `400 invalid_request` correctly.
 > | **Make the repository public** | Free, and Git deployments start working — **but it publishes this document.** The brief carries the client's contact strategy, the withheld-brand reasoning, held creator identities, the Shadab Jakati brand-safety finding and every audit. **Do not take this option without reading what is in `docs/` first** |
 > | **Keep deploying with `npx vercel deploy --prod`** | Works today on the current plan, costs nothing, and is manual — somebody has to remember |
 >
+> **SUPERSEDED IN REVISION 41 (§10as): Git-connected production deployments now build and go
+> live.** Both pushes in that release deployed from Git, and `mishram.media` serves a Git build.
+> The plan-vs-visibility decision below is no longer blocking anything — re-read it before quoting
+> it. Everything else in this box is the historical record of why the CLI became the path.
+>
 > **Until one is chosen, `npx vercel deploy --prod` is the deployment command**, and the live site
 > is one of those. A blocked deployment is inert: it never becomes the production alias, so a push
 > cannot take the site down.
@@ -6293,6 +6298,12 @@ Approved and locked. Extend, don't rebuild:
     projects were healthy. **Verify with the CLI before concluding anything is missing.**
   - **`dpl_HXknMvn7eZsLNmprbFUoGz6vpAYd` is the rollback point for this release.** Record a fresh
     one before every future production deployment; never roll back to an id copied from a document.
+  - **GIT-CONNECTED PRODUCTION DEPLOYMENTS WORK NOW, AND §17b'S “BLOCKED” NOTE IS SUPERSEDED.**
+    Both pushes in this release built and went live from Git, and `mishram.media` currently serves
+    the Git build of the docs-only commit. **Every push to `main` redeploys production**, including
+    a documentation change — so treat `origin/main` as the deployed SHA, and expect a docs commit
+    to ship. `npx vercel deploy --prod` still works and is still useful for deploying a working
+    tree that is not yet pushed.
 
 - **Revision 40’s decisions (§10ar) — awaiting review, then locked.**
   - **THE WEB ROUTE'S SEVEN CHAPTERS ARE FINAL.** Hero → Selected Digital Work → What We Build →
@@ -11017,6 +11028,32 @@ live domain matches the local build to the pixel.**
 | Aliases | `mishram.media` · `www.mishram.media` · `mishram-media.vercel.app` · `mishram-media-silksora.vercel.app` |
 | **Rollback point** | **`dpl_HXknMvn7eZsLNmprbFUoGz6vpAYd`** (`mishram-media-6j9v525sk-…`) — what production served before this release |
 | Command | `npx vercel deploy --prod`, still the path for §17b's reason |
+| **Serving now** | **`dpl_rUshnjc6zWi8VnxhK85K324GjsMV`** — the Git build of `21cc332`, see the correction below |
+
+> ### ⚠ CORRECTION, AND IT MATTERS MORE THAN THE IDS: GIT-CONNECTED DEPLOYMENTS NOW WORK
+>
+> §17b recorded that a push to `main` creates a Production deployment which Vercel then refuses to
+> build — `readyState: BLOCKED`, Hobby plan plus private repository. **That is no longer true, and
+> it was observed rather than assumed.** Both pushes in this release produced a Git-sourced
+> production deployment that built and went live:
+>
+> | Deployment | Source | Commit | Result |
+> | --- | --- | --- | --- |
+> | `dpl_c38dp0kyc…` | git | `f9f85a3` | Ready — from the operational push |
+> | **`dpl_Fc4oWcwpbpSATCNbjmT4raBu4Ghg`** | **cli** | **`f9f85a3`** | Ready — the deliberate `vercel deploy --prod` |
+> | **`dpl_rUshnjc6zWi8VnxhK85K324GjsMV`** | **git** | **`21cc332`** | **Ready — and it is what `mishram.media` serves now** |
+>
+> So **production tracks `origin/main`**: the docs-only release-record commit was picked up and
+> deployed on its own, which is why the serving deployment is the docs commit and not the CLI one.
+> The runtime is byte-identical — `21cc332` changes nothing outside `docs/` — and the live site
+> was re-verified on it: twelve routes correct, a nine-URL sitemap, the right canonical, Brand
+> Shoots still `noindex`, `G-QKQK14BSFG` in the served HTML, document heights 17,787 / 18,070 /
+> 14,700 to the pixel, WebGL alive, and **`PASS — 40/40`** on overflow.
+>
+> **Two consequences for whoever works on this next.** A docs-only commit now redeploys production,
+> so "deployed code SHA" is simply whatever `origin/main` is. And §17b's plan-vs-visibility
+> decision is **no longer blocking anything** — it should be re-read before being quoted.
+
 
 **Binding verified, not trusted.** `.vercel/project.json` and the Vercel API agree:
 `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L`, `mishram-media`, team `silksora`, `nextjs`, Node 24.x, repo

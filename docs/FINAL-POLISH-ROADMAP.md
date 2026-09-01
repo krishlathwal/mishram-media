@@ -3137,6 +3137,32 @@ Production had been running Revision 27 since the launch; thirteen commits went 
 | Aliases | `mishram.media` · `www.mishram.media` · `mishram-media.vercel.app` · `mishram-media-silksora.vercel.app` |
 | Rollback point | **`dpl_HXknMvn7eZsLNmprbFUoGz6vpAYd`** (`mishram-media-6j9v525sk-…`), the deployment production was serving before this one |
 | Command | `npx vercel deploy --prod` — still the path, for §17b's reason |
+| **Serving now** | **`dpl_rUshnjc6zWi8VnxhK85K324GjsMV`** — the Git build of `21cc332`, see the correction below |
+
+> ### ⚠ CORRECTION, AND IT MATTERS MORE THAN THE IDS: GIT-CONNECTED DEPLOYMENTS NOW WORK
+>
+> §17b recorded that a push to `main` creates a Production deployment which Vercel then refuses to
+> build — `readyState: BLOCKED`, Hobby plan plus private repository. **That is no longer true, and
+> it was observed rather than assumed.** Both pushes in this release produced a Git-sourced
+> production deployment that built and went live:
+>
+> | Deployment | Source | Commit | Result |
+> | --- | --- | --- | --- |
+> | `dpl_c38dp0kyc…` | git | `f9f85a3` | Ready — from the operational push |
+> | **`dpl_Fc4oWcwpbpSATCNbjmT4raBu4Ghg`** | **cli** | **`f9f85a3`** | Ready — the deliberate `vercel deploy --prod` |
+> | **`dpl_rUshnjc6zWi8VnxhK85K324GjsMV`** | **git** | **`21cc332`** | **Ready — and it is what `mishram.media` serves now** |
+>
+> So **production tracks `origin/main`**: the docs-only release-record commit was picked up and
+> deployed on its own, which is why the serving deployment is the docs commit and not the CLI one.
+> The runtime is byte-identical — `21cc332` changes nothing outside `docs/` — and the live site
+> was re-verified on it: twelve routes correct, a nine-URL sitemap, the right canonical, Brand
+> Shoots still `noindex`, `G-QKQK14BSFG` in the served HTML, document heights 17,787 / 18,070 /
+> 14,700 to the pixel, WebGL alive, and **`PASS — 40/40`** on overflow.
+>
+> **Two consequences for whoever works on this next.** A docs-only commit now redeploys production,
+> so "deployed code SHA" is simply whatever `origin/main` is. And §17b's plan-vs-visibility
+> decision is **no longer blocking anything** — it should be re-read before being quoted.
+
 
 **The project binding was verified rather than trusted.** `.vercel/project.json` and the Vercel API
 agree: `prj_88q2cT1X6WpG8t0xUy70jUf4pk7L`, `mishram-media`, team `silksora`, framework `nextjs`,
