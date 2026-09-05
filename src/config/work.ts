@@ -80,6 +80,12 @@ export type WorkItem = {
   /** Poster / still. The whole visual while `mediaType` is `"poster"`. */
   poster: string;
   alt: string;
+  /**
+   * A separate still for the 4:5 supporting fragment, where a work genuinely
+   * has a second frame (Revision 42 — the Mirzapur cast frame beside the
+   * poster still). Absent, the fragment is a re-crop of `poster`.
+   */
+  support?: { poster: string };
   /** Small in-frame format tag. Describes the asset, not a claim about it. */
   format: string;
   /**
@@ -103,7 +109,51 @@ export type WorkItem = {
  */
 export const WORK_ITEMS: readonly WorkItem[] = [
   /**
-   * SWIGGY — the featured state.
+   * MIRZAPUR: THE MOVIE — FILM PR, the featured state from Revision 42.
+   *
+   * **The relationship is the client's own statement**: "We recently did
+   * Mirzapur PR and the client wants that acknowledged", with the material
+   * supplied for it — `Mishram web data/DSC04338.jpg.jpeg` (a 7008×4672
+   * still: two people in front of the film's poster at the promotional event)
+   * and `Mirzapura PR.MP4` (a 5-second 1080p clip of five cast members at the
+   * same backdrop). The poster in frame is the film's own — *Amazon MGM
+   * Studios & Excel Entertainment present* — and Excel Entertainment is on
+   * this site's collaborations rail with a client-confirmed relationship.
+   *
+   * WHAT IS CLAIMED: that Mishram Media did PR work for the film, in the
+   * client's words, and that these are the film's cast at the event, again in
+   * the client's words ("Mirzapur star cast imagery"). **Nobody in either
+   * frame is named** — no filename names anyone, and §18 rule 7 bars using a
+   * face. `PR support` is the relationship word: not *campaign by*, not
+   * *managed*, not *partner*, and no result is attached.
+   *
+   * THE STILL is the primary 9:16 — the middle 2628×4672 of the photograph,
+   * which holds both figures and the poster's title. THE CLIP supplies the
+   * supporting 4:5 as a frame at 2.6s (four cast members, the title above),
+   * downscaled from 864×1080. **The clip itself is not played**: a 9:16 frame
+   * would show two of five people, and §05's video rules stand. Held for a
+   * wider playback surface if one is ever built.
+   */
+  {
+    id: "mirzapur",
+    title: "Mirzapur: The Movie",
+    type: "Film PR",
+    relationship: "PR support",
+    mediaType: "poster",
+    poster: "/media/work/mirzapur-pr-still.webp",
+    alt: "Members of the Mirzapur: The Movie cast in front of the film's poster at its promotional event, from Mishram Media's PR work",
+    support: { poster: "/media/work/mirzapur-pr-cast.webp" },
+    format: "Still / 9:16",
+    // The support still is its own frame, so its focus keeps the faces high.
+    focus: { primary: "50% 40%", support: "50% 25%" },
+    source:
+      "C:\\Users\\krish\\Downloads\\Mishram web data\\DSC04338.jpg.jpeg — 7008x4672, client-supplied " +
+      "6 Sep 2026; extract { 2100, 0, 2628x4672 } → 620x1102, downscale only. Support: " +
+      "Mirzapura PR.MP4 frame at 2.6s, 1920x1080, extract { 900, 0, 864x1080 } → 640x800. " +
+      "No recolouring, nothing removed, nobody named.",
+  },
+  /**
+   * SWIGGY — the second item, and the featured state until Revision 42.
    *
    * A frame from `IMG_3842.MOV`, inside the client's own `PRASHANT VIDEO/
    * Swiggy/` folder: a content setup with **Swiggy delivery boxes and the
@@ -205,7 +255,7 @@ export const SELECTED_WORK_COPY = {
   headline: ["Work made", "to be watched."],
   /** Rendered in the serif italic accent, matching the sections above. */
   accentWord: "watched.",
-  lead: "Selected creator content, campaigns and visual work from across our network.",
+  lead: "Selected film PR, brand campaigns and creator content from across our network.",
   cta: "Create with us",
   /**
    * THE 40M+ CLAIM, AND ITS SCOPE IS THE WHOLE POINT.

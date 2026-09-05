@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // `scripts/shoot.mjs`'s output directory. Gitignored, and it holds a
+    // throwaway Chrome profile whose extension bundles are not this project's
+    // code — linting them reported 58 errors in Revision 42 that had nothing
+    // to do with the site.
+    "shots/**",
   ]),
 ]);
 

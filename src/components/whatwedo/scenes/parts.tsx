@@ -167,12 +167,19 @@ export function Photo({
   alt,
   priority,
   sizes = "(max-width: 1023px) 45vw, 24vw",
+  position,
 }: {
   src: string;
   alt: string;
   priority?: boolean;
   /** Override when a frame is materially larger or smaller than the default. */
   sizes?: string;
+  /**
+   * `object-position` for the cover crop. Needed once a frame shows a source
+   * whose aspect differs from its own — a 3:4 pair in a 9:16 frame keeps both
+   * heads only if the window sits where they are (Revision 42).
+   */
+  position?: string;
 }) {
   return (
     <>
@@ -182,6 +189,7 @@ export function Photo({
         fill
         sizes={sizes}
         priority={priority}
+        style={position ? { objectPosition: position } : undefined}
         className="svc-photo object-cover"
       />
       <span aria-hidden className="svc-photo-veil" />

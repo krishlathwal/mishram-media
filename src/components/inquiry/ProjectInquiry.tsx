@@ -57,17 +57,24 @@ export function ProjectInquiry({
   context?: string;
 } = {}) {
   return (
+    /* THE PLUM FIELD — Revision 42. The client's verdict on the walkthrough
+       was that the form was "too light … not getting any attention", and the
+       brand's plum was still waiting for a surface that earned it. This is
+       that surface: the section restates every semantic token at plum-field
+       values (`.plum-field` in `globals.css`), so the form, the direct routes
+       and the grid all render ivory-on-plum through the classes they already
+       use. Nothing in the form's own markup changed. */
     <section
       id="project-inquiry"
       aria-labelledby="project-inquiry-title"
-      className="relative w-full border-t border-line bg-canvas"
+      className="plum-field relative w-full border-t border-line bg-canvas"
     >
       <Grid />
 
-      <div className="page-x relative pt-16 pb-16 sm:pt-20 sm:pb-20 md:pt-28 md:pb-28 lg:pt-24 lg:pb-24">
+      <div className="page-x relative pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-20 lg:pb-20">
         <Intro note={note} />
 
-        <div className="mt-12 md:mt-14 lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="mt-9 md:mt-10 lg:grid lg:grid-cols-12 lg:gap-x-8">
           {/* Context and the direct routes out. Deliberately one short
               paragraph, not a three-step explainer — §04 Work Process already
               owns that and repeating it here would be filler. */}

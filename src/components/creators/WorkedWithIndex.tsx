@@ -43,7 +43,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  */
 export function WorkedWithIndex() {
   return (
-    <div className="mt-12 md:mt-16">
+    <div className="mt-10 md:mt-12">
       <Roster />
     </div>
   );
@@ -117,7 +117,7 @@ function Roster() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-8% 0px" }}
       transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-      className="mt-11 md:mt-13"
+      className="mt-8 md:mt-9"
     >
       <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
         <p className="caps text-ink">{CREATORS_COPY.workedWithLabel}</p>
@@ -165,16 +165,17 @@ function Roster() {
 }
 
 /**
- * THE LEAD NAMES — the two the index sets at display scale.
+ * THE LEAD NAMES — the three the index sets at display scale.
  *
  * High-recognition relationships the project has **no first-party photograph
  * of**, so type is the only honest way to give them weight; the alternative
  * would be putting a picture on the page that this project cannot source. They
- * sit between the index's heading and the list, in the same hairline grammar,
- * at roughly the scale the scale facts above use.
+ * sit between the index's heading and the list, in the same hairline grammar.
  *
- * Two names on one rule at `sm` and above, stacked below it. Self-suppressing:
- * mark nothing `lead` in config and this renders nothing.
+ * Revision 42: Fukra Insaan, Purav Jha and Sagar Rathee, in the client's own
+ * order — two of them are on the client's stage ranking with no still to
+ * show. Two columns from `sm`, three from `lg`, stacked below. Self-
+ * suppressing: mark nothing `lead` in config and this renders nothing.
  */
 function Lead() {
   if (WORKED_WITH_LEAD.length === 0) return null;

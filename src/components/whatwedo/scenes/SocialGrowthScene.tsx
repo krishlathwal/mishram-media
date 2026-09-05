@@ -105,17 +105,25 @@ export function SocialGrowthScene({ m }: { m: StageMotion }) {
         <PlanFragment />
       </Surface>
 
+      {/* REVISION 42 — the client's priority creators carry this scene.
+          "Update the creator images here as well … prioritise the list of the
+          creators I just named": Kaka anchors the 9:16 portrait (his source is
+          natively 9:16), Lovekesh Kataria takes the reel and Ali Fazal the
+          content frame. Every frame keeps both figures of its photograph
+          (§10u). Nikita, Mukul and Vishnu moved to Service 02 and 03, so the
+          two adjacent scenes share no face. */}
       <Surface m={m} spec={PORTRAIT}>
         <Photo
-          src="/media/creators/nikita-kumawat.webp"
-          alt="Creator Nikita Kumawat, part of the Mishram Media network"
+          src="/media/creators/kaka-reel.webp"
+          alt="Kaka, photographed with Mishram Media"
         />
       </Surface>
 
       <Surface m={m} spec={REEL}>
         <Photo
-          src="/media/creators/mukul-sharma.webp"
-          alt="Vertical content frame featuring creator Mukul Sharma"
+          src="/media/creators/featured/lovekesh-kataria.webp"
+          alt="Vertical content frame featuring Lovekesh Kataria with Mishram Media"
+          position="50% 14%"
         />
         <span aria-hidden className="svc-format">
           9:16
@@ -124,8 +132,9 @@ export function SocialGrowthScene({ m }: { m: StageMotion }) {
 
       <Surface m={m} spec={CONTENT}>
         <Photo
-          src="/media/creators/vishnu-priya.webp"
-          alt="Content frame featuring creator Vishnu Priya"
+          src="/media/creators/featured/ali-fazal.webp"
+          alt="Content frame featuring Ali Fazal with Mishram Media"
+          position="50% 30%"
         />
         <span aria-hidden className="svc-format">
           4:5

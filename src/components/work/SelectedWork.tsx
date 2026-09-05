@@ -59,7 +59,7 @@ export function SelectedWork() {
       <Grid />
       <LeadIn />
 
-      <div className="page-x relative pt-14 pb-16 sm:pt-20 sm:pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
+      <div className="page-x relative pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-22 lg:pb-22">
         <Intro />
 
         <motion.span
@@ -68,7 +68,7 @@ export function SelectedWork() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-          className="mt-14 block h-px w-full origin-left bg-line md:mt-16"
+          className="mt-10 block h-px w-full origin-left bg-line md:mt-12"
         />
 
         <motion.div
@@ -76,7 +76,7 @@ export function SelectedWork() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.95, delay: 0.15, ease: EASE }}
-          className="mt-12 md:mt-14"
+          className="mt-9 md:mt-10"
         >
           {wide ? (
             <div className="grid grid-cols-12 items-center gap-x-8">

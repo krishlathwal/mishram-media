@@ -225,10 +225,13 @@ const SHOTS = [
   /* Each work item in turn. `click` drives the real index button before the
      capture, so these are the live selected states rather than three renders
      of the featured one. */
-  { name: "wrk-item-swiggy", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(1) button" },
-  { name: "wrk-item-pintola", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(2) button" },
-  { name: "wrk-item-mukul", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(3) button" },
-  { name: "wrk-item-pintola-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#work", click: "#work ul li:nth-child(2) button" },
+  // Revision 42: Mirzapur is item 01, so every index below moved down one.
+  { name: "wrk-item-mirzapur", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(1) button" },
+  { name: "wrk-item-swiggy", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(2) button" },
+  { name: "wrk-item-pintola", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(3) button" },
+  { name: "wrk-item-mukul", w: 1440, h: 900, scheme: "dark", selector: "#work", click: "#work ul li:nth-child(4) button" },
+  { name: "wrk-item-pintola-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#work", click: "#work ul li:nth-child(3) button" },
+  { name: "wrk-item-mirzapur-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#work", click: "#work ul li:nth-child(1) button" },
 
   { name: "seam-process-wrk", w: 1440, h: 900, scheme: "dark", selector: "#work", pad: 380 },
   { name: "seam-wrk-next", w: 1440, h: 900, scheme: "dark", selector: "#recognition", pad: 380 },
@@ -336,6 +339,34 @@ const SHOTS = [
   { name: "home-414", w: 414, h: 896, scheme: "dark", mobile: true },
   { name: "home-1600", w: 1600, h: 900, scheme: "dark" },
   { name: "home-1366", w: 1366, h: 768, scheme: "dark" },
+
+  /* ── Revision 42 — the homepage batch from the client's walkthrough ────
+     The Difference contrast, the plum inquiry field, the banner chapter, the
+     Process chapter after its rename and the What We Do scenes whose
+     photography changed. Everything else reuses the shots above. */
+  { name: "rcg-1920", w: 1920, h: 1080, scheme: "dark", selector: "#recognition" },
+  { name: "rcg-1536", w: 1536, h: 864, scheme: "dark", selector: "#recognition" },
+  { name: "dif-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#difference" },
+  { name: "dif-1440-light", w: 1440, h: 900, scheme: "light", selector: "#difference" },
+  { name: "dif-768", w: 768, h: 1024, scheme: "dark", selector: "#difference" },
+  { name: "dif-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#difference" },
+  { name: "dif-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#difference" },
+  { name: "prc-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#process" },
+  { name: "prc-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#process" },
+  { name: "inq-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#project-inquiry" },
+  { name: "inq-1440-light", w: 1440, h: 900, scheme: "light", selector: "#project-inquiry" },
+  { name: "inq-768", w: 768, h: 1024, scheme: "dark", selector: "#project-inquiry" },
+  { name: "inq-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#project-inquiry" },
+  { name: "inq-390-light", w: 390, h: 844, scheme: "light", mobile: true, selector: "#project-inquiry" },
+  { name: "inq-1440-reduced", w: 1440, h: 900, scheme: "dark", reduced: true, selector: "#project-inquiry" },
+  { name: "seam-inq-footer", w: 1440, h: 900, scheme: "dark", selector: "footer", pad: 380 },
+  { name: "seam-about-inq-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#project-inquiry", pad: 300 },
+  { name: "svc01-active", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(0.5) },
+  { name: "svc01-active-light", w: 1440, h: 900, scheme: "light", scrollExpr: slotScroll(0.5) },
+  { name: "svc03-active", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(2.5), after: 5000 },
+  { name: "svc03-active-light", w: 1440, h: 900, scheme: "light", scrollExpr: slotScroll(2.5), after: 5000 },
+  { name: "svc04-active", w: 1440, h: 900, scheme: "dark", scrollExpr: slotScroll(3.5), after: 5000 },
+  { name: "svc-stacked-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#what-we-do" },
   { name: "hdr-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "header" },
   { name: "ftr-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "footer" },
   { name: "inq-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "#project-inquiry" },

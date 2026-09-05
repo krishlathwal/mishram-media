@@ -61,7 +61,7 @@ export function QuickProof() {
       {/* Deliberately tighter than a chapter's padding. This is a band, not a
           section with a story — it has to be crossed quickly, which is the
           whole point of it. */}
-      <div className="page-x relative py-12 sm:py-14 md:py-16 lg:py-20">
+      <div className="page-x relative py-10 sm:py-12 md:py-12 lg:py-14">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ export function QuickProof() {
           </p>
         </motion.div>
 
-        <dl className="qp-index mt-9 border-t border-line pt-9 md:mt-11 md:pt-11">
+        <dl className="qp-index mt-7 border-t border-line pt-7 md:mt-8 md:pt-8">
           {/* The reach fact, at display scale. `dl` wants dt/dd pairs, so the
               value is the `dd` and the scope line is the `dt` — reversed
               visually with `flex-col-reverse` rather than in the DOM, so a

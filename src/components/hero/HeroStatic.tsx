@@ -7,34 +7,36 @@ const BY_ID = Object.fromEntries(HERO_SURFACES.map((s) => [s.id, s]));
 /**
  * Composition for visitors without WebGL. It mirrors the live scene: the same
  * four frames, the same right-weighted arrangement, the same depth hierarchy
- * expressed as exposure. Positions are percentages of the media container, so
+ * expressed as exposure. Slot ids follow `layout.ts` — Revision 42 re-cast
+ * them (`akash` primary, `kaka` square, `ali`, `lovkesh` 4:5) and retuned
+ * the three exposures. Positions are percentages of the media container, so
  * this reads correctly whether that container is the whole hero (wide) or the
  * lower band (stacked).
  */
 const FRAMES = [
   {
-    id: "zoya",
+    id: "akash",
     style: { left: "46%", top: "24%", height: "48%" },
     className: "z-30 opacity-100",
     rotate: -1.2,
     priority: true,
   },
   {
-    id: "lovkesh",
+    id: "kaka",
     style: { right: "6%", top: "62%", height: "24%" },
-    className: "z-20 opacity-80",
+    className: "z-20 opacity-[0.66]",
     rotate: 1.1,
   },
   {
     id: "ali",
     style: { right: "12%", top: "20%", height: "34%" },
-    className: "z-10 opacity-[0.74]",
+    className: "z-10 opacity-[0.82]",
     rotate: 1.6,
   },
   {
-    id: "akash",
+    id: "lovkesh",
     style: { left: "26%", top: "12%", height: "27%" },
-    className: "z-0 opacity-[0.62]",
+    className: "z-0 opacity-[0.74]",
     rotate: -1.8,
   },
 ] as const;

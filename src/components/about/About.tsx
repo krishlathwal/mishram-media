@@ -63,7 +63,7 @@ export function About() {
           preview does not need the approach a five-block chapter did, and the
           §10i boundary rhythm still reads because the sections either side are
           untouched. */}
-      <div className="page-x relative pt-12 pb-14 sm:pt-16 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      <div className="page-x relative pt-10 pb-12 sm:pt-14 sm:pb-16 md:pt-18 md:pb-18 lg:pt-20 lg:pb-20">
         {/* ── Chapter label ─────────────────────────────────────────── */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -86,7 +86,7 @@ export function About() {
             Two columns rather than a stack, because the whole point of the
             block is that it is short — set one under the other, the same
             three sentences read as the start of a chapter that then stops. */}
-        <div className="mt-10 md:mt-12 lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <div className="mt-8 md:mt-10 lg:grid lg:grid-cols-12 lg:gap-x-8">
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}

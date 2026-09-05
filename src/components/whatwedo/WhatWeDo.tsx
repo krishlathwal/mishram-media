@@ -83,7 +83,7 @@ function Intro() {
   const leadIn = line2.slice(0, line2.length - accent.length);
 
   return (
-    <div className="page-x relative pt-14 pb-10 sm:pt-20 sm:pb-14 md:pt-28 md:pb-20 lg:pt-32">
+    <div className="page-x relative pt-12 pb-8 sm:pt-16 sm:pb-10 md:pt-20 md:pb-14 lg:pt-24">
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -182,7 +182,10 @@ function DesktopSequence() {
             <SectionLabel />
             <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 
-            <div className="relative mt-7 h-[22rem]">
+            {/* 23.5rem from Revision 42 — the two actions became buttons and
+                the row grew by about a line. Still clear of the progress
+                indicator at the 680px minimum the pinned query allows. */}
+            <div className="relative mt-7 h-[23.5rem]">
               {PUBLIC_SERVICES.map((s, i) => (
                 <SlotCopy
                   key={s.id}
@@ -268,7 +271,7 @@ function StackedSequence() {
   });
 
   return (
-    <div ref={wrap} className="page-x relative pb-14 sm:pb-20 md:pb-24">
+    <div ref={wrap} className="page-x relative pb-10 sm:pb-14 md:pb-16">
       <SectionLabel />
       <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 
@@ -304,8 +307,8 @@ function StackedService({ service, first }: { service: Service; first: boolean }
       ref={ref}
       className={
         first
-          ? "pt-12 md:pt-14"
-          : "mt-16 border-t border-line pt-12 md:mt-20 md:pt-14"
+          ? "pt-10 md:pt-12"
+          : "mt-12 border-t border-line pt-10 md:mt-14 md:pt-12"
       }
     >
       <div className="md:grid md:grid-cols-12 md:items-center md:gap-x-8">

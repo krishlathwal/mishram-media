@@ -106,7 +106,7 @@ export function Collaborations() {
 
       <motion.div
         style={{ opacity: exitOpacity, y: exitY }}
-        className="relative py-14 md:py-16 lg:py-[72px]"
+        className="relative py-12 md:py-14 lg:py-14"
       >
         {/* ── Label ────────────────────────────────────────────── */}
         <motion.div

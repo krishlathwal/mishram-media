@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 
 import { Arrow } from "@/components/ui/Arrow";
-import { ROSTER, type Creator } from "@/config/creators";
+import { STAGE, type Creator } from "@/config/creators";
 import { onTrackedClick } from "@/lib/analytics";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
@@ -148,7 +148,7 @@ export function CreatorMeta({
 
   const lines = useMemo(() => {
     const ids = new Set([shownId, outgoingId].filter((id): id is string => !!id));
-    return ROSTER.filter((c) => ids.has(c.id));
+    return STAGE.filter((c) => ids.has(c.id));
   }, [shownId, outgoingId]);
 
   return (

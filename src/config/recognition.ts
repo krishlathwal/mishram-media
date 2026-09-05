@@ -240,6 +240,49 @@ export const RECOGNITION_ITEMS: readonly RecognitionItem[] = [
   },
 ];
 
+/**
+ * ─────────────────────────────────────────────────────────────────────────
+ * REVISION 42 — THE HOMEPAGE CHAPTER IS THE CLIENT'S BANNER
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * Revision 36 rejected `WEBSITE SHORTLIST/award.jpg.jpeg` as the chapter's
+ * asset: a Canva composite with poster typography, a URL and clipart, not a
+ * photograph, and it carried no award title, badge or year. That reasoning
+ * was correct as a *photograph* decision and it is superseded as a *client*
+ * decision — on the walkthrough video (6 Sep 2026) the client re-supplied
+ * the same file byte-for-byte and said: *"remove this section and add just
+ * that banner which I created in Canva, and put only that. Other than that
+ * you can add the titles and all."*
+ *
+ * So the homepage chapter now renders the banner as the section's full
+ * background, with the award's own facts — title, organisation, year — set
+ * over it on a plum plate (the banner's own hue). **`RECOGNITION_ITEMS[0]`
+ * is untouched**: `/about` still reads the first-party photograph in two
+ * places, and the facts below are the same strings §10p read off the badge.
+ * Nobody in the banner is named, `NUFEW` is still not expanded, and no new
+ * claim is made — the banner's own "award-winning" line is in the artwork,
+ * not in the site's type.
+ */
+export const RECOGNITION_BANNER = {
+  src: "/media/recognition/award-banner.webp",
+  /** Describes the artwork, names nobody, claims nothing beyond the item. */
+  alt: "Mishram Media's award banner: the NUFEW 2024–25 award presentation set against the agency's own artwork.",
+  width: 2560,
+  height: 1411,
+  /**
+   * Where the cover crop holds when the section is taller than 16:9 — the
+   * two figures with the trophy sit right of centre, so the window follows
+   * them rather than the left-hand tagline.
+   */
+  focus: "56% 50%",
+  /** DEVELOPMENT ONLY — never rendered. */
+  source:
+    "C:/Users/krish/Downloads/Mishram web data/award.jpg.jpeg — re-supplied 6 Sep 2026, md5 " +
+    "1f9903c73ef68c6617333724596a0e10, byte-identical to WEBSITE SHORTLIST/award.jpg.jpeg " +
+    "(3920×2160). Downscaled to 2560×1411 WebP q80, full frame, nothing cropped, recoloured or " +
+    "removed. Used on the homepage chapter only; /about keeps RECOGNITION_ITEMS[0].",
+} as const;
+
 export const RECOGNITION_COPY = {
   index: "06",
   label: "Recognition",

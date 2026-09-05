@@ -29,7 +29,9 @@ your potential", "10X". No unverified metrics, rankings or testimonials anywhere
 ```
 Header (fixed)
   ↓
-Hero — Growth Orbit                     [APPROVED / LOCKED]
+Hero — Growth Orbit                     [APPROVED / LOCKED — media re-cast in Rev 42:
+                                         Akash Sagar primary, Ali Fazal, Lovekesh
+                                         Kataria, Kaka; slot geometry untouched. §10at]
   ↓
 01 / Selected Collaborations            [18 brands, featured-first — §10s]
   ↓
@@ -46,29 +48,38 @@ Quick Proof                             [interlude, unnumbered; §10ak.
                                          site's only home for a figure]
   ↓
 02 / What We Do                         [Services 01-04 public, 05 hidden but built
-                                         + closing statement — LOCKED. §10s]
+                                         + closing statement — LOCKED. §10s.
+                                         Rev 42: scenes re-cast, two buttons per
+                                         service, 100vh per service. §10at]
   ↓
-The Mishram Difference                  [interlude, unnumbered; built — see §10a]
+The Mishram Difference                  [interlude, unnumbered; rebuilt in Rev 42 as
+                                         a static usual-vs-Mishram contrast — §10a, §10at]
   ↓
 03 / Creators                           [two layers: the image-backed stage
-                                         (now 6, with Ali Fazal opening it),
+                                         (four since Rev 42, in the client's order:
+                                         Ali Fazal, Akash Sagar, Lovekesh, Kaka — §10at),
                                          + scale facts and the worked-with
                                          index, which now carries verified
                                          profile links. §10b-scale, §10t, §10u]
   ↓
-04 / Work Process                       [built; awaiting review]
+04 / Work Process                       [built; 01–02 renamed Plan / Strategise in
+                                         Rev 42 — §10at]
   ↓
-05 / Selected Work                      [foundation built; awaiting review]
+05 / Selected Work                      [built; Mirzapur: The Movie film-PR frames
+                                         lead it since Rev 42 — §10at]
   ↓
 Client Notes                            [interlude, unnumbered; built —
                                          CONTENT-BLOCKED, renders nothing. §10d-notes]
   ↓
-06 / Recognition                        [ACTIVE — one verified award. §10e, §10p]
+06 / Recognition                        [ACTIVE — one verified award, staged since
+                                         Rev 42 on the client's own banner with a
+                                         plum plate. §10e, §10p, §10at]
   ↓
 07 / About                              [a PREVIEW of /about — 0.80 viewports.
                                          §10f, §10s]
   ↓
-Project Inquiry                         [interlude, unnumbered; built — §10h.
+Project Inquiry                         [interlude, unnumbered; built — §10h; a
+                                         plum field since Rev 42, §10at.
                                          The page's final conversion moment]
   ↓
 Footer — THE FINAL SIGNAL               [rebuilt — full-bleed closing canvas,
@@ -6261,6 +6272,38 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 42’s decisions (§10at) — the client's own instructions, locked.**
+  - **Plum is a surface, reached only through `.plum-field`, on exactly two elements: the
+    Recognition plate and the Project Inquiry field.** Never as text, line, label, icon or gradient;
+    never as a canvas tint; never a third surface without the client asking. The scope restates every
+    `--t-*` token **and every `--color-*` alias** (§10x); its muted token is .66, not the theme's
+    .58, because .58 measured 4.24 : 1 on plum and failed AA.
+  - **The award banner is the client's artwork and is never cropped.** From `xl` the chapter is the
+    artwork's exact aspect — `calc(1411 / 2560 × 100vw)`, **no cap** (a 50rem cap took the top off the
+    wordmark at 1920). Below `xl` it is a block at its own aspect with the plate beneath it. **Do not
+    put the plate over the faces**: at 1024 and 1280 a full plate reached the left figure's chin —
+    that is why the overlay starts at `xl` and the caption hides at 1280–1439. Nobody in the banner is
+    named; `NUFEW` is not expanded.
+  - **The stage is the client's ranking — Ali Fazal, Akash Sagar, Lovekesh Kataria, Kaka — and is
+    not re-ordered without the client.** Purav Jha and Sagar Rathee lead the index and move to the
+    stage **only** with a client-labelled still each; the `.MOV` BTS never becomes one.
+  - **Kaka renders as "Kaka".** Not *Immortal Kaka Ji*, not a handle, not a link — none of those is
+    established. The unblock is the client supplying the handle, never a search from the face.
+  - **The Mirzapur frames name nobody.** *Cast* and *promotional event* come from the client's brief
+    and the poster in frame, not from recognising anyone. Keep it one item; it is a highlight.
+  - **The Difference chapter is a static table by instruction** — do not reintroduce the rail or the
+    connected stack. `SERVICE_SCROLL_VH` is 100 by instruction — do not lengthen it.
+  - **Process stages 01–02 are Plan / Strategise; ids are unchanged** — anything keyed on the ids
+    still works.
+  - **The one-photograph-one-role rule has four documented exceptions** (the four ranked people,
+    `MEDIA-ASSET-AUDIT.md` §10). No source may repeat in adjacent chapters; add a fifth exception only
+    with the same table entry.
+  - **The Hero slot geometry in `layout.ts` is still byte-identical to Revision 17.** Keys and
+    exposure bases changed; the numbers that place the cards did not. Keep it that way.
+  - **A service-scene capture two or more slots from the sweep's rest needs `after: 5000`** in
+    `shoot.mjs`; without it the shot lands on a blank or half-entered scene and looks like a defect.
+  - **Not pushed, not deployed, by instruction.** Whoever pushes records a fresh rollback id first
+    (§10as).
 - **Revision 41’s decisions (§10as) — awaiting review, then locked.**
   - **NEVER PUT `actionDuration` ON THE INQUIRY RATE-LIMIT RULE.** A persistent action bans the
     client **project-wide**: with it set, a tripped rule returned `403 X-Vercel-Mitigated: deny` on
@@ -6736,6 +6779,17 @@ one art-directed system, and so is every service page.
 ---
 
 ## 19. Current status & next step
+
+> **READ §10at FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 42 — AND NOTE THAT IT IS NOT PUSHED.**
+>
+> **§10at (Revision 42):** the client's video walkthrough, implemented. The Hero carries Akash Sagar,
+> Ali Fazal, Lovekesh Kataria and **Kaka** (P22, now public); the Creators stage is those four in the
+> client's order and the index leads with Fukra Insaan, Purav Jha and Sagar Rathee; **plum is back on
+> two surfaces** (the Recognition plate, the Project Inquiry field); **06 / Recognition is the client's
+> own award banner, full bleed and never cropped**; **Mirzapur: The Movie** leads Selected Work as film
+> PR; the Difference chapter is a static contrast; Process reads Plan / Strategise / Create / Launch /
+> Scale; every service has two real buttons. The homepage is **15,469px at 1440** (was 17,787).
+> **Local commit on `main`, not pushed, not deployed.**
 
 > **READ §10u, §10t AND §10s FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 17B.**
 >
@@ -11261,3 +11315,163 @@ tracked and it holds names. **No value was printed at any point.**
   or 3211 when the phase ended.
 - **`git status` clean, `main` == `origin/main`, no force push, no rewritten history.**
 - **Nothing was rolled back**, because nothing needed it.
+
+---
+
+## 10at. REVISION 42 — THE CLIENT'S WALKTHROUGH BATCH
+
+**The client recorded a 5:23 screen walkthrough of the homepage (`Video (5).mp4`, 6 September 2026)
+and shared `Mishram web data\` — the award banner, a Mirzapur promotional still and a clip. This
+revision implements that video.** It touches eleven chapters of the homepage, adds nine production
+files, brings the brand plum back on two surfaces, publishes Kaka, leads Selected Work with film PR,
+and takes 2,318px off the desktop page. **Committed locally on `main`. Not pushed. Not deployed.**
+The media record is `MEDIA-ASSET-AUDIT.md` §10; the phase record with every measurement is the
+roadmap's Revision 42 section. This section is the decisions.
+
+### 1 — THE SOURCES, AND HOW THEY WERE READ
+
+The video was transcribed on this machine with Whisper (large-v3-turbo, quantised; nothing left the
+computer) and the transcript read against frames pulled every few seconds, so each instruction is
+tied to what the cursor was pointing at. Spoken names arrive through an accent and a speech model,
+so **every name was reconciled against the project's own records before anything was published** —
+never against a face:
+
+| Spoken / written | Resolved to | How |
+| --- | --- | --- |
+| *Faizal Ali*, *Fazlali*, *Pazilali* | **Ali Fazal** | The only Ali in the library and the roster; `ali fazal.jpeg` |
+| *Lovkataria*, *Lovekhatariya*, *Labkataria* | **Lovekesh Kataria** | `Lovekesh Kataria.jpeg`; `WORKED_WITH` |
+| *Pandey Shirish*, *Bhandeshiri*, *Bhande Shri* | **Akash Sagar (`@xbhandesiri_`)** | The handle's display name, verified in Rev 17; the client calls him by it |
+| *Purab Jahan*, *Puraav Jha*, *Purabja* | **Purav Jha** | `WORKED_WITH`, `@puravjha` verified Rev 17B |
+| *Sagar Rathi*, *Sagarrati* | **Sagar Rathee** | `WORKED_WITH`, `@dr.69___` verified Rev 17B |
+| *Pukhrainshan*, *Pukarain's on* | **Fukra Insaan** | `WORKED_WITH`; *"to the top"* of the index |
+| *Manish Jain*, *JJ Communication* | **Manish Jain · JJ Communications** | One person, one company — one index row, as Rev 34 recorded |
+| *Mukesh Jain*, *Sallu Nish*, *podcast* | **Mukesh Jain · Shallu Nisha Podcast** | One person, one show — one index row |
+| *Kaka, the singer* | **Kaka** — `Immortal Kaka Ji.jpeg` | The only Kaka in the library; the client's own word for him. **Rendered as "Kaka"**, the form both sources share; the file's longer form is recorded, not published |
+
+**The "newly added creator folder" does not exist.** `C:\`, `F:\` and Google Drive were searched;
+the only client-labelled photography is still `WEBSITE SHORTLIST\` (fifteen files). The instruction's
+*Kaka has still not been added* resolves against that folder, and the spoken instruction is the
+relationship record P22 waited for since Revision 34.
+
+### 2 — THE RANKING, AND WHERE EACH PERSON IS
+
+The client's order, in their words, was Ali Fazal, Lovekesh Kataria, Akash Sagar (*"most
+important"*), Purav Jha, Sagar Rathee, Manish Jain / JJ Communication, Mukesh Jain / Shallu Nisha
+Podcast, then Kaka — with the four they did not name (Zoya Jaan, Nikita Kumawat, Mukul Sharma, Vishnu
+Priya) moved *"down to here"*, the index.
+
+| Priority | Name | Stage | Hero | Scenes | Index | Why not higher |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Ali Fazal | **01** | 4:5 | Service 01 | — | — |
+| 2 | Lovekesh Kataria | **03** | 4:5 (new) | Service 01 | — | — |
+| 3 | Akash Sagar | **02** + Current Management | **primary 9:16** (new) | Service 02 | — | — |
+| 4 | Purav Jha | — | — | — | **lead 02** | **No still exists.** `.MOV` BTS only; nobody in it can be named (rule 7) |
+| 5 | Sagar Rathee | — | — | — | **lead 03** | Same |
+| 6–7 | Manish Jain · JJ Communications | — | — | — | row 04 | `JJ Communication.jpeg` is an OPPO store — blocked since §10t |
+| 8–10 | Mukesh Jain · Shallu Nisha Podcast | — | — | — | row 05 | No photograph |
+| 11 | Kaka | **04** | 1:1 (new) | Service 01 | unverified list | Handle not supplied; rule 7 forbids finding it from a face |
+| — | Fukra Insaan | — | — | — | **lead 01** | *"to the top"* — a link, no still |
+| — | Zoya Jaan, Nikita Kumawat, Mukul Sharma, Vishnu Priya | off | Nikita faint (desktop) | 02 / 04 / 02 / 03 | rows | Moved down by instruction; they carry the scenes the ranked four would otherwise repeat in |
+
+**Spread, not stacking.** With one photograph per ranked person, prominence means recurrence, so
+the recurrence is placed: Hero → Service 01 → stage for Ali, Lovekesh and Kaka; Hero → Current
+Management → Service 02 → stage for Akash — never two adjacent chapters, and no single crop rendered
+twice except Lovekesh's 3:4 (Service 01 and the stage, with the Difference chapter between them).
+`config/creators.ts` now exports `STAGE` (the four) and `ROSTER` (the eight published); the stage
+reads `STAGE`, the social service page's field reads `ROSTER`.
+
+### 3 — THE HOMEPAGE, CHAPTER BY CHAPTER
+
+| Chapter | Change |
+| --- | --- |
+| **Hero** | Surfaces: Akash Sagar (primary 9:16, *Current Management*), Ali Fazal, Nikita Kumawat (faint, desktop), Lovekesh Kataria (4:5, *Creator Network*), Kaka (1:1, *Worked With*). **Slot geometry byte-identical**; keys renamed, exposure bases re-tuned. `HeroStatic` mirrors it |
+| **Collaborations / Current Management / Quick Proof / About** | Padding only — the *"so much blank space"* pass |
+| **What We Do** | `SERVICE_SCROLL_VH` 130 → 100. Two real buttons per service (*Explore service* filled, *Discuss this project* outlined) — *"buttons are so light"*. Scenes re-cast: 01 Kaka / Lovekesh / Ali; 02 Nikita / Zoya / Akash / Mukul; 03 gains a real photograph (Vishnu Priya) in the creative frame; 04 unchanged. Copy holder 23.5rem so the second button never clips |
+| **Difference** | The animated rail and connected stack are gone; a static two-column contrast — *The usual setup* / *With Mishram* — four rows. `config/difference.ts` rewritten |
+| **Creators** | The stage is the four ranked; the index leads with Fukra Insaan, Purav Jha, Sagar Rathee, and its rows follow the ranking; Zoya Jaan and Mukul Sharma join it without handles (`WORKED_WITH_UNVERIFIED`) |
+| **Work Process** | 01 **Plan**, 02 **Strategise** — *"first we'll plan the content, then we'll strategise"*; 03–05 already read Create / Launch / Scale. Ids unchanged, descriptions and activities re-written to the names |
+| **Selected Work** | **Mirzapur: The Movie · Film PR · PR support** leads. Lead copy: *"Selected film PR, brand campaigns and creator content from across our network."* `WorkItem.support` lets the support crop be its own frame |
+| **Recognition** | See §5 |
+| **Project Inquiry** | A plum field — see §4 |
+
+### 4 — PLUM, BACK ON THE CLIENT'S INSTRUCTION
+
+`#4c3660` was declared in Revision 28, rendered on five surfaces, rejected on each and removed in
+Revision 39. **The client asked for it; it returns as what the arithmetic always said it was — a
+surface, never an accent.** One scope, `.plum-field`, restates every `--t-*` token *and every
+`--color-*` alias* (§10x) at plum values, and two elements carry it:
+
+1. **The Recognition plate** — the banner is plum-typed artwork; a plum plate reads as part of it.
+2. **The Project Inquiry field** — the page's closing conversion moment, set apart from seven
+   obsidian chapters by the one colour change on the page.
+
+Ink on plum 9.14 : 1, soft 5.83 : 1, accent 6.42 : 1; **the muted token is raised to .66 inside the
+scope (5.00 : 1) because the theme's .58 measured 4.24 : 1 on plum and failed AA for the small caps.**
+No plum text, line, label, icon, gradient or canvas tint anywhere. Two surfaces, and deliberately no
+third — the walkthrough asked for a colour, not a purple site.
+
+### 5 — THE AWARD BANNER
+
+*"Remove this section and add just that banner which I created in Canva, and put only that — other
+than that you can add the titles."* Revision 36 rejected `award.jpg.jpeg` as a composite marketing
+graphic; **the client's instruction overrides that**, and the same title, organisation and year §10p
+read off the badge sit over it on the plum plate. `/about` still renders the Revision 36 photograph.
+
+Three layout facts, each captured before it was decided:
+
+- **From `xl` the chapter is the artwork's exact aspect** — `min-height: calc(1411 / 2560 × 100vw)`,
+  no cap. The artwork has type at both edges (the wordmark in its top fifth, the URL line at its
+  foot); a 50rem cap took the top off the wordmark at 1920.
+- **Below `xl` the banner is a block at its own aspect with the plate beneath it.** At 1024 and 1280
+  a readable plate reached the left figure's face; a 4:3 crop cut the wordmark's first letter on a
+  tablet. Neither is acceptable for the client's own artwork.
+- **The plate sits low, under the two faces and over the tagline corner** — `max(30rem, 28vw)` wide
+  from 1440 so the tagline is covered whole (at 1920 a 30rem plate left one ampersand showing);
+  its caption line hidden at 1280–1439 only, where the chapter is 705px tall.
+
+Nobody in the banner is named; `NUFEW` is not expanded; the site adds no gold.
+
+### 6 — MIRZAPUR
+
+One still (`DSC04338.jpg.jpeg`, two figures before the film's poster) and one frame from the clip
+(2.6s, four figures) — a 9:16 primary and a 4:5 support, in the existing Selected Work frame, as the
+first item. **Small on purpose**: the instruction asked for a highlight, not a chapter. The alt says
+*members of the cast* because the client's brief says *star cast imagery*, and *promotional event*
+because the poster wall is in frame — **no one is named, no one was recognised.** Garment graphics in
+frame were inspected at full resolution and cleared under §8's rule. The clip is not played back:
+5.28 seconds of handheld footage says less than the still; the `mediaType: "video"` path stays built.
+
+### 7 — NOT DONE, AND WHY
+
+| | Reason | Unblock |
+| --- | --- | --- |
+| Purav Jha, Sagar Rathee on the stage | No still; BTS footage names nobody | A client-labelled still each |
+| JJ Communication photograph | OPPO store interior — a brand claim | A different photograph |
+| *"Eight to ten reels"* with brand logos in Selected Work | No reel or logo files shared | The files |
+| Kaka's profile link | Not supplied; not searched for (rule 7) | The handle |
+| Anything from the proposal deck's network slide | Unchanged: P18 stays HELD | Client confirmation per name |
+
+### 8 — QA
+
+`scripts/shoot.mjs` over CDP against the dev server: **121 captures** across five sets — every
+changed chapter at 1440 / 1280 / 1024 / 768 / 430 / 390, dark and light, reduced motion where a
+chapter animates, seams, the four scenes active and the stacked mobile services, the Selected Work
+items by real click, `/about` and the social service page — **reviewed as images.** Three layout
+defects were found by the captures and fixed before the commit (§5). `overflow.mjs --quick`:
+**PASS 40/40.** `tsc` clean, `eslint` 0 errors (2 pre-existing warnings), `next build` clean.
+
+| Viewport | Rev 41 | Rev 42 | Δ |
+| --- | ---: | ---: | ---: |
+| 1440×900 | 17,787 | **15,469** | **−2,318** |
+| 1024×768 | 13,969 | 12,953 | −1,016 |
+| 768×1024 | 17,437 | 16,191 | −1,246 |
+| 390×844 | 18,070 | 17,891 | −179 |
+
+Images 23 → 27 desktop, 19 → 22 mobile; 0 eager, 0 preload.
+
+### 9 — GIT
+
+One commit on `main`, **not pushed, not deployed**, as instructed. Every changed file is listed in
+the commit; the nine new files under `public/media/` are in it; three components and one media
+component are deleted in it. `main` is ahead of `origin/main` by that commit until someone chooses
+to push.

@@ -86,23 +86,22 @@ export function ServiceCopy({
           ))}
         </ul>
 
-        {/* ── The chapter's two contextual actions ──────────────────
-            Different jobs, so different weight — and deliberately on **one
-            row**. The pinned panel gives the copy a fixed `h-[22rem]` holder
-            (§11) and a second row would push this block into the progress
-            indicator beneath it. A hairline between them is the site's own
-            rail grammar rather than a second button.
+        {/* ── The chapter's two contextual actions — BUTTONS, Revision 42 ──
+            They were two text links on one hairline. The client's verdict on
+            the walkthrough video was that they read as too light to be
+            clickable, so both are now real button shapes (`.svc-action` in
+            `globals.css`): `Explore service` filled in ink, because it only
+            ever appears on a service that has a page and is the information
+            route out; `Discuss this project` outlined, because it opens the
+            contact panel and must not compete with the page's primary CTA.
 
-            `Explore service` is the information action and takes full ink,
-            because it only ever appears on a service that has a page — it can
-            never become the five-times boilerplate §10i demoted the other one
-            for. `Discuss this project` keeps the quiet `ink-soft` treatment
-            §10i gave it, unchanged. */}
-        <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+            Still one row where two fit. The pinned panel's copy holder grew
+            from 22rem to 23.5rem to make room for the taller row. */}
+        <div className="mt-8 flex flex-wrap items-center gap-3">
           {pageHref ? (
             <PageLink
               href={pageHref}
-              className="svc-action group text-ink"
+              className="svc-action svc-action--primary group"
               /* `service_slug`, never the label. The slug is the stable
                  identifier the route is built from; the label is editorial
                  copy that has already been rewritten once (§10). */
@@ -112,42 +111,22 @@ export function ServiceCopy({
                 context: "what_we_do",
               }}
             >
-              <span className="relative">
-                {WHAT_WE_DO_COPY.pageCta}
-                <Sweep />
-              </span>
+              <span>{WHAT_WE_DO_COPY.pageCta}</span>
               <ActionArrow />
             </PageLink>
-          ) : null}
-
-          {pageHref ? (
-            <span aria-hidden className="block h-2.5 w-px bg-line-strong" />
           ) : null}
 
           <button
             type="button"
             onClick={openContact}
-            className="svc-action group text-ink-soft hover:text-ink"
+            className="svc-action group"
           >
-            <span className="relative">
-              {WHAT_WE_DO_COPY.cta}
-              <Sweep />
-            </span>
+            <span>{WHAT_WE_DO_COPY.cta}</span>
             <ActionArrow />
           </button>
         </div>
       </motion.div>
     </div>
-  );
-}
-
-/** The site's hairline hover sweep — teal, growing from the left. */
-function Sweep() {
-  return (
-    <span
-      aria-hidden
-      className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
-    />
   );
 }
 

@@ -3,7 +3,7 @@
 import { useCallback, useState } from "react";
 import { motion } from "motion/react";
 
-import { CREATORS_COPY, ROSTER } from "@/config/creators";
+import { CREATORS_COPY, STAGE } from "@/config/creators";
 import { useContact } from "@/components/contact/ContactProvider";
 import { Arrow } from "@/components/ui/Arrow";
 import { useHoverLock } from "@/hooks/useHoverLock";
@@ -35,7 +35,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
  * its way past. This section carried its own copy of that logic while it was
  * locked; reopening it was the moment to adopt the shared hook.
  *
- * SCALE. Everything derives from `ROSTER`: the index numbers, the roster count,
+ * SCALE. Everything derives from `STAGE`: the index numbers, the roster count,
  * how many columns the matrix uses, which creators mount, and the column spans.
  * Adding a creator is one object in `config/creators.ts` — no edits here.
  */
@@ -51,7 +51,7 @@ export function Creators() {
   const veryNarrow = useMediaQuery("(max-width: 340px)");
 
   const { activeId, lockedId, preview, clearPreview, select } = useHoverLock(
-    ROSTER[0]?.id ?? "",
+    STAGE[0]?.id ?? "",
   );
 
   // The creator under the cursor right now. Set on pointer entry, ahead of the
@@ -67,10 +67,10 @@ export function Creators() {
     reduced,
   );
 
-  if (ROSTER.length === 0) return null;
+  if (STAGE.length === 0) return null;
 
   // One column for a short roster, two once it would otherwise run tall.
-  const columns = ROSTER.length >= MATRIX_MIN && !veryNarrow ? 2 : 1;
+  const columns = STAGE.length >= MATRIX_MIN && !veryNarrow ? 2 : 1;
 
   const stage = (
     <CreatorStage
@@ -107,7 +107,10 @@ export function Creators() {
           instruction was to absorb that inside this chapter rather than let
           the page grow — so the approach and the run-out give up a step each
           while the composition itself is untouched. */}
-      <div className="page-x relative pt-14 pb-14 sm:pt-20 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      {/* Revision 42: one step tighter again at every width — the client's
+          instruction was that the page runs long, and the chapter padding is
+          where the run-outs live. */}
+      <div className="page-x relative pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-22 lg:pb-22">
         <Intro />
 
         {/* The chapter rule the roster hangs from. */}
@@ -117,7 +120,7 @@ export function Creators() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-          className="mt-14 block h-px w-full origin-left bg-line md:mt-20"
+          className="mt-10 block h-px w-full origin-left bg-line md:mt-14"
         />
 
         <motion.div
@@ -125,7 +128,7 @@ export function Creators() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-          className="mt-10 md:mt-14"
+          className="mt-8 md:mt-10"
         >
           {isWide ? (
             <div className="grid grid-cols-12 items-center gap-x-8">

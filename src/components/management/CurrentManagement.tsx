@@ -58,7 +58,7 @@ export function CurrentManagement() {
     >
       <Grid />
 
-      <div className="page-x relative pt-14 pb-14 sm:pt-20 sm:pb-20 md:pt-24 md:pb-24 lg:pt-28 lg:pb-28">
+      <div className="page-x relative pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-22 lg:pb-22">
         <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-x-8">
           {/* ── The evidence, and it leads ──────────────────────────────
               Photograph first in the DOM and first on screen at every size.

@@ -135,8 +135,11 @@ export function WorkMedia({
       {/* The still. Always rendered: for a poster item it is the whole visual,
           and for a video item it is what sits behind the frame until playback
           has something to show. */}
+      {/* The supporting fragment may carry its own still (`item.support`) —
+          a second frame of the same work rather than a second slice of one
+          photograph. Absent, it is a re-crop of the poster, as before. */}
       <Image
-        src={item.poster}
+        src={crop === "support" && item.support ? item.support.poster : item.poster}
         alt={primary ? item.alt : ""}
         fill
         sizes={sizes}

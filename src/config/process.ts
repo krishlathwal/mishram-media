@@ -28,23 +28,30 @@ export type ProcessStage = {
 export const PIPE_VIEW = { w: 1000, h: 240 } as const;
 
 export const PROCESS_STAGES: readonly ProcessStage[] = [
+  /**
+   * STAGE NAMES — Revision 42. The client asked for the stages to be named
+   * the way the work is actually talked about: "first we'll plan the content,
+   * then we'll strategise, we'll create, … then the growth and scaling part".
+   * `Discover → Plan`, `Strategy → Strategise`; Create, Launch and Scale
+   * already matched. The `id`s are internal keys and stay as they were.
+   */
   {
     id: "discover",
     index: "01",
-    name: "Discover",
+    name: "Plan",
     description:
-      "We start by understanding what you're building, who needs to care and where the opportunity actually is.",
-    activities: ["Business", "Audience", "Positioning", "Opportunity"],
+      "We start by planning the content: what you're building, who needs to care and where the opportunity actually is.",
+    activities: ["Business", "Audience", "Content plan", "Opportunity"],
     node: { x: 70, y: 158 },
     at: 0,
   },
   {
     id: "strategy",
     index: "02",
-    name: "Strategy",
+    name: "Strategise",
     description:
-      "We turn the opportunity into a focused plan across the channels and formats that matter.",
-    activities: ["Direction", "Channels", "Content", "Campaigns"],
+      "We turn the plan into a focused strategy across the channels and formats that matter.",
+    activities: ["Direction", "Channels", "Formats", "Campaigns"],
     node: { x: 272, y: 135 },
     at: 0.228,
   },

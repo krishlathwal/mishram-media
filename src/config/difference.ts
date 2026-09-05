@@ -7,17 +7,30 @@
  * deliberately **not a numbered chapter** — it is a bridge, so it carries no
  * index and does not renumber anything after it.
  *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * REVISION 42 — REDESIGNED AS A CONTRAST, NOT A SYSTEM DRAWING
+ *
+ * The client's verdict on the walkthrough video: *"this feels so irrelevant …
+ * make it simpler and clean, just differentiate how we are different from
+ * other creators and other agencies, keep it clean and simple, I don't want
+ * to increase the length of the page."* The connected stack — an axis, four
+ * reaching rows, evidence fragments and a selection model — is gone. What
+ * stands in its place is the one thing the section had to do: four rows that
+ * put the usual, fragmented setup beside the way Mishram works.
+ *
+ * **No competitor is named, implied or diminished.** The left column
+ * describes a *setup* — separate suppliers, separate rooms, a website built
+ * elsewhere — which is a neutral and true description of how the work is
+ * often assembled, in the same register §10z used for "typical web project".
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
  * Every claim here is an operating fact about how the work is organised, not a
  * quality boast. No metrics, no rankings, no "award-winning", no "10X" — §1 of
  * the brief forbids all of it, and a differentiation section is exactly where
  * that temptation appears.
  *
- * NO CTA. §02 already carries `Discuss this project`, §03 opens with
- * `Work with our creator network`, and About owns the page's closing ask. A
- * third action inside a 900px interlude would be over-CTA-ing the page. The
- * `Strategy / Create / Launch / Scale` labels on 04 are the Work Process stage
- * names on purpose — that chapter is the answer, four sections later, and does
- * not need a link jumping the visitor past the proof.
+ * NO CTA. §02 carries `Discuss this project`, §03 opens with `Work with our
+ * creator network`, and About owns the page's closing ask.
  */
 
 export type DifferentiatorId =
@@ -30,10 +43,10 @@ export type Differentiator = {
   id: DifferentiatorId;
   index: string;
   name: string;
-  /** One sentence. The visual carries the rest. */
-  detail: string;
-  /** Three or four supporting labels — the same `.caps` rail as elsewhere. */
-  meta: readonly string[];
+  /** The fragmented setup, one sentence. Neutral, never a competitor. */
+  usual: string;
+  /** How Mishram works, one sentence. An operating fact, never a boast. */
+  mishram: string;
 };
 
 export const DIFFERENCE_COPY = {
@@ -41,67 +54,46 @@ export const DIFFERENCE_COPY = {
   headline: ["Fewer handoffs.", "More momentum."],
   /**
    * Serif italic accent on the **leading** word, as in "One growth system." —
-   * not on the trailing word as in the Hero. Deliberate: 04 / Work Process
-   * already accents `momentum.` in its own headline, and two italic
-   * "momentum."s on one page would read as an accident. "Fewer" is also the
-   * word carrying the actual claim.
+   * not on the trailing word as in the Hero. 04 / Work Process already accents
+   * `momentum.` in its own headline, and "Fewer" is the word carrying the claim.
    */
   accentWord: "Fewer",
-  /**
-   * **This used to enumerate the disciplines, and that was a duplication.**
-   * `WHAT_WE_DO_CLOSING.baseline` prints `Strategy — Content — Creators —
-   * Performance — Technology` immediately above this section — 124px of empty
-   * run away on desktop, and roughly one screen on a phone. The old lead
-   * ("Creators, content, performance and technology working as one team, not
-   * four suppliers.") repeated four of those five words and added nothing
-   * between them: the same idea in adjacent sections, which is the one copy
-   * failure a rhythm pass exists to catch.
-   *
-   * **The claim is unchanged** — "working as one team", "four suppliers" and
-   * the "four" that anchors it all survive verbatim. Only the list became a
-   * reference to the list, which turns a redundancy into a connective and lets
-   * this chapter get on with answering *why Mishram* rather than restating
-   * *what Mishram does*. The disciplines are still named above it and again in
-   * the four differentiator rows below, so nothing is lost.
-   */
-  lead: "The same disciplines, working as one team rather than four suppliers.",
-  /** Names the vertical axis the four layers connect into. */
-  axisLabel: "Mishram",
-  /** What the system resolves into at the foot of the axis. */
-  outputLabel: "Momentum",
+  lead: "What changes when creators, content, performance and the website come from one team instead of four suppliers.",
+  /** The two column heads of the contrast. */
+  columns: { usual: "The usual setup", mishram: "With Mishram" },
 } as const;
 
 export const DIFFERENTIATORS: readonly Differentiator[] = [
   {
     id: "creator-native",
     index: "01",
-    name: "Creator-Native",
-    detail:
-      "We work directly across creators, personal brands and influencer-led campaigns.",
-    meta: ["Creator Network", "Personal Brands", "Collaborations"],
+    name: "Creator-native",
+    usual: "Creators are booked through an intermediary who has never worked with them.",
+    mishram:
+      "We work directly with creators, personal brands and influencer-led campaigns — the relationships are ours.",
   },
   {
     id: "creative-performance",
     index: "02",
-    name: "Creative + Performance",
-    detail:
-      "The idea and the distribution strategy are developed as part of the same system.",
-    meta: ["Content", "Campaigns", "Paid Growth"],
+    name: "Creative + performance",
+    usual: "The idea is made in one room and the media plan in another.",
+    mishram:
+      "The idea and its distribution are developed as one system, so the creative is built to perform from the start.",
   },
   {
     id: "destination",
     index: "03",
-    name: "We Build the Destination",
-    detail:
-      "We don't only drive attention — we build where it lands: websites, landing experiences, custom software and CRM systems.",
-    meta: ["Web", "Software", "CRM", "Digital Systems"],
+    name: "We build the destination",
+    usual: "Attention is sent to a website somebody else built, on somebody else's timeline.",
+    mishram:
+      "We build where it lands — websites, landing experiences, custom software and CRM systems.",
   },
   {
     id: "connected",
     index: "04",
-    name: "One Connected Partner",
-    detail:
-      "Strategy, creation, launch and optimisation stay connected instead of being handed between unrelated suppliers.",
-    meta: ["Strategy", "Create", "Launch", "Scale"],
+    name: "One connected partner",
+    usual: "Strategy, creation, launch and optimisation are handed between unrelated suppliers.",
+    mishram:
+      "Plan, create, launch and scale stay with one team, so nothing is lost at a handoff.",
   },
 ];

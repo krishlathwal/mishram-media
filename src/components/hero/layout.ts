@@ -11,6 +11,13 @@
  *
  * Exposure (`base`) carries the depth hierarchy: one bright foreground anchor,
  * two mid-ground frames, and everything else receding into the obsidian.
+ *
+ * **Revision 42 renamed the slot keys and retuned three exposures, nothing
+ * else.** Every centre, radius, phase, speed, tilt and height is byte-identical
+ * to Revision 28. The keys follow the creators — `akash` is the 9:16 primary,
+ * `lovkesh` the 4:5, `kaka` the 1:1 — and `ali` went 0.74 → 0.82, the 4:5 slot
+ * 0.62 → 0.74, the 1:1 slot 0.80 → 0.66, so the three creators the client asked
+ * to highlight are the three bright photographs.
  */
 
 export type SurfaceLayout = {
@@ -41,9 +48,10 @@ export type SurfaceLayout = {
 const TAU = Math.PI * 2;
 
 export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
-  // Foreground anchor, sitting just clear of the type column.
-  zoya: {
-    id: "zoya",
+  // Foreground anchor, sitting just clear of the type column. Akash Sagar
+  // from Revision 42 — the client's "most important" creator takes the slot.
+  akash: {
+    id: "akash",
     center: [1.103, 0.048, 0.25],
     radius: [0.13, 0.15],
     phase: 0.25 * TAU,
@@ -67,13 +75,13 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
     bobSpeed: 0.26,
     tilt: [0.012, -0.17, 0.018],
     height: 1.549,
-    base: 0.74,
+    base: 0.82,
     entryDepth: 1.8,
     order: 5,
   },
-  // Square campaign moment, lower right.
-  lovkesh: {
-    id: "lovkesh",
+  // Square moment, lower right. Kaka from Revision 42.
+  kaka: {
+    id: "kaka",
     center: [2.394, -0.937, -0.25],
     radius: [0.11, 0.12],
     phase: 0.08 * TAU,
@@ -82,13 +90,14 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
     bobSpeed: 0.36,
     tilt: [-0.018, -0.15, 0.015],
     height: 0.958,
-    base: 0.8,
+    base: 0.66,
     entryDepth: 1.2,
     order: 6,
   },
-  // 4:5 frame set well back, high and close to the type edge.
-  akash: {
-    id: "akash",
+  // 4:5 frame set well back, high and close to the type edge. Lovekesh
+  // Kataria from Revision 42 — the pair, in the photograph the client asked for.
+  lovkesh: {
+    id: "lovkesh",
     center: [0.133, 1.328, -2.0],
     radius: [0.16, 0.15],
     phase: 0.42 * TAU,
@@ -97,7 +106,7 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
     bobSpeed: 0.22,
     tilt: [0.028, -0.07, -0.024],
     height: 1.394,
-    base: 0.62,
+    base: 0.74,
     entryDepth: 2.0,
     order: 3,
   },
@@ -155,8 +164,8 @@ export const DESKTOP_LAYOUT: Record<string, SurfaceLayout> = {
  * lower band of the hero with the closer camera.
  */
 export const MOBILE_LAYOUT: Record<string, SurfaceLayout> = {
-  zoya: {
-    ...DESKTOP_LAYOUT.zoya,
+  akash: {
+    ...DESKTOP_LAYOUT.akash,
     center: [-0.597, -0.096, 0.2],
     radius: [0.08, 0.09],
     height: 1.974,
@@ -168,8 +177,8 @@ export const MOBILE_LAYOUT: Record<string, SurfaceLayout> = {
     height: 1.607,
     base: 0.82,
   },
-  akash: {
-    ...DESKTOP_LAYOUT.akash,
+  lovkesh: {
+    ...DESKTOP_LAYOUT.lovkesh,
     center: [1.02, -0.967, -0.4],
     radius: [0.07, 0.07],
     height: 1.02,
@@ -198,11 +207,11 @@ export const RINGS = {
 
 /** Entry stagger, in seconds, keyed by surface id. */
 export const ENTRY_DELAY: Record<string, number> = {
-  zoya: 0.0,
-  lovkesh: 0.1,
+  akash: 0.0,
+  kaka: 0.1,
   ali: 0.18,
   interface: 0.26,
-  akash: 0.34,
+  lovkesh: 0.34,
   growth: 0.42,
   nikita: 0.5,
 };

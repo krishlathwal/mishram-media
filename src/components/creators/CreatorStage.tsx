@@ -6,7 +6,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 
 import {
   CREATORS_COPY,
-  ROSTER,
+  STAGE,
   resolveFrame,
   type Creator,
   type FrameKind,
@@ -310,7 +310,7 @@ export function CreatorStage({
         (id): id is string => id !== null,
       ),
     );
-    return ROSTER.filter((c) => ids.has(c.id));
+    return STAGE.filter((c) => ids.has(c.id));
   }, [initialId, shownId, outgoingId, activeId, warmId]);
 
   // Restrained pointer parallax, spring-damped, mouse only.

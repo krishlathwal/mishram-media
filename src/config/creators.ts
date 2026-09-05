@@ -1,9 +1,9 @@
 /**
  * 03 / CREATORS
  *
- * The roster the homepage shows. Currently the five creators already associated
- * with Mishram Media and already present in this project as local approved
- * assets (`public/media/creators/*.webp`, mirrored in `config/hero.ts`).
+ * The roster the homepage shows. Creators associated with Mishram Media and
+ * present in this project as local approved assets
+ * (`public/media/creators/*.webp`, mirrored in `config/hero.ts`).
  *
  * **This list is closed to unverified names**: do not add a creator without
  * approved local photography, and never substitute stock imagery or an
@@ -11,6 +11,30 @@
  * section was rearchitected to carry 15–20 creators comfortably and was stress
  * tested at 24 (§10b of the brief). Adding one is a single object here; no
  * component changes, no hand-counted numbers.
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * REVISION 42 — TWO LISTS, AND THE CLIENT'S RANKING
+ *
+ * The client walked the homepage on video (6 September 2026) and ranked the
+ * featured stage by name: **Ali Fazal, then Akash Sagar, then Lovekesh
+ * Kataria, then Purav Jha, then Sagar Rathee, then Kaka** — and asked for the
+ * creators that used to be on the stage (Zoya Jaan, Nikita Kumawat, Mukul
+ * Sharma, Vishnu Priya) to move down into the *Also worked with* index.
+ *
+ * That splits one array into two roles:
+ *
+ * - **`ROSTER`** — every published creator with approved photography. The
+ *   service routes, `/about` and the What We Do scenes read this: it is the
+ *   photographic library, and nothing there moved.
+ * - **`STAGE`** — the subset marked `stage: true`, in ranking order. Only the
+ *   homepage chapter's index, cascade and meta block read this.
+ *
+ * Purav Jha and Sagar Rathee are on the client's stage list and **not on the
+ * stage**, because neither has a still photograph anywhere in the library
+ * (four `Purav` folders and `Dr 69 - sagar bhai shoot +bts` hold `.MOV` only,
+ * and no frame is pulled from video under §10u rule 7). They lead the index
+ * as type instead — see `WORKED_WITH`.
+ * ═══════════════════════════════════════════════════════════════════════════
  *
  * FOLLOWER COUNTS — still none, after a real verification pass. See the note
  * above `followers` below, and §10b of the brief for the candidate handles that
@@ -25,9 +49,9 @@ export type FrameKind = (typeof FRAME_KINDS)[number];
 export type FrameCrop = {
   /**
    * A dedicated image for this frame. **Optional.** Left unset, the frame is a
-   * genuine re-crop of the portrait source, which is what all five current
-   * creators do — each has exactly one approved photograph, so the supporting
-   * frames must be crops of it rather than invented campaign work.
+   * genuine re-crop of the portrait source — each creator has exactly one
+   * approved photograph, so the supporting frames must be crops of it rather
+   * than invented campaign work.
    *
    * Set it once a creator genuinely has a separate reel still or content shot.
    */
@@ -54,17 +78,25 @@ export type Creator = {
   name: string;
   alt: string;
   /**
-   * Contextual label. Only what is genuinely known — every one of these is a
-   * creator in the Mishram network, which is exactly what the hero already
-   * says about the same portraits. No invented niches or categories.
+   * Contextual label. Only what is genuinely known — a creator in the Mishram
+   * network, a worked-with relationship, or the one managed creator. No
+   * invented niches or categories.
    */
   label: string;
   /**
-   * Set `false` to keep a creator's record here without showing them on the
-   * homepage — a name confirmed but not yet cleared, or photography still
-   * being chosen. Defaults to shown. Deliberately one boolean, not a CMS.
+   * Set `false` to keep a creator's record here without showing them anywhere
+   * — a name confirmed but not yet cleared, or photography still being chosen.
+   * Defaults to shown. Deliberately one boolean, not a CMS.
    */
   published?: boolean;
+  /**
+   * **Featured on the homepage stage** (Revision 42). The chapter's index,
+   * cascade and meta block read `STAGE`, which is the published creators with
+   * this flag, in array order. A published creator without it stays in the
+   * photographic library every other route reads and joins the *Also worked
+   * with* index by derivation — see `WORKED_WITH_OFF_STAGE`.
+   */
+  stage?: boolean;
   /**
    * Per-creator art direction. The geometry is shared — same portrait frame,
    * same reel, same content frame, same cascade — so switching stays spatially
@@ -74,7 +106,7 @@ export type Creator = {
    */
   media: CreatorMedia;
   /**
-   * Rounded public follower label, e.g. "2.4M". **Unset for all five.**
+   * Rounded public follower label, e.g. "2.4M". **Unset for everyone.**
    *
    * A bounded verification pass (Aug 2026) turned up candidate accounts for
    * every creator but confirmed none of them. Three reasons, and any one of
@@ -104,8 +136,9 @@ export type Creator = {
    * separates a handle from `followers`: a link is a destination anyone can
    * check in one click, a figure is a claim this site would be making.
    *
-   * Unset for Zoya Jaan and Mukul Sharma — neither is on the client's
-   * confirmed handle list and §10b's candidates for both remain ambiguous.
+   * Unset for Zoya Jaan, Mukul Sharma and Kaka — none is on the client's
+   * confirmed handle list and §10b's candidates for the first two remain
+   * ambiguous.
    */
   instagram?: string;
   /**
@@ -158,48 +191,44 @@ export function resolveFrame(
     src: frame?.src ?? portrait.src,
     position,
     // An explicit frame with no zoom means 1 — only a *missing* frame falls
-    // back to the default, which is what keeps the five tuned crops exact.
+    // back to the default, which is what keeps the tuned crops exact.
     zoom: frame?.zoom ?? (frame ? 1 : FALLBACK_ZOOM[kind]),
     origin: frame?.origin ?? position,
   };
 }
 
+/**
+ * Array order is the **stage ranking** the client gave, then the library. The
+ * first four carry `stage: true`; the rest are the photographic library the
+ * service routes still read.
+ */
 export const CREATORS: readonly Creator[] = [
   /**
    * ─────────────────────────────────────────────────────────────────────────
-   * ALI FAZAL — the roster's opening slot, from Revision 17B.
+   * ALI FAZAL — the roster's opening slot, from Revision 17B. "First Ali
+   * Fazal, it's good" — the client, Revision 42.
    * ─────────────────────────────────────────────────────────────────────────
    *
    * IDENTITY. The user supplied and explicitly labelled the source file
-   * (`F:\Drive data\ali fazal.jpeg`). **The filename is the identity
-   * evidence**, exactly as the folder name was for the Current Management
-   * chapter — no face was compared, here or anywhere. The handle below was
+   * (`WEBSITE SHORTLIST/ali fazal.jpeg`). **The filename is the identity
+   * evidence** — no face was compared, here or anywhere. The handle below was
    * then verified independently against the live official account.
    *
    * RELATIONSHIP. `Worked With`, and nothing stronger. He is **not** managed,
    * represented, signed or exclusive to Mishram Media; the one management
-   * relationship the project can evidence has its own chapter. The `label`
-   * field is per-creator precisely so this can be exact without relabelling
-   * anyone else (§18 — *"do not relabel the other five"*).
-   *
-   * WHY HE OPENS THE SECTION. §10b gave the opening slot to Zoya. The user
-   * has since asked for Ali Fazal to carry the strongest visual priority in
-   * the creator proof, and the opening slot is what that means here: it is the
-   * creator the stage shows first and the one image the section mounts on
-   * load. Editorial priority, not a ranking — nothing on the page numbers the
-   * roster by importance.
+   * relationship the project can evidence has its own chapter.
    *
    * THE PHOTOGRAPH is a **relationship frame, not a portrait**: two figures,
-   * on location. **The crop keeps both of them in every format**, which is the
-   * rule §10b already settled on the other two-person frame in this roster —
-   * the project records that Ali Fazal is *in* this photograph, not which
-   * figure he is, so isolating one would assert something unverified.
+   * on location. **The crop keeps both of them in every format** — the
+   * project records that Ali Fazal is *in* this photograph, not which figure
+   * he is, so isolating one would assert something unverified.
    */
   {
     id: "ali-fazal",
     name: "Ali Fazal",
     alt: "Ali Fazal photographed with Mishram Media",
     label: "Worked With",
+    stage: true,
     instagram: "alifazal9",
     // 2560x3413 of a 3120x4160 source, output 1000x1333 — the portrait frame's
     // own 3:4, so the composition renders exactly as it was cropped and the
@@ -210,104 +239,159 @@ export const CREATORS: readonly Creator[] = [
         src: "/media/creators/featured/ali-fazal.webp",
         position: "50% 50%",
       },
-      // The three frames have to be small / mid / large of genuinely different
-      // crops, not one crop at three sizes — the failure §10b records about
-      // Mukul. With a two-person frame the lever is zoom rather than pan, so
-      // the reel goes properly close and the content stays gentle.
       // A 9:16 frame can only show ~43% of a 3:4 source's width at this zoom,
       // so the horizontal position is what decides whether both faces survive
       // it. Pulled left to 46%: at 50% the window's left edge landed exactly on
-      // one of the two heads and bisected it, which starts to read as isolating
-      // one figure — the thing this crop must not do.
+      // one of the two heads and bisected it.
       reel: { position: "46% 20%", zoom: 1.7, origin: "46% 20%" },
       content: { position: "50% 26%", zoom: 1.12, origin: "50% 22%" },
     },
   },
-  {
-    id: "zoya",
-    name: "Zoya Jaan",
-    alt: "Portrait of creator Zoya Jaan from the Mishram Media network",
-    label: "Creator Network",
-    // 620x1102. Face high in the frame at ~15%; full-length fashion pose.
-    // The 3:4 frame can only shift 25% of the source, so the portrait takes
-    // all the headroom available and the content frame drops below the chin
-    // entirely rather than clipping it.
-    media: {
-      portrait: { src: "/media/creators/zoya-jaan.webp", position: "48% 6%" },
-      reel: { position: "50% 0%", zoom: 1.8, origin: "50% 0%" },
-      content: { position: "50% 100%", zoom: 1.1, origin: "50% 30%" },
-    },
-  },
   /**
    * ─────────────────────────────────────────────────────────────────────────
-   * AKASH SAGAR — **PUBLISHED IN REVISION 17, AND DELIBERATELY NOT HERE.**
+   * AKASH SAGAR — PUBLISHED ON THE STAGE IN REVISION 42, AT SECOND.
    * ─────────────────────────────────────────────────────────────────────────
    *
-   * The photograph blocker is closed: the client's media library supplied
-   * approved, identified photography and he now has **his own Current
-   * Management chapter** high on the homepage — see `config/management.ts` and
-   * §10t of the brief.
+   * He sat here `published: false` since Revision 13 on the reasoning that a
+   * worked-with roster should not also carry the one managed creator. **The
+   * client has now ranked him second on the stage by name** ("on the second
+   * number add Bhandesiri, Akash Sagar"), and that instruction outranks the
+   * project's own tidiness rule. The Current Management chapter stays exactly
+   * as it is; this is a second, ranked appearance rather than a replacement.
    *
-   * **`published: false` stays, and it is now a decision rather than a
-   * blocker.** This roster is a *worked-with* list; management is a materially
-   * bigger claim with its own chapter. Publishing him in both would duplicate
-   * the same portrait on one page and blur exactly the distinction the two
-   * layers exist to draw — the brief's instruction was "do not simply make
-   * Akash creator #06".
-   *
-   * The record stays here because the fields below are verified and because
-   * `WORKED_WITH_INDEX` filters against `ROSTER`: if a later revision does
-   * decide he belongs on the stage, flipping this boolean adds him **and**
-   * removes him from the index automatically, with no second edit.
-   *
-   * WHY HE SITS SECOND IN THIS ARRAY. He is the only creator on it the agency
-   * *currently manages*, so appending him below five historical "worked with"
-   * relationships would bury the strongest one if he were ever published here.
-   * Zoya keeps the opening slot deliberately — she is the creator the section
-   * opens on, the single image that loads first (§10b-scale), and §10d's
-   * featured work item.
-   *
-   * RELATIONSHIP — the one entry on this roster that is not "Creator Network",
-   * and the evidence is a chain rather than an assertion:
+   * RELATIONSHIP — the one entry on this roster that is not a worked-with
+   * label, and the evidence is a chain rather than an assertion:
    *
    * 1. The user confirmed it explicitly: Mishram Media currently manages this
    *    profile.
    * 2. `@xbhandesiri_`'s own public bio reads "Managed by - @filmybande".
    * 3. `@filmybande` is publicly "Prashant mishra", bio "Talent Management",
    *    with a `mishram.media` story highlight.
-   * 4. Prashant Mishra is named **Founder & Chief Marketing Officer** of
-   *    Mishram.Media in the old site's schema.org `employee` array.
    *
-   * So `label` is `"Currently Managed"` here and stays `"Creator Network"` for
-   * everyone else — the field is per-creator, so no component knows or cares.
-   * **Do not relabel the other five.** The old site's own ceiling for them is
-   * "We've successfully worked with influencers"; see the audit §4.
+   * So `label` is `"Currently Managed"` here and stays a worked-with word for
+   * everyone else. **Do not relabel the others.**
    *
-   * THE IMAGE — **the blocker that closed.** Revision 13 recorded that the
-   * only asset anywhere was a 150×150 avatar, roughly 7% of the pixels this
-   * section needs, and that stock, a scraped substitute, a fan-page crop and a
-   * generated portrait were all ruled out (§1) with hotlinking ruled out twice
-   * over (§14). Revision 17's media library resolved it: two approved,
-   * identified photographs, cropped and shipped as
-   * `public/media/creators/akash-sagar/*`.
-   *
-   * **`media.portrait.src` below still names a file that does not exist**, and
-   * that is intentional rather than an oversight. It is never requested while
-   * `published` is false, and it records the shape this roster would need if he
-   * were ever added to the *stage* — a 3:4 portrait cropped for the cascade,
-   * which is a different asset from the two the Current Management chapter
-   * uses. **Do not flip `published` without producing that file first**, or
-   * Next/Image will 404.
+   * THE IMAGE. `featured/akash-sagar.webp` is a 3:4 crop of
+   * `WEBSITE SHORTLIST/Akash sagar 1st.jpeg` — the client-labelled relational
+   * frame, **the same extract Current Management renders** at a different
+   * output size. The Hero carries the other frame (`Akash sagar.jpeg`), so the
+   * two chapters that argue the relationship share the relational photograph
+   * and the Hero keeps the portrait one. **Both figures stay in every crop.**
    */
   {
     id: "akash-sagar",
     name: "Akash Sagar",
-    alt: "Portrait of creator Akash Sagar, managed by Mishram Media",
+    alt: "Akash Sagar photographed with Mishram Media during current management work",
     label: "Currently Managed",
-    published: false,
+    stage: true,
     instagram: "xbhandesiri_",
+    // 1934x2579 of the rotated 3120x4160 source, output 1000x1333 — natively
+    // 3:4, so the portrait frame crops nothing. Two figures side by side, so
+    // the reel zooms on the pair rather than panning to one of them.
     media: {
-      portrait: { src: "/media/creators/akash-sagar.webp", position: "50% 20%" },
+      portrait: {
+        src: "/media/creators/featured/akash-sagar.webp",
+        position: "50% 30%",
+      },
+      reel: { position: "50% 22%", zoom: 1.75, origin: "50% 22%" },
+      content: { position: "50% 34%", zoom: 1.14, origin: "50% 30%" },
+    },
+  },
+  /**
+   * ─────────────────────────────────────────────────────────────────────────
+   * LOVEKESH KATARIA — imagery upgraded and the spelling normalised (17B);
+   * third on the client's stage ranking (42), "the image with me".
+   * ─────────────────────────────────────────────────────────────────────────
+   *
+   * **The name is `Lovekesh`, with the middle `e`.** The live official
+   * account `@corrupt_tuber` carries the display name **"Lovekesh Kataria"**.
+   * One person, one spelling, everywhere. **`id` deliberately stays
+   * `lovkesh`** — an internal key eight compositions look this creator up by.
+   *
+   * THE PHOTOGRAPH is `WEBSITE SHORTLIST/Lovekesh Kataria.jpeg`, user
+   * supplied and labelled — 6048x8064 after orientation, an interior
+   * relationship frame with the client. **Both figures are kept in every
+   * format**: the project records that Lovekesh Kataria is *in* the frame, not
+   * which figure he is.
+   */
+  {
+    id: "lovkesh",
+    name: "Lovekesh Kataria",
+    alt: "Lovekesh Kataria photographed with Mishram Media",
+    label: "Creator Network",
+    stage: true,
+    instagram: "corrupt_tuber",
+    media: {
+      // The vertical position is 14% for the two 16:9 frames on
+      // `/services/brand-shoots-content`, which crop a 3:4 source to a 42%
+      // band — at 50% that band landed below both heads. It does nothing on
+      // the homepage, where the file and the frame share a 3:4 aspect.
+      portrait: {
+        src: "/media/creators/featured/lovekesh-kataria.webp",
+        position: "50% 14%",
+      },
+      reel: { position: "50% 24%", zoom: 1.95, origin: "50% 24%" },
+      content: { position: "50% 30%", zoom: 1.15, origin: "50% 26%" },
+    },
+    nudge: { reelY: -2 },
+  },
+  /**
+   * ─────────────────────────────────────────────────────────────────────────
+   * KAKA — ADDED IN REVISION 42.
+   * ─────────────────────────────────────────────────────────────────────────
+   *
+   * IDENTITY. `WEBSITE SHORTLIST/Immortal Kaka Ji.jpeg`, supplied and named
+   * by the client — the only Kaka photograph in the library, 2160x3840,
+   * orientation 1, a café interior, two figures. **No face was compared.**
+   *
+   * RELATIONSHIP. Held since Revision 34 as P22 — *identity yes, relationship
+   * not verified* — because nothing recorded a working relationship. **The
+   * client has now named him on the stage ranking ("add Kaka the singer") and
+   * in the written brief for this revision**, which is the one-sentence
+   * unblock P22 asked for. `Worked With`, and nothing stronger.
+   *
+   * THE NAME. The client's spoken name is "Kaka"; the file is labelled
+   * "Immortal Kaka Ji". The site renders **Kaka**, the name the client uses
+   * for him — "the singer" was said to identify him, not as a label to print.
+   * If the client's forthcoming image ("I'll share his image") turns out to be
+   * a different person, this entry is one object to correct. No handle: none
+   * was supplied and none is guessed.
+   */
+  {
+    id: "kaka",
+    name: "Kaka",
+    alt: "Kaka photographed with Mishram Media",
+    label: "Worked With",
+    stage: true,
+    // 2160x2880 of the 2160x3840 source from y=120, output 1000x1333 — the
+    // heads sit at ~22% of the frame, which is where the portrait frame reads
+    // them. The pair is side by side, so the supporting frames zoom on both.
+    media: {
+      portrait: {
+        src: "/media/creators/featured/kaka.webp",
+        position: "50% 24%",
+      },
+      reel: { position: "50% 18%", zoom: 1.8, origin: "50% 18%" },
+      content: { position: "50% 30%", zoom: 1.16, origin: "50% 26%" },
+    },
+  },
+
+  /* ── The photographic library — published, off the homepage stage ──────
+     Zoya Jaan, Nikita Kumawat, Mukul Sharma and Vishnu Priya were the stage
+     until Revision 42. The client asked for them to move into the *Also
+     worked with* index, which `WORKED_WITH_OFF_STAGE` does by derivation.
+     They stay published: the service routes, `/about` and the What We Do
+     scenes still render this photography, and nothing about it changed. */
+  {
+    id: "zoya",
+    name: "Zoya Jaan",
+    alt: "Portrait of creator Zoya Jaan from the Mishram Media network",
+    label: "Creator Network",
+    // 620x1102. Face high in the frame at ~15%; full-length fashion pose.
+    media: {
+      portrait: { src: "/media/creators/zoya-jaan.webp", position: "48% 6%" },
+      reel: { position: "50% 0%", zoom: 1.8, origin: "50% 0%" },
+      content: { position: "50% 100%", zoom: 1.1, origin: "50% 30%" },
     },
   },
   {
@@ -315,16 +399,9 @@ export const CREATORS: readonly Creator[] = [
     name: "Nikita Kumawat",
     alt: "Portrait of creator Nikita Kumawat from the Mishram Media network",
     label: "Creator Network",
-    // VERIFIED IN REVISION 17B, and it resolves §10b's four-account problem
-    // rather than guessing past it: the client supplied this handle, the live
-    // account's display name is "Nikita Kumawat (Bullet Rani)", and its own
-    // bio names `@imnikkskumawat` as the personal account — which is what §10b
-    // could not distinguish. `followers` stays unset; the handle is a
-    // destination, the figure would be a claim.
+    // VERIFIED IN REVISION 17B: the client supplied this handle, the live
+    // account's display name is "Nikita Kumawat (Bullet Rani)".
     instagram: "iamnikitakumawat",
-    // 620x1102. Standing slightly left of centre, eyes ~21%. Horizontal
-    // position pulls left so she sits centred in the frame rather than
-    // drifting toward the right edge.
     media: {
       portrait: {
         src: "/media/creators/nikita-kumawat.webp",
@@ -334,84 +411,17 @@ export const CREATORS: readonly Creator[] = [
       content: { position: "44% 100%", zoom: 1.1, origin: "44% 30%" },
     },
   },
-  /**
-   * ─────────────────────────────────────────────────────────────────────────
-   * LOVEKESH KATARIA — imagery upgraded and the spelling normalised (17B).
-   * ─────────────────────────────────────────────────────────────────────────
-   *
-   * **The name is now `Lovekesh`, with the middle `e`.** Revision 17 left two
-   * spellings standing — `Lovkesh` on this roster because that is what the
-   * approved asset shipped under, and `Lovekesh` in the worked-with index
-   * because that is the client's spelling and every public source's. The user
-   * has now asked for one canonical public spelling, and the verification pass
-   * settled which: the live official account `@corrupt_tuber` carries the
-   * display name **"Lovekesh Kataria"**. One person, one spelling, everywhere.
-   *
-   * **`id` deliberately stays `lovkesh`.** It is an internal key, not public
-   * text, and eight other compositions across the homepage and two service
-   * routes look this creator up by it. Renaming the key would be a rename with
-   * no reader-facing benefit and eight chances to break something.
-   *
-   * THE PHOTOGRAPH IS NEW. The user supplied and explicitly labelled
-   * `F:\Drive data\Lovekesh Kataria.jpeg` — 6048x8064 after orientation, an
-   * interior relationship frame. It replaces the 720x720 awards-evening file,
-   * which had no resolution headroom left at the size this stage renders. The
-   * old file is **not deleted**: `config/hero.ts` still uses it and the Hero is
-   * locked (§05).
-   *
-   * **Both figures are kept in every format, as before** — the reason is
-   * unchanged and now applies to a second photograph: the project records that
-   * Lovekesh Kataria is *in* the frame, not which figure he is.
-   */
-  {
-    id: "lovkesh",
-    name: "Lovekesh Kataria",
-    alt: "Lovekesh Kataria photographed with Mishram Media",
-    label: "Creator Network",
-    instagram: "corrupt_tuber",
-    // 3800x5067 of the 6048x8064 rotated source, output 1000x1333 — the
-    // portrait frame's own 3:4, so the crop is what renders. That is why the
-    // 1.25x lift the 1:1 source needed is gone: there is no square ceiling to
-    // trim any more, and keeping the zoom would have thrown away the headroom
-    // the new crop was composed with.
-    media: {
-      // The vertical position is **14%, not 50%, and it does nothing at all on
-      // the homepage** — this file and the stage's portrait frame share a 3:4
-      // aspect, so there is no overflow for `object-position` to move. It
-      // exists for the two 16:9 frames on `/services/brand-shoots-content`,
-      // which crop a 3:4 source to a 42% band: at 50% that band landed below
-      // both heads and rendered as a torso strip. Set here rather than on those
-      // frames because the crop is a fact about this photograph.
-      portrait: {
-        src: "/media/creators/featured/lovekesh-kataria.webp",
-        position: "50% 14%",
-      },
-      // Same small / mid / large discipline as Ali's, one step lower in the
-      // frame throughout because the heads sit deeper here — there is a
-      // corridor ceiling above them.
-      reel: { position: "50% 24%", zoom: 1.95, origin: "50% 24%" },
-      content: { position: "50% 30%", zoom: 1.15, origin: "50% 26%" },
-    },
-    nudge: { reelY: -2 },
-  },
   {
     id: "mukul",
     name: "Mukul Sharma",
     alt: "Portrait of creator Mukul Sharma from the Mishram Media network",
     label: "Creator Network",
-    // 620x1102, and already a close portrait — eyes at ~34%. So this one
-    // inverts the usual pattern: the portrait frame pulls *down* for headroom,
-    // and the reel only needs a modest 1.5x rather than the ~1.8x the
-    // full-length poses want.
     media: {
       portrait: {
         src: "/media/creators/mukul-sharma.webp",
         position: "42% 45%",
       },
-      // Origin sits high enough to keep the hair inside the frame.
       reel: { position: "42% 50%", zoom: 1.75, origin: "42% 20%" },
-      // Drops below the face entirely onto the jacket. At a gentler zoom all
-      // three frames were the same close-up at three sizes.
       content: { position: "42% 100%", zoom: 1.6, origin: "42% 100%" },
     },
   },
@@ -420,15 +430,9 @@ export const CREATORS: readonly Creator[] = [
     name: "Vishnu Priya",
     alt: "Portrait of creator Vishnu Priya from the Mishram Media network",
     label: "Creator Network",
-    // VERIFIED IN REVISION 17B. Client-supplied handle, and the live account's
-    // display name is "Vishnu Priya". §10b rejected `@vishnupriyaaa` because
-    // nothing tied it to this name; this one is a different account and the
-    // tie is first-party. `followers` stays unset.
+    // VERIFIED IN REVISION 17B. Client-supplied handle; the live account's
+    // display name is "Vishnu Priya".
     instagram: "vishnupriyaaofficial",
-    // 640x800. The only 4:5 source, so the 3:4 portrait frame crops width
-    // rather than height and the eyes land at their natural 22% untouched.
-    // The content frame needs a hard 1.7x to become a genuine mid crop,
-    // because frame and source share an aspect ratio.
     media: {
       portrait: {
         src: "/media/creators/vishnu-priya.webp",
@@ -441,13 +445,19 @@ export const CREATORS: readonly Creator[] = [
 ];
 
 /**
- * What the homepage actually renders, and the only list any component should
- * read. Index numbers, the roster count, the matrix geometry and the stage all
- * derive from it — **nothing is hand-counted anywhere.**
+ * Every published creator with approved photography — the library the service
+ * routes, `/about` and the What We Do scenes read. **Not** the homepage stage.
  */
 export const ROSTER: readonly Creator[] = CREATORS.filter(
   (c) => c.published !== false,
 );
+
+/**
+ * The homepage stage: published creators marked `stage`, in the client's
+ * ranking order. Index numbers, the roster count, the matrix geometry and the
+ * cascade all derive from it — **nothing is hand-counted anywhere.**
+ */
+export const STAGE: readonly Creator[] = ROSTER.filter((c) => c.stage);
 
 /** `01`…`99`, from array order. Never write an index into the data. */
 export function creatorIndex(i: number): string {
@@ -461,48 +471,10 @@ export const CREATORS_COPY = {
   /** Rendered in the serif italic accent, matching the hero and §02. */
   accentWord: "culture.",
   /**
-   * ─────────────────────────────────────────────────────────────────────────
-   * THE NETWORK, IN TWO HALVES — Revision 34
-   * ─────────────────────────────────────────────────────────────────────────
-   *
-   * This slot used to hold one line: *"Creators, actors and personalities we've
-   * worked with, managed and built alongside."* It said what the relationship
-   * is, which the chapter says twice more anyway — `CreatorMeta` labels every
-   * creator on the stage individually, and `workedWithNote` says it again over
-   * the roster. **What the chapter never answered was the question a brand
-   * actually arrives with: what *kind* of network is this?**
-   *
-   * Mishram's own proposal answers it in two categories — *Premium
-   * Influencers* (established names, strong personal brands, proven influence)
-   * and *Trending Influencers* (fast-growing creators driving viral
-   * conversations). That distinction is the network's real shape and it was
-   * nowhere on the site.
-   *
-   * **"PREMIUM" WAS CONSIDERED AND REJECTED.** On a website it reads as a
-   * pricing tier — the rate-card register this chapter has avoided since
-   * Revision 17. `Established` carries the same meaning and none of the
-   * commercial edge. `Tier 1/2`, `A-list` and `Micro/Macro` were never
-   * candidates; nothing in the project uses them.
-   *
-   * ════════════════════════════════════════════════════════════════════════
-   * **THE TWO CATEGORIES DESCRIBE THE NETWORK. THEY NEVER LABEL A PERSON.**
-   *
-   * Not one name anywhere in this file carries a category, and none should.
-   * The proposal lists nine Premium Influencers, but that list is registered
-   * as **NEEDS VERIFY** — naming somebody in a network slide is not the same
-   * evidence as the client confirming a working relationship, and the two must
-   * not be collapsed. Sorting real people into tiers on a live site would also
-   * be the §10b follower-count mistake in a different currency: a
-   * characteristic asserted about a human being that the project cannot
-   * evidence.
-   *
-   * A general statement about the network is both safer and truer, and it is
-   * the whole of what this phase publishes.
-   * ════════════════════════════════════════════════════════════════════════
-   *
-   * **No promise of future virality.** *"in the conversation now"* is a
-   * description of what is already true; *"our creators consistently get 10M+
-   * views"* is the proposal claim that stays held. No figure appears here.
+   * THE NETWORK, IN TWO HALVES — Revision 34. Mishram's own proposal
+   * describes the network in two categories; they open the chapter.
+   * **The two categories describe the network. They never label a person** —
+   * not one name anywhere in this file carries a category, and none should.
    */
   network: [
     {
@@ -515,14 +487,8 @@ export const CREATORS_COPY = {
     },
   ] as readonly { label: string; line: string }[],
   /**
-   * Roster header. The number beside it is `ROSTER.length` — it counts the
-   * people actually on this page and nothing else. **Not** "network size":
-   * Mishram's real network is larger than what is configured here and that
-   * figure is not verified, so the page must never imply it.
-   *
-   * It reads `Featured` rather than `Selected Creators` from Revision 17B, for
-   * the same reason the lead changed: this is now the image-backed layer of a
-   * two-layer chapter, and not everyone on it is a creator.
+   * Roster header. The number beside it is `STAGE.length` — it counts the
+   * people on the stage and nothing else. **Not** "network size".
    */
   rosterLabel: "Featured",
   cta: "Work with our creator network",
@@ -530,63 +496,36 @@ export const CREATORS_COPY = {
   formats: { reel: "Reel / 9:16", content: "Content / 4:5" },
 
   /**
-   * The worked-with index's own heading and its one clarifying line.
-   *
-   * **The second sentence arrived in Revision 33**, and it is what is left of
-   * the two scale facts this chapter used to set at display scale. Those
-   * figures now live once, on the homepage proof band; the job they were also
-   * doing — saying that a page of eighteen names is not the whole network —
-   * is done here, in words, inside a note that already existed.
-   *
-   * Folding it in rather than giving it its own labelled block was deliberate:
-   * a second caps-label-plus-prose row directly above this one read as the
-   * same statement made twice in the same shape. **No figure, no "over N".**
+   * The worked-with index's own heading and its one clarifying line. The
+   * figures this chapter used to set at display scale live once, on the
+   * homepage proof band (Revision 33). **No figure, no "over N".**
    */
   workedWithLabel: "Also worked with",
   workedWithNote:
     "Creators, actors and personalities Mishram Media has worked with on campaigns and content — a selection, not the whole network.",
   /**
-   * The two names the index sets at display scale above the list. Reading
+   * The names the index sets at display scale above the list. Reading
    * emphasis, not a tier — see `lead` on `WorkedWith`.
    */
   workedWithLeadLabel: "Selected",
-  /**
-   * `scaleLabel` and the two facts it introduced were removed in Revision 33.
-   * The figures moved to `config/proof.ts` and render once, on the homepage
-   * proof band; the sentence they were also carrying moved into
-   * `workedWithNote` above. Nothing replaced the label, because a labelled
-   * block of its own was the repetition.
-   */
 } as const;
 
 /* ============================================================
    THE WORKED-WITH INDEX
 
    A **second layer** beside the image-backed stage above, and the reason it
-   exists is content integrity rather than layout.
-
-   The client confirmed eighteen further relationships in Revision 17. The
-   media library supplied alongside them contains an approved, unambiguously
-   identified photograph for **one** person — and identity there comes from an
-   explicit folder name, never from what somebody looks like. Putting the other
-   names on the stage would mean either guessing which photograph is whom, or
-   shipping seventeen empty frames.
-
-   So the names are published as **type**. An editorial index states the
-   relationship exactly, needs no photograph to be honest, and is the same
-   answer §10b already reached about follower counts: publish what is
-   evidenced, in the form the evidence supports.
+   exists is content integrity rather than layout: the client confirmed these
+   relationships, and the library holds approved photography for only some of
+   them. The names are published as **type** — an editorial index states the
+   relationship exactly and needs no photograph to be honest.
 
    **THE WORDING IS "WORKED WITH", AND IT IS LOAD-BEARING.** Not managed, not
-   signed, not exclusive, not clients, not represented. Management is a
-   materially bigger claim and the project can evidence exactly one of those —
-   see `config/management.ts`. Do not upgrade this language without separate
-   confirmation for each name.
+   signed, not exclusive, not clients, not represented. Do not upgrade this
+   language without separate confirmation for each name.
 
    Deliberately absent, and none of these should appear: follower counts,
    audience sizes, niches, categories, tiers, rankings, campaign names, brand
-   pairings, or any implication of order. `PROMINENT` below controls nothing
-   but reading order.
+   pairings, or any implication of order beyond reading order.
    ============================================================ */
 
 export type WorkedWith = {
@@ -602,60 +541,25 @@ export type WorkedWith = {
    * is a real state, not a gap** — a name with no handle renders as a name,
    * never as a dead link, a disabled control or a "coming soon".
    *
-   * ─────────────────────────────────────────────────────────────────────────
-   * THE BAR, and it is the same one the rest of this project uses.
-   * ─────────────────────────────────────────────────────────────────────────
-   *
-   * A handle is set only where **two independent sources agree**:
-   *
-   * 1. the client supplied the handle for that name (first-party), **and**
-   * 2. the live official account's own display name, bio or verified linkage
-   *    corroborates the same person.
-   *
-   * The URL is derived rather than stored, so a handle and its link cannot
-   * drift apart — see `workedWithUrl`.
-   *
-   * **A name matching is not evidence.** Where several accounts carry the same
-   * name, or the account's own display name does not corroborate the name the
-   * client supplied, the handle stays absent and the person keeps their row.
-   * `WORKED_WITH_UNVERIFIED` records each one and what blocked it, so nobody
-   * repeats the search.
+   * A handle is set only where **two independent sources agree**: the client
+   * supplied it, and the live official account's own display name, bio or
+   * verified linkage corroborates the same person. `WORKED_WITH_UNVERIFIED`
+   * records each one that did not resolve.
    */
   instagram?: string;
   /**
    * Sets this name at display scale above the index. **Reading emphasis, not a
-   * tier and not a ranking** — it is the same editorial device the brand rail
-   * already uses (`priority: featured` in `config/collaborations.ts`), applied
-   * for the same reason: a long list needs a way in.
-   *
-   * Nothing about audience size, fee or importance is implied or knowable
-   * here, and no number appears anywhere in this section.
+   * tier and not a ranking** — the same editorial device the brand rail uses
+   * (`priority: featured`), applied for the same reason: a long list needs a
+   * way in. Nothing about audience size, fee or importance is implied.
    */
   lead?: boolean;
   /**
    * DEVELOPMENT ONLY — the reason a confirmed relationship is not rendered.
-   * Set it and the row disappears from the index entirely; leave it unset and
-   * the row renders. **The string is never shown on the page.**
-   *
-   * ─────────────────────────────────────────────────────────────────────────
-   * WHY THIS EXISTS, AND WHY IT IS CURRENTLY UNUSED (Revision 34)
-   *
-   * Every name here is a **user-confirmed relationship**, so removing one is
-   * the client's call and not this project's — §18's rule that a real
-   * relationship is not quietly deleted to tidy a page. But one name carries
-   * an unresolved reputational flag that a brand running outreach off this
-   * page would want to know about:
-   *
-   * **Shadab Jakati** — national outlets report a 2026 arrest over a reel
-   * involving a minor, with a police complaint filed (`WORKED_WITH_UNVERIFIED`
-   * records the detail). §18 has flagged it since Revision 17B and it is still
-   * open. It is **reported, not acted on**: the row renders, because the
-   * client confirmed the relationship and has not asked for its removal.
-   *
-   * This field is the switch for when they do. One line —
-   * `withheld: "client decision, <date>"` — and the name is gone from the DOM
-   * with no component edit, the same shape `published: false` gives a creator
-   * and `visible: false` gives a brand. **Do not set it without an instruction.**
+   * Set it and the row disappears from the index entirely. **The string is
+   * never shown on the page.** It exists for the client's call on Shadab
+   * Jakati (see `WORKED_WITH_UNVERIFIED`); nothing sets it. **Do not set it
+   * without an instruction.**
    */
   withheld?: string;
 };
@@ -669,38 +573,50 @@ export function workedWithUrl(instagram: string): string {
 }
 
 /**
- * Render order. The four the client named first lead, then the rest in the
- * order supplied. **This is reading order, not a ranking**, and nothing on the
- * page numbers these rows or implies a tier.
+ * Render order — **the client's, Revision 42.** "Move Sagar Rathee to the up,
+ * Purav Jha to the up, Fukra Insaan to the top": the three lead the index at
+ * display scale, then the two organisations the client named on the stage
+ * ranking, then the four creators who moved down off the stage, then the rest
+ * in the order the list arrived. **Reading order, not a ranking.**
+ *
+ * Ali Fazal, Akash Sagar and Lovekesh Kataria are on the image-backed stage,
+ * so `WORKED_WITH_INDEX` filters them out on its own. They stay here because
+ * this array is the client's relationship list, not the render list.
  */
 export const WORKED_WITH: readonly WorkedWith[] = [
-  // Ali Fazal and Lovekesh Kataria are both on the image-backed stage above as
-  // of Revision 17B, so `WORKED_WITH_INDEX` filters them out of this list on
-  // its own. They stay here because this array is the client's list as
-  // supplied, not the render list.
-  { name: "Ali Fazal", instagram: "alifazal9" },
   { name: "Fukra Insaan", instagram: "fukra_insaan", lead: true },
-  { name: "Lovekesh Kataria", instagram: "corrupt_tuber" },
+  // No still exists anywhere in the library — `.MOV` only. Type is the honest
+  // form until one arrives (§10af).
   { name: "Purav Jha", instagram: "puravjha", lead: true },
-  { name: "Sahil Gambhir", instagram: "sahilgambhir_" },
-  { name: "Vibhu Varshney", instagram: "dilsepaneer" },
-  // No handle — see `WORKED_WITH_UNVERIFIED`.
-  { name: "Allen Chaudhary" },
+  { name: "Sagar Rathee", instagram: "dr.69___", lead: true },
+  // No handle — see `WORKED_WITH_UNVERIFIED`. The client named "JJ
+  // Communication" separately on the stage ranking; it is this relationship's
+  // organisation, and the one photograph of it stays blocked (OPPO in frame).
   { name: "Manish Jain", context: "JJ Communications" },
   {
     // The client supplied "Shalu Nisha Podcast". Normalised to the show's own
     // published spelling — its YouTube channel, website and Instagram all read
-    // `Shallu Nisha Podcast`, and the handle above links to that channel. Same
-    // rule §10s applied to the brand rail: spell an organisation the way the
-    // organisation spells itself, not the way the list arrived.
+    // `Shallu Nisha Podcast`, and the handle links to that channel.
     name: "Mukesh Jain",
     context: "Shallu Nisha Podcast",
     instagram: "mj.mukesh.jain",
   },
-  { name: "Anubhav Golia", context: "BB Prank", instagram: "anubhav_golia" },
+  // ── Moved down from the stage in Revision 42, at the client's request ──
   { name: "Nikita Kumawat", instagram: "iamnikitakumawat" },
   { name: "Vishnu Priya", instagram: "vishnupriyaaofficial" },
-  { name: "Sagar Rathee", instagram: "dr.69___" },
+  // Zoya Jaan and Mukul Sharma were never on the client's August 2026 list;
+  // "Zoya and the others which are removed from there — move them to here"
+  // (Revision 42) is the instruction that adds them. No verified handle for
+  // either (§10b), so both render as names.
+  { name: "Zoya Jaan" },
+  { name: "Mukul Sharma" },
+  // ── The rest, in the order the client's list arrived ───────────────────
+  { name: "Ali Fazal", instagram: "alifazal9" },
+  { name: "Lovekesh Kataria", instagram: "corrupt_tuber" },
+  { name: "Sahil Gambhir", instagram: "sahilgambhir_" },
+  { name: "Vibhu Varshney", instagram: "dilsepaneer" },
+  { name: "Allen Chaudhary" },
+  { name: "Anubhav Golia", context: "BB Prank", instagram: "anubhav_golia" },
   { name: "Shadab Jakati" },
   { name: "Shubham Kochale" },
   { name: "Sahida Ansari", instagram: "sahida__ansari" },
@@ -712,10 +628,6 @@ export const WORKED_WITH: readonly WorkedWith[] = [
  * DEVELOPMENT ONLY — never rendered.
  *
  * **The searches that did not resolve, and exactly what blocked each one.**
- * Written down for the same reason §10b wrote down its rejected follower
- * candidates: so the next session does not spend the time again, and so the
- * client can close any of these with one message.
- *
  * Every person here **keeps their row in the index**. The relationship is
  * user-confirmed; only the profile link is missing, and a missing link is
  * absent rather than faked (§18).
@@ -771,21 +683,26 @@ export const WORKED_WITH_UNVERIFIED: readonly {
       "that this is the person the client means, and several other 'Ram' creators exist. " +
       "One word from the client closes this.",
   },
+  {
+    name: "Zoya Jaan / Mukul Sharma",
+    candidates: "§10b: @zoya__jaan_, @zoya.__jaan.8 / @iammukulsharma",
+    blocked:
+      "Neither is on the client's confirmed handle list, and §10b found two conflicting accounts " +
+      "for one and nothing distinguishing for the other. Both render as names.",
+  },
+  {
+    name: "Kaka",
+    candidates: "none supplied",
+    blocked:
+      "The client named him and supplied the photograph; no handle arrived with either, and a " +
+      "mononym is exactly the case a name match cannot resolve. Renders as a name on the stage.",
+  },
 ];
 
-/**
- * DEVELOPMENT ONLY — never rendered.
- *
- * **THE SPELLING SPLIT IS CLOSED (Revision 17B).** Revision 17 carried
- * `Lovkesh Kataria` on the roster and `Lovekesh Kataria` here, each correct in
- * its own place. The verification pass settled it: the live official account
- * `@corrupt_tuber` publishes the display name **"Lovekesh Kataria"**, so that
- * is now the spelling in both lists and the only one the site renders.
- *
- * `nameKey` below stays regardless. It is what makes the de-duplication robust
- * against the next spelling difference rather than against this one.
- */
-export const WORKED_WITH_SOURCE = "user-confirmed: 2026-08 creator relationships";
+/** DEVELOPMENT ONLY — never rendered. */
+export const WORKED_WITH_SOURCE =
+  "user-confirmed: 2026-08 creator relationships; ranking and additions from the client's " +
+  "explaining video, 2026-09-06";
 
 /**
  * DEVELOPMENT ONLY — never rendered. Where the handles above came from.
@@ -808,39 +725,26 @@ function nameKey(name: string): string {
   return name.toLowerCase().replace(/[^a-z]/g, "").replace(/[aeiou]/g, "");
 }
 
-const ROSTER_KEYS = new Set(ROSTER.map((c) => nameKey(c.name)));
+const STAGE_KEYS = new Set(STAGE.map((c) => nameKey(c.name)));
 
 /**
- * EVERY CONFIRMED RELATIONSHIP THAT IS **NOT** ALREADY ON THE IMAGE-BACKED
- * STAGE ABOVE.
+ * EVERY CONFIRMED RELATIONSHIP THAT IS **NOT** ALREADY ON THE STAGE ABOVE.
  *
- * The client's list includes people the roster shows with photography, and the
- * index is headed "Also worked with": printing them again a few hundred pixels
- * below their own portrait reads as an error rather than as emphasis.
- * `WORKED_WITH` keeps all eighteen because that is the list as supplied; this
- * is the subset the page needs.
- *
- * Derived, so publishing a roster creator later removes them from the index on
- * their own — **which is exactly what happened in Revision 17B**: Ali Fazal and
- * Lovekesh Kataria joined the stage and left this list without a second edit.
+ * The index is headed "Also worked with": printing a stage creator again a few
+ * hundred pixels below their own portrait reads as an error. Derived against
+ * `STAGE` (not `ROSTER`, from Revision 42) so a creator who leaves the stage
+ * joins the index on their own — which is exactly what happened to Nikita
+ * Kumawat and Vishnu Priya this revision, with no second edit.
  */
 const WORKED_WITH_OFF_STAGE: readonly WorkedWith[] = WORKED_WITH.filter(
-  // `withheld` is the client's switch, not a filter this project reaches for —
-  // see the field's own note. Nothing currently sets it, so this changes no
-  // row today; it means changing one later needs no component edit.
-  (p) => !p.withheld && !ROSTER_KEYS.has(nameKey(p.name)),
+  (p) => !p.withheld && !STAGE_KEYS.has(nameKey(p.name)),
 );
 
 /**
- * The two names the section sets at display scale above the index.
- *
- * **Reading emphasis, not a tier.** They are high-recognition relationships the
- * project has no first-party photograph of, so type is the only honest way to
- * give them weight — the alternative would be a portrait this project does not
- * have. Nothing about them is numbered, ranked or measured.
- *
- * Derived from the same array as the index, so a lead can never be printed
- * twice or go missing: `WORKED_WITH_LEAD` and `WORKED_WITH_INDEX` partition
+ * The names the section sets at display scale above the index — the three the
+ * client asked to move "to the top". **Reading emphasis, not a tier.** Derived
+ * from the same array as the index, so a lead can never be printed twice or go
+ * missing: `WORKED_WITH_LEAD` and `WORKED_WITH_INDEX` partition
  * `WORKED_WITH_OFF_STAGE` between them.
  */
 export const WORKED_WITH_LEAD: readonly WorkedWith[] =
@@ -849,29 +753,3 @@ export const WORKED_WITH_LEAD: readonly WorkedWith[] =
 /** The index proper — everything off the stage that is not a lead. */
 export const WORKED_WITH_INDEX: readonly WorkedWith[] =
   WORKED_WITH_OFF_STAGE.filter((p) => !p.lead);
-
-/* ============================================================
-   SCALE — MOVED OUT OF THIS FILE IN REVISION 33
-
-   This chapter used to set **500+ creators worked with** and **1,000+
-   promotional videos** at display scale above the index. Both figures are
-   still published; **they are published once, and not here.**
-
-   Revision 33 gave the homepage a quick-scan proof band in its third screen
-   (`config/proof.ts`, `components/proof/QuickProof.tsx`) carrying four facts —
-   brands, creators, creator-led videos and single-Reel reach. Printing two of
-   those four again, at display scale, six chapters further down turned the
-   same evidence into what a reader would fairly read as more evidence. **The
-   number of facts on the page did not change; the number of times two of them
-   are stated did.**
-
-   What stands in their place is one quiet line naming the same relationship in
-   words — `CREATORS_COPY.scaleNote` — because a roster of eighteen names still
-   needs saying that the real network is larger than the page.
-
-   **`ScaleFact` and `CREATOR_SCALE` are deliberately gone rather than left
-   exported and unused**, so nothing can re-render them by accident, and
-   `config/proof.ts` is the only place a figure lives. The provenance for both
-   went with them: the client's August 2026 confirmation is recorded on the
-   `creators` and `videos` records there.
-   ============================================================ */

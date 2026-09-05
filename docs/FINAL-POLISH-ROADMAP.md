@@ -28,6 +28,7 @@
 | **12** | **Global responsive / performance / accessibility polish** | **Done — Revision 39** |
 | **13** | **Operational hardening + production release** | **Done — Revision 41** |
 | **14** | **Web & Digital Experiences final deep polish** | **Done — Revision 40** |
+| **15** | **The client's walkthrough batch — creator priority, plum, Mirzapur, the award banner** | **Done — Revision 42 (local, not pushed)** |
 
 **Phase 13 closed in Revision 41 and the site was released.** Its five items, and where each
 landed — the detail is in the Revision 41 section at the foot of this document:
@@ -166,7 +167,7 @@ without passing the phase that owns it.
 | P19 | Mishram “manages production” on campaigns | B+C | p7 | No | Influencer scope (§05) | **HELD** — first-party copy, awaiting the same client confirmation outreach and negotiation got |
 | P20 | **@xbhandesiri_ Reel view counts** — 70.9M, 40.3M, 33.9M (and 33.5M, 26.6M, 13.2M, 12.1M, 9.9M, 7.6M) | B | p3 capture | **YES — the capture carries the handle, the verified badge, the active Reels tab and Instagram's own view UI** | Current Management inset | **PUBLIC (Rev 33)** — three figures render as *Selected Reel views*, beside the screenshot they were read off |
 | P21 | **139M / 111M** on the same account's grid | B | p2 capture | **YES — but the capture carries NO account header** | — | **HELD.** Stronger figures, weaker provenance. Used only as corroboration for P6's 130M+, never published as figures |
-| P22 | **Immortal Kaka Ji** — a creator relationship | — | — | Photograph only | — | **HELD — RELATIONSHIP NOT VERIFIED.** Identity is established by the client's own filename; **nothing establishes a relationship.** The name appears in no `WORKED_WITH` entry, no roster entry, no brief section and **nowhere in the proposal**. A file sitting in `WEBSITE SHORTLIST` is not a relationship claim |
+| P22 | **Immortal Kaka Ji** — a creator relationship | — | — | Photograph only | Hero · Service 01 · Creators stage | **PUBLIC (Rev 42).** The client named him on the walkthrough — *"add Kaka, the singer, I'll share his image"* — which is the relationship record this row waited for. Published as **Kaka** (the form both the client and the filename share), `Worked With`, no handle. Three crops of the one photograph; `MEDIA-ASSET-AUDIT.md` §10 |
 | P23 | Per-creator **Established / Trending** classification | B+C | p9 | No | — | **HELD, AND DELIBERATELY SO.** The taxonomy is published about the *network*; sorting named people into it would assert a characteristic the project cannot evidence — the §10b follower-count mistake in a different currency |
 | P24 | **Swiggy branded content** — a real campaign frame | A | `PRASHANT VIDEO/Swiggy/IMG_3842.MOV` | **YES — Swiggy delivery boxes and the "Food you ♥ on time" tagline legible in frame** | 05 / Selected Work | **PUBLIC (Rev 35).** Brand relationship already evidenced by the collaborations rail (§10s). **No campaign, creator, date, deliverable, result or Mishram role claimed** |
 | P25 | **Pintola branded content** — a product-integration frame | B | p6, *BRANDS WE'VE WORKED WITH* | **YES — Pintola® High Protein Muesli pack legible, presented to camera** | 05 / Selected Work | **PUBLIC (Rev 35).** Two sources: the rail's confirmed relationship and the deck placing the frame on its own brand-collaboration page. Same boundary as P24 |
@@ -191,15 +192,15 @@ relationship, and the *portrait* frame goes to the Hero — never the other way 
 | Source file | Identity | Quality | Primary section | Reserved secondary | Do NOT repeat in | Production output | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `ali fazal.jpeg` | Ali Fazal | Good | **Hero** | — | Creators, Influencer, Social | `public/media/hero/creators/ali-fazal.webp` 620×1102, 98KB | **LIVE (local)** |
-| `Akash sagar.jpeg` | Akash Sagar | Very good | **Hero** | — | Current Management, Creators | `public/media/hero/creators/akash-sagar.webp` 640×800, 38KB | **LIVE (local)** |
-| `Akash sagar 1st.jpeg` | Akash Sagar | Good, relational | **Current Management (03)** | — | Hero, Creators | — | **RESERVED** |
+| `Akash sagar.jpeg` | Akash Sagar | Very good | **Hero — the primary 9:16 (Rev 42)** | Service 02 scene (the Rev 17B 4:5, moved there) | Current Management, Creators | `public/media/hero/creators/akash-sagar-portrait.webp` 620×1102, 58.6KB **+** `public/media/hero/creators/akash-sagar.webp` 640×800, 38KB | **LIVE (local) — two crops, two chapters, four chapters apart. Rev 42** |
+| `Akash sagar 1st.jpeg` | Akash Sagar | Good, relational | **Current Management (03)** | **Creators stage, position 02 (Rev 42) — the same extract, its own file** | Hero | `public/media/creators/featured/akash-sagar.webp` 1000×1333, 73.5KB | **LIVE (local). Rev 42** |
 | `Akash sagar 2nd.jpeg` | Akash Sagar | Weak | — | — | everywhere | — | **HOLD** |
-| `Lovekesh Kataria.jpeg` | Lovekesh Kataria | Excellent | **Influencer Marketing (05)** | Roster portrait — already spent, Rev 17B | Hero¹ | `/media/creators/featured/lovekesh-kataria.webp` 1000×1333 **+** `/media/services/influencer/lovekesh-kataria-worked-with.webp` 800×1000, 77KB | **LIVE (local) — two crops, two jobs. See Revision 32** |
+| `Lovekesh Kataria.jpeg` | Lovekesh Kataria | Excellent | **Influencer Marketing (05)** · **Hero 4:5 (Rev 42)** | Roster portrait — Rev 17B; Service 01 scene reuses it (Rev 42) | — | `/media/creators/featured/lovekesh-kataria.webp` 1000×1333 **+** `/media/services/influencer/lovekesh-kataria-worked-with.webp` 800×1000, 77KB **+** `/media/hero/creators/lovekesh-kataria.webp` 640×800, 38.6KB | **LIVE (local) — three crops. Rev 32, Rev 42** |
 | `Prashant Mishra.jpeg` | Prashant Mishra | Excellent | **`/about` → `now` (10)** | — | Hero, Creators, homepage About, Current Management, Selected Work, Recognition, service pages | `public/media/about/prashant-mishra.webp` 900×1200, 77.8KB | **LIVE (local)** |
-| `Immortal Kaka Ji.jpeg` | Immortal Kaka Ji | Good | — | — | everywhere, pending | — | **HELD — no relationship record exists (Rev 34). Unblock is one client sentence** |
+| `Immortal Kaka Ji.jpeg` | Kaka (the client's own name for him; the file's longer form is recorded, not published) | Good | **Hero 1:1** · **Service 01 scene 9:16** · **Creators stage 3:4** | — | Current Management, Selected Work, Recognition | `public/media/hero/creators/kaka.webp` 720×720, 58.6KB · `public/media/creators/kaka-reel.webp` 620×1102, 68.7KB · `public/media/creators/featured/kaka.webp` 1000×1333, 125.2KB | **LIVE (local) — Rev 42. P22 unblocked by the client's spoken instruction** |
 | `Shadab Hasan.jpeg` | Shadab Hasan | Good | — | — | everywhere, pending | — | **HOLD — brand safety** |
 | `JJ Communication.jpeg` | JJ Communication | Good | — | — | everywhere | — | **BLOCKED — OPPO** |
-| `award.jpg.jpeg` | Award | Graphic | — | — | **everywhere** | — | **REJECTED (Rev 36). Caveat ² proved correct** |
+| `award.jpg.jpeg` | The client's own Canva award banner | Graphic, 3920×2160 | **Recognition (06) — the whole chapter's background (Rev 42)** | — | everywhere else | `public/media/recognition/award-banner.webp` 2560×1411, 141.2KB — downscale only, never cropped | **LIVE (local). The Rev 36 rejection was overridden by the client's explicit instruction; caveat ² stands as a description, not a verdict** |
 | `186F38BE-….HEIC` | Award evening | Excellent | **Recognition (06)** | — | About¹, Hero, Selected Work | `public/media/recognition/nufew-award-presentation-2024-25.webp` 1600×1200, 304KB | **LIVE (local)** |
 | `03EBDAA5-…` / `Award.HEIC`, `4FCFF00A-…` | Award evening | Excellent | — | — | everywhere | — | **NOT USED — same pose, seconds apart** |
 | `135279F4-…`, `CE81BFA5-…` | Award evening, step-and-repeat | Excellent | — | — | everywhere, pending | — | **HELD — 20+ brand sponsor wall, and a differently-scoped award** |
@@ -207,8 +208,10 @@ relationship, and the *portrait* frame goes to the Hero — never the other way 
 | `circle logo mishram.jpg.jpeg` | Mishram mark | Good | **Social / profile avatar** | — | **Favicon** | — | **RESERVED** |
 | `blue logo mishram.png` | Mishram mark | Vector-grade | **Light-surface brand mark** | Print / deck | Header³ | — | **RESERVED** |
 
-¹ The Hero keeps its **original** square Lovekesh photograph — §18 locks that specific file because
-the exposure tiers and `layout.ts` were composed against it. The Recognition photograph's
+¹ ~~The Hero keeps its **original** square Lovekesh photograph — §18 locks that specific file because
+the exposure tiers and `layout.ts` were composed against it.~~ **Superseded in Revision 42 at the
+client's instruction: the square slot is Kaka's, Lovekesh holds the 4:5, and the exposure bases were
+re-tuned to the new photographs with the slot geometry untouched.** The Recognition photograph's
 "do not repeat in About" is **advisory rather than absolute**: `/about` has read
 `RECOGNITION_ITEMS[0]` since Revision 15, deliberately and at a different scale (a record inside the
 company's story, not a chapter's subject). That reuse is architecture, not drift.
@@ -230,7 +233,13 @@ No file is allocated to two sections anywhere in this table.
 
 ## Brand colour — `#4c3660`
 
-**Verdict: SELECTIVE PLUM. Token declared, applied to nothing.**
+**Verdict (Revision 42): PLUM AS TWO EDITORIAL SURFACES — the Recognition plate and the Project
+Inquiry field, both through the `.plum-field` scope. Never as text, line or accent.** The history
+below — declared in Revision 28, tested on five surfaces, removed in Revision 39 — stands as written;
+the client asked for the colour back on the walkthrough, and the Revision 42 section at the foot of
+this document records where it landed and the contrast re-measured on it.
+
+~~**Verdict: SELECTIVE PLUM. Token declared, applied to nothing.**~~
 
 It is not arbitrary: the first-party logo's own indigo, sampled from `blue logo mishram.png`, is
 **`#5c37ff`**. `#4c3660` is that hue desaturated and darkened — a genuine identity bridge rather
@@ -3423,3 +3432,172 @@ figures are GA4, which is Production-only and therefore absent from a local buil
    deploys fine.
 
 **None of these is a design phase.** Every one is an account action.
+
+---
+
+## Revision 42 — Phase 15, the client's walkthrough batch
+
+**The client recorded a 5:23 walkthrough of the homepage and shared a second folder of material;
+this revision is that video, implemented.** Sources: `C:\Users\krish\Downloads\Video (5).mp4`,
+transcribed on this machine (Whisper large-v3-turbo, quantised — nothing was uploaded anywhere) and
+read frame by frame against what the cursor pointed at; and `C:\Users\krish\Downloads\Mishram web
+data\` — the Canva award banner, `DSC04338.jpg.jpeg` and `Mirzapura PR.MP4`. The media record is
+`MEDIA-ASSET-AUDIT.md` §10; the brief's **§10at** carries the spoken instructions, the name
+reconciliation and every decision. This section is the phase record: what moved, what it measures,
+what was verified, what is held.
+
+**Local only.** Committed on `main`; **not pushed, not deployed** — the instruction was explicit.
+
+### What the walkthrough asked for, and where each item landed
+
+| # | The instruction (as spoken, names reconciled) | Landed | Status |
+| --- | --- | --- | --- |
+| 1 | Hero: *"remove this Zoya, highlight Bhandesiri, highlight [Ali Fazal], highlight [Lovekesh Kataria] and replace the image"* | `config/hero.ts`, `hero/layout.ts`, `HeroStatic.tsx` — Akash Sagar takes the primary 9:16, Lovekesh the 4:5, Kaka the 1:1; Ali stays; Nikita's faint desktop frame stays. **Slot geometry is byte-identical**; only keys, sources and exposure bases changed | **DONE** |
+| 2 | *"so much blank space when you scroll … this is so long, fix this"* | A padding pass on every chapter (below), the What We Do copy holder, and `SERVICE_SCROLL_VH` **130 → 100** | **DONE** — measurements below |
+| 3 | The ranking: *"Fazal Ali, Lovekesh Kataria, [Fukra Insaan], Purav Jha, Sagar Rathee and most important Bhandesiri"*; later *"second, add Bhandesiri Akash Sagar … Sagar Rathee … add Kaka the singer, I'll share his image"* | `config/creators.ts` — the stage is **Ali Fazal, Akash Sagar, Lovekesh Kataria, Kaka**, in that order; the index leads with **Fukra Insaan, Purav Jha, Sagar Rathee**, then Manish Jain · JJ Communications, Mukesh Jain · Shallu Nisha Podcast | **DONE for everyone with a still; PART for Purav Jha and Sagar Rathee** (no still exists — index leads) |
+| 4 | *"Zoya and [the others] which are removed from there — move them to here"* | Zoya Jaan, Nikita Kumawat, Mukul Sharma, Vishnu Priya leave the stage for the *Also worked with* index; they still carry the service scenes | **DONE** |
+| 5 | *"buttons are so light — highlight them a little so people can understand they are clickable"* | `ServiceCopy.tsx` + `.svc-action` — two real buttons per service, one filled, one outlined | **DONE** |
+| 6 | Process: *"first we'll plan the content, then we'll strategise, we'll create, … then the growth, scaling"* | `config/process.ts` — 01 **Plan**, 02 **Strategise**; 03–05 already read Create / Launch / Scale. Ids unchanged | **DONE** |
+| 7 | The Difference chapter — stop the animation, say it plainly | `Difference.tsx` rebuilt as a static *usual setup vs with Mishram* contrast table; `ConnectedStack`, `DifferenceRail`, `fragments` deleted | **DONE** |
+| 8 | Award: *"remove this section and add just that banner which I created in Canva, and put only that — other than that you can add the titles"* | `Recognition.tsx` — the banner **is** the chapter; the award's facts sit on a plum plate | **DONE** |
+| 9 | The plum `#4c3660` as a surface | `.plum-field` scope — the Recognition plate and the Project Inquiry field | **DONE** — two surfaces, deliberately no more |
+| 10 | Mirzapur PR — a small highlight from the shared images and footage | `config/work.ts` — *Mirzapur: The Movie · Film PR · PR support* leads 05 / Selected Work, one primary still and one support frame | **DONE** |
+| 11 | Selected Work as *"eight to ten reels"* with brand logos | — | **HELD.** No reel files and no logo files were shared |
+| 12 | Kaka *"has still not been added"* | Three crops of `Immortal Kaka Ji.jpeg` — Hero 1:1, Service 01 9:16, stage 3:4 — as **Kaka**, `Worked With` | **DONE** — P22 → PUBLIC |
+
+### The chapter-by-chapter pass
+
+- **Hero** — surfaces re-cast (item 1). Exposure bases re-tuned to the new photographs: the 9:16
+  primary keeps its base, Ali's 4:5 lifted 0.74 → 0.82, the left 4:5 (now Lovekesh) 0.62 → 0.74, the
+  1:1 (now Kaka) 0.80 → 0.66 so it recedes behind the primary rather than competing with it.
+- **Collaborations, Current Management, Quick Proof, About** — padding only.
+- **What We Do** — scenes re-cast so no ranked creator repeats a neighbour: Service 01 carries Kaka
+  (9:16), Lovekesh (3:4) and Ali (3:4); Service 02 carries Nikita, Zoya, **Akash** (the old hero 4:5)
+  and Mukul; Service 03's creative frame now holds a real photograph (Vishnu Priya) instead of a
+  block; Service 04 is unchanged (Zoya). `Photo` gained `position` so a crop is a prop, not a new
+  file. Two buttons per service (item 5). Copy holder 22 → 23.5rem so the second button never clips.
+- **Difference** — item 7. `DIFFERENCE_COPY.columns` names the two columns; four rows.
+- **Creators** — two lists: `STAGE` (four, the client's order) and `ROSTER` (eight, published);
+  `CreatorField` on the social service page still reads `ROSTER` and now shows eight. Index leads
+  and rows re-ordered to the ranking; `WORKED_WITH_OFF_STAGE` filters against the stage.
+- **Work Process** — item 6, plus padding.
+- **Selected Work** — item 10; `WorkItem.support` lets an item's support crop be its own frame.
+- **Recognition** — item 8. **From `xl` the chapter is the artwork's exact aspect** (`min-height:
+  calc(1411 / 2560 × 100vw)`), so nothing is cropped at any width — the artwork has type at both its
+  edges and a 50rem cap took the top off the wordmark at 1920. The plate sits low, under the two
+  faces, over the tagline corner. **Below `xl` the banner is a block at its own aspect with the plate
+  beneath it**, because at 1024 and 1280 a readable plate reached the left figure's face — captured,
+  then moved. The caption line is hidden at 1280–1439 only, where the chapter is 705px tall.
+  `RecognitionMedia.tsx` deleted; `/about` unchanged.
+- **Project Inquiry** — the plum field (item 9), padding.
+- **Footer** — untouched.
+
+### Plum — back, and where it lives
+
+Declared in Revision 28, rendered on five surfaces across five phases, rejected on each, removed in
+Revision 39. **The client asked for it on the walkthrough, so it returns — as the surface colour the
+arithmetic always said it had to be, never as an accent.** `--color-brand-plum: #4c3660` is
+re-declared in `@theme`, and one CSS scope, `.plum-field`, restates every `--t-*` token *and every
+`--color-*` alias* (the §10x lesson) at plum values. Two consumers: the Recognition plate — the
+banner's own hue, so the plate reads as part of the artwork — and the Project Inquiry field, the
+page's closing conversion moment, which the plum separates from the seven obsidian chapters above it.
+
+Measured on the plum, not judged:
+
+| Token on `#4c3660` | Contrast | |
+| --- | --- | --- |
+| Ink `#f3efe7` | **9.14 : 1** | Headlines, titles, buttons |
+| Ink-soft (ivory at .74) | **5.83 : 1** | Body |
+| Ink-muted (ivory at **.66**) | **5.00 : 1** | The small caps. **At the theme's own .58 it measured 4.24 : 1 and failed AA**, so the scope raises it |
+| Accent `#4fe0cc` | 6.42 : 1 | Hover underline |
+
+**Not done, and not to be done:** plum as text, line, label, icon or gradient; plum as a canvas
+tint; a third plum surface. The Brand colour section's verdict is updated; its history stands.
+
+### Media ledger — Revision 42
+
+Nine production files from two client folders; the full ledger with every crop rectangle is
+`MEDIA-ASSET-AUDIT.md` §10. In one line each:
+
+| Output | Source | Role |
+| --- | --- | --- |
+| `hero/creators/akash-sagar-portrait.webp` 620×1102 | `Akash sagar.jpeg` | Hero primary |
+| `hero/creators/lovekesh-kataria.webp` 640×800 | `Lovekesh Kataria.jpeg` | Hero 4:5 |
+| `hero/creators/kaka.webp` 720×720 | `Immortal Kaka Ji.jpeg` | Hero 1:1 |
+| `creators/featured/akash-sagar.webp` 1000×1333 | `Akash sagar 1st.jpeg` | Stage 02 |
+| `creators/featured/kaka.webp` 1000×1333 | `Immortal Kaka Ji.jpeg` | Stage 04 |
+| `creators/kaka-reel.webp` 620×1102 | `Immortal Kaka Ji.jpeg` | Service 01 |
+| `recognition/award-banner.webp` 2560×1411 | `award.jpg.jpeg` | 06 / Recognition |
+| `work/mirzapur-pr-still.webp` 620×1102 | `DSC04338.jpg.jpeg` | 05 / item 01 |
+| `work/mirzapur-pr-cast.webp` 640×800 | `Mirzapura PR.MP4` @ 2.6s | 05 / item 01 support |
+
+The Revision 34 one-photograph-one-role rule now has four documented exceptions — the four ranked
+people, of whom the library holds one photograph each. No source repeats in adjacent chapters.
+
+### Page length — measured, dev server, dark, after a full scroll sweep
+
+| Viewport | Revision 41 | Revision 42 | Δ |
+| --- | ---: | ---: | ---: |
+| 1440×900 | 17,787 | **15,469** | **−2,318** |
+| 1024×768 | 13,969 | **12,953** | −1,016 |
+| 768×1024 | 17,437 | **16,191** | −1,246 |
+| 390×844 | 18,070 | **17,891** | −179 |
+| 1280×800 | — | 14,522 | |
+| 1536×864 | — | 15,370 | |
+| 1920×1080 | — | 17,316 | (the banner chapter is 1,058px tall there, by design) |
+
+Per chapter at 1440: Hero 900 · Collaborations 266 · Current Management 1,083 · Quick Proof 325 ·
+What We Do 5,096 · Difference 836 · Creators 1,561 · Work Process 925 · Selected Work 1,025 ·
+Recognition 795 · About 646 · Project Inquiry 1,329 · Footer 681. Images **23 → 27** on desktop,
+**19 → 22** on mobile; **0 eager, 0 preload** on every capture.
+
+### QA — the repo's method
+
+- **Captures:** `scripts/shoot.mjs` over CDP — `shots/r42` (61), `r42b` (21), `r42c` (20), `r42d`
+  (12), `r42e` (7): every changed chapter at 1440 / 1280 / 1024 / 768 / 430 / 390, dark and light,
+  reduced motion where a chapter animates, seams, the four service scenes active and stacked, the
+  Selected Work items by real click, `/about` and the social service page.
+- **Overflow:** `scripts/overflow.mjs --quick` — **PASS, 40/40** viewport checks, every route.
+- **Types / lint / build:** `tsc --noEmit` clean; `eslint src scripts eslint.config.mjs
+  next.config.ts` 0 errors (the same 2 pre-existing warnings); `next build` clean — see §10at.
+- **Content integrity, against the rendered DOM and the config:** nobody named in the banner or the
+  Mirzapur frames; `NUFEW` not expanded; no figure outside `config/proof.ts`; every stage caption
+  pairs with its photograph's filename; Kaka's `WORKED_WITH_UNVERIFIED` entry names the unblock.
+
+Two capture lessons, recorded so nobody chases them: **the Hero's clock-based reveal is often
+mid-flight in a hero-only capture** (the 1:1 slot has the longest entry delay) while the full-page
+capture from the same batch shows every card complete — an artifact of the wait, not a regression;
+and **a service-scene shot two or more slots away from the sweep's resting point needs
+`after: 5000`**, because the scene's exit-then-enter takes longer than the default settle and the
+capture otherwise lands on a blank or half-entered scene. Both are in `shoot.mjs` now.
+
+### Held, with the exact unblock
+
+| Item | Why | Unblock |
+| --- | --- | --- |
+| Purav Jha, Sagar Rathee on the stage | No still exists; the `.MOV` BTS names nobody (rule 7) | One client-labelled still each |
+| JJ Communication photograph | `JJ Communication.jpeg` is an OPPO store interior — a brand claim | A photograph without a third-party mark |
+| Reels marquee with brand logos | No reel and no logo files shared | The files |
+| Mirzapur footage as playback | 5.28s handheld; a still says it better | A cut the client wants played |
+| Kaka's handle / profile link | None supplied; rule 7 forbids matching a face to an account | The handle, from the client |
+| Shadab Jakati brand-safety flag | Unchanged since Revision 17B | The client's decision |
+| Resend, Google Ads, GA4 button | Unchanged from Revision 41 | As §10as |
+
+### Tooling
+
+- `scripts/shoot.mjs` — a Revision 42 shot block (Difference, Process, Inquiry, seams, the four
+  scenes active, stacked services), `rcg-1920` and `rcg-1536`, Selected Work indices moved down one
+  for Mirzapur, `after: 5000` on the far scene shots.
+- `eslint.config.mjs` — `shots/**` ignored: the gitignored Chrome profile inside it produced 882
+  findings that had nothing to do with the site.
+- A per-chapter height probe was run from the scratchpad and not committed; the numbers above are
+  its output.
+
+### Verified
+
+- Types, lint and the production build clean after the last edit.
+- `PASS — 40/40` overflow, every route.
+- Every capture set reviewed as images, not as logs; the three layout defects the captures found
+  (the plate over the faces at 1024 and 1280, the 4:3 crop cutting the wordmark on a tablet, the
+  ampersand beside the plate at 1920) were fixed and re-captured.
+- **Not pushed. Not deployed.** `main` is ahead of `origin/main` by this revision's commit.

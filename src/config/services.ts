@@ -163,8 +163,17 @@ export const BUILT_SERVICES = SERVICES.filter((s) => s.built);
  */
 export const PUBLIC_SERVICES = SERVICES.filter((s) => s.built && s.public);
 
-/** Scroll distance, in vh, that each built service is pinned for. */
-export const SERVICE_SCROLL_VH = 130;
+/**
+ * Scroll distance, in vh, that each built service is pinned for.
+ *
+ * **130 → 100 in Revision 42.** The client's note on the walkthrough was that
+ * the pinned chapter has "so much blank space when you scroll" — the scroll
+ * runs on while nothing new arrives. Every slot window, lead and tail is a
+ * fraction of the track, so shortening it changes only how much wheel each
+ * scene costs, not the choreography. Four public services: 6,280 → ~4,700px
+ * of track at 1440×900.
+ */
+export const SERVICE_SCROLL_VH = 100;
 
 export const WHAT_WE_DO_COPY = {
   index: "02",

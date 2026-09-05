@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { CREATORS_COPY, ROSTER, creatorIndex } from "@/config/creators";
+import { CREATORS_COPY, STAGE, creatorIndex } from "@/config/creators";
 
 /**
  * The talent index — a **matrix**, not a list.
@@ -51,18 +51,18 @@ export function CreatorIndex({
   onWarm: (id: string) => void;
 }) {
   const dense = columns > 1;
-  const rows = Math.ceil(ROSTER.length / columns);
+  const rows = Math.ceil(STAGE.length / columns);
 
   return (
     <div>
-      {/* The count is `ROSTER.length` and nothing else — it describes the
+      {/* The count is `STAGE.length` and nothing else — it describes the
           creators on this page, not the size of Mishram's network, which is
           larger and not verified. */}
       <p className="caps mb-5 flex items-baseline gap-3 text-ink-muted">
         <span>{CREATORS_COPY.rosterLabel}</span>
         <span aria-hidden>/</span>
         <span className="tabular-nums text-ink">
-          {creatorIndex(ROSTER.length - 1)}
+          {creatorIndex(STAGE.length - 1)}
         </span>
       </p>
 
@@ -81,7 +81,7 @@ export function CreatorIndex({
           }
         }}
       >
-        {ROSTER.map((c, i) => {
+        {STAGE.map((c, i) => {
           const active = c.id === activeId;
           return (
             <li

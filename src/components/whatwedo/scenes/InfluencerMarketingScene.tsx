@@ -43,7 +43,15 @@ const ZOYA: SurfaceSpec = {
   enter: [0.14, 0.44], depth: 0.72, tilt: 2, drift: "b", z: 20,
 };
 
-const LOVKESH: SurfaceSpec = {
+/**
+ * The square slot. Lovekesh Kataria until Revision 42; now **Akash Sagar** —
+ * the managed creator inside the network scene, which is the one place on the
+ * homepage the client's "most important" creator was absent from. The file is
+ * the Hero's former 4:5 crop of `Akash sagar.jpeg`, freed when the Hero moved
+ * to a 9:16 window of the same frame. Service 01 beside this scene carries
+ * Kaka, Lovekesh and Ali, so the two adjacent scenes share no face.
+ */
+const AKASH: SurfaceSpec = {
   left: 9, top: 66, width: 22, aspect: "1 / 1",
   enter: [0.22, 0.52], depth: 0.62, tilt: 1.6, drift: "d", z: 20,
 };
@@ -148,13 +156,14 @@ export function InfluencerMarketingScene({ m }: { m: StageMotion }) {
         </span>
       </Surface>
 
-      <Surface m={m} spec={LOVKESH}>
+      <Surface m={m} spec={AKASH}>
         <Photo
-          src="/media/creators/lovkesh-kataria.webp"
-          alt="Creator Lovekesh Kataria, part of the Mishram Media creator network"
+          src="/media/hero/creators/akash-sagar.webp"
+          alt="Akash Sagar, currently managed by Mishram Media"
+          position="50% 18%"
         />
         <span aria-hidden className="svc-name">
-          Lovekesh Kataria
+          Akash Sagar
         </span>
       </Surface>
 

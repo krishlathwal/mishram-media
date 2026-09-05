@@ -446,3 +446,121 @@ the whole verification pass, and the library is one of the three.
 **No new photograph was published from any of it.** The `Dr 69` and `Purav` folders still hold
 genuine production BTS and it is still unusable for the reason §3C gives: nobody in it can be named.
 The client naming those people remains the unblock, and rule 7 now applies to that too.
+
+---
+
+## 10. REVISION 42 — the walkthrough batch: nine production files, two sources
+
+The client walked the homepage on video (`C:\Users\krish\Downloads\Video (5).mp4`, 5:23, shared
+6 September 2026; transcribed locally with Whisper and read against its frames — the brief's §10at
+records what was said) and shared a second folder, `C:\Users\krish\Downloads\Mishram web data\`,
+holding three files. This section records every production file that came out of the pass, its
+source, its crop, and the identity chain behind each name. **Nothing was upscaled, recoloured,
+retouched or generated; every output is a crop and a downscale of a client-supplied file.**
+
+### The "newly added creator folder" — searched, and it is the shortlist
+
+The instruction spoke of a newly added creator folder. `C:\`, `F:\` and the connected Google Drive
+were searched for anything newer than Revision 41 that holds creator photography, and **nothing
+exists beyond the two folders below.** The only client-labelled photography is still
+`F:\Drive data\WEBSITE SHORTLIST\` — fifteen files, unchanged since Revision 34 — and the remark in
+the same instruction that *Kaka has still not been added* resolves against it: `Immortal Kaka Ji.jpeg`
+has sat in that folder since Revision 34 as P22, held for one reason only, that no relationship record
+existed. **The client's spoken instruction is that record now.**
+
+### Sources
+
+| Source | Pixels | What it is | Identity chain |
+| --- | --- | --- | --- |
+| `WEBSITE SHORTLIST\Akash sagar.jpeg` | 3024×4032 | Two figures, an interior corridor | Client filename — already LIVE as the Hero's 4:5 since Rev 17B |
+| `WEBSITE SHORTLIST\Akash sagar 1st.jpeg` | 3120×4160 | Two figures, on location | Client filename — already RESERVED for Current Management |
+| `WEBSITE SHORTLIST\Lovekesh Kataria.jpeg` | 8064×6048, EXIF 6 → 6048×8064 upright | Two figures, an interior | Client filename — already LIVE, two crops (Rev 17B, Rev 32) |
+| `WEBSITE SHORTLIST\Immortal Kaka Ji.jpeg` | 2160×3840 | Two figures in conversation before a painted café wall | Client filename **plus the spoken instruction** — *"Kaka, the singer"* — which is the relationship record P22 was waiting for |
+| `WEBSITE SHORTLIST\award.jpg.jpeg` | 3920×2160 | The client's own Canva award banner | The client's artwork, asked for by name on the video. Byte-identical (md5 `1f9903c7…`) to the copy in `Mishram web data` |
+| `Mishram web data\DSC04338.jpg.jpeg` | 7008×4672 | Two figures before the *Mirzapur: The Movie* poster at its promotional wall | Folder name plus the instruction (*"Mirzapur PR"*, *"star cast imagery"*). **Nobody in it is named — rule 7** |
+| `Mishram web data\Mirzapura PR.MP4` | 1920×1080, 5.28s | Handheld footage of four figures at the same wall | As above |
+
+### The nine outputs
+
+| Production file | Source → crop | Output | Role | Do NOT repeat in |
+| --- | --- | --- | --- | --- |
+| `public/media/hero/creators/akash-sagar-portrait.webp` | `Akash sagar.jpeg` · `extract{378, 0, 2268×4032}` — the 9:16 middle of the frame, **both figures kept** | **620×1102**, q76, 58.6KB | **Hero — the primary 9:16 slot** (was Zoya Jaan) | Current Management, Creators, every scene |
+| `public/media/hero/creators/lovekesh-kataria.webp` | `Lovekesh Kataria.jpeg` · `rotate()` then `extract{900, 2350, 4300×5375}` — 4:5, both figures | **640×800**, q76, 38.6KB | **Hero — the 4:5 slot** (was Akash Sagar's 4:5, which moves to Service 02) | Creators, Service 01 (which use the Rev 17B 3:4) |
+| `public/media/hero/creators/kaka.webp` | `Immortal Kaka Ji.jpeg` · `extract{0, 560, 2160×2160}` — the square through both heads | **720×720**, q76, 58.6KB | **Hero — the 1:1 slot** (was Lovekesh's Rev 17 square) | Creators, Service 01 |
+| `public/media/creators/featured/akash-sagar.webp` | `Akash sagar 1st.jpeg` · `rotate()` then `extract{624, 666, 1934×2579}` — **the same extract Current Management renders**, its own output file | **1000×1333**, q74, 73.5KB | **03 / Creators — the featured stage, position 02** | Hero, scenes |
+| `public/media/creators/featured/kaka.webp` | `Immortal Kaka Ji.jpeg` · `extract{0, 120, 2160×2880}` — 3:4, both figures | **1000×1333**, q74, 125.2KB | **03 / Creators — the featured stage, position 04** | Hero (its own square), Service 01 (its own 9:16) |
+| `public/media/creators/kaka-reel.webp` | `Immortal Kaka Ji.jpeg` · full frame, downscale only | **620×1102**, q76, 68.7KB | **02 / Service 01 scene — the 9:16 portrait frame** (was Vishnu Priya) | Hero, Creators |
+| `public/media/recognition/award-banner.webp` | `award.jpg.jpeg` · full frame, downscale only — **not cropped, because the artwork has type at both its edges** | **2560×1411**, q80, 141.2KB | **06 / Recognition — the whole chapter's background** | Everywhere else; `/about` keeps the Rev 36 photograph |
+| `public/media/work/mirzapur-pr-still.webp` | `DSC04338.jpg.jpeg` · `extract{2100, 0, 2628×4672}` — 9:16 through both figures and the poster title | **620×1102**, q76, 60.0KB | **05 / Selected Work — item 01, the primary frame** | Everywhere else |
+| `public/media/work/mirzapur-pr-cast.webp` | `Mirzapura PR.MP4` · frame at **2.6s** (ffmpeg, no filter) · `extract{900, 0, 864×1080}` — 4:5, four figures | **640×800**, q76, 37.8KB | **05 / Selected Work — item 01, the support frame** | Everywhere else |
+
+### Identity — three names, and how each was settled
+
+**Kaka.** The file says *Immortal Kaka Ji*; the client, on the video, says *"Kaka, the singer"* and
+*"I'll share his image"*. The two agree on the one word the site publishes — **Kaka** — which is the
+form the client uses in speech and the form that asserts the least: *Immortal Kaka Ji* may be a stage
+name, a channel name or an honorific, and the project cannot tell which, so it is recorded here and
+not rendered. He carries **`label: "Worked With"`**, the ledger's plainest relationship word; **no
+handle, no profile link** (none was supplied and none was searched for — rule 7 forbids matching a
+face to an account); and an entry in `WORKED_WITH_UNVERIFIED` naming the exact unblock. The image is
+a two-figure frame, and as with every two-figure frame on this site **the project records that he is
+*in* it, not which figure he is.** No crop isolates one figure.
+
+**Akash Sagar.** No new source. The client's ranking puts him third and calls him by his handle's
+name — *"Bhandesiri"*, `@xbhandesiri_`, whose display name the project verified in Revision 17 — so
+two existing, already-identified files now carry him in two more places (below). Nothing about who
+he is changed.
+
+**The Mirzapur frames.** Two people in the still, four in the footage, and **the site names none of
+them.** The alt text says *members of the cast* because the client's own brief for the item says
+*star cast imagery*, and it says *promotional event* because the poster wall is in frame — both
+statements come from the instruction and the artwork, not from recognising anyone. The garment
+graphics in frame (a tiger crest on a polo, an embroidered label on a striped shirt, a slogan tee in
+the footage) were inspected at full resolution and cleared under the §8 rule that already publishes
+Mukul Sharma's jacket: none is a legible third-party wordmark presented to camera. The film's own
+title is legible and is meant to be — it is the work's subject, the way Swiggy's boxes are P24's.
+
+### One photograph, one role — where Revision 42 breaks the rule, and why on purpose
+
+The Revision 34 ledger's rule is that no image appears in two sections. Four sources now do:
+
+| Source | Appears in | Chapters between them |
+| --- | --- | --- |
+| `Akash sagar.jpeg` | Hero (new 9:16) · Service 02 scene (the Rev 17B 4:5, moved) | Collaborations, Current Management, Quick Proof, Service 01 |
+| `Akash sagar 1st.jpeg` | Current Management (unchanged) · Creators stage (new output, same extract) | Quick Proof, What We Do, Difference |
+| `Lovekesh Kataria.jpeg` | Hero (new 4:5) · Service 01 scene (the Rev 17B 3:4, reused) · Creators stage (the same 3:4) | three chapters, then Difference |
+| `Immortal Kaka Ji.jpeg` | Hero (square) · Service 01 scene (9:16) · Creators stage (3:4) | as above |
+
+**This is the client's instruction, not drift.** The ranking asks for four people to be the site's
+most visible — Ali Fazal, Lovekesh Kataria, Akash Sagar, Kaka — and the library holds **one
+photograph of each of them** (two of Akash). Visibility with one photograph per person means the
+photograph recurs; the choice made here is *where*. No source appears in two adjacent chapters, no
+single crop is rendered twice on the homepage except Lovekesh's 3:4 (Service 01 and the stage, with
+the Difference chapter between them), and the two people the client did **not** rank — Zoya Jaan and
+Nikita Kumawat — carry the scenes that needed a face without repeating a ranked one. The old rule
+stands for every source not in this table.
+
+### Not produced, and why
+
+- **Purav Jha and Sagar Rathee** — ranked fourth and fifth, and **the library holds no still of
+  either.** `Purav` and `Dr 69 - sagar bhai shoot +bts` are `.MOV` production BTS in which nobody can
+  be named (§3C, rule 7). Both lead the *Also worked with* index instead, at its head, with their
+  verified profile links. **A client-labelled still of each is the unblock.**
+- **JJ Communication** — `JJ Communication.jpeg` is an OPPO store interior and stays BLOCKED
+  (§10t). Manish Jain and JJ Communications share one index row, in words.
+- **The Mirzapur footage as playback** — 5.28 seconds, handheld, no audio bed; a still says the
+  same thing better. The `mediaType: "video"` path stays built.
+- **A reels marquee with brand logos for Selected Work** — the client sketched *"eight to ten reels"*
+  with brand logos. **No reel files and no logo files were shared**; nothing was invented.
+- **`Akash sagar 2nd.jpeg`, `Shadab Hasan.jpeg`** — unchanged HOLDs.
+
+### Files this revision stopped using, and what became of them
+
+| File | Was | Now |
+| --- | --- | --- |
+| `public/media/creators/lovkesh-kataria.webp` 720×720 | The Hero's 1:1 (Rev 17) | **Kept.** Still rendered by `BrandShootsScene` (Service 05, hidden but built) |
+| `public/media/hero/creators/akash-sagar.webp` 640×800 | The Hero's 4:5 | **Kept, moved.** The Service 02 scene's 4:5 |
+| `public/media/hero/creators/zoya-jaan.webp` | The Hero's primary 9:16 | **Kept.** Still the Service 02 and Service 04 scenes' frame |
+| `public/media/recognition/nufew-award-presentation-2024-25.webp` | 06 / Recognition's photograph | **Kept.** `/about` still renders it through `RECOGNITION_ITEMS[0]` |
+
+**No production file was deleted.** `RecognitionMedia.tsx` — the component, not an asset — was.

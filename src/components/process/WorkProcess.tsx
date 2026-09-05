@@ -52,7 +52,10 @@ export function WorkProcess() {
       <Grid />
       <LeadIn />
 
-      <div className="page-x relative pt-14 pb-16 sm:pt-20 sm:pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
+      {/* Revision 42: the client's note on this chapter was "there is too much
+          space which is of no use" — the approach, the run-out and the gaps
+          around the pipeline each came down a step. */}
+      <div className="page-x relative pt-12 pb-12 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 lg:pt-22 lg:pb-22">
         <Intro />
 
         <motion.span
@@ -61,12 +64,12 @@ export function WorkProcess() {
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-          className="mt-14 block h-px w-full origin-left bg-line md:mt-16"
+          className="mt-10 block h-px w-full origin-left bg-line md:mt-12"
         />
 
         {horizontal ? (
           <>
-            <div className="mt-12">
+            <div className="mt-8">
               <ProcessPipeline
                 activeId={activeId}
                 lockedId={lockedId}
@@ -76,19 +79,19 @@ export function WorkProcess() {
               />
             </div>
 
-            <span aria-hidden className="mt-10 block h-px w-full bg-line" />
+            <span aria-hidden className="mt-6 block h-px w-full bg-line" />
 
-            <div className="mt-10">
+            <div className="mt-7">
               <ProcessDetail activeId={activeId} />
             </div>
           </>
         ) : (
-          <div className="mt-10">
+          <div className="mt-8">
             <ProcessRail activeId={activeId} onSelect={select} />
           </div>
         )}
 
-        <Cta onClick={openContact} className="mt-12 md:mt-14" />
+        <Cta onClick={openContact} className="mt-9 md:mt-10" />
       </div>
     </section>
   );

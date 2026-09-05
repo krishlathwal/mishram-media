@@ -5,6 +5,7 @@ import { motion, useTransform } from "motion/react";
 import type { StageMotion } from "../ServiceStage";
 import {
   Annotation,
+  Photo,
   Surface,
   type AnnotationSpec,
   type SurfaceSpec,
@@ -72,6 +73,19 @@ const TRACE = "M37 37 C 46 34, 50 33, 57 33 M76 56 C 76 61, 76 63, 76 66";
 /** One abstract optimisation curve. No axes, no figures — a metaphor only. */
 const CURVE = "M48 92 C 58 90, 64 86, 71 83 S 84 77, 94 71";
 
+/**
+ * The creative frame inside each campaign surface carries a real creator
+ * photograph from Revision 42 — the client asked to "see some images over
+ * here as well". One source, three windows: the campaign creative and its two
+ * variants are the same photograph cropped three ways, which is exactly what a
+ * creative test varies. Still no brand, no figure and no dashboard.
+ */
+const CREATIVE_CROP = {
+  campaign: "52% 28%",
+  a: "52% 62%",
+  b: "18% 40%",
+} as const;
+
 function CampaignCreative({ variant }: { variant?: "a" | "b" }) {
   return (
     <div className="flex h-full w-full flex-col gap-[6%] p-[7%]">
@@ -86,7 +100,14 @@ function CampaignCreative({ variant }: { variant?: "a" | "b" }) {
       <span className="block h-px w-full bg-line" />
       <div className="flex flex-1 gap-[6%]">
         {/* Creative frame plus its message block. */}
-        <span className="block h-full w-[34%] rounded-[2px] border border-line bg-ink/[0.05]" />
+        <span className="relative block h-full w-[34%] overflow-hidden rounded-[2px] border border-line">
+          <Photo
+            src="/media/creators/vishnu-priya.webp"
+            alt={variant ? "" : "Creator Vishnu Priya inside a campaign creative frame"}
+            sizes="(max-width: 1023px) 12vw, 7vw"
+            position={CREATIVE_CROP[variant ?? "campaign"]}
+          />
+        </span>
         <span className="flex flex-1 flex-col justify-center gap-[9%]">
           <span className="block h-[3px] w-full bg-ink/28" />
           <span className="block h-[3px] w-[68%] bg-ink/18" />
