@@ -344,6 +344,26 @@ const SHOTS = [
      The Difference contrast, the plum inquiry field, the banner chapter, the
      Process chapter after its rename and the What We Do scenes whose
      photography changed. Everything else reuses the shots above. */
+  /* ── Revision 43 — the inquiry redesign, the feedback route, Client Notes ──
+     Inquiry at every width the batch asked for; the feedback route as a full
+     article; Client Notes only ever with temporary developer rows, which are
+     deleted before the commit. */
+  { name: "inq-1024", w: 1024, h: 768, scheme: "dark", selector: "#project-inquiry" },
+  { name: "inq-430", w: 430, h: 932, scheme: "dark", mobile: true, selector: "#project-inquiry" },
+  { name: "inq-320", w: 320, h: 568, scheme: "dark", mobile: true, selector: "#project-inquiry" },
+  { name: "inq-1440-fold", w: 1440, h: 900, scheme: "dark", scrollExpr: sectionScroll("#project-inquiry", 0) },
+  { name: "inq-service-1440", w: 1440, h: 900, scheme: "dark", path: INF, selector: "#project-inquiry" },
+  { name: "inq-service-390", w: 390, h: 844, scheme: "dark", mobile: true, path: INF, selector: "#project-inquiry" },
+  { name: "fb-1440-dark", w: 1440, h: 900, scheme: "dark", path: "/feedback" },
+  { name: "fb-1440-light", w: 1440, h: 900, scheme: "light", path: "/feedback" },
+  { name: "fb-1440-full", w: 1440, h: 900, scheme: "dark", path: "/feedback", selector: "#hero" },
+  { name: "fb-768", w: 768, h: 1024, scheme: "dark", path: "/feedback", selector: "#hero" },
+  { name: "fb-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, path: "/feedback", selector: "#hero" },
+  { name: "fb-390-light", w: 390, h: 844, scheme: "light", mobile: true, path: "/feedback", selector: "#hero" },
+  { name: "fb-320", w: 320, h: 568, scheme: "dark", mobile: true, path: "/feedback", selector: "#hero" },
+  { name: "notes-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#client-notes" },
+  { name: "notes-1440-light", w: 1440, h: 900, scheme: "light", selector: "#client-notes" },
+  { name: "notes-390-dark", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#client-notes" },
   { name: "rcg-1920", w: 1920, h: 1080, scheme: "dark", selector: "#recognition" },
   { name: "rcg-1536", w: 1536, h: 864, scheme: "dark", selector: "#recognition" },
   { name: "dif-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#difference" },

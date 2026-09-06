@@ -1,96 +1,72 @@
 /**
  * CLIENT NOTES — testimonials.
  *
- * **`TESTIMONIALS` is empty, so the section renders nothing.** That is the
- * finding of the audit below, not an oversight, and it is the same decision
- * §06 Recognition made for the same reason: a testimonial is a factual claim
- * about a named real person, and none of the material in this project clears
- * that bar. See §10d-notes of the brief.
+ * ─────────────────────────────────────────────────────────────────────────────
+ * REVISION 43 — THE SECTION NOW READS THE DATABASE, AND NOTHING ELSE
+ * ─────────────────────────────────────────────────────────────────────────────
+ *
+ * There is no static list of testimonials in this project any more, and there
+ * must never be one again. What the homepage shows comes from
+ * `public.testimonials` through `lib/testimonials.ts`: rows a real person
+ * submitted on the private `/feedback` page **and a person at Mishram set to
+ * `approved` in the Supabase Table Editor.** Every row starts `pending`; the
+ * public read filters on `approved`; there is no code path that publishes a
+ * submission by itself.
+ *
+ * While no approved row exists — which is the state this ships in — `ClientNotes`
+ * receives an empty list and returns `null`, so **the homepage has no Client
+ * Notes section**, exactly as it has since Revision 06. A visible placeholder
+ * was rejected long ago for the same reason as §06's: an empty "Client Notes"
+ * heading, or a "coming soon" row, implies Mishram has testimonials it is
+ * choosing not to show, which is itself a claim.
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * AUDIT (August 2026) — every testimonial in the old Mishram Media site
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * THREE SOURCES WERE FOUND, AND ALL THREE ARE DISQUALIFIED.
+ * Kept so nobody repeats the work. THREE SOURCES WERE FOUND, AND ALL THREE
+ * ARE DISQUALIFIED — conclusively, by two independent audits (§10d-notes of
+ * the brief). Do not re-audit them, and never seed the database from them.
  *
- * **A. Live service pages** — `webDevelopment.html`, `metaAds.html`,
- * `socialMediaManagement.html`, `brandshoot.html`, `influencerMarketing.html`.
- * Five slides: Rahul Mehta, Ayesha Khan, Kunal Verma, Sneha Roy, Vikram Singh.
+ * **A. Live service pages** — five slides: Rahul Mehta, Ayesha Khan, Kunal
+ * Verma, Sneha Roy, Vikram Singh. **B. Live `index.html` and `about.html`** —
+ * Rahul Mehta, Kunal Verma, Vishnu Priya. **C. `_backup_pre_seo/testimonials.html`.**
  *
- * **B. Live `index.html` and `about.html`.** Three slides: Rahul Mehta, Kunal
- * Verma, Vishnu Priya. Mirrored in the site's own `llms-full.txt`.
- *
- * **C. `_backup_pre_seo/testimonials.html`.** A dedicated testimonials page,
- * already removed from the live site.
- *
- * WHY EACH FAILS:
- *
- * 1. **The portraits are a placeholder service.** Every avatar on the service
- *    pages is `https://i.pravatar.cc/40?img=5|7|8` — pravatar.cc generates
- *    random stock faces. `img=8` is used for **three different named people**
- *    (Kunal Verma, Sneha Roy, Vikram Singh). No portrait in any source can be
- *    connected to the person it is attached to.
- *
- * 2. **One quote is attributed to two different people, verbatim.** On
- *    `index.html`, `about.html` and `llms-full.txt`, "Vishnu Priya" is given
- *    Rahul Mehta's quote word for word. At least one attribution is false and
- *    there is no way to tell which — which also puts the other slides in the
- *    same set in doubt.
- *
- * 3. **The roles are placeholders.** Three different people share "Head of
- *    Product" with no employer. Two more are "Social Media Influencer" with no
- *    handle. No company, link, organisation or date appears anywhere.
- *
- * 4. **Source C is unmodified template demo content.** Its quotes praise
- *    **"SEOC"** — the purchased template's own agency name, not Mishram — and
- *    are signed "David M.", "Emily R." under Google review icons. It was
- *    deleted from the live site, which is the correct read of what it was.
- *
- * 5. **Unverifiable figures inside the quotes** — "4x ROI in the first month",
- *    "conversions have doubled" — plus a page-level "(40+ Reviews)" claim. §1
- *    of the brief forbids all of it.
- *
- * 6. **Star ratings with nothing behind them.** Every card carries ★★★★★, and
- *    source C adds a Google icon implying Google reviews that do not exist.
- *
- * ALSO CHECKED, NOTHING FOUND: `assets/js/homepage/review.js` (slider logic
- * only, no data), `mishram.com.zip` (same files as the extracted site),
- * `mishramsf.zip` (zero testimonial or review entries), and this repo.
+ * WHY EACH FAILS: every avatar is `i.pravatar.cc` stock or an AI-generated
+ * portrait; one quote is attributed to two different people verbatim; the
+ * roles are placeholders; source C praises the purchased template's own
+ * agency ("SEOC"); the quotes carry unverifiable figures; every card wears
+ * ★★★★★ with nothing behind it.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * TO SWITCH THE SECTION ON
+ * WHAT A PUBLISHED QUOTE MAY CARRY
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * Two genuine testimonials are enough — the composition is count-adaptive. Add
- * an entry per person and fill **only** the fields that are documented:
- *
- * - `quote` verbatim. Trimming is allowed *only* as a continuous excerpt of the
- *   real words, with the untouched original recorded in `sourceNote`. Never
- *   paraphrase and put quotation marks around it.
- * - `role` / `company` stay `undefined` rather than guessed. The layout is
- *   correct without them.
- * - `image` only when that asset is confirmed to be that person. Typography
- *   alone is the better outcome otherwise — **never** attach a stock face, and
- *   never generate one.
- * - `sourceNote` is **development-only and never rendered.** It records where
- *   the quote came from and what was actually verified.
- *
- * The client can supply these in minutes — they have the relationships. Written
- * permission to publish a name is worth having on file before it ships.
+ * - `quote` — the person's own words, as stored. A published excerpt must be a
+ *   continuous run of them; never a paraphrase in quotation marks.
+ * - `author` — the name **only if `display_name_allowed`**; otherwise the
+ *   relationship they chose, *"A brand we worked with"*.
+ * - `role` / `company` — only what was supplied **and** permitted. Absent is
+ *   correct; the layout expects it.
+ * - `image` — not yet collected. `media_allowed` is recorded for later, and
+ *   a portrait renders only when an asset is confirmed to be that person.
+ *   **Never a stock face, never generated.**
+ * - `sourceNote` — development-only, never rendered.
  *
  * BRAND SAFETY (§9) applies here as it does everywhere: no testimonial from a
- * betting, gambling, casino, real-money gaming or gaming client, whatever it
- * says.
+ * betting, gambling, casino, real-money gaming or gaming client is approved,
+ * whatever it says.
  */
 
 export type Testimonial = {
   id: string;
-  /** Verbatim, or a continuous excerpt with the original kept in `sourceNote`. */
+  /** The person's words as stored, or a continuous excerpt of them. */
   quote: string;
+  /** The name if permitted, otherwise the relationship line. */
   author: string;
-  /** Only if documented. Absent is correct; the layout expects it. */
+  /** Only if supplied and the name is shown. */
   role?: string;
-  /** Only if documented. */
+  /** Only if supplied and permitted. */
   company?: string;
   /**
    * Only when the asset is confirmed to be this person. Typography alone beats
@@ -98,19 +74,8 @@ export type Testimonial = {
    */
   image?: { src: string; alt: string };
   /** DEVELOPMENT ONLY. Never rendered. Where it came from, what was verified. */
-  sourceNote: string;
+  sourceNote?: string;
 };
-
-/**
- * Empty on purpose — see the audit above. `ClientNotes` returns `null` while
- * this is empty, so the homepage simply has no such section. Adding one real
- * entry makes it appear, composed, with no other change.
- *
- * A visible placeholder was rejected deliberately: an empty "Client Notes"
- * heading, or a "coming soon" row, implies Mishram has testimonials it is
- * choosing not to show. That is itself a claim, and an unverified one.
- */
-export const TESTIMONIALS: readonly Testimonial[] = [];
 
 export const CLIENT_NOTES_COPY = {
   /** Not "TESTIMONIALS" — this is an editorial interlude, not a review widget. */
@@ -125,7 +90,7 @@ export const CLIENT_NOTES_COPY = {
   accentWord: "feels",
   /**
    * Only accurate for quotes from people Mishram actually built with — which
-   * is the bar `TESTIMONIALS` enforces, so it stays true by construction.
+   * is the bar the approval step enforces, so it stays true by construction.
    */
   lead: "A few words from people we've had the chance to build with.",
   /** Screen-reader name for the section. The visible label stays editorial. */

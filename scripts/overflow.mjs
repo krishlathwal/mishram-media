@@ -45,6 +45,7 @@ const ROUTES = [
   "/privacy",
   "/terms",
   "/cookies",
+  "/feedback",
   "/this-page-does-not-exist-mishram",
 ];
 

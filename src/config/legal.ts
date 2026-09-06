@@ -100,7 +100,7 @@ export type LegalDoc = {
  * The date these documents were actually written. Not backdated — the old
  * site's "5 July 2025" belongs to the old documents, not to these.
  */
-export const LEGAL_UPDATED = "25 August 2026";
+export const LEGAL_UPDATED = "6 September 2026";
 
 const CONTACT_SECTION: LegalSection = {
   heading: "Contact",
@@ -142,9 +142,10 @@ const PRIVACY: LegalDoc = {
     {
       heading: "What we collect",
       body: [
-        "Only what you choose to send. There are two ways that happens.",
+        "Only what you choose to send. There are three ways that happens.",
         "The project inquiry form. Your name, your email address and a description of the project are required, because without them we cannot reply or understand what you need. Everything else is optional and the form works without it: phone or WhatsApp number, business or brand name, which services you are interested in, a budget range and a rough timing.",
         "Alongside an inquiry we record which page of this site you sent it from, and — if you arrived from an advertisement, a link we shared or another website — the campaign tags in that link and the site that sent you. That is so we know which of our own efforts actually reach people. It is stored with the inquiry and nowhere else, and if you came here directly there is nothing to record.",
+        "The feedback page. If we send you a link to share feedback about working with us, that form asks for your name, your email address, how we worked together and the feedback itself. A company or creator name, your role and a website or profile link are optional. It also asks whether we may show your name and your organisation, and for your explicit permission to publish the feedback. Nothing is published automatically: we read every submission, and only feedback we approve appears on the site — with your name and organisation only where you have said so. Your email address is never published; we use it to confirm the feedback is yours and to reach you about it.",
         "Contacting us directly. If you email, call or message us on WhatsApp, we have whatever you decide to put in that message.",
       ],
       list: [
@@ -167,6 +168,7 @@ const PRIVACY: LegalDoc = {
       body: [
         "The form posts to a route on this site. That route checks the fields, then saves your inquiry to our database. We use Supabase, a hosted database service, to run it. That saved record is the copy we work from.",
         "Once it is saved, the route also tries to send us an email about it through Resend, our email delivery provider, when email delivery is configured — so that somebody notices it quickly. That email is a notification, not the inquiry itself. If it fails to send, your inquiry is still safely with us and we still see it; that is exactly why it is saved first.",
+        "Feedback from the feedback page travels the same way: saved to the same database first, then a notification email to us. It is saved as pending and stays that way until one of us has read it.",
         "Your browser only ever talks to this website. It does not contact the database or the email provider directly, and neither of those services is reachable from the page you are reading.",
         "The form includes one hidden field that no visitor can see or reach. If something fills it in, the submission is discarded — nothing is saved and nothing is sent. That is the whole of our spam handling: there is no CAPTCHA service and no device fingerprinting.",
       ],
@@ -219,6 +221,7 @@ const PRIVACY: LegalDoc = {
       body: [
         "An inquiry stays in our database, and in our email inbox, for as long as it is useful — while we are talking, and for a reasonable period afterwards in case the conversation resumes. Those two places are the whole of it; it is not copied anywhere else.",
         "If you would like us to delete an inquiry you sent, ask and we will remove it from both.",
+        "Feedback you send through the feedback page stays in our database while it is under review or published. Ask and we will remove it — from the database and from the site.",
       ],
     },
     {
@@ -274,6 +277,13 @@ const TERMS: LegalDoc = {
       body: [
         "An inquiry starts a conversation. It does not create an engagement, reserve capacity, or oblige either of us to anything.",
         "Please send accurate information — we plan a first response around it. And please do not send confidential or sensitive material through the form; wait until there is an agreement in place and a proper way to share it.",
+      ],
+    },
+    {
+      heading: "Feedback and testimonials",
+      body: [
+        "If we send you a link to our feedback page and you tick the permission box, you allow Mishram Media to publish that feedback on this website and in its marketing material — with your name and your company or creator name only where you have said we may show them.",
+        "We publish your words as you wrote them, or a continuous excerpt of them; we never rewrite them. Sending feedback does not oblige us to publish it, and you can withdraw your permission at any time by contacting us, after which we take it down.",
       ],
     },
     {

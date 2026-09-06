@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 
-import { CLIENT_NOTES_COPY, TESTIMONIALS } from "@/config/testimonials";
+import { CLIENT_NOTES_COPY, type Testimonial } from "@/config/testimonials";
 import { useHoverLock } from "@/hooks/useHoverLock";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
@@ -22,39 +22,38 @@ const WIDE_QUERY = "(min-width: 1024px) and (min-aspect-ratio: 5 / 4)";
 /**
  * CLIENT NOTES — the human proof between 05 / Selected Work and Recognition.
  *
- * **Currently renders nothing.** `TESTIMONIALS` is empty because not one of the
- * testimonials in the old Mishram Media site survives verification — placeholder
- * avatars from `i.pravatar.cc`, one quote attributed to two different people
- * verbatim, three strangers sharing a job title, and a dedicated testimonials
- * page that still praises the purchased template's own agency. The full audit is
- * in `config/testimonials.ts`.
- *
- * A visible placeholder was rejected: an empty heading or a "coming soon" row
- * implies Mishram has testimonials it is choosing not to show, which is itself
- * an unverified claim. One real entry makes the section appear, composed.
+ * **Revision 43: the items arrive as a prop from the server.** `app/page.tsx`
+ * reads the approved rows of `public.testimonials` while rendering and hands
+ * them here; this component holds no data of its own and fetches nothing. With
+ * an empty list it renders nothing — the state the site ships in until a
+ * real submission is approved in the Table Editor. A visible placeholder was
+ * rejected: an empty heading or a "coming soon" row implies Mishram has
+ * testimonials it is choosing not to show, which is itself an unverified
+ * claim. One approved row makes the section appear, composed.
  *
  * **Deliberately not a numbered chapter**, like the Mishram Difference — so
  * nothing after it renumbers and Recognition keeps its own `06`.
  *
  * CONCEPT. An editorial quote index, not a review widget: a small indexed
  * roster of names on the left, one large quotation holding the field on the
- * right, the author beneath it. No cards, no carousel, no speech bubbles, no
+ * right, the author beneath. No cards, no carousel, no speech bubbles, no
  * star ratings, no Google badges. §05 above it is the page's most media-heavy
  * chapter, so this one is deliberately quiet — typography is the whole design.
  *
  * NO CTA, on purpose. This section exists as proof; the page's asks live in the
  * Hero, About and the Footer.
  */
-export function ClientNotes() {
+export function ClientNotes({ items }: { items: readonly Testimonial[] }) {
   const wide = useMediaQuery(WIDE_QUERY);
   const { activeId, lockedId, preview, clearPreview, select } = useHoverLock(
-    TESTIMONIALS[0]?.id ?? "",
+    items[0]?.id ?? "",
   );
 
-  if (TESTIMONIALS.length === 0) return null;
+  if (items.length === 0) return null;
 
   const index = (
     <QuoteIndex
+      items={items}
       activeId={activeId}
       lockedId={lockedId}
       onPreview={preview}
@@ -72,7 +71,7 @@ export function ClientNotes() {
       <Grid />
       <LeadIn />
 
-      <div className="page-x relative pt-24 pb-24 md:pt-28 md:pb-28 lg:pt-32 lg:pb-32">
+      <div className="page-x relative pt-16 pb-16 md:pt-20 md:pb-20 lg:pt-22 lg:pb-22">
         <Intro />
 
         <motion.div
@@ -80,7 +79,7 @@ export function ClientNotes() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
           transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
-          className="mt-14 md:mt-16 lg:mt-20"
+          className="mt-12 md:mt-14 lg:mt-16"
         >
           {wide ? (
             <div className="grid grid-cols-12 gap-x-8">
@@ -89,13 +88,16 @@ export function ClientNotes() {
               <div className="col-span-4 xl:col-span-3">{index}</div>
 
               <div className="col-span-8 xl:col-span-8 xl:col-start-5">
-                <QuoteStage activeId={activeId} />
+                <QuoteStage items={items} activeId={activeId} />
               </div>
             </div>
           ) : (
             <div>
-              <QuoteStage activeId={activeId} />
-              <div className="mt-12 md:mt-14">{index}</div>
+              <QuoteStage items={items} activeId={activeId} />
+              {/* One quote needs no selector. */}
+              {items.length > 1 ? (
+                <div className="mt-12 md:mt-14">{index}</div>
+              ) : null}
             </div>
           )}
         </motion.div>

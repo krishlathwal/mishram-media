@@ -304,6 +304,34 @@ export const INQUIRY_COPY = {
     messagePlaceholder: "What are you trying to build, grow or improve?",
   },
   optional: "Optional",
+  /**
+   * Revision 43. The same fields, in four numbered groups on a raised panel,
+   * so the brief reads as a short sequence rather than a wall. The groups
+   * are presentation only — the payload and the route did not change.
+   */
+  panelLabel: "Project brief",
+  panelNote: "Four short sections",
+  groups: {
+    about: { index: "01", title: "About you" },
+    need: { index: "02", title: "What you need" },
+    details: { index: "03", title: "Project details" },
+    send: { index: "04", title: "Send the brief" },
+  },
+  /**
+   * What happens to the brief once it is sent — not how Mishram delivers a
+   * project, which §04 Work Process owns. **No response-time promise**, per
+   * the rule below; "no obligation" is the Hero's own established wording.
+   */
+  next: {
+    label: "What happens next",
+    steps: [
+      "We read your brief and the goal behind it.",
+      "We reply by email or WhatsApp to set up a short call.",
+      "Together we agree the most useful next step — no obligation.",
+    ],
+  },
+  /** Above the one line of recognition the supporting column carries. */
+  recognisedLabel: "Recognised",
   submit: "Send project brief",
   submitting: "Sending…",
   /** Deliberately narrow: it is what the form does, and nothing more. */

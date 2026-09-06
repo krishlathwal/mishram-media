@@ -68,8 +68,10 @@ The Mishram Difference                  [interlude, unnumbered; rebuilt in Rev 4
 05 / Selected Work                      [built; Mirzapur: The Movie film-PR frames
                                          lead it since Rev 42 — §10at]
   ↓
-Client Notes                            [interlude, unnumbered; built —
-                                         CONTENT-BLOCKED, renders nothing. §10d-notes]
+Client Notes                            [interlude, unnumbered; since Rev 43 reads the
+                                         approved rows of public.testimonials on the
+                                         server and renders nothing while there are
+                                         none — the shipped state. §10d-notes, §10au]
   ↓
 06 / Recognition                        [ACTIVE — one verified award, staged since
                                          Rev 42 on the client's own banner with a
@@ -79,7 +81,9 @@ Client Notes                            [interlude, unnumbered; built —
                                          §10f, §10s]
   ↓
 Project Inquiry                         [interlude, unnumbered; built — §10h; a
-                                         plum field since Rev 42, §10at.
+                                         plum field in Rev 42, §10at; back on the
+                                         site's surfaces as a two-column chapter with
+                                         the brief on a raised panel in Rev 43, §10au.
                                          The page's final conversion moment]
   ↓
 Footer — THE FINAL SIGNAL               [rebuilt — full-bleed closing canvas,
@@ -5842,7 +5846,11 @@ src/config/management.ts      the Current Management chapter — copy, the evide
 src/config/process.ts         five process stages, pipeline geometry, paths, section copy
 src/config/work.ts            work items, media typing, crops, the media audit record
 src/config/recognition.ts     recognition items (empty) + the full recognition audit
-src/config/testimonials.ts    testimonials (empty) + the full testimonial audit
+src/config/testimonials.ts    the public quote shape + section copy + the testimonial audit;
+                              the data is public.testimonials, read on the server (§10au)
+src/config/feedback.ts        the /feedback intake — copy, options, limits, the shared validator
+src/lib/testimonials.ts       server-only read of approved testimonials; cannot fail the page
+src/lib/email/notify.ts       the Resend notification as a server-only helper (feedback route)
 src/config/about.ts           About copy, disciplines, and the source note for every claim
 src/config/sections.ts        adaptive visible-chapter numbering
 src/config/difference.ts      the interlude's copy and its four differentiators
@@ -5884,6 +5892,9 @@ src/components/difference/*   interlude shell + axis, connected stack, rail, evi
 src/components/inquiry/*      inquiry shell, form, field primitives
 src/components/ui/SocialIcon  the three platform marks, inline SVG
 src/app/api/inquiry/route.ts  server-side inquiry delivery (the only holder of the API key)
+src/app/api/feedback/route.ts server-side testimonial capture — always inserted as pending
+src/app/feedback/page.tsx     the private feedback page, noindex, out of nav and sitemap
+src/components/feedback/*     FeedbackArticle (the page), FeedbackForm (the intake form)
 src/components/creators/*     section shell, talent index matrix, photographic stage, meta
                               block, load-gated transition, worked-with index + scale facts
 src/components/proof/*        the quick-scan proof band — four facts as an editorial index
@@ -5891,7 +5902,7 @@ src/components/management/*   the Current Management chapter, with the Reel-perf
 src/components/process/*      section shell, pipeline SVG, active-stage detail, vertical rail
 src/components/work/*         section shell, work index, media stage, media surface
 src/components/recognition/*  section shell (self-suppressing), evidence surface
-src/components/testimonials/* Client Notes shell (self-suppressing), quote index, quote stage
+src/components/testimonials/* Client Notes shell (items from the server, null when empty), quote index, quote stage
 src/components/about/*        the About preview chapter + its closing conversion moment
 src/components/service-page/* shared service-page primitives — section shell + head + grid, hero,
                               statement, connected system, scope index, audience rail, process,
@@ -6272,6 +6283,41 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 43’s decisions (§10au) — locked.**
+  - **NEVER AUTO-PUBLISH A TESTIMONIAL.** Every row of `public.testimonials` is inserted
+    `pending`; `/api/feedback` has no code path that writes `status`; the public read filters
+    `status = 'approved'`; approval is a person in the Supabase Table Editor. Do not add a
+    "publish" flag to the form, a webhook that approves, or a default of `approved`.
+  - **No static list of testimonials, ever again.** `config/testimonials.ts` holds the shape,
+    the copy and the audit — not data. The eight old-site candidates stay conclusively rejected
+    (§10d-notes) and are never seeded into the table.
+  - **Consent is enforced three times** — the form, `coerceFeedback` (boolean `true` only), and
+    `CHECK (consent = true)` on the table. Do not relax any of the three, and never pre-check it.
+  - **The person's display permissions are honoured automatically and never flipped by hand.**
+    Name withheld → the relationship line; organisation withheld → dropped; `media_allowed` is
+    recorded only, and no logo or photo renders without an asset confirmed to be that person.
+  - **The public section reads on the server and the homepage revalidates hourly.** No client
+    Supabase call, no subscription, no polling, no publishable key in the bundle. The read resolves
+    to an empty list on any failure; an empty list is a homepage with no section, never an error.
+  - **Client Notes stays between 05 / Selected Work and 06 / Recognition, unnumbered.**
+  - **`/feedback` stays out of the navigation, the footer and the sitemap, and stays `noindex`.**
+    It is a link Mishram sends. It carries no analytics event.
+  - **Plum is one surface now — the Recognition plate.** The inquiry form is back on canvas and
+    `canvas-raise` at the client's instruction; do not re-plum it, and do not add a third surface.
+  - **The inquiry's logic is locked as it was**: fields, validator, payload, `/api/inquiry`, the
+    `leads` schema, the honeypot, Resend, the UTMs, `form_start`, `generate_lead`, the WhatsApp
+    fallback, the success state, the firewall rule. Revision 43 changed presentation and copy only.
+    The four numbered groups are `<section>`s with headings — keep them real, not decorative.
+  - **`/api/inquiry` keeps its own notification code.** `lib/email/notify.ts` is the same logic as
+    a helper; the inquiry route adopts it only when that route is next reopened, never as a side
+    effect of another task.
+  - **The feedback rate-limit rule is an account action** — `path == /api/feedback` and
+    `method == POST`, fixed window, 5 per IP per 600s, deny, **never `actionDuration`**. Do not
+    widen the inquiry rule to cover it.
+  - **Synthetic rows carry the marker** — a name starting `SYNTHETIC QA` and an email ending
+    `@mishram-internal.test` — and the QA helper refuses to delete anything else. Every test row is
+    deleted before a commit; the table's row count is part of the verification.
+  - **`public.leads` was not touched and is not the place for testimonials.**
 - **Revision 42’s decisions (§10at) — the client's own instructions, locked.**
   - **Plum is a surface, reached only through `.plum-field`, on exactly two elements: the
     Recognition plate and the Project Inquiry field.** Never as text, line, label, icon or gradient;
@@ -6779,6 +6825,17 @@ one art-directed system, and so is every service page.
 ---
 
 ## 19. Current status & next step
+
+> **READ §10au FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 43 — TWO LOCAL COMMITS, NOT PUSHED.**
+>
+> **§10au (Revision 43):** the Project Inquiry chapter is off the plum and re-set as a two-column
+> chapter with the brief on the page's one raised panel — logic untouched. The site has a **real
+> testimonial system**: a private `/feedback` page (noindex, out of nav), `/api/feedback` inserting
+> every submission as `pending` into `public.testimonials`, a person approving in the Supabase Table
+> Editor, and the homepage reading approved rows on the server with an hourly revalidate. **Zero
+> approved rows exist, so Client Notes still renders nothing; no fake testimonial shipped.** Resend is
+> configured on Vercel Production (observed), not locally. Legal documents updated in the same commit.
+> Homepage **15,622px at 1440**.
 
 > **READ §10at FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 42 — AND NOTE THAT IT IS NOT PUSHED.**
 >
@@ -11475,3 +11532,258 @@ One commit on `main`, **not pushed, not deployed**, as instructed. Every changed
 the commit; the nine new files under `public/media/` are in it; three components and one media
 component are deleted in it. `main` is ahead of `origin/main` by that commit until someone chooses
 to push.
+
+---
+
+## 10au. REVISION 43 — THE INQUIRY REDESIGN AND THE TESTIMONIAL FOUNDATION
+
+**Two things, and a rule.** The Project Inquiry chapter comes off the plum and is re-set as a
+two-column editorial chapter with the brief on the page's one raised panel; the site gains a real
+testimonial system — a private intake page, a moderated table, and a homepage section that reads
+only what a person has approved; and the rule that governs the second thing is written into the
+database itself: **nothing is ever published because it was submitted.** Committed locally on
+`main`, **not pushed, not deployed.** The roadmap's Revision 43 section carries the measurements.
+
+### 1 — PROJECT INQUIRY: BACK ON THE SITE'S SURFACES, RE-SET AS A CHAPTER
+
+Revision 42 made the whole section a plum field. The client's verdict, one revision later: keep the
+plum generally, **remove it from the inquiry** — it read off-theme against the page. So the plum
+stays where it earned its place, the Recognition plate, and the form returns to obsidian and
+parchment. **What replaced the colour is structure, not a return to the old layout:**
+
+| | Revision 42 | Revision 43 |
+| --- | --- | --- |
+| Surface | The section is a plum field | Canvas; **the form sits on `canvas-raise`** — a hairline border, a 2px teal top edge, a soft per-theme drop (`--t-panel-shadow`). The one raised panel on the page |
+| Structure | Headline across the top, then a 4 / 7 split | **Two columns from `lg`**: left — label, headline, lead, context, *What happens next*, the two direct routes, one line of recognition; right — the panel, spanning both rows |
+| The form | One run of fields | **Four numbered groups** — `01 About you` · `02 What you need` · `03 Project details` · `04 Send the brief` — each a `<section>` with its own `h3`, a hairline between them |
+| Phone | Everything stacked | Label → headline → lead → **panel** → the supporting column. The form is never under three screens of preamble; the button is 56px and full-width below `sm` |
+| CTA | `Send project brief` | Unchanged, and still the only button. No booking CTA, no second primary (§13, §18) |
+
+**What did not change, and was verified not to.** The fields, their order within the groups, the
+limits, the validator, the payload, `/api/inquiry`, the Supabase insert, the honeypot, the Resend
+notification, the UTM attribution, `form_start`, `generate_lead`, the WhatsApp fallback, the success
+state, the rate-limit rule. `config/inquiry.ts` gained copy — group titles, the panel label, the
+three *what happens next* lines, the recognition label — and nothing else. The service pages reuse
+the section as before and were re-captured.
+
+**The three *What happens next* lines carry no promise.** *"We read your brief and the goal behind
+it. We reply by email or WhatsApp to set up a short call. Together we agree the most useful next step
+— no obligation."* No response time (§10h's rule stands), no result; *no obligation* is the Hero's
+own established wording. §10h once said the left column is deliberately not a three-step explainer
+because §04 owns the process — that still holds: these three lines are what happens to the *brief*,
+not how a project is delivered.
+
+**The recognition line is the same record §06 renders**, read from `RECOGNITION_ITEMS[0]` so it
+self-suppresses with the chapter, and desktop-only so a phone does not pay a screen for a repeat.
+No figure appears in the section — §10ak's rule that a number lives in `config/proof.ts` and
+nowhere else is untouched.
+
+### 2 — THE TESTIMONIAL SYSTEM, IN ONE DIAGRAM
+
+```
+/feedback  (private link, noindex)
+   │  POST /api/feedback — validate → honeypot → INSERT status='pending' → notify → mark
+   ▼
+public.testimonials   ──  a person sets status = 'approved' in the Supabase Table Editor
+   │
+   ▼
+lib/testimonials.ts   (server-only: status = 'approved', featured first, newest first, ≤ 6)
+   │
+   ▼
+app/page.tsx  (revalidate = 3600)  →  <ClientNotes items={…}>  →  null while the list is empty
+```
+
+Two experiences, kept apart on purpose: **the private submission link** and **the public display**.
+They share a table and nothing else.
+
+### 3 — `/feedback`, THE INTAKE
+
+Not in the navigation, the footer or the sitemap; answers `noindex, follow`; named by the transition
+overlay like any other route. The page borrows the legal documents' restraint — eyebrow,
+headline *Thank you for working with us.*, one sentence saying the feedback may be featured on the
+site — and the inquiry chapter's two-column structure, so anyone who has seen the brief form
+recognises it.
+
+| Field | Required | Stored as |
+| --- | --- | --- |
+| Your name | **yes**, 2–80 | `name` |
+| Email | **yes** | `email`, lowercased; **never rendered** |
+| Company or creator name | no, ≤120 | `organization` |
+| Your role | no, ≤80 | `role` |
+| How did we work together? | **yes** — `brand` · `creator` · `client` · `partner` · `other` | `relationship` |
+| Website or social profile | no, must parse as `http(s)://` | `profile_url` |
+| Your feedback | **yes**, 20–1,200 chars, **at most one link** | `testimonial` |
+| Show my name · Show my company or creator name · Logo / photo may be used | no, each **unchecked** by default | `display_name_allowed` · `display_organization_allowed` · `media_allowed` |
+| **Permission to publish** | **yes — a real tick, never pre-checked** | `consent` |
+
+**Consent is enforced three times**: the form refuses to submit without it, the route's validator
+refuses the payload (`"true"` as a string, `1` and `"on"` all count as unchecked — `coerceFeedback`
+accepts only boolean `true`), and the table's `CHECK (consent = true)` refuses the row. Beside the
+tick: *"Submitting does not guarantee publication. You can ask us to take published feedback down
+at any time."* The success state says the feedback *will be read before anything is published* and
+promises nothing else. **No analytics event** — a testimonial is not a lead.
+
+### 4 — THE TABLE
+
+`supabase/migrations/20260906120000_create_testimonials.sql`, applied to the linked project with
+`supabase db push` (`migration list` now shows both migrations local and remote). **Not a change to
+`public.leads`** — that table was not touched.
+
+| | |
+| --- | --- |
+| Identity | `id` uuid pk, `created_at` |
+| Person | `name`, `organization`, `role`, `relationship` (CHECK over the five values), `email`, `profile_url` |
+| Words | `testimonial` — as typed, never edited in place |
+| Permissions | `consent` **CHECK `= true`**, `display_name_allowed`, `display_organization_allowed`, `media_allowed` — all default `false` |
+| Moderation | **`status` default `'pending'`**, CHECK over `pending · approved · rejected`; `featured` boolean |
+| Provenance | `source` default `'feedback_form'`; `email_notification_status` / `_error`, as `leads` |
+| Indexes | `(status, featured desc, created_at desc)` for the public read; `(created_at desc)` for the dashboard |
+| RLS | **on, zero policies, `revoke all … from anon, authenticated`** — the `leads` design, verbatim. The browser never touches it |
+
+**Not stored:** IP address, user agent, device details, cookie, session id — the same list as
+`leads`, for the same reason.
+
+### 5 — THE APPROVAL WORKFLOW, EXACTLY
+
+1. A submission arrives. If Resend is configured (it is, on Vercel Production — see §7), an email
+   *New testimonial submission — Name / Organisation* reaches `info@mishram.media`, whose first
+   line says the row is pending and where to approve it. If not, the row is still there.
+2. Open the Supabase dashboard → project `mishram-media-leads` → **Table Editor →
+   `testimonials`**. Newest rows first.
+3. Read the `testimonial` column. Check `consent` is `true` (it cannot be otherwise), and note what
+   `display_name_allowed` and `display_organization_allowed` say — those are the person's choices
+   and are honoured automatically; **do not** flip them on their behalf.
+4. Set **`status`** to `approved` to publish, or `rejected` to keep it off. Leave it `pending` to
+   decide later. Nothing else needs editing.
+5. Optionally tick **`featured`** on exactly one approved row — it leads the section. With none
+   ticked, the newest approved row leads.
+6. **Within an hour** the homepage re-renders itself and the section appears (or updates, or
+   disappears if the last approved row was rejected). No deploy, no code change. To see it sooner,
+   redeploy.
+
+**What the site does with each permission.** Name shown → the name, and the role if given. Name
+withheld → *"A brand we worked with"* / *"A creator we worked with"* / *"A client"* / *"A partner"*
+/ *"Someone we worked with"*, from the relationship the person chose; the role is dropped with the
+name. Organisation shown → after the name or the relationship line. `media_allowed` is **recorded
+only** — no logo or photo is collected or rendered, and none will be without an asset confirmed to
+be that person (§10d-notes).
+
+### 6 — THE PUBLIC SECTION
+
+`ClientNotes` — the editorial quote index §10d-notes built and verified in Revision 06 — is
+unchanged in design and **now takes its items as a prop from the server.** `config/testimonials.ts`
+no longer holds a list of any kind, and must never hold one again: the shape, the copy and the
+audit stay; the data is the table. `app/page.tsx` became an async server component with
+`export const revalidate = 3600` — still prerendered, refreshed in the background at most hourly.
+**No client fetch, no subscription, no polling, no key anywhere near a browser.**
+
+**With zero approved rows the section renders nothing**, which is the state this ships in, the
+state the site has been in since Revision 06, and always an honest state. The read cannot fail the
+page: no configuration, a network error or a database error all resolve to an empty list.
+
+Placement is unchanged — **between 05 / Selected Work and 06 / Recognition** — and it is the right
+one: after the work it speaks about, before the award that corroborates it, and below the proof
+sequence (rail → management → scale) that the top of the page owns. It stays unnumbered.
+
+**No fake testimonial shipped.** The section was verified with four synthetic rows (three approved
+in the three permission combinations, one deliberately `pending`) inserted under an unmistakable
+marker, captured, and **deleted before the commit** — the table holds zero rows, verified. The
+pending row never appeared, which is the filter working.
+
+### 7 — EMAIL
+
+`lib/email/notify.ts` is the inquiry route's notification logic lifted into a server-only helper
+— same endpoint, same three environment variables, same redaction, same *cannot throw*. **The
+feedback route uses it; `/api/inquiry` was deliberately not touched** and still carries its own
+identical copy, which it can adopt when next reopened. The subject is
+*New testimonial submission — Name / Organisation*, the body plain text with the permissions
+spelled out, `reply_to` the person's address.
+
+**Resend is configured on Vercel Production now** — read off `vercel env ls`: `RESEND_API_KEY`
+(Secret) and `INQUIRY_FROM_EMAIL` (Config), both Production-only, added three days before this
+revision. §10as's "no credential exists" is therefore superseded for Production; Preview and local
+stay unconfigured, so every local test recorded `not_configured` and **no email was sent by this
+revision's tests.** Email failure cannot lose a submission: the insert precedes it.
+
+### 8 — SPAM AND ABUSE
+
+The honeypot (the inquiry form's own field, answered exactly as a success and stored nothing —
+verified: one row after nine route tests, the honeypot case among them); server-side validation
+identical to the browser's; **at most one link in the feedback** (the site field is for that); a
+real boolean for consent; length bounds on every field. No CAPTCHA — the first thing it costs is a
+real client. **Rate limiting is not application code** (§10h, §10as). The inquiry endpoint's Vercel
+Firewall rule is scoped to `/api/inquiry` and **was not widened or touched**. The matching rule for
+this route is an account action, documented here for whoever adds it:
+
+> `path == /api/feedback` **and** `method == POST` · `rate_limit` · `fixed_window` · **5 per IP per
+> 600s** · `deny` · **no `actionDuration`** (§10as: a persistent action bans the visitor from the
+> whole site).
+
+### 9 — THE LEGAL DOCUMENTS, IN THE SAME COMMIT (§18)
+
+`/privacy`: *What we collect* now has three ways, the third being the feedback page — what it
+asks, that permission is explicit, that nothing is published automatically, that the email is never
+published; *How an inquiry actually travels* says feedback travels the same way and is saved as
+pending; *How long we keep things* covers feedback and its removal from the site. `/terms` gains
+*Feedback and testimonials*: what the permission box allows, that words are published as written
+or as a continuous excerpt, that permission can be withdrawn. `LEGAL_UPDATED` is 6 September 2026.
+
+### 10 — QA
+
+- **Route tests, nine, all passed** against the dev server: not-JSON → `400 invalid_request`;
+  empty → `400 validation` naming `consent, email, name, relationship, testimonial`; consent false
+  → consent only; consent `"true"` as a string → consent only; two links → testimonial; bare
+  profile URL → profileUrl; unknown relationship → relationship; honeypot → `200` and nothing
+  stored; valid → `200`, **one row, `pending`, `not_configured`**, deleted under a marker guard.
+  Table verified empty afterwards.
+- **UI tests, thirty-three, all passed** over CDP on both forms: every control labelled; every
+  fieldset with a legend; honeypot off-screen, `tabindex -1`, `aria-hidden`; empty submit → field
+  errors, summary, focus on the first invalid field, `aria-invalid`; correcting a field clears its
+  error; consent and the three permissions unchecked by default; without consent → the consent
+  error alone and focus on the checkbox; **space toggles it**; a stubbed `200` → the success state,
+  a stubbed `502` → the notice, the WhatsApp fallback, values kept. No row was created from the UI.
+  Homepage: `#client-notes` absent, About reads `07`.
+- **Captures** — 58 captures across five sets (`shots/r43a`–`r43e`); the inquiry at 1440 / 1024 / 768 / 430 / 390 / 320, both themes,
+  reduced motion, the seams into the Footer and out of About, the service-page instance; the
+  feedback route at 1440 / 768 / 390 / 320, both themes; Client Notes with the synthetic rows at
+  1440 (both themes) and 390.
+- **Overflow** `--quick`: **PASS — 44/44** (eleven routes × four widths, `/feedback` now in the gate). **Types, lint, build** clean.
+
+### 11 — FILES
+
+```
+src/config/feedback.ts                         new — copy, options, limits, validator, the route's path
+src/app/api/feedback/route.ts                  new — validate → honeypot → insert pending → notify → mark
+src/app/feedback/page.tsx                      new — noindex, canonical, the article
+src/components/feedback/FeedbackArticle.tsx    new — the page
+src/components/feedback/FeedbackForm.tsx       new — the form, from the inquiry primitives
+src/lib/email/notify.ts                        new — the Resend call, server-only, cannot throw
+src/lib/testimonials.ts                        new — the approved read, server-only, cannot fail the page
+supabase/migrations/20260906120000_create_testimonials.sql   new — applied
+src/components/inquiry/ProjectInquiry.tsx      rewritten — two columns, the panel, no plum
+src/components/inquiry/InquiryForm.tsx         regrouped — four sections, same logic
+src/components/inquiry/fields.tsx              + CheckRow, FormGroup, url type, OptionGroup error
+src/config/inquiry.ts                          + group / panel / next-step / recognised copy
+src/config/testimonials.ts                     the list is gone; shape, copy and audit stay
+src/components/testimonials/*                  items as a prop
+src/app/page.tsx                               async, revalidate = 3600, reads the approved rows
+src/config/legal.ts                            privacy + terms, same commit
+src/config/routes.ts                           the route's marker and its PUBLIC_ROUTES entry
+src/app/globals.css                            .inq-panel, .inq-group*, .inq-check, --t-panel-shadow
+scripts/overflow.mjs, scripts/shoot.mjs        /feedback in the gate; the Revision 43 shots
+```
+
+**Dependencies: none added.** `@supabase/supabase-js` and `server-only` were already here; Resend
+is still one `fetch`.
+
+### 12 — NOT BUILT, DELIBERATELY
+
+No admin UI (the Table Editor is the moderation surface, and the table is shaped so a UI can sit
+on it later — `status`, `featured`, the permission flags); no media upload; no rating field
+(nothing on the site would honestly render one); no CAPTCHA; no rate-limit rule (documented in §8);
+no GA event; no change to `/api/inquiry`, `leads`, Resend or the firewall.
+
+### 13 — GIT
+
+One commit on `main` after validation, **not pushed, not deployed.** `main` is ahead of
+`origin/main` by two commits — Revision 42 and this one — until someone chooses to push.

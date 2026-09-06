@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { TESTIMONIALS } from "@/config/testimonials";
+import type { Testimonial } from "@/config/testimonials";
 
 /**
  * The quote index — `01 / NAME`, hairline-separated.
@@ -15,14 +15,19 @@ import { TESTIMONIALS } from "@/config/testimonials";
  * the Mishram Difference runs a connector into a vertical axis. Here it is the
  * site's own hairline sweep under the name — typographic, and it costs no
  * horizontal space, which is what keeps a long client name whole.
+ *
+ * `items` arrive from the server (Revision 43); this renders whatever it is
+ * handed and holds no data of its own.
  */
 export function QuoteIndex({
+  items,
   activeId,
   lockedId,
   onPreview,
   onClearPreview,
   onSelect,
 }: {
+  items: readonly Testimonial[];
   activeId: string;
   lockedId: string;
   onPreview: (id: string) => void;
@@ -40,7 +45,7 @@ export function QuoteIndex({
         }
       }}
     >
-      {TESTIMONIALS.map((t, i) => {
+      {items.map((t, i) => {
         const active = t.id === activeId;
         return (
           <li key={t.id} className="border-b border-line">

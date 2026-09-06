@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 
-import { TESTIMONIALS, type Testimonial } from "@/config/testimonials";
+import type { Testimonial } from "@/config/testimonials";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 /**
@@ -23,6 +23,9 @@ import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
  * The outgoing quote clips upward while the incoming one resolves down through
  * the same edge, and the author line lands on the same beat. **No typewriter,
  * no letter-by-letter, no blur.** ~420ms.
+ *
+ * `items` arrive from the server (Revision 43). What each carries has already
+ * been reduced to what the person permitted — see `lib/testimonials.ts`.
  */
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -71,7 +74,7 @@ function Block({
           transition={{ duration: dur, ease: EASE, delay: reduced ? 0 : 0.06 }}
         >
           {/* Rendered only when the asset is confirmed to be this person —
-              see the audit in config/testimonials.ts. Absent is the norm. */}
+              see config/testimonials.ts. Absent is the norm. */}
           {item.image ? (
             <span className="tst-portrait relative block h-12 w-12 shrink-0 overflow-hidden rounded-full">
               <Image
@@ -89,7 +92,8 @@ function Block({
               {item.author}
             </cite>
 
-            {/* Only what is documented. No placeholder dash, no invented title. */}
+            {/* Only what is documented and permitted. No placeholder dash, no
+                invented title. */}
             {item.role || item.company ? (
               <span className="caps mt-2.5 block text-ink-muted">
                 {[item.role, item.company].filter(Boolean).join(" / ")}
@@ -102,12 +106,18 @@ function Block({
   );
 }
 
-export function QuoteStage({ activeId }: { activeId: string }) {
+export function QuoteStage({
+  items,
+  activeId,
+}: {
+  items: readonly Testimonial[];
+  activeId: string;
+}) {
   const reduced = usePrefersReducedMotion();
 
   return (
     <div className="grid">
-      {TESTIMONIALS.map((t) => (
+      {items.map((t) => (
         <Block
           key={t.id}
           item={t}

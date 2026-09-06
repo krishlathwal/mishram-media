@@ -1,11 +1,13 @@
 "use client";
 
 import clsx from "clsx";
+import type { ReactNode } from "react";
 
 import { INQUIRY_COPY, type Option } from "@/config/inquiry";
 
 /**
- * The form's primitives.
+ * The form primitives — shared by the project brief and, since Revision 43,
+ * by the feedback page.
  *
  * Every one of them is a real control with a real `<label>` — the styling sits
  * on top of native inputs rather than replacing them, so mobile keyboards,
@@ -44,10 +46,10 @@ export function TextField({
   value: string;
   onChange: (v: string) => void;
   error?: string;
-  type?: "text" | "email" | "tel";
+  type?: "text" | "email" | "tel" | "url";
   optional?: boolean;
   autoComplete?: string;
-  inputMode?: "text" | "email" | "tel";
+  inputMode?: "text" | "email" | "tel" | "url";
   placeholder?: string;
   maxLength?: number;
 }) {
@@ -86,6 +88,7 @@ export function TextAreaField({
   error,
   placeholder,
   maxLength,
+  rows = 4,
 }: {
   id: string;
   label: string;
@@ -94,6 +97,7 @@ export function TextAreaField({
   error?: string;
   placeholder?: string;
   maxLength: number;
+  rows?: number;
 }) {
   const errorId = `${id}-error`;
   const countId = `${id}-count`;
@@ -109,7 +113,7 @@ export function TextAreaField({
       <textarea
         id={id}
         name={id}
-        rows={4}
+        rows={rows}
         placeholder={placeholder}
         maxLength={maxLength}
         value={value}
@@ -164,6 +168,7 @@ export function OptionGroup({
   multiple,
   optional = true,
   layout = "wide",
+  error,
 }: {
   name: string;
   legend: string;
@@ -178,9 +183,13 @@ export function OptionGroup({
    * at every width rather than becoming six stacked rows.
    */
   layout?: "wide" | "compact";
+  /** For a required group. Read with the fieldset, so it needs no `aria-describedby`. */
+  error?: string;
 }) {
+  const errorId = `${name}-error`;
+
   return (
-    <fieldset className="border-0 p-0">
+    <fieldset className="border-0 p-0" aria-invalid={error ? true : undefined}>
       <legend className="caps mb-4 block p-0 text-ink-muted">
         {legend}
         {optional ? <Optional /> : null}
@@ -207,6 +216,7 @@ export function OptionGroup({
                 value={option.id}
                 checked={checked}
                 onChange={() => onToggle(option.id)}
+                aria-describedby={error ? errorId : undefined}
                 className="inq-native"
               />
               <span aria-hidden className="inq-box" />
@@ -215,7 +225,104 @@ export function OptionGroup({
           );
         })}
       </div>
+      <FieldError id={errorId} message={error} />
     </fieldset>
+  );
+}
+
+/**
+ * One standalone checkbox with a sentence for a label — consent, and the
+ * display permissions on the feedback page. The same row treatment as an
+ * option, but top-aligned so a two-line label reads as a sentence rather
+ * than a tag. **Never pre-checked**: `checked` is state the person sets.
+ */
+export function CheckRow({
+  id,
+  name,
+  label,
+  checked,
+  onChange,
+  error,
+  hint,
+}: {
+  id: string;
+  name?: string;
+  label: string;
+  checked: boolean;
+  onChange: (v: boolean) => void;
+  error?: string;
+  /** A sentence under the row, e.g. what ticking it does not mean. */
+  hint?: string;
+}) {
+  const errorId = `${id}-error`;
+  const hintId = `${id}-hint`;
+  const describedBy =
+    [error ? errorId : null, hint ? hintId : null].filter(Boolean).join(" ") ||
+    undefined;
+
+  return (
+    <div>
+      <label htmlFor={id} className="inq-option inq-check">
+        <input
+          id={id}
+          name={name ?? id}
+          type="checkbox"
+          checked={checked}
+          onChange={(e) => onChange(e.target.checked)}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy}
+          className="inq-native"
+        />
+        <span aria-hidden className="inq-box" />
+        <span className="inq-option-label">{label}</span>
+      </label>
+      {hint ? (
+        <p id={hintId} className="mt-3 text-[0.75rem] leading-[1.6] text-ink-muted">
+          {hint}
+        </p>
+      ) : null}
+      <FieldError id={errorId} message={error} />
+    </div>
+  );
+}
+
+/**
+ * A numbered group of fields — `01 About you`, `02 What you need`… — so a long
+ * form reads as a short sequence rather than a wall. A real `<section>` with
+ * its own heading, which is what lets a screen reader jump between groups;
+ * `as` follows the page's outline (h3 under the homepage chapter's h2, h2 on
+ * the feedback page under its h1).
+ */
+export function FormGroup({
+  index,
+  title,
+  as = "h3",
+  children,
+}: {
+  index: string;
+  title: string;
+  as?: "h2" | "h3";
+  children: ReactNode;
+}) {
+  const Heading = as;
+  const id = `group-${index}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
+  return (
+    <section aria-labelledby={id} className="inq-group">
+      <div className="inq-group-head">
+        <span aria-hidden className="caps text-accent">
+          {index}
+        </span>
+        <Heading
+          id={id}
+          className="font-display text-[1.0625rem] leading-none font-medium tracking-[-0.02em] text-ink"
+        >
+          {title}
+        </Heading>
+        <span aria-hidden className="inq-group-rule" />
+      </div>
+      {children}
+    </section>
   );
 }
 

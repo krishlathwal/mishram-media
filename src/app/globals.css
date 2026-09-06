@@ -42,11 +42,13 @@
      plum surface is 9.14:1, plum as text or line on obsidian is 1.89:1 — so
      it is only ever a *field* carrying ivory type, never an accent.
 
-     Two intentional surfaces, both scoped through `.plum-field` below: the
-     Project Inquiry section (the client asked for the form to be highlighted)
-     and the Recognition chapter's label plate, which sits on the award banner
-     whose own type is this hue. **Do not tint the canvas with it, do not
-     gradient it, and do not use it as text.** */
+     One intentional surface, scoped through `.plum-field` below: the
+     Recognition chapter's label plate, which sits on the award banner whose
+     own type is this hue. Revision 42 also made the Project Inquiry section a
+     plum field; **Revision 43 removed that at the client's request** — it read
+     off-theme against the rest of the page — and the form is back on the
+     site's own surfaces. **Do not tint the canvas with it, do not gradient
+     it, and do not use it as text.** */
   --color-brand-plum: #4c3660;
   /* The one semantic state colour. Themed, because ember itself is far too
      light to read as text on parchment. Used for form validation only. */
@@ -139,6 +141,12 @@
   --t-error: #ff8563;
 
   --t-image-shadow: none;
+  /* The one raised panel on the page (the inquiry brief, the feedback form):
+     lifted off the obsidian by a soft drop and a hairline of light at its top
+     edge, not by a lighter fill alone. */
+  --t-panel-shadow:
+    0 40px 90px -42px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(243, 239, 231, 0.045);
   --collab-logo-rest: 0.5;
   /* THE RAIL'S OWN REST VALUE (Rev 29), separate from --collab-logo-rest on
      purpose. That token is shared with /about's .abt-brand-mark, which is a
@@ -179,6 +187,7 @@
 
   /* Photography sits above the paper rather than inside the dark. */
   --t-image-shadow: 0 20px 60px rgba(17, 17, 15, 0.09);
+  --t-panel-shadow: 0 30px 70px -36px rgba(17, 17, 15, 0.24);
   --collab-logo-rest: 0.62;
   --collab-color-rest: 0.9;
   --grain-opacity: 0.022;
@@ -1540,6 +1549,131 @@ html.theme-transition *::after {
       rgba(0, 0, 0, 0.45) 62%,
       transparent 88%
     );
+  }
+
+  /* ── The raised panel, the numbered groups and the check row (Revision 43) ──
+     The brief and the feedback form sit on the one raised surface the site
+     has: canvas-raise, a hairline border, a teal top edge, and a soft drop
+     defined per theme in --t-panel-shadow. Radius 3px, like the buttons —
+     never the 16px card. */
+  .inq-panel {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 3px;
+    background-color: var(--color-canvas-raise);
+    padding: 1.5rem 1.15rem 1.75rem;
+    box-shadow: var(--t-panel-shadow, none);
+  }
+
+  .inq-panel::before {
+    content: "";
+    position: absolute;
+    inset: -1px -1px auto -1px;
+    height: 2px;
+    border-radius: 3px 3px 0 0;
+    background-color: var(--color-accent);
+  }
+
+  @media (min-width: 640px) {
+    .inq-panel {
+      padding: 2rem 2rem 2.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .inq-panel {
+      padding: 2.25rem 2.5rem 2.5rem;
+    }
+  }
+
+  /* Chrome's autofill fill has to match the panel, not the page. */
+  .inq-panel .inq-input:-webkit-autofill,
+  .inq-panel .inq-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-canvas-raise) inset;
+  }
+
+  .inq-panel-label {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  /* Groups: a numbered head, and a hairline between one group and the next. */
+  .inq-group {
+    padding-top: 1.75rem;
+  }
+
+  .inq-group + .inq-group {
+    margin-top: 1.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .inq-group-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .inq-group-rule {
+    display: block;
+    flex: 1 1 auto;
+    height: 1px;
+    align-self: center;
+    margin-left: 0.5rem;
+    background-color: var(--color-line);
+  }
+
+  /* On a phone the groups sit closer: the hairline and the numbered head do
+     the separating, and the panel is already a long scroll. */
+  @media (max-width: 639px) {
+    .inq-group {
+      padding-top: 1.25rem;
+    }
+
+    .inq-group + .inq-group {
+      margin-top: 1.25rem;
+    }
+
+    .inq-group-head {
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* A sentence for a label: top-aligned, roomier, the square on the first
+     line's centre. */
+  .inq-check {
+    align-items: flex-start;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .inq-check .inq-box {
+    margin-top: 0.3em;
+  }
+
+  .inq-check .inq-option-label {
+    line-height: 1.5;
+  }
+
+  .inq-check:has(.inq-native[aria-invalid="true"]) {
+    border-color: var(--color-error);
+  }
+
+  /* The button is the panel's one destination: taller here, and the full
+     width of a phone so there is nothing to hunt for. */
+  .inq-panel .inq-submit {
+    height: 56px;
+  }
+
+  @media (max-width: 639px) {
+    .inq-panel .inq-submit {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .inq-panel .inq-success {
+    border-top: 0;
+    padding-top: 0.5rem;
   }
 
   /* ── Client Notes — the quote index ─────────────────────────────

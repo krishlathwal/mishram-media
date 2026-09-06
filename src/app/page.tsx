@@ -11,8 +11,23 @@ import { WorkProcess } from "@/components/process/WorkProcess";
 import { Recognition } from "@/components/recognition/Recognition";
 import { SelectedWork } from "@/components/work/SelectedWork";
 import { WhatWeDo } from "@/components/whatwedo/WhatWeDo";
+import { getApprovedTestimonials } from "@/lib/testimonials";
 
-export default function Home() {
+/**
+ * THE HOMEPAGE IS STATIC AND RE-RENDERS ITSELF ONCE AN HOUR (Revision 43).
+ *
+ * Everything on it is still prerendered — the only data it reads is the list
+ * of approved testimonials, on the server, while this page renders. With
+ * `revalidate` the build's HTML is served as before and refreshed in the
+ * background at most hourly, so a row set `approved` in the Table Editor is on
+ * the site within the hour and nobody redeploys anything. **No client fetch,
+ * no subscription, no polling, no database key anywhere near a browser.**
+ */
+export const revalidate = 3600;
+
+export default async function Home() {
+  const testimonials = await getApprovedTestimonials();
+
   return (
     <>
       <Hero />
@@ -47,19 +62,19 @@ export default function Home() {
       <WorkProcess />
       <SelectedWork />
       {/*
-        Client Notes renders nothing while TESTIMONIALS is empty, which it
-        currently is — not one testimonial in the old Mishram Media site
-        survives verification. See the audit in config/testimonials.ts. It is
-        an unnumbered interlude, so Recognition keeps its own 06 and About's
-        adaptive number (config/sections.ts) is unaffected.
+        Client Notes renders nothing while there is no approved testimonial —
+        the state the site ships in. The items come from public.testimonials
+        (approved rows only, read on the server above); a person sets a
+        submission from the private /feedback page to `approved` in the Table
+        Editor and the section appears here, composed, with no code change.
+        It is an unnumbered interlude, so Recognition keeps its own 06 and
+        About's adaptive number (config/sections.ts) is unaffected.
       */}
-      <ClientNotes />
+      <ClientNotes items={testimonials} />
       {/*
-        06 / Recognition renders nothing while RECOGNITION_ITEMS is empty, which
-        it currently is — there is no verified Mishram Media recognition
-        material. See the audit in config/recognition.ts. About picks up the next
-        visible chapter number automatically (config/sections.ts), so populating
-        that array needs no change here.
+        06 / Recognition renders nothing while RECOGNITION_ITEMS is empty. About
+        picks up the next visible chapter number automatically
+        (config/sections.ts), so populating that array needs no change here.
       */}
       <Recognition />
       <About />

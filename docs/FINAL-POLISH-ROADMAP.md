@@ -29,6 +29,7 @@
 | **13** | **Operational hardening + production release** | **Done — Revision 41** |
 | **14** | **Web & Digital Experiences final deep polish** | **Done — Revision 40** |
 | **15** | **The client's walkthrough batch — creator priority, plum, Mirzapur, the award banner** | **Done — Revision 42 (local, not pushed)** |
+| **16** | **Project Inquiry redesign + the testimonial foundation** | **Done — Revision 43 (local, not pushed)** |
 
 **Phase 13 closed in Revision 41 and the site was released.** Its five items, and where each
 landed — the detail is in the Revision 41 section at the foot of this document:
@@ -233,8 +234,11 @@ No file is allocated to two sections anywhere in this table.
 
 ## Brand colour — `#4c3660`
 
-**Verdict (Revision 42): PLUM AS TWO EDITORIAL SURFACES — the Recognition plate and the Project
-Inquiry field, both through the `.plum-field` scope. Never as text, line or accent.** The history
+**Verdict (Revision 43): PLUM AS ONE EDITORIAL SURFACE — the Recognition plate, through the
+`.plum-field` scope. Never as text, line or accent.** Revision 42 had made the Project Inquiry
+section a second plum field; the client's verdict a revision later was that it read off-theme, and
+Revision 43 returned the form to the site's own surfaces (§10au). The plum is kept, not reverted —
+the plate on the award banner is where it belongs. The history
 below — declared in Revision 28, tested on five surfaces, removed in Revision 39 — stands as written;
 the client asked for the colour back on the walkthrough, and the Revision 42 section at the foot of
 this document records where it landed and the contrast re-measured on it.
@@ -3601,3 +3605,98 @@ capture otherwise lands on a blank or half-entered scene. Both are in `shoot.mjs
   (the plate over the faces at 1024 and 1280, the 4:3 crop cutting the wordmark on a tablet, the
   ampersand beside the plate at 1920) were fixed and re-captured.
 - **Not pushed. Not deployed.** `main` is ahead of `origin/main` by this revision's commit.
+
+---
+
+## Revision 43 — Phase 16, the inquiry redesign and the testimonial foundation
+
+**Two deliverables from one client note.** *Keep the plum generally, remove it from the inquiry;
+make the inquiry premium and conversion-focused on the site's own colours; build a real testimonial
+system with a private submission link and manual approval.* The decisions are the brief's
+**§10au**; this is the phase record. **Local only — committed on `main`, not pushed, not deployed.**
+
+### Revision 42, checked before anything was edited
+
+`git status` clean, `main` ahead of `origin/main` by one, HEAD `f16f798`, not amended. Present in
+the working tree and on the dev server: Mirzapur as Selected Work item 01, the award banner as the
+Recognition background with its plum plate, the four-creator stage and the re-cast Hero, Kaka on
+all three surfaces, and the plum inquiry field — the one thing this revision removes.
+
+### Project Inquiry
+
+- **Plum removed from the inquiry only.** `.plum-field` is gone from `#project-inquiry`; the
+  Recognition plate keeps it. The `@theme` note and the Brand colour verdict say *one surface* now.
+- **A two-column chapter with the brief on a raised panel.** Left: label, headline, lead, context,
+  *What happens next* (three lines, no promise), the two direct routes, one desktop-only line of
+  recognition from `RECOGNITION_ITEMS[0]`. Right, spanning both rows: `canvas-raise`, hairline
+  border, 2px teal top edge, a per-theme drop shadow (`--t-panel-shadow`), radius 3px. Inside it
+  the same fields in four numbered groups.
+- **Phone:** headline → panel → supporting column; the button is 56px and full-width below `sm`.
+- **Logic untouched and re-verified** — fields, validator, payload, route, Supabase, honeypot,
+  Resend, UTMs, `form_start`, `generate_lead`, WhatsApp fallback, success state, rate limit.
+
+### The testimonial system
+
+- **`/feedback`** — private, `noindex`, out of nav and sitemap; name, email, relationship, the
+  feedback and an unchecked permission tick required; organisation, role, profile link and three
+  display permissions optional and unchecked by default.
+- **`/api/feedback`** — the inquiry route's shape: validate → honeypot → **insert as `pending`** →
+  notify → mark. The route cannot write `status`.
+- **`public.testimonials`** — its own table, applied by `supabase db push`; `consent` has a
+  `CHECK (= true)`; `status` defaults to `pending`; RLS on with zero policies and revoked grants.
+- **Approval is a person in the Table Editor** setting `status = approved` (and optionally
+  `featured`). Nothing else publishes anything.
+- **The homepage reads approved rows on the server** (`lib/testimonials.ts`) and re-renders hourly
+  (`revalidate = 3600`). `ClientNotes` takes the rows as a prop and renders nothing while there are
+  none — the state this ships in. **No fake testimonial shipped**; the four synthetic rows used for
+  the captures below were deleted, and the table holds zero rows.
+- **Notification** through `lib/email/notify.ts` — the inquiry logic as a helper, feedback route
+  only. Resend is configured on Vercel Production (observed on `vercel env ls`), not locally; the
+  tests recorded `not_configured` and sent nothing.
+- **Legal documents updated in the same commit.**
+
+### Page length — measured, dev server, dark
+
+| Viewport | Revision 42 | Revision 43 | Δ |
+| --- | ---: | ---: | ---: |
+| Homepage 1440×900 | 15,469 | **15,622** | +153 |
+| Homepage 1024×768 | 12,953 | **13,294** | +341 |
+| Homepage 768×1024 | 16,191 | **16,490** | +299 |
+| Homepage 390×844 | 17,891 | **18,140** | +249 |
+
+Project Inquiry alone: **1,482px at 1440** (1.65 viewports), 1,651 at 1024,
+2,138 at 768, 2,182 at 430, 2,238 at 390, 2,448 at 320. The feedback route:
+1,763 at 1440, 2,310 at 768, 2,591 at 390, 2,841 at 320. Client Notes, with the
+synthetic rows: 712 at 1440.
+
+**The homepage grew by 153px at 1440 and the inquiry section by 153px** (1,329 → 1,482), which is the cost of the raised panel, its four numbered group heads and the panel label — the structure the client asked for in place of the colour. Revision 38's rule that boundary spacing is not slack still holds; nothing outside the chapter moved. On a phone the section is 2,238px (was 1,990): the *What happens next* list is desktop-only, the group spacing tightens below `sm`, and the panel's secondary caps note hides at the narrowest widths — each decided from a capture (the 320 note wrapped onto four lines; the 1024 option pairs made four 150px columns, so budget and timeline pair from `xl` now). One capture artifact, recorded rather than fixed: the 390 and 320 element captures show the direct routes below the panel as blank space. The block is in the server HTML and renders — captured visible with its foot in view (`seam-inq-footer-390`) — and the blank is the Revision 38 sweep artifact, a `whileInView` trigger the 0.8-viewport sweep stepped over.
+
+### QA
+
+- **Route tests** — nine branches of `/api/feedback`, all passed; one synthetic row created and
+  deleted under a marker guard; honeypot proven to store nothing.
+- **UI tests** — thirty-three checks over CDP across both forms (labels, legends, honeypot,
+  validation, focus, `aria-invalid`, consent default and toggle by keyboard, stubbed success and
+  failure states) — all passed. No row created from the UI.
+- **Captures** — 58 captures across five sets (`shots/r43a`–`r43e`), reviewed as images: the inquiry at every requested width in both
+  themes and under reduced motion, the seams, the service-page instance; the feedback route at four
+  widths in both themes; Client Notes with the synthetic rows.
+- **Overflow** `--quick`: **PASS — 44/44** (eleven routes × four widths, `/feedback` now in the gate). **`tsc` clean, `eslint src` 0 errors, `next build` clean.**
+- **The table holds zero rows** after every test.
+
+### Held, with the exact unblock
+
+| Item | Why | Unblock |
+| --- | --- | --- |
+| A Vercel Firewall rule for `/api/feedback` | An account action; the inquiry rule was not to be touched | Add the rule in §10au §8's shape — never with `actionDuration` |
+| An admin / moderation UI | Not this revision; the Table Editor is the surface | A later phase; the table is shaped for it |
+| Logo / photo alongside a quote | `media_allowed` is recorded, no media is collected | An upload path, and an asset confirmed to be the person |
+| A first real testimonial | None exists yet | Mishram sends `/feedback` to someone they worked with, then approves the row |
+
+### Verified
+
+- Types, lint and the production build clean after the last edit.
+- Overflow **PASS — 44/44** (eleven routes × four widths, `/feedback` now in the gate).
+- `public.testimonials` exists on the linked project with all eighteen columns; `public.leads`
+  untouched; zero rows in the new table.
+- **Not pushed. Not deployed.** `main` is ahead of `origin/main` by two commits.

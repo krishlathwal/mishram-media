@@ -11,6 +11,7 @@
  */
 
 import { ABOUT_PAGE_COPY } from "./about-page";
+import { FEEDBACK_COPY, FEEDBACK_PATH } from "./feedback";
 import { LEGAL_COPY, LEGAL_DOCS, legalPath } from "./legal";
 import {
   BUILT_SERVICE_PAGES,
@@ -54,6 +55,12 @@ export function routeMarker(pathname: string): RouteMarker {
     return { eyebrow: BRAND.name, label: ABOUT_PAGE_COPY.routeMarker };
   }
 
+  // The private feedback page (Revision 43). Reachable only by a shared link,
+  // but a real route, so the wipe names it rather than falling back.
+  if (pathname === FEEDBACK_PATH) {
+    return { eyebrow: BRAND.name, label: FEEDBACK_COPY.routeMarker };
+  }
+
   const doc = LEGAL_DOCS.find((d) => legalPath(d.slug) === pathname);
   if (doc) {
     return { eyebrow: LEGAL_COPY.sectionLabel, label: doc.title };
@@ -75,6 +82,8 @@ export const PUBLIC_ROUTES: readonly { path: string; label: string }[] = [
     label: resolveServicePage(p.slug).title,
   })),
   ...LEGAL_DOCS.map((d) => ({ path: legalPath(d.slug), label: d.title })),
+  // Reachable by URL, deliberately absent from the sitemap and `noindex`.
+  { path: FEEDBACK_PATH, label: FEEDBACK_COPY.routeMarker },
 ];
 
 /**
