@@ -172,8 +172,9 @@ function Roster() {
  * would be putting a picture on the page that this project cannot source. They
  * sit between the index's heading and the list, in the same hairline grammar.
  *
- * Revision 42: Fukra Insaan, Purav Jha and Sagar Rathee, in the client's own
- * order — two of them are on the client's stage ranking with no still to
+ * Revision 42 set Fukra Insaan, Purav Jha and Sagar Rathee here; Revision 45
+ * reads them in the client's locked order — Purav Jha, Sagar Rathee, then
+ * Fukra Insaan — two of them ranked directly after the stage with no still to
  * show. Two columns from `sm`, three from `lg`, stacked below. Self-
  * suppressing: mark nothing `lead` in config and this renders nothing.
  */

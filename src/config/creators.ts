@@ -249,14 +249,56 @@ export const CREATORS: readonly Creator[] = [
   },
   /**
    * ─────────────────────────────────────────────────────────────────────────
-   * AKASH SAGAR — PUBLISHED ON THE STAGE IN REVISION 42, AT SECOND.
+   * LOVEKESH KATARIA — imagery upgraded and the spelling normalised (17B);
+   * second on the client's locked ranking (45; third in 42), "the image with me".
+   * ─────────────────────────────────────────────────────────────────────────
+   *
+   * **The name is `Lovekesh`, with the middle `e`.** The live official
+   * account `@corrupt_tuber` carries the display name **"Lovekesh Kataria"**.
+   * One person, one spelling, everywhere. **`id` deliberately stays
+   * `lovkesh`** — an internal key eight compositions look this creator up by.
+   *
+   * THE PHOTOGRAPH is `WEBSITE SHORTLIST/Lovekesh Kataria.jpeg`, user
+   * supplied and labelled — 6048x8064 after orientation, an interior
+   * relationship frame with the client. **Both figures are kept in every
+   * format**: the project records that Lovekesh Kataria is *in* the frame, not
+   * which figure he is.
+   */
+  {
+    id: "lovkesh",
+    name: "Lovekesh Kataria",
+    alt: "Lovekesh Kataria photographed with Mishram Media",
+    label: "Creator Network",
+    stage: true,
+    instagram: "corrupt_tuber",
+    media: {
+      // The vertical position is 14% for the two 16:9 frames on
+      // `/services/brand-shoots-content`, which crop a 3:4 source to a 42%
+      // band — at 50% that band landed below both heads. It does nothing on
+      // the homepage, where the file and the frame share a 3:4 aspect.
+      portrait: {
+        src: "/media/creators/featured/lovekesh-kataria.webp",
+        position: "50% 14%",
+      },
+      reel: { position: "50% 24%", zoom: 1.95, origin: "50% 24%" },
+      content: { position: "50% 30%", zoom: 1.15, origin: "50% 26%" },
+    },
+    nudge: { reelY: -2 },
+  },
+  /**
+   * ─────────────────────────────────────────────────────────────────────────
+   * AKASH SAGAR — PUBLISHED ON THE STAGE IN REVISION 42; THIRD SINCE REVISION 45.
    * ─────────────────────────────────────────────────────────────────────────
    *
    * He sat here `published: false` since Revision 13 on the reasoning that a
    * worked-with roster should not also carry the one managed creator. **The
-   * client has now ranked him second on the stage by name** ("on the second
-   * number add Bhandesiri, Akash Sagar"), and that instruction outranks the
-   * project's own tidiness rule. The Current Management chapter stays exactly
+   * client ranked him on the stage by name** ("on the second number add
+   * Bhandesiri, Akash Sagar", Revision 42), and that instruction outranks the
+   * project's own tidiness rule. **Revision 45 seats him third**: the client's
+   * locked priority list reads Ali Fazal, Lovekesh Kataria, then *Pandey
+   * Shirish* — the display name of `@xbhandesiri_` (§10at's identity table) —
+   * and the stage follows that list. His weight on the page is unchanged:
+   * the Hero's centre frame and the whole Current Management chapter are his. The Current Management chapter stays exactly
    * as it is; this is a second, ranked appearance rather than a replacement.
    *
    * RELATIONSHIP — the one entry on this roster that is not a worked-with
@@ -299,44 +341,6 @@ export const CREATORS: readonly Creator[] = [
   },
   /**
    * ─────────────────────────────────────────────────────────────────────────
-   * LOVEKESH KATARIA — imagery upgraded and the spelling normalised (17B);
-   * third on the client's stage ranking (42), "the image with me".
-   * ─────────────────────────────────────────────────────────────────────────
-   *
-   * **The name is `Lovekesh`, with the middle `e`.** The live official
-   * account `@corrupt_tuber` carries the display name **"Lovekesh Kataria"**.
-   * One person, one spelling, everywhere. **`id` deliberately stays
-   * `lovkesh`** — an internal key eight compositions look this creator up by.
-   *
-   * THE PHOTOGRAPH is `WEBSITE SHORTLIST/Lovekesh Kataria.jpeg`, user
-   * supplied and labelled — 6048x8064 after orientation, an interior
-   * relationship frame with the client. **Both figures are kept in every
-   * format**: the project records that Lovekesh Kataria is *in* the frame, not
-   * which figure he is.
-   */
-  {
-    id: "lovkesh",
-    name: "Lovekesh Kataria",
-    alt: "Lovekesh Kataria photographed with Mishram Media",
-    label: "Creator Network",
-    stage: true,
-    instagram: "corrupt_tuber",
-    media: {
-      // The vertical position is 14% for the two 16:9 frames on
-      // `/services/brand-shoots-content`, which crop a 3:4 source to a 42%
-      // band — at 50% that band landed below both heads. It does nothing on
-      // the homepage, where the file and the frame share a 3:4 aspect.
-      portrait: {
-        src: "/media/creators/featured/lovekesh-kataria.webp",
-        position: "50% 14%",
-      },
-      reel: { position: "50% 24%", zoom: 1.95, origin: "50% 24%" },
-      content: { position: "50% 30%", zoom: 1.15, origin: "50% 26%" },
-    },
-    nudge: { reelY: -2 },
-  },
-  /**
-   * ─────────────────────────────────────────────────────────────────────────
    * KAKA — ADDED IN REVISION 42.
    * ─────────────────────────────────────────────────────────────────────────
    *
@@ -363,15 +367,23 @@ export const CREATORS: readonly Creator[] = [
     alt: "Kaka photographed with Mishram Media",
     label: "Worked With",
     stage: true,
-    // 2160x2880 of the 2160x3840 source from y=120, output 1000x1333 — the
-    // heads sit at ~22% of the frame, which is where the portrait frame reads
-    // them. The pair is side by side, so the supporting frames zoom on both.
+    // 2160x2880 of the 2160x3840 source from y=120, output 1000x1333. The
+    // heads sit at ~45% of that frame (the mural fills the top half), which
+    // the portrait frame — natively 3:4 — shows as cropped. The pair is side
+    // by side, so the supporting frames zoom on both.
+    //
+    // Revision 45: the reel was anchored at 18%, a value written for heads in
+    // the top quarter. Captured at 1440 and 390 it showed the mural with the
+    // two heads at the frame's foot and the left figure's face cut at the
+    // edge. Re-anchored on the heads, pulled a step left (the left figure
+    // stands at ~36% of the width) and one step less zoom, so both faces sit
+    // whole in the middle of the 9:16.
     media: {
       portrait: {
         src: "/media/creators/featured/kaka.webp",
         position: "50% 24%",
       },
-      reel: { position: "50% 18%", zoom: 1.8, origin: "50% 18%" },
+      reel: { position: "48% 46%", zoom: 1.6, origin: "48% 46%" },
       content: { position: "50% 30%", zoom: 1.16, origin: "50% 26%" },
     },
   },
@@ -584,11 +596,15 @@ export function workedWithUrl(instagram: string): string {
  * this array is the client's relationship list, not the render list.
  */
 export const WORKED_WITH: readonly WorkedWith[] = [
-  { name: "Fukra Insaan", instagram: "fukra_insaan", lead: true },
-  // No still exists anywhere in the library — `.MOV` only. Type is the honest
-  // form until one arrives (§10af).
+  // Revision 45 — the client's locked priority list ranks Purav Jha fourth
+  // and Sagar Rathee fifth, directly after the four on the stage; Fukra Insaan
+  // is not on that list but was asked "to the top" on the Revision 42
+  // walkthrough, so he keeps display scale and reads third of the three.
+  // No still exists anywhere in the library for Purav Jha — `.MOV` only. Type
+  // is the honest form until one arrives (§10af).
   { name: "Purav Jha", instagram: "puravjha", lead: true },
   { name: "Sagar Rathee", instagram: "dr.69___", lead: true },
+  { name: "Fukra Insaan", instagram: "fukra_insaan", lead: true },
   // No handle — see `WORKED_WITH_UNVERIFIED`. The client named "JJ
   // Communication" separately on the stage ranking; it is this relationship's
   // organisation, and the one photograph of it stays blocked (OPPO in frame).

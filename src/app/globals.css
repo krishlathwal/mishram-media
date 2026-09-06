@@ -1970,18 +1970,21 @@ html.theme-transition *::after {
     grid-template-columns: 1fr;
   }
 
+  /* Three leads since Revision 42, so three columns as soon as there is a
+     row to share — Revision 45 captured the two-column stage at 768 with
+     the third name sitting alone on a second row, an orphan the widths
+     between 640 and 1023 all produced. The names are clamped to 1.4rem at
+     these widths, so three of them fit the measure with room. */
   @media (min-width: 640px) {
     .wwi-lead {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 2.5rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 2rem;
     }
   }
 
-  /* Three leads from Revision 42, so three columns once there is room —
-     otherwise the third sits alone on a second row. */
   @media (min-width: 1024px) {
     .wwi-lead {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 2.5rem;
     }
   }
 

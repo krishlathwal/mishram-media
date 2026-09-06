@@ -31,6 +31,7 @@
 | **15** | **The client's walkthrough batch — creator priority, plum, Mirzapur, the award banner** | **Done — Revision 42 (local, not pushed)** |
 | **16** | **Project Inquiry redesign + the testimonial foundation** | **Done — Revision 43 (local, not pushed)** |
 | **17** | **Service landing pages + About — the hierarchy pass** | **Done — Revision 44 (local, not pushed)** |
+| **18** | **Homepage — trust, conversion and navigation** | **Done — Revision 45 (local, not pushed)** |
 
 **Phase 13 closed in Revision 41 and the site was released.** Its five items, and where each
 landed — the detail is in the Revision 41 section at the foot of this document:
@@ -3792,3 +3793,118 @@ chapters and their order. Every service scene on the homepage.
 - Types, lint and the production build clean after the last edit.
 - Overflow **PASS — 44/44** (eleven routes × four widths).
 - **Not pushed. Not deployed.** `main` is ahead of `origin/main` by three commits.
+
+---
+
+## Revision 45 — Phase 18, the homepage: trust, conversion and navigation
+
+**A story, trust-hierarchy and conversion audit of the homepage, and the few edits it earned.** The
+page was mapped section by section, captured as stitched viewport frames at 1440, 1280, 1024, 768,
+430 and 390 in dark and at 1440 and 390 in light before a line was edited, and read against §10g,
+§10k, §10am, §10at and §10au. The finding was that the page already runs in the order the client's
+brief asks for and that most of what the brief listed as risks — repeated creators, a weak seam into
+Recognition, a competing primary CTA, a menu that exposes `/feedback` — is not there. **Four page
+edits**, each with a reason from the brief's own list, and no section moved. The decisions are the
+brief's **§10aw**; this is the phase record. **Local only — committed on `main`, not pushed, not
+deployed.**
+
+### Revision 44, checked before anything was edited
+
+`git status` clean, `main` ahead of `origin/main` by three, HEAD `fe0daf8`, not amended. Every
+Revision 42 element present: the four ranked creators on the stage, Mirzapur leading Selected Work,
+the award banner as the Recognition background with plum confined to its plate, the Rev 43 inquiry
+panel without plum, `/feedback` absent from the header, the menu, the footer and the sitemap, and the
+Client Notes area rendering nothing with **zero approved rows** (`testimonials` count 0, checked
+before and after).
+
+### The homepage, mapped — current order, which is the brief's order
+
+| # | Section | Role in the story | 1440 | 390 | Says | Action | Next section follows? |
+| --- | --- | --- | ---: | ---: | --- | --- | --- |
+| — | `hero` | WHO | 900 | 844 | *We turn attention into growth.* | `Book a 15-Min Call` · `Contact Us` | yes — the brands are the first proof of it |
+| 01 | `collaborations` | WHO WE WORK WITH — brands | 266 | 244 | six selected brands | — | yes |
+| — | `current-management` | WHO WE WORK WITH — the managed creator | 1,083 | 1,790 | Akash Sagar, currently managed | `View Instagram` | yes — the numbers that follow are his register |
+| — | `proof` | PROOF | 325 | 515 | 130M+ · 100+ · 500+ · 1,000+ (`config/proof.ts`) | — | yes |
+| 02 | `what-we-do` | WHAT WE DO | 5,096 (pinned) | 3,687 | four services, one system | `Explore service` · `Discuss this project` | yes |
+| — | `difference` | WHY US | 836 | 1,333 | *Fewer handoffs. More momentum.* | — | yes |
+| 03 | `creators` | CREATOR NETWORK | 1,561 | 2,636 | the ranked stage, the worked-with index | `Work with our creator network` | yes |
+| 04 | `process` | HOW WE WORK | 925 | 873 | Plan → Strategise → Create → Launch → Scale | `Start a project` | yes |
+| 05 | `work` | WHAT WE HAVE DONE | 1,025 | 1,517 | Mirzapur · Swiggy · Pintola · Mukul Sharma | `Create with us` | yes — straight into Recognition while Client Notes is empty |
+| — | `client-notes` | CLIENT TRUST | 0 | 0 | renders nothing at zero approved rows | — | — |
+| 06 | `recognition` | RECOGNITION | 795 | 598 | Best Digital Marketing Agency · NUFEW 2024–25 | `Build something worth noticing` | yes |
+| 07 | `about` | ABOUT | 646 | 721 | *Creative thinking, built for growth.* | `Tell us what you're building ↓` · `Contact Us` | yes — the one in-page route into the form |
+| — | `project-inquiry` | START A PROJECT | 1,482 | 2,238 | the four-section brief | `Send project brief` | footer |
+| — | `footer` | — | 681 | 1,143 | identity · navigate · services · contact · follow · legal | `Back to top` | — |
+
+The chapter feet all share one padding scale (`pb-12 … lg:pb-22`), the unnumbered interludes
+(Current Management, the proof strip, the Difference, Client Notes) all carry the short teal rule
+rather than a number, and the numbering closes at 07 whether or not Client Notes renders, because
+that chapter is deliberately unnumbered. **Nothing was reordered.**
+
+### What the audit found, and what was done
+
+| Area | Found | Done — reason |
+| --- | --- | --- |
+| Creator stage | The stage ran Ali Fazal, **Akash Sagar**, Lovekesh Kataria, Kaka — Revision 42's reading of *"most important Bhandesiri"*. The client's locked list reads Ali Fazal, Lovekesh Kataria, then *Pandey Shirish*, which §10at's identity table resolves to Akash Sagar (`@xbhandesiri_`) | Stage → **Ali Fazal, Lovekesh Kataria, Akash Sagar, Kaka** — CREATOR PRIORITY. His weight is untouched: the Hero's centre frame and the whole Current Management chapter are his |
+| Worked-with leads | Set at display scale as Fukra Insaan, Purav Jha, Sagar Rathee. The locked list ranks Purav Jha fourth and Sagar Rathee fifth — directly after the stage — and does not name Fukra Insaan, whom the Revision 42 walkthrough asked *"to the top"* | Leads → **Purav Jha, Sagar Rathee, Fukra Insaan** — CREATOR PRIORITY. Nobody demoted, nobody removed; the rows beneath already run Manish Jain · JJ Communications, Mukesh Jain · Shallu Nisha Podcast (6–9 on the list) first |
+| Kaka on the stage | The 9:16 reel frame was anchored at 18% for heads in the top quarter; in `featured/kaka.webp` the heads sit at ~45% (the café mural fills the top half). Captured at 1440 and 390 with Kaka selected: the frame showed mural, the two heads at its foot, the left face cut at the edge | Reel → **`48% 46%`, zoom 1.6** — MEDIA PRESENTATION. Both faces whole, mid-frame, at 1440 and 390, dark and light. Portrait (3:4, natively) and content (4:5) frames were already right and are untouched |
+| Worked-with lead row | Three leads on a two-column grid from 640 to 1023: at 768 the third name sat alone on a second row, an orphan at every width in that range | `.wwi-lead` → **three columns from 640** — EXCESSIVE EMPTY SPACE / MOBILE PACING. The names are clamped to 1.4rem there and three fit the measure |
+| Creator repetition | Each of the four ranked creators has exactly one first-party photograph (§10 of the asset audit), which the Hero, Service 01 and the stage each crop in their own format at the client's request (Revision 42); Akash Sagar's second frame carries Current Management and his 4:5 sits on Service 02; Ali Fazal is also, unavoidably, in the Mirzapur still | **Held.** No swap exists that does not either repeat a library creator across two adjacent What We Do scenes (the Revision 42 rule) or remove a face the client asked for. Recorded, not changed |
+| Mirzapur / Selected Work | Mirzapur: The Movie leads as *Film PR · PR support*, still 9:16 with the support-cast frame; Swiggy and Pintola *Branded content*; Mukul Sharma *Creator content*. The index is the cinematic index; no figure is attached to any item; the 40M+ block reads *not attributed to the work shown here* | **Held** — compact, cinematic, credible at 1440, 1280, 1024, 768, 430, 390 |
+| Client Notes zero state | `ClientNotes` returns `null` at zero rows; no wrapper, hairline or heading survives; numbering unaffected; Work hands straight to Recognition on the shared chapter foot | **Held** — nothing to clean |
+| Recognition | Banner as background from `xl`, block-above-plate below; plate legible in both themes; the plate's top edge meets the artwork's inset photograph at 1440 and 1280 without covering a face; NUFEW wording unchanged; `award.jpg.jpeg` not used | **Held** |
+| Project Inquiry handoff | About's `Tell us what you're building ↓` is the page's one in-page route into the form; every other chapter action opens the contact panel; the form's only button is `Send project brief` | **Held** — no competing primary |
+| Header | Work / Services / Creators / About + `Contact Us`; active state from `SECTION_ORDER`; services disclosure; mobile menu with Call, Email and `Contact Us`; `/feedback` nowhere | **Held** |
+| Footer | Identity, navigate, services, contact (email, phone, WhatsApp), follow (Instagram, Facebook, LinkedIn), legal (Privacy, Terms, Cookies), back-to-top; no office, no booking button | **Held** |
+| Colour | Plum confined to the Recognition plate; the inquiry chapter without it; nothing reintroduced | **Held** |
+
+Four edits against a brief that targeted eight to fifteen: **the remaining items were audited and
+found already correct, and an edit without a captured reason is the thing §10at and §10av say not to
+make.**
+
+### Page length — measured, dev server, dark
+
+| Width | Before | After | Δ |
+| --- | ---: | ---: | ---: |
+| 1440 | 15,622 | **15,622** | 0 |
+| 768 | 16,490 | **16,374** | −116 |
+| 390 | 18,140 | **18,140** | 0 |
+
+The 1440 and 390 heights do not move: the stage order, the lead order and a crop are height-neutral,
+and the lead grid is one column below 640 and three from 1024 as before. The 768 delta is the orphan
+lead row.
+
+### QA
+
+- **Captures** — eight stitched page captures before — 1440, 1280, 1024, 768, 430 and 390 in dark, 1440 and 390 in light (`shots/r45/base`, `shots/r45/mid`, `shots/r45/light`) — and three after at 1440, 768 and 390 (`shots/r45/after`), about 210 viewport frames in all; the stage with Kaka, Lovekesh Kataria and Akash Sagar selected at 1440 and 390 in both themes before and after (`shots/r45/audit`, `shots/r45/audit2`, `shots/r45/after-stage`, `shots/r45/after-stage2`); the mobile menu open and with the services group expanded at 390 and 768; and the eight `r45-*` section shots (`shots/r45/shots`).
+- **Overflow** `--quick`: **PASS — 44/44** (eleven routes × four widths). **`tsc` clean, `eslint src` 0 errors, `next build` clean.**
+- **Console**: zero application errors, zero hydration warnings, zero failed requests and zero dead in-page anchors on `/` at 1440 and 390. The check's strict pass lists three warnings, none from this revision's code: a `THREE.Clock` deprecation notice raised by the three.js dependency beneath the untouched hero canvas, and Next's dev-overlay `loading="eager"` suggestions for below-fold images, which §10aq and §10ar already record as an artifact of the QA scroll sweep and which are not acted on.
+- **Images**: zero broken images reported by the frame capture at every width; every creator asset
+  referenced by config resolves.
+- **Client Notes**: `testimonials` holds 0 rows before and after; no synthetic row was created for
+  this revision, so nothing had to be deleted. The zero state was verified on the rendered page at
+  every width.
+- **Dead anchors**: none at 1440 or 390.
+
+### Tooling recorded
+
+`shots/r44/frames.mjs` gained a `THEME=light` switch and a `.` token for the homepage (a bare `/`
+argument is rewritten to the Git root by the MSYS shell — §10av's lesson, met again);
+`shots/r44/console.mjs` accepts the same token. `shots/r45/stage.mjs` selects a creator on the stage
+with a real click and captures the mounted frames in page coordinates; `shots/r45/menu.mjs` captures
+the mobile menu open and expanded; `scripts/shoot.mjs` carries the `r45-*` shots, including the
+stage with the fourth index entry clicked.
+
+### Untouched
+
+The Hero composition, the What We Do pinned system and every scene's casting, the Difference chapter,
+Work Process, Selected Work and its index, the Recognition banner and plate, the About preview, the
+Project Inquiry form, its payload, `/api/inquiry`, `/feedback` and `/api/feedback`, the testimonials
+schema and moderation, Header and Footer markup and copy, `config/proof.ts`, GA, consent, the
+firewall rule, DNS, GoDaddy, Vercel env vars, Resend, Supabase.
+
+### Verified
+
+- Types, lint and the production build clean after the last edit.
+- Overflow **PASS — 44/44** (eleven routes × four widths).
+- **Not pushed. Not deployed.** `main` is ahead of `origin/main` by four commits.

@@ -386,6 +386,18 @@ const SHOTS = [
   { name: "r44-abt-now-1440", w: 1440, h: 900, scheme: "dark", path: "/about", selector: "#now" },
   { name: "r44-abt-now-390", w: 390, h: 844, scheme: "dark", mobile: true, path: "/about", selector: "#now" },
   { name: "r44-abt-now-1440-light", w: 1440, h: 900, scheme: "light", path: "/about", selector: "#now" },
+  /* ── Revision 45 — homepage trust and conversion ─────────────────────
+     The creator stage with the fourth entry selected (a real click on the
+     index, not a prop), the worked-with index at the widths where the lead
+     row changed, and the Work → Recognition seam with Client Notes absent. */
+  { name: "r45-stage-kaka-1440", w: 1440, h: 900, scheme: "dark", selector: "#creators", click: "#creators li:nth-child(4) button", after: 3000 },
+  { name: "r45-stage-kaka-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#creators", click: "#creators li:nth-child(4) button", after: 3000 },
+  { name: "r45-stage-kaka-1440-light", w: 1440, h: 900, scheme: "light", selector: "#creators", click: "#creators li:nth-child(4) button", after: 3000 },
+  { name: "r45-index-768", w: 768, h: 1024, scheme: "dark", selector: "#creators" },
+  { name: "r45-index-1024", w: 1024, h: 768, scheme: "dark", selector: "#creators" },
+  { name: "r45-index-640", w: 640, h: 960, scheme: "dark", mobile: true, selector: "#creators" },
+  { name: "r45-seam-work-recognition-1440", w: 1440, h: 900, scheme: "dark", selector: "#recognition", pad: 520 },
+  { name: "r45-seam-work-recognition-390", w: 390, h: 844, scheme: "dark", mobile: true, selector: "#recognition", pad: 360 },
   { name: "rcg-1920", w: 1920, h: 1080, scheme: "dark", selector: "#recognition" },
   { name: "rcg-1536", w: 1536, h: 864, scheme: "dark", selector: "#recognition" },
   { name: "dif-1440-dark", w: 1440, h: 900, scheme: "dark", selector: "#difference" },

@@ -6283,6 +6283,28 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 45’s decisions (§10aw) — locked.**
+  - **The homepage order is the brief's order and was verified, not assumed**: Hero → Collaborations
+    → Current Management → proof → What We Do → Difference → Creators → Work Process → Selected Work
+    → Client Notes (unrendered at zero) → Recognition → About → Project Inquiry. Do not reorder it.
+  - **The stage is Ali Fazal, Lovekesh Kataria, Akash Sagar, Kaka** — the client's locked list read
+    through §10at's identity table (*Pandey Shirish* = Akash Sagar). Akash Sagar's weight lives in
+    the Hero's centre frame and Current Management, not in stage position.
+  - **The index leads are Purav Jha, Sagar Rathee, Fukra Insaan**, in that order; the rows beneath
+    begin Manish Jain · JJ Communications, Mukesh Jain · Shallu Nisha Podcast. Nobody is demoted or
+    removed for not being on the locked list.
+  - **Kaka is the café-mural photograph** (`Immortal Kaka Ji.jpeg`) in every frame; the stage reel
+    is anchored at `48% 46%`, zoom 1.6, and the heads in `featured/kaka.webp` sit at ~45%, not
+    the ~22% an earlier note claimed. Re-check a crop against a capture, not against a comment.
+  - **Creator repetition on the homepage is the state of the library, not a defect** — one
+    photograph per ranked creator, each format from the client's request. No swap until a second
+    photograph of any of the four exists.
+  - **The lead grid is three columns from 640.** Three leads on two columns orphan the third.
+  - **Client Notes stays unnumbered and returns nothing at zero**; Recognition stays the background
+    banner with plum confined to its plate; About's `Tell us what you're building ↓` stays the one
+    in-page route into the form; every other chapter action stays a text action to the contact panel.
+  - **Header and footer are correct as they are.** `/feedback` stays out of both.
+  - **Not pushed, not deployed, by instruction.**
 - **Revision 44’s decisions (§10av) — locked.**
   - **The hero rails are the storyline, in the client's words and order** — Performance
     `Strategy → Media → Creative → Optimisation → Growth`, Social `Positioning → Content System →
@@ -6850,6 +6872,16 @@ one art-directed system, and so is every service page.
 ---
 
 ## 19. Current status & next step
+
+> **READ §10aw FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 45 — FOUR LOCAL COMMITS, NOT PUSHED.**
+>
+> **§10aw (Revision 45):** the homepage story, trust and conversion audit. The order was verified
+> against the brief and left alone; the stage now follows the client's locked list (Ali Fazal,
+> Lovekesh Kataria, Akash Sagar, Kaka); the index leads read Purav Jha, Sagar Rathee, Fukra Insaan;
+> Kaka's stage reel was re-anchored on the pair; the lead grid no longer orphans its third name
+> between 640 and 1023. Everything else — Mirzapur, Client Notes at zero, Recognition, the inquiry
+> handoff, header, footer, colour — was audited and held. Homepage at 1440 **15,622**, at
+> 390 **18,140**. **Local commit on `main`, not pushed, not deployed.**
 
 > **READ §10av FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 44 — THREE LOCAL COMMITS, NOT PUSHED.**
 >
@@ -11970,4 +12002,119 @@ scripts/shoot.mjs                        the Revision 44 shots
 
 One commit on `main` after validation — *Final polish — service landing pages and about* — **not
 pushed, not deployed.** `main` is ahead of `origin/main` by three commits until someone chooses to
+push.
+
+---
+
+## 10aw. REVISION 45 — THE HOMEPAGE: TRUST, CONVERSION AND NAVIGATION
+
+**An audit of the homepage's story order, creator priority, trust hierarchy and conversion path,
+made the way the brief asked: map first, change only where a captured reason exists, leave a strong
+section alone.** Four page edits — two of order, one crop, one grid — no section moved, no media
+produced, no figure introduced, no colour reintroduced. **Committed locally on `main`, not pushed,
+not deployed.** The roadmap's Revision 45 section carries the section map, the measurements and the
+capture record.
+
+### 1 — THE STORY, AND WHY IT WAS NOT REORDERED
+
+The brief's desired progression is *who → who we work with → proof → what we do → why us → creator
+network → how we work → what we have done → client trust → recognition → about → start a project*.
+The page already runs exactly that: Hero, Collaborations, Current Management, the proof strip, What
+We Do, the Difference, Creators, Work Process, Selected Work, Client Notes (empty, unrendered),
+Recognition, About, Project Inquiry. Every chapter foot shares one padding scale; every unnumbered
+interlude carries the short teal rule instead of a number; the numbering closes at 07 with or without
+Client Notes. **Nothing was reordered, by evidence rather than by default.**
+
+### 2 — CREATOR PRIORITY, THE LOCKED LIST APPLIED
+
+The client's priority list is locked at: Ali Fazal, Lovekesh Kataria, Pandey Shirish, Purab Jahan,
+Sagar Rathi, Manish Jain, JJ Communication, Mukesh Jain, Sallu Nish, Podcast Kaka, The Singer / Kaka.
+Read through §10at's identity table — *Pandey Shirish* is Akash Sagar (`@xbhandesiri_`), *Purab
+Jahan* is Purav Jha, *Sallu Nish* and *podcast* are the Shallu Nisha Podcast (Mukesh Jain's one index
+row), *Kaka, the singer* is Kaka — the page now reads:
+
+- **Stage: Ali Fazal, Lovekesh Kataria, Akash Sagar, Kaka.** Revision 42 seated Akash second on
+  *"most important Bhandesiri"*; the locked list seats him third, and the stage follows the list. His
+  prominence is unchanged — the Hero's centre frame and the whole Current Management chapter are his.
+- **Index leads: Purav Jha, Sagar Rathee, Fukra Insaan.** The two ranked directly after the stage
+  first, in their order; Fukra Insaan — not on the locked list, but asked *"to the top"* on the
+  Revision 42 walkthrough — keeps display scale and reads third. Nobody was demoted or removed.
+- **Index rows** were already in the list's order beneath: Manish Jain · JJ Communications, Mukesh
+  Jain · Shallu Nisha Podcast, then the rest as §10at set them.
+
+### 3 — KAKA, VERIFIED
+
+`Immortal Kaka Ji.jpeg` is the café-mural photograph — two figures in conversation before a painted
+wall — and every Kaka frame on the site derives from it: the Hero's 1:1 (`hero/creators/kaka.webp`,
+the square through both heads), Service 01's 9:16 portrait (`kaka-reel.webp`, the full frame) and
+the stage's 3:4 (`featured/kaka.webp`). All three render both figures undistorted at 1440 and 390 in
+both themes. The one fault was the stage's supporting **reel** frame: its anchor was written for
+heads in the top quarter, and in the 3:4 file the heads sit at ~45%, so the 9:16 showed mural with
+the two heads at its foot and the left face cut at the edge. **Re-anchored at `48% 46%`, zoom 1.6**
+— both faces whole, mid-frame. The Hero and Service 01 crops were right and are untouched. The name
+renders **Kaka**, `Worked With`, no handle — §10at stands.
+
+### 4 — CREATOR REPETITION, RECORDED
+
+Each of the four ranked creators has one first-party photograph, which the Hero, Service 01 and the
+stage each crop in their own format at the client's request (Revision 42). Akash Sagar's second frame
+carries Current Management and his 4:5 sits on Service 02; Ali Fazal is also, unavoidably, in the
+Mirzapur still. **No swap was made**: every alternative either repeats a library creator across two
+adjacent What We Do scenes (the Revision 42 rule) or removes a face the client asked to see. This is
+recorded as the state of the library, not as a defect: it changes the day a second photograph of any
+of the four arrives.
+
+### 5 — SELECTED WORK, CLIENT NOTES, RECOGNITION, THE HANDOFF — AUDITED AND HELD
+
+- **Selected Work.** Mirzapur: The Movie leads as *Film PR · PR support*, a 9:16 still with the
+  support-cast frame; Swiggy and Pintola *Branded content*; Mukul Sharma *Creator content*. Compact,
+  cinematic and credible at every width captured; no figure attached to any item; the 40M+ block
+  reads *not attributed to the work shown here*.
+- **Client Notes at zero.** `ClientNotes` returns `null` at zero approved rows; no wrapper, hairline or
+  heading survives; Work hands straight to Recognition on the shared chapter foot. `testimonials`
+  held 0 rows before and after this revision; no synthetic row was created.
+- **Recognition.** The banner stays the section's background from `xl` and a block above the plate
+  below it; the plate is legible in both themes; its top edge meets the artwork's inset photograph
+  at 1440 and 1280 without covering a face; NUFEW wording unchanged; `award.jpg.jpeg` not used.
+- **The handoff.** About's `Tell us what you're building ↓` is the page's one in-page route into the
+  form; every other chapter action opens the contact panel as a text action, not a button; the form's
+  only button is `Send project brief`. No competing primary.
+
+### 6 — HEADER AND FOOTER, AUDITED AND HELD
+
+Header: Work / Services / Creators / About and `Contact Us`, active state from `SECTION_ORDER`, the
+services disclosure, the mobile menu with the same four, Call, Email and `Contact Us`; `/feedback`
+nowhere. Footer: identity, navigate, services, contact (email, phone, WhatsApp), follow (Instagram,
+Facebook, LinkedIn), legal (Privacy, Terms, Cookies), back-to-top; no office, no booking button.
+Captured open and expanded at 390 and 768; no UX issue found, nothing changed.
+
+### 7 — THE ONE LAYOUT EDIT
+
+Three lead names on a two-column grid from 640 to 1023 put the third alone on a second row — captured
+at 768. `.wwi-lead` is three columns from 640 now; the names are clamped to 1.4rem at those widths
+and three fit the measure. Below 640 it stays one column; from 1024 nothing changed.
+
+### 8 — COLOUR, MEDIA, FACTS
+
+Plum remains confined to the Recognition plate; the inquiry chapter stays without it; nothing was
+reintroduced. **Media: none added, none generated.** Every changed string was checked: no metric, no
+title, no relationship, no client, no award beyond NUFEW 2024–25; zero hits for the banned register;
+no betting, gambling, casino, fantasy, real-money-gaming, gaming, offshore-CFD or binary-options
+brand anywhere; no withheld relationship restored.
+
+### 9 — FILES
+
+```
+src/config/creators.ts                        stage order · lead order · Kaka reel crop
+src/components/creators/WorkedWithIndex.tsx   the lead-order note
+src/app/globals.css                           .wwi-lead three columns from 640
+scripts/shoot.mjs                             the Revision 45 shots
+```
+
+**Dependencies: none added. Media: none added.**
+
+### 10 — GIT
+
+One commit on `main` after validation — *Final polish — homepage trust and conversion* — **not
+pushed, not deployed.** `main` is ahead of `origin/main` by four commits until someone chooses to
 push.
