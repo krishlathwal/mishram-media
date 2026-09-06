@@ -108,7 +108,12 @@ export const WEB_HERO = {
   tertiaryCta: "Book a 15-min call",
   tertiaryNote: "Free · 15 min · no obligation",
   /** The concept rail under the composition. Categories, never claims. */
-  signalPath: ["Web", "Commerce", "SaaS", "Software", "Mobile"] as const,
+  /**
+   * Revision 44: what the practice brings rather than a list of artefacts —
+   * the artefacts are the whole of §03 and §04 below. Four terms, so the route
+   * reads as an agency that designs, builds and converts, not a dev shop.
+   */
+  signalPath: ["Creative Direction", "Digital Experience", "Conversion", "Systems"] as const,
   /**
    * The composition carries no photography, so the caption slot carries what a
    * page full of interfaces most needs to say out loud — the same move §10m

@@ -74,7 +74,14 @@ export const PERFORMANCE_HERO = {
   primaryCtaNote: "15 min · no obligation",
   secondaryCta: "Start a Project",
   /** The concept line under the composition. The sixth move is drawn, not listed. */
-  signalPath: ["Hypothesis", "Creative Test", "Distribution", "Landing", "Signal"],
+  /**
+   * Revision 44: the service's storyline, not the composition's legend. The
+   * drawing beside it shows one turn of a test; this rail says what the
+   * engagement is — strategy first, media and creative made together,
+   * optimisation between rounds, growth as the outcome. The composition's own
+   * labels (`labels` below) still name what it draws.
+   */
+  signalPath: ["Strategy", "Media", "Creative", "Optimisation", "Growth"],
   /**
    * The hero has no photography, so the caption slot carries the thing a
    * performance page most needs to say out loud: the composition is a diagram
@@ -650,6 +657,8 @@ export const PERFORMANCE_LANDING: ServiceSectionCopy & {
   requirements: readonly { index: string; name: string; note: string }[];
   labels: { desktop: string; mobile: string; path: readonly string[] };
   caption: string;
+  action: string;
+  actionHref: string;
 } = {
   label: "The destination",
   headline: ["The ad is only", "half the journey."],
@@ -687,6 +696,16 @@ export const PERFORMANCE_LANDING: ServiceSectionCopy & {
   },
   caption:
     "An abstract interface, not a client site. No browser chrome, no brand, no checkout and no data.",
+  /**
+   * The one cross-service link this page was missing (§10m recorded it as
+   * future work): paid media hands off to the destination here, and Mishram
+   * builds the destination. A text action, never a button — §10j's rule that
+   * a service page carries one contextual link between the hero and the form
+   * is kept in spirit: this is the second, and it is the handoff the copy
+   * already sets up.
+   */
+  action: "See what we build",
+  actionHref: "/services/web-digital-experiences",
 };
 
 /* ── What we optimise ───────────────────────────────────────────── */
@@ -826,7 +845,9 @@ export const PERFORMANCE_SCOPE: readonly ServiceScopeItem[] = [
 
 export const PERFORMANCE_AUDIENCE = {
   label: "Who it is for",
-  statement: ["Built for teams", "that want more than ad spend."] as const,
+  // Revision 44: re-broken so the second line fits the shared head's 34rem
+  // measure at 1440 — "that want more than ad spend." wrapped onto a third line.
+  statement: ["For teams that want", "more than ad spend."] as const,
   note: "Performance works when there is something worth distributing and somewhere worth sending people. It is not a way to make an unclear offer work by spending more against it.",
   audiences: [
     "Brands running paid social",

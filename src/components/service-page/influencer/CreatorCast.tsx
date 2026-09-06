@@ -44,11 +44,18 @@ import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
  */
 export function CreatorCast({ id }: { id: string }) {
   /** Uneven widths and crops. A casting wall is not a grid. */
+  // Revision 44: the hero and the match field already carry Zoya, Mukul,
+  // Nikita, Lovekesh and Vishnu; this wall used to show the same five a third
+  // time. It now casts the three the route had not shown — Ali Fazal, Kaka,
+  // Akash Sagar — beside two of the library, so the page's roster is wider
+  // than its hero rather than the hero repeated. Same widths, same crops.
   const cast = [
-    { id: "zoya", kind: "portrait", aspect: "3 / 4", grow: 1.15 },
-    { id: "mukul", kind: "reel", aspect: "9 / 16", grow: 0.86 },
-    { id: "nikita", kind: "portrait", aspect: "4 / 5", grow: 1.22 },
-    { id: "lovkesh", kind: "content", aspect: "1 / 1", grow: 1.5 },
+    { id: "ali-fazal", kind: "portrait", aspect: "3 / 4", grow: 1.15 },
+    // Portrait crops for the two-figure Kaka frame and for Mukul: the reel and
+    // content crops drop below the faces at these aspects (§10n).
+    { id: "kaka", kind: "portrait", aspect: "9 / 16", grow: 0.86 },
+    { id: "akash-sagar", kind: "portrait", aspect: "4 / 5", grow: 1.22 },
+    { id: "mukul", kind: "portrait", aspect: "1 / 1", grow: 1.5 },
     { id: "vishnu", kind: "reel", aspect: "9 / 16", grow: 0.86 },
   ] as const;
 

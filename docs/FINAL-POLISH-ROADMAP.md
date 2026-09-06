@@ -30,6 +30,7 @@
 | **14** | **Web & Digital Experiences final deep polish** | **Done — Revision 40** |
 | **15** | **The client's walkthrough batch — creator priority, plum, Mirzapur, the award banner** | **Done — Revision 42 (local, not pushed)** |
 | **16** | **Project Inquiry redesign + the testimonial foundation** | **Done — Revision 43 (local, not pushed)** |
+| **17** | **Service landing pages + About — the hierarchy pass** | **Done — Revision 44 (local, not pushed)** |
 
 **Phase 13 closed in Revision 41 and the site was released.** Its five items, and where each
 landed — the detail is in the Revision 41 section at the foot of this document:
@@ -3700,3 +3701,94 @@ synthetic rows: 712 at 1440.
 - `public.testimonials` exists on the linked project with all eighteen columns; `public.leads`
   untouched; zero rows in the new table.
 - **Not pushed. Not deployed.** `main` is ahead of `origin/main` by two commits.
+
+---
+
+## Revision 44 — Phase 17, the service landing pages and About
+
+**A design and hierarchy pass over the four public service routes and `/about`, and not a rewrite.**
+Every chapter of all five pages was captured as stitched viewport frames at 1440 and 390 before a
+line was edited, read against §10j, §10l, §10m, §10r, §10ai, §10aj, §10ao and §10ar, and left alone
+wherever it was already doing its job — which was most of them. The decisions are the brief's
+**§10av**; this is the phase record. **Local only — committed on `main`, not pushed, not deployed.**
+
+### Revision 43, checked before anything was edited
+
+`git status` clean, `main` ahead of `origin/main` by two, HEAD `8167f3e`, not amended. `/feedback`
+present and `noindex, follow`, absent from the navigation, the footer and the sitemap; the homepage
+Client Notes area absent with zero approved rows; the inquiry chapter on its raised panel.
+
+### What the audit found, page by page
+
+| Page | Found | Done |
+| --- | --- | --- |
+| **Performance Marketing** | The hero's signal rail was the composition's legend, not the service's storyline · the five-step *How it runs* block restated the six-move performance path a screen later, in the four-column form every service page carried · the audience headline wrapped to three lines at 1440 · the destination section still lacked the cross-link §10m recorded as future work | Rail → **Strategy → Media → Creative → Optimisation → Growth** · process section **removed** · headline re-broken · **`See what we build →`** to the Web route at the foot of the destination |
+| **Social & Personal Brand Growth** | The proof field rendered all eight roster creators — a row of five and a row of three with two empty cells · the rail stopped at *Recognition* · the audience headline wrapped to three lines | Field → **five chosen creators**, one row, never the hero's anchor · rail → **Positioning → Content System → Personal Brand → Distribution → Consistency → Momentum** · headline re-broken |
+| **Web & Digital Experiences** | Rev 40 audited all seven chapters and closed the architecture; the one thing the hero did not say was what the *practice* brings — its rail listed artefacts (`Web · Commerce · SaaS · Software · Mobile`), which §03 and §04 already list thirty-four of | Rail → **Creative Direction → Digital Experience → Conversion → Systems**. Nothing else moved |
+| **Influencer Marketing** | The same five creators appeared **three times** on one route — hero, match-field backdrop, casting wall · the five-step process block restated the campaign system's five strands · the rail said *Objective → Creator Fit → Collaboration → Distribution* · the audience headline wrapped | Casting wall → **Ali Fazal, Kaka, Akash Sagar, Mukul Sharma, Vishnu Priya** (the hero's five stay where the constraint needs them) · process section **removed** · rail → **Brief → Strategy → Creator Selection → Execution → Performance Insights** · headline re-broken |
+| **About** | The origin strip was `ROSTER.slice(0, 4)`, which since Revision 42 is the homepage stage's exact four — the page repeated the homepage's opening faces · the person block sat directly under the headline with nothing framing it | Strip → **Ali Fazal, Nikita Kumawat, Vishnu Priya, Kaka** (none of the two the archive board carries) · the person block seated on its own hairline with more room above it. **No title, no team, no biography, no 2026** — Rev 37 stands |
+
+### Cross-service differentiation, after
+
+```
+Social       hero → positioning → system → board → scope → proof → audience → process → FAQ → inquiry
+Influencer   hero → relevance → match field → system → proof → scope → fit → audience → FAQ → inquiry
+Performance  hero → hypothesis → creative + bench → path → destination → scope → audience → FAQ → inquiry
+Web          hero → PROOF → what we build → beyond websites → why → how → inquiry
+```
+
+Three different tails now; the shared four-column process block survives only on Social, where it is
+that page's only process statement. Every hero rail says a different thing in a different order.
+
+### Held on factual grounds
+
+- **"Production" is not on the Influencer rail.** The brief's workflow included it; *managing
+  production* is P19 (§10aj §8), a scope claim the client has not confirmed, and a rail is a promise.
+  Five words instead of six.
+- **No figure, result, ROAS, CAC, CTR, reach, follower count or client metric was added anywhere.**
+  The banned-register scan of every changed string returned zero hits.
+- **No new media.** Nine existing production crops were re-allocated; nothing was produced.
+
+### Page length — measured, dev server, dark
+
+| Route | 1440 before | 1440 after | Δ | 390 before | 390 after | Δ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Performance Marketing | 11,515 | **10,788** | −727 | 17,762 | **16,437** | −1,325 |
+| Social & Personal Brand Growth | 10,594 | **10,107** | −487 | 13,733 | **13,422** | −311 |
+| Web & Digital Experiences | 16,968 | **16,968** | 0 | 14,887 | **14,887** | 0 |
+| Influencer Marketing | 11,462 | **10,734** | −728 | 15,915 | **14,577** | −1,338 |
+| About | 11,002 | **11,043** | +41 | 13,868 | **13,901** | +33 |
+
+The homepage is untouched by this revision and was not re-measured.
+
+### QA
+
+- **Captures** — ten stitched page captures before and ten after (about 320 viewport frames, `shots/r44/base` and `shots/r44/after`) plus twenty section captures (`shots/r44/shots`): every page as stitched viewport frames at 1440 and 390 before and
+  after, and every changed section on its own at the widths the brief asked for (heroes at 390, the
+  casting wall in both themes, the field at 1440 / 768 / 390, the destination at 1440 / 390, the three
+  audience heads at 1024, the About strip and the person chapter at 1440 / 390 and in light).
+- **Overflow** `--quick`: **PASS — 44/44** (eleven routes × four widths). **`tsc` clean, `eslint src` 0 errors, `next build` clean.**
+- **Console**: zero application errors, zero hydration warnings, zero failed requests and zero dead in-page anchors on all five routes at 1440 and 390; the only console messages are Next's dev-overlay `loading="eager"` suggestions for below-fold images, which §10aq and §10ar already record as an artifact of the QA scroll sweep and which are not acted on.
+- **Dead links**: the one new link resolves to a built, public route (`/services/web-digital-experiences`).
+
+### A capture lesson, recorded
+
+A single `captureBeyondViewport` shot of a page taller than ~8,000px **tiles and repeats its top**
+under SwiftShader — the first baseline set showed every page twice. `shots/r44/frames.mjs` captures
+one viewport frame per scroll offset and stitches them, which is the method §10aa found reliable;
+pinned chapters (the Web route's §02–§04) repeat across frames by nature and are read from their own
+`web-*` shots instead.
+
+### Untouched
+
+The Hero, creator ranking and stage, Mirzapur, the Recognition banner and plate, What We Do, the
+Difference chapter, Work Process, Selected Work, the homepage About preview, Header, Footer, the
+Project Inquiry logic, `/api/inquiry`, `/feedback` and its backend, the testimonials schema and
+moderation, GA, consent, the firewall rule, DNS, Vercel, Resend, Supabase. The Web route's seven
+chapters and their order. Every service scene on the homepage.
+
+### Verified
+
+- Types, lint and the production build clean after the last edit.
+- Overflow **PASS — 44/44** (eleven routes × four widths).
+- **Not pushed. Not deployed.** `main` is ahead of `origin/main` by three commits.

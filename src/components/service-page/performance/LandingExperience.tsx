@@ -2,6 +2,8 @@
 
 import { motion } from "motion/react";
 
+import { Arrow } from "@/components/ui/Arrow";
+import { PageLink } from "@/components/ui/PageLink";
 import { PERFORMANCE_LANDING } from "@/config/service-performance";
 
 import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
@@ -197,6 +199,34 @@ export function LandingExperience({ id }: { id: string }) {
               </motion.li>
             ))}
           </ol>
+
+          {/* The handoff §10m recorded as future work: paid media lands on a
+              destination, and Mishram builds destinations. A text action in
+              the variant sheet's own grammar — route link, arrow, no button —
+              so the section points at the capability without becoming a
+              web-services pitch. */}
+          <motion.div
+            variants={{ hidden: { opacity: 0 }, shown: { opacity: 1 } }}
+            transition={{ duration: 0.7, delay: 0.7 }}
+            className="mt-9 border-t border-line pt-6"
+          >
+            <PageLink
+              href={PERFORMANCE_LANDING.actionHref}
+              className="group inline-flex items-center gap-2.5 py-2 text-[0.8125rem] leading-[1.5] font-medium text-ink transition-colors duration-300"
+            >
+              <span className="relative">
+                {PERFORMANCE_LANDING.action}
+                <span
+                  aria-hidden
+                  className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-accent transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+                />
+              </span>
+              <Arrow
+                size={12}
+                className="transition-transform duration-[420ms] ease-[var(--ease-out-expo)] group-hover:translate-x-1"
+              />
+            </PageLink>
+          </motion.div>
         </div>
       </motion.div>
     </ServiceSection>

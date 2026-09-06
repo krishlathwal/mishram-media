@@ -5,7 +5,6 @@ import { ServiceAudience } from "@/components/service-page/ServiceAudience";
 import { ServiceFaq } from "@/components/service-page/ServiceFaq";
 import { ServiceHero } from "@/components/service-page/ServiceHero";
 import { ServicePageNav } from "@/components/service-page/ServicePageNav";
-import { ServiceProcess } from "@/components/service-page/ServiceProcess";
 import { ServiceScope } from "@/components/service-page/ServiceScope";
 import { ServiceStatement } from "@/components/service-page/ServiceStatement";
 import { CreativeTestBench } from "@/components/service-page/performance/CreativeTestBench";
@@ -21,8 +20,6 @@ import {
   PERFORMANCE_HERO,
   PERFORMANCE_HYPOTHESIS,
   PERFORMANCE_INQUIRY,
-  PERFORMANCE_PROCESS,
-  PERFORMANCE_PROCESS_COPY,
   PERFORMANCE_SCOPE,
   PERFORMANCE_SCOPE_COPY,
 } from "@/config/service-performance";
@@ -73,8 +70,14 @@ export const metadata: Metadata = {
  * ```
  * 01  hero → positioning → system → interaction → scope → proof → audience → process → FAQ
  * 02  hero → relevance → interaction → system → proof → scope → fit → audience → process → FAQ
- * 03  hero → hypothesis → creative + interaction → path → destination → scope → audience → process → FAQ
+ * 03  hero → hypothesis → creative + interaction → path → destination → scope → audience → FAQ
  * ```
+ *
+ * **No separate process section (Revision 44).** The performance path already
+ * *is* the process — six moves on a closed circuit — and the five-step
+ * "How it runs" block that followed the scope restated it a screen later in
+ * the shared four-column form every service page carried. Removing it takes a
+ * genuine repeat out of the route and gives this page its own tail.
  *
  * The interaction arrives **second** here, earlier than on either page before
  * it, because on this service the method is the product — a visitor who
@@ -160,12 +163,6 @@ export default function PerformanceMarketingPage() {
           lead: PERFORMANCE_AUDIENCE.note,
         }}
         audiences={PERFORMANCE_AUDIENCE.audiences}
-      />
-
-      <ServiceProcess
-        id="approach"
-        copy={PERFORMANCE_PROCESS_COPY}
-        steps={PERFORMANCE_PROCESS}
       />
 
       <ServiceFaq id="faq" copy={PERFORMANCE_FAQ_COPY} items={PERFORMANCE_FAQ} />

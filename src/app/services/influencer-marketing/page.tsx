@@ -5,7 +5,6 @@ import { ServiceAudience } from "@/components/service-page/ServiceAudience";
 import { ServiceFaq } from "@/components/service-page/ServiceFaq";
 import { ServiceHero } from "@/components/service-page/ServiceHero";
 import { ServicePageNav } from "@/components/service-page/ServicePageNav";
-import { ServiceProcess } from "@/components/service-page/ServiceProcess";
 import { ServiceScope } from "@/components/service-page/ServiceScope";
 import { ServiceStatement } from "@/components/service-page/ServiceStatement";
 import { CampaignConstellation } from "@/components/service-page/influencer/CampaignConstellation";
@@ -21,8 +20,6 @@ import {
   INFLUENCER_FAQ_COPY,
   INFLUENCER_HERO,
   INFLUENCER_INQUIRY,
-  INFLUENCER_PROCESS,
-  INFLUENCER_PROCESS_COPY,
   INFLUENCER_RELEVANCE,
   INFLUENCER_SCOPE,
   INFLUENCER_SCOPE_COPY,
@@ -73,6 +70,13 @@ export const metadata: Metadata = {
  * system → proof → scope, so the two do not walk in step even where they share
  * components: the interaction arrives early because the decision *is* the
  * pitch, and proof comes before scope because the network is the credential.
+ *
+ * **No separate process section (Revision 44).** The campaign system's five
+ * strands — Objective → Creator Fit → Brief → Coordination → Launch + Learn —
+ * are the process, and the five-step block that followed the fit section
+ * restated them in the shared form every service page carried. Removed as a
+ * genuine repeat, which also gives this route its own tail: fit → audience →
+ * FAQ.
  *
  * **Not one number anywhere.** No reach, engagement, follower count, creator
  * count, ROI or campaign result — see the header of `config/service-influencer.ts`
@@ -137,12 +141,6 @@ export default function InfluencerMarketingPage() {
           lead: INFLUENCER_AUDIENCE.note,
         }}
         audiences={INFLUENCER_AUDIENCE.audiences}
-      />
-
-      <ServiceProcess
-        id="approach"
-        copy={INFLUENCER_PROCESS_COPY}
-        steps={INFLUENCER_PROCESS}
       />
 
       <ServiceFaq id="faq" copy={INFLUENCER_FAQ_COPY} items={INFLUENCER_FAQ} />

@@ -57,7 +57,11 @@ function Person() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-12% 0px" }}
       transition={{ duration: 0.85, delay: 0.18, ease: EASE }}
-      className="mt-12 flex items-end gap-6 sm:gap-7"
+      // Revision 44: seated on its own hairline with a little more room above
+      // it, so the one person on the site reads as a deliberate record rather
+      // than an afterthought under the headline. Nothing about what is said
+      // changed — name, entity line, link; still no title (P31).
+      className="mt-12 flex items-end gap-6 border-t border-line pt-8 sm:gap-7 md:mt-14"
     >
       {/* The width lives on this wrapper, never on `.abt-frame` itself —
           `.abt-frame` is `width: 100%` in globals.css, so a width utility on

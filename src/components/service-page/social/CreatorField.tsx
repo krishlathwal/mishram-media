@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 
 import { ROSTER, resolveFrame } from "@/config/creators";
-import { SOCIAL_PROOF } from "@/config/service-social";
+import { SOCIAL_FIELD_IDS, SOCIAL_PROOF } from "@/config/service-social";
 import { Arrow } from "@/components/ui/Arrow";
 
 import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
@@ -31,6 +31,11 @@ import { EASE, ServiceSection, ServiceSectionHead } from "../ServiceSection";
 export function CreatorField({ id }: { id: string }) {
   /** Small, irregular vertical offsets — a field, not a row of thumbnails. */
   const offsets = ["0rem", "2.75rem", "0.75rem", "3.5rem", "1.5rem"];
+  // Five chosen in config, in that order — never the whole roster, which is
+  // eight since Revision 42 and left a row of three with two empty cells.
+  const creators = SOCIAL_FIELD_IDS.map((fid) => ROSTER.find((c) => c.id === fid)).filter(
+    (c): c is (typeof ROSTER)[number] => Boolean(c),
+  );
 
   return (
     <ServiceSection id={id} labelledBy={`${id}-title`} grid="none">
@@ -44,7 +49,7 @@ export function CreatorField({ id }: { id: string }) {
       />
 
       <div className="svp-field mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:mt-16 lg:mt-20 lg:grid-cols-5 lg:gap-x-5">
-        {ROSTER.map((creator, i) => {
+        {creators.map((creator, i) => {
           const frame = resolveFrame(creator, "portrait");
 
           return (

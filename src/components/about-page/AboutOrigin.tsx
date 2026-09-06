@@ -158,9 +158,15 @@ export function AboutOrigin() {
  */
 function CreatorStrip() {
   const copy = ABOUT_PAGE_COPY.origin;
-  // Four, not all five: the strip is evidence for an argument, and a fifth
-  // frame turns it back into the roster §03 already owns.
-  const creators = ROSTER.slice(0, 4);
+  // Four, chosen: the strip is evidence for an argument, not the roster §03
+  // already owns. `ROSTER.slice(0, 4)` became the homepage stage's exact
+  // four after Revision 42, so this page repeated the homepage's opening
+  // faces; it now takes two of the ranked stage and two of the library, and
+  // neither of the two the archive board above already carries (Zoya, Mukul).
+  const STRIP_IDS = ["ali-fazal", "nikita", "vishnu", "kaka"] as const;
+  const creators = STRIP_IDS.map((sid) => ROSTER.find((c) => c.id === sid)).filter(
+    (c): c is (typeof ROSTER)[number] => Boolean(c),
+  );
 
   return (
     <div className="mt-16 md:mt-20">

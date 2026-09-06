@@ -60,7 +60,19 @@ export const INFLUENCER_HERO = {
   primaryCtaNote: "15 min · no obligation",
   secondaryCta: "Start a Project",
   /** The concept line under the composition. */
-  signalPath: ["Objective", "Creator Fit", "Collaboration", "Distribution"],
+  /**
+   * Revision 44: the workflow, in the order a campaign actually runs. "Managing
+   * production" stays off the rail — it is a scope claim the client has not
+   * confirmed (P19, §10aj §8), and a rail is a promise. Insights is the
+   * deck's own word for the last step.
+   */
+  signalPath: [
+    "Brief",
+    "Strategy",
+    "Creator Selection",
+    "Execution",
+    "Performance Insights",
+  ],
   /** Factual attribution for the photography in the hero composition. */
   pictured: "Pictured — creators from the Mishram Media network",
   /** The centre of the constellation. */
@@ -566,7 +578,9 @@ export const INFLUENCER_SCOPE: readonly ServiceScopeItem[] = [
 
 export const INFLUENCER_AUDIENCE = {
   label: "Who it is for",
-  statement: ["Built for brands", "entering the conversation."] as const,
+  // Revision 44: re-broken so the second line fits the shared head's 34rem
+  // measure at 1440 — "entering the conversation." wrapped onto a third line.
+  statement: ["For brands entering", "the conversation."] as const,
   note: "Creator work suits a brand with something worth saying and a reason for someone else to say it. It is not a shortcut for a product that has not found its story yet.",
   audiences: [
     "Consumer brands",

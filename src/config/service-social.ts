@@ -71,7 +71,18 @@ export const SOCIAL_HERO = {
   primaryCtaNote: "15 min · no obligation",
   secondaryCta: "Start a Project",
   /** The concept line under the composition. */
-  signalPath: ["Positioning", "Content System", "Social Presence", "Recognition"],
+  /**
+   * Revision 44: the client's own storyline for this service, in its order.
+   * Six words rather than four — the rail wraps cleanly at every width.
+   */
+  signalPath: [
+    "Positioning",
+    "Content System",
+    "Personal Brand",
+    "Distribution",
+    "Consistency",
+    "Momentum",
+  ],
   /**
    * Factual attribution for the photography in the hero composition.
    *
@@ -300,7 +311,9 @@ export const SOCIAL_SCOPE: readonly ServiceScopeItem[] = [
 
 export const SOCIAL_AUDIENCE = {
   label: "Who it is for",
-  statement: ["Built for people", "whose name is part of the brand."] as const,
+  // Revision 44: re-broken so the second line fits the shared head's 34rem
+  // measure at 1440 — the previous second line wrapped onto a third.
+  statement: ["For people whose", "name is the brand."] as const,
   /** Deliberately narrows the claim. This is not a service for everyone. */
   note: "Not every business needs this. It matters most when the person is the reason people pay attention.",
   audiences: [
@@ -313,6 +326,24 @@ export const SOCIAL_AUDIENCE = {
 } as const;
 
 /* ── Proof ──────────────────────────────────────────────────────── */
+
+/**
+ * Which creators the proof field shows — five, one row at `lg`.
+ *
+ * Revision 42 made `ROSTER` eight people, and the field rendered all eight:
+ * a row of five and a row of three with two empty cells under it. Five is the
+ * field's composition (the offsets are written for five), so the set is now
+ * chosen here: **never the hero's anchor** (Vishnu Priya opens the page), and a
+ * mix of the ranked stage and the library so the route is not the homepage
+ * stage again. Selected, and the caption says so.
+ */
+export const SOCIAL_FIELD_IDS = [
+  "ali-fazal",
+  "zoya",
+  "nikita",
+  "mukul",
+  "lovkesh",
+] as const;
 
 export const SOCIAL_PROOF = {
   label: "Selected creators from our network",

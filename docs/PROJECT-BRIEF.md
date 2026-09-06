@@ -6283,6 +6283,31 @@ section asked for — see §10v.
 
 Approved and locked. Extend, don't rebuild:
 
+- **Revision 44’s decisions (§10av) — locked.**
+  - **The hero rails are the storyline, in the client's words and order** — Performance
+    `Strategy → Media → Creative → Optimisation → Growth`, Social `Positioning → Content System →
+    Personal Brand → Distribution → Consistency → Momentum`, Influencer `Brief → Strategy → Creator
+    Selection → Execution → Performance Insights`, Web `Creative Direction → Digital Experience →
+    Conversion → Systems`. **"Production" stays off the Influencer rail** until the client confirms
+    *managing production* (P19). Do not restore the old legends.
+  - **Performance and Influencer carry no separate process section.** The performance path and the
+    campaign system *are* their processes; the shared four-column block was a repeat and is not to
+    be reinstated on either. Social keeps its four moves — its only process statement.
+  - **Casting on the Influencer wall is Ali Fazal, Kaka, Akash Sagar, Mukul Sharma, Vishnu Priya**;
+    the hero and the match-field backdrop keep their five. A route never shows the same five faces
+    three times again.
+  - **The Social proof field is `SOCIAL_FIELD_IDS`, five, never the whole roster and never the
+    hero's anchor.** A wider `ROSTER` must not widen the field.
+  - **The About origin strip is chosen, not `ROSTER.slice(0, 4)`** — it must not be the homepage
+    stage's four, and must not repeat the two the archive board carries.
+  - **The audience headlines are broken to fit the 34rem head at 1440.** Re-check the wrap before
+    editing any of the three.
+  - **The Performance destination links to the Web route** with a text action, not a button; it is
+    the second contextual link on that page and the last one it gets.
+  - **Everything §10ar closed on the Web route is still closed**; only the hero rail changed.
+  - **Everything §10ao settled on About still holds** — the person block gained a hairline and room,
+    nothing else. Client Notes on About is recommended for `on the record` and deliberately not wired.
+  - **Not pushed, not deployed, by instruction.**
 - **Revision 43’s decisions (§10au) — locked.**
   - **NEVER AUTO-PUBLISH A TESTIMONIAL.** Every row of `public.testimonials` is inserted
     `pending`; `/api/feedback` has no code path that writes `status`; the public read filters
@@ -6825,6 +6850,17 @@ one art-directed system, and so is every service page.
 ---
 
 ## 19. Current status & next step
+
+> **READ §10av FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 44 — THREE LOCAL COMMITS, NOT PUSHED.**
+>
+> **§10av (Revision 44):** a hierarchy pass over the four public service routes and `/about`. The
+> hero rails now say each service's storyline in the client's words; Performance and Influencer lost
+> the process block that repeated a sequence they had already drawn; the Influencer casting wall,
+> the Social proof field and the About origin strip no longer repeat the hero's or the homepage's
+> faces; three audience headlines fit their measure; the Performance destination hands off to the
+> Web route. No section rebuilt, no chapter added, no media produced, no figure introduced. Pages
+> at 1440: Performance **10,788**, Social **10,107**, Web **16,968**, Influencer
+> **10,734**, About **11,043**. **Local commit on `main`, not pushed, not deployed.**
 
 > **READ §10au FIRST IF YOU ARE PICKING THIS UP AFTER REVISION 43 — TWO LOCAL COMMITS, NOT PUSHED.**
 >
@@ -11787,3 +11823,151 @@ no GA event; no change to `/api/inquiry`, `leads`, Resend or the firewall.
 
 One commit on `main` after validation, **not pushed, not deployed.** `main` is ahead of
 `origin/main` by two commits — Revision 42 and this one — until someone chooses to push.
+
+---
+
+## 10av. REVISION 44 — SERVICE LANDING PAGES AND ABOUT, THE HIERARCHY PASS
+
+**A design and content-hierarchy pass over the four public service routes and `/about`, made the
+way the brief asked: audit first, change only where a reason exists, leave a strong section alone.**
+Twenty-one edits across five pages, each with one of the brief's reasons attached; no section was
+rebuilt, no chapter added, no order changed, no media produced, no figure introduced. **Committed
+locally on `main`, not pushed, not deployed.** The roadmap's Revision 44 section carries the
+measurements and the capture record.
+
+### 1 — THE AUDIT, AND WHAT IT LEFT ALONE
+
+Every chapter of the five pages was captured as stitched viewport frames at 1440 and 390 before any
+edit and read against its own record — §10j, §10l, §10m, §10r, §10ai, §10aj, §10ao, §10ar. The
+finding was that the five pages already share one design language (the same hero shell, section
+head, grid modes, hairline vocabulary and motion) and already differ in their signature
+compositions; what they shared *too much* of was the tail — three of four service pages ended on
+the identical `audience → process → FAQ → inquiry` sequence — and two of them repeated a process
+they had already drawn. **Unchanged, deliberately:** every hero composition, every signature
+interaction (the board, the match field, the bench, the build stage), every statement, scope, FAQ
+and inquiry section; the Web route's seven chapters and order (§10ar closed them); the About hero
+board, origin chronology, disciplines, practice, principles and credibility chapters.
+
+### 2 — THE HERO RAILS SAY THE STORYLINE NOW
+
+Each service hero carries a caps rail under its composition. On three pages it was the
+composition's legend; on the fourth a list of artefacts. **It now says what the engagement is, in
+the client's own words and order:**
+
+| Route | Was | Now |
+| --- | --- | --- |
+| Performance | Hypothesis → Creative Test → Distribution → Landing → Signal | **Strategy → Media → Creative → Optimisation → Growth** |
+| Social | Positioning → Content System → Social Presence → Recognition | **Positioning → Content System → Personal Brand → Distribution → Consistency → Momentum** |
+| Influencer | Objective → Creator Fit → Collaboration → Distribution | **Brief → Strategy → Creator Selection → Execution → Performance Insights** |
+| Web | Web · Commerce · SaaS · Software · Mobile | **Creative Direction → Digital Experience → Conversion → Systems** |
+
+**"Production" is not on the Influencer rail.** The brief's workflow carried it; *managing
+production* is P19 — first-party deck copy the client has not confirmed as a service (§10aj §8) —
+and a rail on a service page is a promise. Five words. *Performance Insights* is the deck's own
+phrase for the last step and the page already publishes `Campaign Review`.
+
+### 3 — TWO PROCESS SECTIONS REMOVED, BECAUSE THEY WERE DRAWN ALREADY
+
+- **Performance.** The performance path is six moves on a closed circuit — hypothesis, creative,
+  distribution, destination, signal, iteration. The *How it runs* block that followed the scope was
+  the same sequence in five steps, in the shared four-column form. Removed.
+- **Influencer.** The campaign system braids five strands — Objective, Creator Fit, Brief,
+  Coordination, Launch + Learn. The five-step block after the fit section restated them. Removed.
+
+Social keeps its process block: its system chapter is a loop of what is built, not a sequence, so
+the four moves are that page's only process statement. **Three different tails now** — Social ends
+`audience → process → FAQ`, Influencer `fit → audience → FAQ`, Performance `scope → audience → FAQ`
+— and §10j's shared vocabulary is intact: nothing was forked, two sections were simply not rendered.
+
+### 4 — CREATORS: WIDER THAN THE HERO, NOT THE HERO REPEATED
+
+- **Influencer.** Zoya Jaan, Mukul Sharma, Nikita Kumawat, Lovekesh Kataria and Vishnu Priya
+  appeared three times on one route — the hero constellation, the match-field backdrop and the
+  casting wall. The hero and the backdrop keep them (the backdrop's even treatment is a locked
+  constraint, §18); **the casting wall now shows Ali Fazal, Kaka, Akash Sagar, Mukul Sharma and
+  Vishnu Priya** — the three the route had never shown, beside two of the library. Portrait crops
+  for the two-figure Kaka frame and for Mukul, because the reel and content crops drop below the
+  faces at those aspects (§10n). Same widths, same wall.
+- **Social.** The proof field rendered all eight roster creators after Revision 42 widened
+  `ROSTER` — a row of five and a row of three with two empty cells. It is five again, chosen in
+  `SOCIAL_FIELD_IDS`: Ali Fazal, Zoya Jaan, Nikita Kumawat, Mukul Sharma, Lovekesh Kataria — never
+  Vishnu Priya, who opens the page.
+- **About.** The origin strip was `ROSTER.slice(0, 4)`, which since Revision 42 is the homepage
+  stage's exact four, so `/about` repeated the homepage's opening faces. It now shows **Ali Fazal,
+  Nikita Kumawat, Vishnu Priya, Kaka** — two of the ranked stage, two of the library, and neither of
+  the two the archive board above already carries (Zoya Jaan, Mukul Sharma).
+
+Every creator shown is a published roster entry with approved photography; every caption derives
+from config; **no photograph was produced and no source repeats in adjacent chapters.**
+
+### 5 — THREE HEADLINES THAT WRAPPED, AND ONE MISSING LINK
+
+The shared section head is 34rem wide at 1440, and three audience statements — *"…that want more
+than ad spend."*, *"…whose name is part of the brand."*, *"…entering the conversation."* — ran
+their second line onto a third. Re-broken, not shortened in meaning: **For teams that want / more
+than ad spend.** · **For people whose / name is the brand.** · **For brands entering / the
+conversation.**
+
+§10m recorded that the destination section of the Performance route would carry a link to the Web
+route once that route shipped. It shipped in Revision 21 and the link was never added. **`See what
+we build →`** now closes the requirements column — a text action in the variant sheet's own grammar
+(route link, arrow, no button), pointing at a built, public route.
+
+### 6 — ABOUT
+
+The page's argument by provenance (§10r) needed no restructuring: opening, chronology, the four
+disciplines, the practice index, the principles, the record, the present. Two edits: the strip
+(§4 above) and the person block, **now seated on its own hairline with more room above it** so the
+one person on the site reads as a deliberate record rather than an afterthought under the headline.
+Everything Revision 37 settled stands untouched: the name, the entity line, the LinkedIn link, **no
+title, no biography, no team grid, no city, no metric, no fourth chronology moment, no 2026**.
+
+**Where Client Notes could naturally appear here, if it is ever wanted:** inside `on the record`,
+after the recognition and the brand index — the chapter whose subject is evidence. It is
+recommended, not wired: the homepage already renders the approved set, and the same quotes on two
+routes is the repeat Revision 31 spent a phase removing for a photograph. The component already
+renders nothing for zero approved rows, so wiring it later costs one async page and one prop.
+
+### 7 — CTA HIERARCHY, AUDITED
+
+| Page | Primary | Secondary | Mid-page contextual | Foot |
+| --- | --- | --- | --- | --- |
+| Social · Influencer · Performance | `Book a 15-Min Call` (hero) | `Start a Project` → the form | one creator-network link; Performance adds the Web handoff | the shared inquiry |
+| Web | `Start a Project` (hero) | `Explore Our Work` | `Book a 15-min call` as a text link; `Also explore` | the shared inquiry |
+| About | `Tell us what you're building ↓` | `Contact Us` | `Explore service` per practice row | the shared inquiry |
+
+No booking CTA anywhere between a hero and the form, no section-level "Contact us", one filled
+button per hero. Unchanged, and re-verified on the rendered routes.
+
+### 8 — FACTUAL SAFETY
+
+Every changed string was checked against the brief and the deck: the rails name capabilities the
+pages already publish; the audience headlines say what they said; the link names a route that
+exists. Zero hits for the banned register across all five routes. No betting, gambling, casino,
+fantasy, real-money-gaming, gaming, offshore-CFD or binary-options brand anywhere; no withheld
+relationship restored; no metric of any kind added.
+
+### 9 — FILES
+
+```
+src/config/service-performance.ts        rail · audience headline · destination action
+src/config/service-social.ts             rail · audience headline · SOCIAL_FIELD_IDS
+src/config/service-influencer.ts         rail · audience headline
+src/config/service-web.ts                rail
+src/app/services/performance-marketing/page.tsx   process section removed
+src/app/services/influencer-marketing/page.tsx    process section removed
+src/components/service-page/performance/LandingExperience.tsx   the Web handoff link
+src/components/service-page/social/CreatorField.tsx             five chosen creators
+src/components/service-page/influencer/CreatorCast.tsx          the re-cast wall
+src/components/about-page/AboutOrigin.tsx                       the chosen strip
+src/components/about-page/AboutNow.tsx                          the person block's rule
+scripts/shoot.mjs                        the Revision 44 shots
+```
+
+**Dependencies: none added. Media: none added.**
+
+### 10 — GIT
+
+One commit on `main` after validation — *Final polish — service landing pages and about* — **not
+pushed, not deployed.** `main` is ahead of `origin/main` by three commits until someone chooses to
+push.
