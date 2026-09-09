@@ -93,7 +93,11 @@ ws.onmessage = (ev) => {
   if (m.id && pending.has(m.id)) {
     const { res, rej } = pending.get(m.id);
     pending.delete(m.id);
-    m.error ? rej(new Error(JSON.stringify(m.error))) : res(m.result);
+    if (m.error) {
+      rej(new Error(JSON.stringify(m.error)));
+    } else {
+      res(m.result);
+    }
   }
 };
 const { targetId } = await send(ws, "Target.createTarget", { url: "about:blank" });
